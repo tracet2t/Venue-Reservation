@@ -1,0 +1,29 @@
+@startuml Architecture
+
+!include <c4/C4_Component.puml>  
+
+LAYOUT_WITH_LEGEND()
+
+title Trace Reservation Project Architecture
+
+System_Boundary(cb, "Client Side") {
+    Component(client, "CSC", "Client Rendered Components")
+}
+
+System_Boundary(api, "App Server") {
+    System_Boundary("nextjs", "NextJs Server") {
+        Component(api_routes, "API Routes")
+        Component(server_actions, "Server Actions")
+        Component(rsc, "RSC", "Server Rendered Components")
+        Component(orm, "ORM", "PrismaJs")
+    }
+    ContainerDb(db, "Database", "PostgreSQL")
+}
+
+Rel_D(client, api_routes, "HTTPS")
+Rel_D(client, server_actions, "HTTPS")
+Rel_D(orm, db, "TCP")
+Rel_U(rsc, server_actions, "Uses")
+Rel_D(server_actions, orm, "Uses")
+Rel_D(api_routes, orm, "Uses")
+@enduml
