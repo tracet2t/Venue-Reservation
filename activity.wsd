@@ -1,0 +1,33 @@
+@startuml Activity Diagram
+start
+:User Login;
+if (Is User Registered?) then (yes)
+  :Authenticate User;
+else (no)
+  :Register User;
+  :Authenticate User;
+endif
+:View Available Reservations;
+if (Select Reservation?) then (yes)
+  :Provide Reservation Details;
+  :Confirm Reservation;
+  :Send Confirmation Email;
+else (no)
+  :Exit System;
+endif
+if (Modify Reservation?) then (yes)
+  :Retrieve Reservation;
+  :Update Reservation Details;
+  :Send Update Confirmation;
+else (no)
+  if (Cancel Reservation?) then (yes)
+    :Retrieve Reservation;
+    :Process Cancellation;
+    :Send Cancellation Confirmation;
+  else (no)
+    :Exit System;
+  endif
+endif
+:Log Out;
+stop
+@enduml
