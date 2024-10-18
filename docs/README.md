@@ -14,36 +14,6 @@ The Team Reservation Management System is a web-based application designed to st
 ### Use Cases
 The system supports several key use cases to enhance user experience and manage reservations efficiently. The following diagram provides an overview of the major use cases involved:
 
-* Use Case Diagram:
-```
-@startuml
-left to right direction
-actor User as U #yellow
-actor Admin as A #lightblue
-actor "Super Admin" as SA #pink
-rectangle "Reservation Management System" {
-    U --> (Login)
-    U --> (Signup)
-    U --> (View Availability of venues according to the location)
-    U --> (View Availability of venues according to the venue type)
-    U --> (Reserve a venue)
-    U --> (View Summary and State of Reservation)
-    U --> (Remove draft venues)
-    U --> (Add feedback)
-    U --> (Cancel reservation)
-    A --> (Login)
-    A --> (Update Venue Details)
-    A --> (Add new venue details)
-    A --> (View the user reservations)
-    A --> (Accept/Reject user reservation)
-    A --> (Reply to Feedback)
-    A --> (Delete the venue)
-    A --> (Generate Reports)
-    SA --> (Assign Admin)
-}
-@enduml
-```
-
 ### User Stories
 User stories capture the functionality from the perspective of different roles in the system. Each story describes a specific requirement or feature the system should fulfill.
 
@@ -112,43 +82,6 @@ As an Admin, I want to generate reports about venue usage and user reservations 
 
 ### Activity Diagram
 The activity diagram illustrates the flow of actions users perform within the system to complete various tasks such as reserving a venue, managing user roles, and generating reports.
-
-* **Activity Diagram**:
-```
- @startuml
-start
-:User Login;
-if (Is User Registered?) then (yes)
-  :Authenticate User;
-else (no)
-  :Register User;
-  :Authenticate User;
-endif
-:View Available Reservations;
-if (Select Reservation?) then (yes)
-  :Provide Reservation Details;
-  :Confirm Reservation;
-  :Send Confirmation Email;
-else (no)
-  :Exit System;
-endif
-if (Modify Reservation?) then (yes)
-  :Retrieve Reservation;
-  :Update Reservation Details;
-  :Send Update Confirmation;
-else (no)
-  if (Cancel Reservation?) then (yes)
-    :Retrieve Reservation;
-    :Process Cancellation;
-    :Send Cancellation Confirmation;
-  else (no)
-    :Exit System;
-  endif
-endif
-:Log Out;
-stop
-@enduml
-```
 
 ### Mockup Design
 The system design is visualized through mockups, which offer a representation of the user interface and flow.
