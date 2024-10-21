@@ -14,35 +14,7 @@ The Team Reservation Management System is a web-based application designed to st
 ### Use Cases
 The system supports several key use cases to enhance user experience and manage reservations efficiently. The following diagram provides an overview of the major use cases involved:
 
-* Use Case Diagram:
-```
-@startuml
-left to right direction
-actor User as U #yellow
-actor Admin as A #lightblue
-actor "Super Admin" as SA #pink
-rectangle "Reservation Management System" {
-    U --> (Login)
-    U --> (Signup)
-    U --> (View Availability of venues according to the location)
-    U --> (View Availability of venues according to the venue type)
-    U --> (Reserve a venue)
-    U --> (View Summary and State of Reservation)
-    U --> (Remove draft venues)
-    U --> (Add feedback)
-    U --> (Cancel reservation)
-    A --> (Login)
-    A --> (Update Venue Details)
-    A --> (Add new venue details)
-    A --> (View the user reservations)
-    A --> (Accept/Reject user reservation)
-    A --> (Reply to Feedback)
-    A --> (Delete the venue)
-    A --> (Generate Reports)
-    SA --> (Assign Admin)
-}
-@enduml
-```
+
 
 ### User Stories
 User stories capture the functionality from the perspective of different roles in the system. Each story describes a specific requirement or feature the system should fulfill.
