@@ -69,4 +69,4 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   );
 };
 
-export default Carousel;
+export default CarouselProps;
