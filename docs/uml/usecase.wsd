@@ -18,9 +18,10 @@ rectangle "Reservation Management System" {
     A --> (Add new venue details)
     A --> (View the user reservations)
     A --> (Accept/Reject user reservation)
-    A --> (Reply to Feedback)
     A --> (Delete the venue)
     A --> (Generate Reports)
+     A --> (Generate Reports)
+      A --> (Generate Reports)n
     SA --> (Assign Admin)
 }
 @enduml
