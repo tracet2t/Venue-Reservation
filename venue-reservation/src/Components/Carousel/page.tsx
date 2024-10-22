@@ -10,12 +10,14 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Function to go to the next slide
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
+  // Function to go to the previous slide
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
@@ -37,6 +39,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
             layout="fill"
             objectFit="cover"  
             className="w-full h-full"
+            priority // Optional: load the first image faster
           />
         </div>
       ))}
@@ -69,4 +72,4 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   );
 };
 
-export default CarouselProps;
+export default Carousel;

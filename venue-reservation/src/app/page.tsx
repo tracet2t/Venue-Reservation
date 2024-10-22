@@ -1,4 +1,4 @@
-import VenueCard from '@/app/Components/VenueCard/page';
+import VenueCard from '@/Components/VenueCard/page';
 
 const LandingPage = () => {
   return (
