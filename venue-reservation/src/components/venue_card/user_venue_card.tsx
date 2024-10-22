@@ -1,4 +1,4 @@
-import Carousel from '../Carousel/page';
+import Carousel from '../carousel';
 
 const VenueCard = () => {
   const images = [
