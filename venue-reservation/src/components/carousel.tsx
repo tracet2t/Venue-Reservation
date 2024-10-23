@@ -1,13 +1,28 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState } from "react";
+import Image from "next/image";
 
 interface CarouselProps {
   images: string[]; // Array of image URLs
+  width?: string; 
+  height?: string; 
+  arrowBgColor?: string; 
+  arrowFgColor?: string; 
+  dotColor?: string; 
+  activeDotColor?: string;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
+{/*Default Style for Carousel*/}
+const Carousel: React.FC<CarouselProps> = ({
+  images,
+  width = "100%", 
+  height = "300px", 
+  arrowBgColor = "rgba(0, 0, 0, 0.5)", 
+  arrowFgColor = "#ffffff", 
+  dotColor = "#ffffff", 
+  activeDotColor = "#f59e0b", 
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Function to go to the next slide
@@ -25,34 +40,36 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full h-full md:h-80 rounded-xl overflow-hidden">
+    <div className="relative overflow-hidden rounded-xl" style={{ width, height }}>
       {images.map((image, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentIndex ? 'opacity-100' : 'opacity-0'
+            index === currentIndex ? "opacity-100" : "opacity-0"
           }`}
         >
           <Image
             src={image}
             alt={`Carousel image ${index}`}
             layout="fill"
-            objectFit="cover"  
+            objectFit="cover"
             className="w-full h-full"
-            priority // Optional: load the first image faster
+            priority={index === 0} // Load the first image faster
           />
         </div>
       ))}
 
       {/* Previous and Next buttons */}
-      <button 
-        className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105" 
+      <button
+        className="absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105"
+        style={{ backgroundColor: arrowBgColor, color: arrowFgColor }}
         onClick={prevSlide}
       >
         &lt;
       </button>
-      <button 
-        className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105" 
+      <button
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105"
+        style={{ backgroundColor: arrowBgColor, color: arrowFgColor }}
         onClick={nextSlide}
       >
         &gt;
@@ -63,7 +80,10 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
         {images.map((_, index) => (
           <button
             key={index}
-            className={`h-2 w-2 md:h-3 md:w-3 rounded-full ${currentIndex === index ? 'bg-yellow-900' : 'bg-white'}`}
+            className="h-2 w-2 rounded-full"
+            style={{
+              backgroundColor: currentIndex === index ? activeDotColor : dotColor,
+            }}
             onClick={() => setCurrentIndex(index)}
           />
         ))}
