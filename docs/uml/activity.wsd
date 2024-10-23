@@ -1,33 +1,91 @@
-@startuml Activity Diagram
+@startuml
+|User|
 start
-:User Login;
-if (Is User Registered?) then (yes)
-  :Authenticate User;
+:Land on Landing Page;
+:View Login, Signup, and Featured Venues Options;
+
+if (User clicks on Login?) then (yes)
+    :Redirect to Login Page;
+    if (Has Account?) then (yes)
+        :Log In;
+        :Redirect to Logged-In Dashboard;
+    else (no)
+        :Redirect to Sign-Up Page;
+    endif
 else (no)
-  :Register User;
-  :Authenticate User;
+    if (Click on Featured Venues?) then (yes)
+        :Redirect to Guest User Dashboard;
+        |Guest User|
+        if (Click on Login or Signup?) then (yes)
+            :Redirect to Login or Signup Page;
+        else (no)
+            if (Search Venue?) then (yes)
+                :Enter Venue Name or Filter Criteria;
+                :View Filtered Venues;
+                if (Click on Venue?) then (yes)
+                    :View Reservation Calendar (Read-Only);
+                    if (Guest User?) then (yes)
+                        :Prompt to Sign-Up for Reservation;
+                    else (no)
+                        :Proceed to Reservation Form;
+                    endif
+                endif
+            endif
+        endif
+    endif
 endif
-:View Available Reservations;
-if (Select Reservation?) then (yes)
-  :Provide Reservation Details;
-  :Confirm Reservation;
-  :Send Confirmation Email;
-else (no)
-  :Exit System;
+
+|Registered User|
+if (User is Logged In?) then (yes)
+    :Redirect to Logged-In Dashboard;
+    :Search Venue, View My Reservations, or View Profile;
+    
+    if (Click on My Reservations?) then (yes)
+        :View Reservations List;
+        if (Modify Reservation?) then (yes)
+            :Update Reservation;
+        endif
+        if (Cancel Reservation?) then (yes)
+            :Cancel Reservation;
+        endif
+    endif
+    
+    if (Click Profile?) then (yes)
+        :View Profile Info;
+        if (Edit Profile?) then (yes)
+            :Edit Profile Info;
+            :Save Changes;
+        endif
+    endif
+    
+    if (Search Venue?) then (yes)
+        :Enter Venue Name or Filter Criteria;
+        :View Filtered Venues;
+        if (Click on Venue?) then (yes)
+            :View Reservation Calendar;
+            :Proceed to Reservation Form;
+            :Confirm Reservation;
+        endif
+    endif
 endif
-if (Modify Reservation?) then (yes)
-  :Retrieve Reservation;
-  :Update Reservation Details;
-  :Send Update Confirmation;
-else (no)
-  if (Cancel Reservation?) then (yes)
-    :Retrieve Reservation;
-    :Process Cancellation;
-    :Send Cancellation Confirmation;
-  else (no)
-    :Exit System;
-  endif
+
+|Admin|
+if (Admin Log In?) then (yes)
+    :Redirect to Admin Dashboard;
+    :View Venue Utilization and Reports;
+    if (Manage Reservations?) then (yes)
+        :View Reservation Requests;
+        if (Approve or Reject Request?) then (yes)
+            :Send Approval/Rejection Notification;
+        endif
+    endif
+    if (Manage Venues?) then (yes)
+        :View Venues List;
+        if (Add/Edit/Delete Venue?) then (yes)
+            :Perform Venue Operations;
+        endif
+    endif
 endif
-:Log Out;
+
 stop
 @enduml
