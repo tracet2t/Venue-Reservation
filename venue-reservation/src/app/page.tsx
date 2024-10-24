@@ -51,6 +51,7 @@ const VenueCard = () => {
 
 
 
+
 const AdditionalSection = () => {
   return (
     <div
@@ -119,12 +120,15 @@ const AdditionalSection = () => {
     </div>
   );
 };
+=======
+>>>>>>> f50ad39860742dfab3a6e7f8fd469f75dfb14dcd
 
 // Main FontsPage component
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Header Section */}
+<<<<<<< HEAD
       <header className="bg-white shadow-lg">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           
@@ -147,6 +151,9 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
           </nav>
         </div>
       </header>
+=======
+
+>>>>>>> f50ad39860742dfab3a6e7f8fd469f75dfb14dcd
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 text-center">
@@ -225,9 +232,10 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
       </main>
 
       {/* Footer */}
-      <Footer />
+
     </div>
   );
 };
 
 export default FontsPage;
+
