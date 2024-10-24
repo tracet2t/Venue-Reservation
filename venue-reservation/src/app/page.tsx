@@ -65,6 +65,7 @@ const Footer = () => {
   );
 };
 
+//AddAdditional Section: Image View
 const AdditionalSection = () => {
   return (
     <div
@@ -72,23 +73,23 @@ const AdditionalSection = () => {
       style={{
         marginLeft: '2mm',
         marginRight: '2mm',
-        width: '1600px',  // Increase overall width
-        height: '620px',  // Overall height remains the same
+        width: '1600px',  
+        height: '620px',  
       }}
     >
-      {/* First Column with increased width */}
+      
       <div
         className="flex flex-col space-y-4"
         style={{
-          width: '600px',  // Increased width for the first column
-          height: '620px', // Height remains the same
+          width: '600px',  
+          height: '620px', 
         }}
       >
-        {/* Row 1 with adjusted dimensions */}
+  
         <div
           style={{
-            width: '600px',  // Increased width for Row 1
-            height: '345px', // Height remains the same
+            width: '600px',  
+            height: '345px', 
           }}
         >
           <img
@@ -98,11 +99,10 @@ const AdditionalSection = () => {
           />
         </div>
 
-        {/* Row 2 with adjusted dimensions */}
         <div
           style={{
-            width: '600px',  // Increased width for Row 2
-            height: '269px', // Height remains the same
+            width: '600px',  
+            height: '269px', 
           }}
         >
           <img
@@ -114,14 +114,13 @@ const AdditionalSection = () => {
       </div>
 
       {/* Space between columns */}
-      <div className="w-4" /> {/* Space between columns remains unchanged */}
+      <div className="w-4" /> 
 
-      {/* Second Column with increased width */}
       <div
         className="flex items-center justify-center"
         style={{
-          width: '1000px',  // Increased width for the second column
-          height: '620px',  // Height remains the same
+          width: '1000px',  
+          height: '620px',  
         }}
       >
         <img
@@ -129,6 +128,43 @@ const AdditionalSection = () => {
           alt="Right Column Image"
           className="w-full h-full object-cover rounded-[28px] shadow-lg"
         />
+      </div>
+    </div>
+  );
+};
+
+// Types of venues
+const VenueType = () => {
+  const venueTypes = [
+    { name: "Auditorium", image: "/images/image1.jpg", description: "A large room for public gatherings." },
+    { name: "Conference Hall", image: "/images/image2.jpg", description: "Ideal for corporate events." },
+    { name: "Outdoor Garden", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
+    { name: "Banquet Hall", image: "/images/image2.jpg", description: "Spacious venue for dining events." },
+    { name: "Rooftop", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
+  ];
+
+  return (
+    <div className="mt-12">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Type of Venues</h2>
+      <div className="overflow-x-auto">
+        <div className="flex space-x-4 p-4">
+          {venueTypes.map((venue, index) => (
+            <div 
+              key={index}
+              className="w-[366px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+            >
+              <img
+                src={venue.image}
+                alt={venue.name}
+                className="w-full h-3/5 object-cover rounded-t-lg"
+              />
+              <div className="w-[308px] h-[116px] p-4 flex flex-col items-center justify-center">
+                <h3 className="text-lg font-semibold text-center">{venue.name}</h3>
+                <p className="text-sm text-gray-600 text-center mt-2">{venue.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -142,12 +178,10 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
       <header className="bg-white shadow-lg">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           
-          {/* First Column: Logo aligned to the left */}
           <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
             MyLogo
           </div>
 
-          {/* Second Column: Buttons aligned to the right */}
           <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
             <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
               Login
@@ -236,6 +270,9 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
 
         {/* AdditionalSection */}
         <AdditionalSection />
+
+        <VenueType />
+
       </main>
 
       {/* Footer */}
