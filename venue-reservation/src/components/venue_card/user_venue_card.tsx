@@ -8,18 +8,22 @@ interface ImageData {
   base64: string;
 }
 
-
 const VenueCard = () => {
   const [images, setImages] = useState<string[]>([]);
 
-   // Fetch the images from the API route
+  // Fetch the images from the API route
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await fetch('/api/images');
         const data = await response.json();
-        const base64Images = data.images.map((image: ImageData) => image.base64);
-        setImages(base64Images);
+
+        // Process images and resize them
+        const resizedBase64Images = await Promise.all(
+          data.images.map((image: ImageData) => resizeImage(image.base64, 600, 400))
+        );
+
+        setImages(resizedBase64Images);
       } catch (error) {
         console.error('Failed to fetch images:', error);
       }
@@ -27,6 +31,44 @@ const VenueCard = () => {
 
     fetchImages();
   }, []);
+
+  // Function to resize the image and return base64
+  const resizeImage = async (base64: string, maxWidth: number, maxHeight: number): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Calculate the new dimensions
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const aspectRatio = width / height;
+          if (width > height) {
+            width = maxWidth;
+            height = Math.round(maxWidth / aspectRatio);
+          } else {
+            height = maxHeight;
+            width = Math.round(maxHeight * aspectRatio);
+          }
+        }
+
+        // Set canvas dimensions and draw the image
+        canvas.width = width;
+        canvas.height = height;
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // Get the resized image as base64
+        const resizedBase64 = canvas.toDataURL('image/jpeg'); 
+        resolve(resizedBase64);
+      };
+
+      img.onerror = (error) => reject(error);
+    });
+  };
 
   return (
     <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row">
