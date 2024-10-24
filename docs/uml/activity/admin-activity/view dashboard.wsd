@@ -2,7 +2,7 @@
 |Admin|
 start
 :Log In;
-:Navigate to Dashboard;
+:Navigate to Admin Dashboard;
 :View Venue Statistics (Reservations, Availability);
 :See Featured Venues;
 stop

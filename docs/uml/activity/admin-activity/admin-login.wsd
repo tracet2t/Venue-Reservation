@@ -1,0 +1,39 @@
+@startuml
+|Admin|
+start
+:Visit Admin Login Page;
+:Enter Email/Password;
+|System|
+if (First Time Login?) then (yes)
+    :Redirect to Change Password Page;
+    :Enter New Password;
+    :Submit New Password;
+    if (Valid Password?) then (yes)
+        :Password Changed Successfully;
+        :Redirect to Admin Dashboard;
+    else (no)
+        :Show Error Message;
+        :Redirect to Admin Login Page;
+    endif
+else (no)
+    if (Credentials Valid?) then (yes)
+        :Redirect to Admin Dashboard;
+    else (no)
+        :Show Error Message;
+        if (Forgot Password Clicked?) then (yes)
+            :Click "Forgot Password";
+            :Enter Email;
+            :Send Password Reset Link;
+            |System|
+            if (Link Used?) then (yes)
+                :Reset Password;
+                :Redirect to Admin Login Page;
+            else (no)
+                :Show Error Message;
+            endif
+        endif
+    endif
+endif
+
+stop
+@enduml
