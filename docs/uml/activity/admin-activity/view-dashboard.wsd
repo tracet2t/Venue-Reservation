@@ -1,0 +1,26 @@
+@startuml
+|Admin|
+start
+:Log In;
+:Navigate to Admin User Dashboard;
+:Click "Manage" Button;
+
+:Navigate to Admin Dashboard;
+fork
+:View Utilization Charts (Last week, month, year);
+fork again
+:See Featured Venues (Most Reserved, Most Recent);
+fork again
+if(Access Sidebar Options);
+fork
+    :Click "Reservations" (Redirect to Reservation Requests);
+fork again
+    :Click "Calendar" (Redirect to Venue Calendar);
+fork again
+    :Click "Venue Details" (Redirect to Venue Details);
+fork again
+    :Click "Payments" (Redirect to Payment Info);
+endfork
+endif
+stop
+@enduml

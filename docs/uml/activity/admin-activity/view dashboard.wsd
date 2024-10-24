@@ -1,9 +1,0 @@
-@startuml
-|Admin|
-start
-:Log In;
-:Navigate to Admin Dashboard;
-:View Venue Statistics (Reservations, Availability);
-:See Featured Venues;
-stop
-@enduml

@@ -2,17 +2,53 @@
 |Admin|
 start
 :Log In;
-:Navigate to Add Venue;
-:Fill Venue Information (Name, Location, Type);
-:Configure Settings and Questions;
-:Save Venue;
-|System|
-if (Valid Data?) then (yes)
-    :Save Venue to Database;
-    :Show Success Message;
+:Click Manage Button;
+:Navigate to Dashboard;
+
+if (View Utilization Chart?) then (yes)
+    :View Utilization Chart;
+    :Filter by Time Period (Last Week, Last Month, Last Year);
 else (no)
-    :Show Error Message;
-    :Ask Admin to Re-enter Details;
+    :Proceed to Next Task;
 endif
+
+if (View Featured Venues?) then (yes)
+    :View Featured Venues;
+    :Identify Most Reserved Venues;
+else (no)
+    :Proceed to Next Task;
+endif
+
+if (Check Reservation Approvals?) then (yes)
+    :Navigate to Reservation Approvals;
+    :Review and Accept/Reject Reservation Requests;
+else (no)
+    :Proceed to Next Task;
+endif
+
+if (View Venue Calendars?) then (yes)
+    :View Reservation Calendars;
+    :Filter Calendar by Status (Pending, Confirmed, etc.);
+else (no)
+    :Proceed to Next Task;
+endif
+
+if (Manage Venues?) then (yes)
+    :Navigate to Venue Details;
+    :Edit/Delete Venue;
+else (no)
+    :Proceed to Next Task;
+endif
+
+if (Add New Venue?) then (yes)
+    :Add Venue Details;
+    :Configure Venue Settings;
+    :Add Venue Questions;
+    :Save New Venue;
+else (no)
+    :Proceed to Next Task;
+endif
+
+:Logout;
 stop
 @enduml
