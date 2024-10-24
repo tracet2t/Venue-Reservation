@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import VenueCard from '@/components/venue_card/user_venue_card';
-
-const LandingPage = () => {
-  return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
-      
-    {/* Main Content */}
-      <main className="flex-grow p-8">
-        <VenueCard />
-      </main>
-
-=======
 "use client";
 
 import React from 'react';
@@ -56,14 +43,11 @@ const VenueCard = () => {
           </ul>
         </div>
       </div>
->>>>>>> 208a3f5b03bc7d3740e6a857c77be82e281855e9
     </div>
   );
 };
 
-<<<<<<< HEAD
-export default LandingPage;
-=======
+
 // Footer component
 const Footer = () => {
   return (
@@ -184,4 +168,4 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
 };
 
 export default FontsPage;
->>>>>>> 208a3f5b03bc7d3740e6a857c77be82e281855e9
+
