@@ -1,13 +1,15 @@
 "use client";
 import React from 'react';
+import Logo from '@/app/components/layout/Logo';
 
 const Header = () => {
   return (
     <header className="bg-white shadow-lg">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             
-        <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
-        MyLogo
+        <div>
+            {/* Add the Logo here */}
+            <Logo />
         </div>
 
         <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
