@@ -93,7 +93,7 @@ const AdditionalSection = () => {
         </div>
       </div>
 
-      <div className="w-4" /> {/* Space between columns remains unchanged */}
+      <div className="w-4" /> 
 
       <div
         className="flex items-center justify-center"
@@ -184,45 +184,54 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         <VenueCard />
 
         {/* Additional Section */}
-        <div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-          <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
-            <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
-              Are you looking for a venue?
-            </h1>
+<div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+  <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
+    <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
+      Are you looking for a venue?
+    </h1>
 
-            <div className="w-full md:w-1/2 space-y-6 text-left">
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
-                  <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
-                  <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
-                  <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="w-full md:w-1/2 space-y-6 text-left">
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
+          <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
         </div>
+      </div>
+
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
+          <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
+        </div>
+      </div>
+
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
+          <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Side Image */}
+    <div className="w-full md:w-1/2">
+      <img 
+        src="/images/landing image.jpg" 
+        alt="Venue" 
+        className="w-full h-auto rounded-lg md:ml-4"
+      />
+    </div>
+  </div>
+</div>
 
         <AdditionalSection />
 
