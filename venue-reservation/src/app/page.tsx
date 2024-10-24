@@ -2,8 +2,6 @@
 
 import React from 'react';
 import Carousel from '@/app/components/Carousel';
-import Header from '@/app/components/layout/Header';
-import Footer from '@/app/components/layout/Footer';
 
 interface FontsPageProps {
   title: string;
@@ -58,7 +56,7 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Header Section */}
-      <Header />
+
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 text-center">
@@ -129,7 +127,7 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
       </main>
 
       {/* Footer */}
-      <Footer />
+
     </div>
   );
 };
