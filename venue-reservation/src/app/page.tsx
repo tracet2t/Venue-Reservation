@@ -52,6 +52,7 @@ const VenueCard = () => {
 
 
 
+
 // Main FontsPage component
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
