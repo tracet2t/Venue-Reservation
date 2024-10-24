@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Carousel from '@/app/components/Carousel';
+import Header from '@/app/components/layout/Header';
+import Footer from '@/app/components/layout/Footer';
 
 interface FontsPageProps {
   title: string;
@@ -48,50 +50,14 @@ const VenueCard = () => {
 };
 
 
-// Footer component
-const Footer = () => {
-  return (
-    <footer className="bg-gray-800 text-white py-8">
-      <div className="container mx-auto px-4 text-center">
-        <p>&copy; 2024 MyVenue. All Rights Reserved.</p>
-        <nav className="mt-4">
-          <ul className="flex justify-center space-x-4">
-            <li><a href="#" className="hover:underline">Privacy Policy</a></li>
-            <li><a href="#" className="hover:underline">Terms of Service</a></li>
-            <li><a href="#" className="hover:underline">Contact Us</a></li>
-          </ul>
-        </nav>
-      </div>
-    </footer>
-  );
-};
+
 
 // Main FontsPage component
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Header Section */}
-      <header className="bg-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          
-         
-          <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
-            MyLogo
-          </div>
-
-          <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
-            <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
-              Login
-            </button>
-            <button
-              style={{ backgroundColor: '#584822' }}
-              className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
-            >
-              Signup
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 text-center">

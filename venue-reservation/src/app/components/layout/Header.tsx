@@ -1,0 +1,29 @@
+"use client";
+import React from 'react';
+
+const Header = () => {
+  return (
+    <header className="bg-white shadow-lg">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            
+        <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
+        MyLogo
+        </div>
+
+        <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
+            <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
+            Login
+            </button>
+            <button
+            style={{ backgroundColor: '#584822' }}
+            className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
+            >
+            Signup
+            </button>
+        </nav>
+        </div>
+    </header>
+    );
+};
+
+export default Header;
