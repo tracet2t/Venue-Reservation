@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Carousel from '@/app/components/Carousel';
+import Footer from '@/app/components/layout/Footer';
 
 interface FontsPageProps {
   title: string;
@@ -47,25 +48,6 @@ const VenueCard = () => {
   );
 };
 
-// Footer component
-const Footer = () => {
-  return (
-    <footer className="bg-gray-800 text-white py-8">
-      <div className="container mx-auto px-4 text-center">
-        <p>&copy; 2024 MyVenue. All Rights Reserved.</p>
-        <nav className="mt-4">
-          <ul className="flex justify-center space-x-4">
-            <li><a href="#" className="hover:underline">Privacy Policy</a></li>
-            <li><a href="#" className="hover:underline">Terms of Service</a></li>
-            <li><a href="#" className="hover:underline">Contact Us</a></li>
-          </ul>
-        </nav>
-      </div>
-    </footer>
-  );
-};
-
-//AddAdditional Section: Image View
 const AdditionalSection = () => {
   return (
     <div
@@ -77,7 +59,6 @@ const AdditionalSection = () => {
         height: '620px',  
       }}
     >
-      
       <div
         className="flex flex-col space-y-4"
         style={{
@@ -85,7 +66,6 @@ const AdditionalSection = () => {
           height: '620px', 
         }}
       >
-  
         <div
           style={{
             width: '600px',  
@@ -113,8 +93,7 @@ const AdditionalSection = () => {
         </div>
       </div>
 
-      {/* Space between columns */}
-      <div className="w-4" /> 
+      <div className="w-4" /> {/* Space between columns remains unchanged */}
 
       <div
         className="flex items-center justify-center"
@@ -174,27 +153,8 @@ const VenueType = () => {
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
-      {/* Header Section */}
-      <header className="bg-white shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          
-          <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
-            MyLogo
-          </div>
-
-          <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
-            <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
-              Login
-            </button>
-            <button
-              style={{ backgroundColor: '#584822' }}
-              className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
-            >
-              Signup
-            </button>
-          </nav>
-        </div>
-      </header>
+     
+      
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 text-center">
@@ -246,8 +206,8 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
                 </svg>
                 <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">02. Experience it Seamlessly</strong>
-                  <span className="text-xs md:text-sm">Nikmati setiap perjalanan dengan kenyamanan yang tiada tanding.</span>
+                  <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
+                  <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
                 </div>
               </div>
 
@@ -256,27 +216,21 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
                 </svg>
                 <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">03. Experience it Seamlessly</strong>
-                  <span className="text-xs md:text-sm">Nikmati setiap perjalanan dengan kenyamanan yang tiada tanding.</span>
+                  <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
+                  <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
                 </div>
               </div>
-            </div>
-
-            <div className="w-full md:w-1/2">
-              <img className="w-full h-auto rounded-lg shadow-lg" src="/images/landing image.jpg" alt="Beautiful Image" />
             </div>
           </div>
         </div>
 
-        {/* AdditionalSection */}
         <AdditionalSection />
 
         <VenueType />
 
       </main>
 
-      {/* Footer */}
-      <Footer />
+   
     </div>
   );
 };
