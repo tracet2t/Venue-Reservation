@@ -1,0 +1,55 @@
+@startuml
+|User|
+start
+:Visit Login Page;
+:Select Login Method (Email/Password, Magic Link, Google);
+
+if (Email/Password?) then (yes)
+    :Enter Email/Password;
+    if (Forgot Password Clicked?) then (yes)
+        :Click "Forgot Password";
+        :Enter Email;
+        :Send Reset Link;
+        |System|
+        if (Link Used?) then (yes)
+            :Reset Password;
+            :Redirect to Login Page;
+        else (no)
+            :Show Error Message;
+        endif
+    endif
+    :Click Login;
+    |System|
+    if (Credentials Valid?) then (yes)
+        :Redirect to User Dashboard;
+    else (no)
+        :Show Error;
+    endif
+else (no)
+endif
+
+if (Magic Link?) then (yes)
+    :Enter Email for Magic Link;
+    :Send Magic Link;
+    |System|
+    if (Link Clicked & Valid?) then (yes)
+        :Redirect to User Dashboard;
+    else (no)
+        :Show Link Expired Error;
+    endif
+else (no)
+endif
+
+if (Google Login?) then (yes)
+    :Authenticate via Google;
+    |System|
+    if (Auth Success?) then (yes)
+        :Redirect to User Dashboard;
+    else (no)
+        :Show Auth Error;
+    endif
+else (no)
+endif
+
+stop
+@enduml

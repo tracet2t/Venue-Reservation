@@ -1,0 +1,17 @@
+@startuml
+|Guest User|
+start
+:Click on Register Button;
+:Fill Registration Form (Email, Password, Name);
+:Submit Form;
+|System|
+if (Valid Inputs?) then (yes)
+    :Create New Account;
+    :Send Confirmation Email;
+    :Redirect to Login;
+else (no)
+    :Show Error Message;
+    :Ask to Re-enter Details;
+endif
+stop
+@enduml

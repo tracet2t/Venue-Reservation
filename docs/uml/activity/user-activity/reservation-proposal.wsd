@@ -1,0 +1,32 @@
+@startuml
+|Registered User|
+start
+:Navigate to Venue Availability;
+:Select Available Date;
+
+|System|
+:Display Venue Availability Calendar;
+
+if (Select Available Date?) then (yes)
+    :Add Reservation Details;
+    :Select Amenities;
+    :Select Time;
+    :Answer Venue-Dependent Questions;
+
+    |System|
+    :Show Reservation Summary;
+
+    if (Confirm Reservation?) then (yes)
+        |System|
+        :Save Reservation to Database;
+        :Show Reservation Confirmation;
+        :Display Unique Reservation ID;
+    else (no)
+        :Return to Reservation Details;
+    endif
+else (no)
+    :Return to Dashboard;
+endif
+
+stop
+@enduml

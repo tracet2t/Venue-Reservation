@@ -1,4 +1,4 @@
-@startuml
+@startuml Activity Diagram 
 |User|
 start
 :Land on Landing Page;

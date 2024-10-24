@@ -1,0 +1,14 @@
+@startuml
+|Registered User|
+start
+:Log In;
+:Navigate to Venue Availability;
+:Select Available Date and Time;
+:Fill Reservation Details (Amenities, Venue Questions);
+:Submit Proposal;
+|System|
+:Save Proposal to Database;
+:Show Reservation Summary;
+:Send Confirmation Email;
+stop
+@enduml

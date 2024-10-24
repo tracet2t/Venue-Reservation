@@ -1,0 +1,17 @@
+@startuml
+|Admin|
+start
+:Log In;
+:Navigate to Venue Settings;
+:Select Venue;
+:Edit Venue Attributes (Amenities, Location, Settings);
+:Save Changes;
+|System|
+if (Valid Data?) then (yes)
+    :Save Settings to Venue;
+    :Show Success Message;
+else (no)
+    :Show Error Message;
+endif
+stop
+@enduml

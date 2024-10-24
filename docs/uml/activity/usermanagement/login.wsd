@@ -1,0 +1,16 @@
+@startuml
+|User|
+start
+:Click on Login Button;
+:Enter Email and Password;
+:Submit Form;
+|System|
+if (Credentials Correct?) then (yes)
+    :Log User In;
+    :Redirect to Dashboard;
+else (no)
+    :Show Error Message;
+    :Ask to Re-enter Credentials;
+endif
+stop
+@enduml

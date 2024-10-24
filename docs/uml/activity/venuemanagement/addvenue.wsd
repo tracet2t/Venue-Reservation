@@ -1,0 +1,18 @@
+@startuml
+|Admin|
+start
+:Log In;
+:Navigate to Add Venue;
+:Fill Venue Information (Name, Location, Type);
+:Configure Settings and Questions;
+:Save Venue;
+|System|
+if (Valid Data?) then (yes)
+    :Save Venue to Database;
+    :Show Success Message;
+else (no)
+    :Show Error Message;
+    :Ask Admin to Re-enter Details;
+endif
+stop
+@enduml

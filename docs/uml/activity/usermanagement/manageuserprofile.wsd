@@ -1,0 +1,17 @@
+@startuml
+|Registered User|
+start
+:Log In;
+:Navigate to Profile Section;
+:Click on Edit Profile;
+:Update Profile Information (Name, Email, Password);
+:Save Changes;
+|System|
+if (Valid Changes?) then (yes)
+    :Update User Profile;
+    :Show Success Message;
+else (no)
+    :Show Error Message;
+endif
+stop
+@enduml

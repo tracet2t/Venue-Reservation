@@ -1,0 +1,37 @@
+@startuml
+|Guest User|
+start
+:Landing Page;
+:Search for Preferred Venue;
+:Filter Venues;
+:View Venue Availability;
+
+if (Venue Available?) then (yes)
+    :Prompt to Log In or Create Account;
+    if (Log In?) then (yes)
+        |Registered User|
+        :Log In;
+    else (no)
+        :Create New Account;
+    endif
+else (no)
+    :Show No Availability Message;
+endif
+
+|Registered User|
+:Log In;
+:Navigate to Venue Availability;
+:Select Available Date;
+
+|System|
+:Display Venue Availability Calendar;
+
+if (Venue Available on Selected Date?) then (yes)
+    :Proceed to Reservation;
+else (no)
+    :Show No Availability Message;
+    :Return to Select Another Date;
+endif
+
+stop
+@enduml
