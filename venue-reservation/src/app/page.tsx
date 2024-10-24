@@ -51,27 +51,16 @@ const VenueCard = () => {
 const AdditionalSection = () => {
   return (
     <div
-      className="container mx-auto mt-12 p-4 flex"
+      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4"
       style={{
         marginLeft: '2mm',
         marginRight: '2mm',
-        width: '1600px',  
-        height: '620px',  
       }}
     >
-      <div
-        className="flex flex-col space-y-4"
-        style={{
-          width: '600px',  
-          height: '620px', 
-        }}
-      >
-        <div
-          style={{
-            width: '600px',  
-            height: '345px', 
-          }}
-        >
+      
+      <div className="flex flex-col space-y-4 md:w-1/3">
+        
+        <div className="w-full h-[200px] md:h-[345px]">
           <img
             src="/images/image1.jpg"
             alt="Row 1 Image"
@@ -79,12 +68,7 @@ const AdditionalSection = () => {
           />
         </div>
 
-        <div
-          style={{
-            width: '600px',  
-            height: '269px', 
-          }}
-        >
+        <div className="w-full h-[200px] md:h-[269px]">
           <img
             src="/images/image2.jpg"
             alt="Row 2 Image"
@@ -93,15 +77,9 @@ const AdditionalSection = () => {
         </div>
       </div>
 
-      <div className="w-4" /> 
+      <div className="w-0 md:w-4" />
 
-      <div
-        className="flex items-center justify-center"
-        style={{
-          width: '1000px',  
-          height: '620px',  
-        }}
-      >
+      <div className="w-full md:w-2/3 h-[300px] md:h-[620px]">
         <img
           src="/images/image3.jpg"
           alt="Right Column Image"
