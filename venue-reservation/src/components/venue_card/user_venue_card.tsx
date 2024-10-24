@@ -1,11 +1,32 @@
+"use client";
+
 import Carousel from '../carousel';
+import { useState, useEffect } from 'react';
+
+interface ImageData {
+  name: string;
+  base64: string;
+}
+
 
 const VenueCard = () => {
-  const images = [
-    '/images/image1.jpg',
-    '/images/image2.jpg',
-    '/images/image3.jpg'
-  ];
+  const [images, setImages] = useState<string[]>([]);
+
+   // Fetch the images from the API route
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/images');
+        const data = await response.json();
+        const base64Images = data.images.map((image: ImageData) => image.base64);
+        setImages(base64Images);
+      } catch (error) {
+        console.error('Failed to fetch images:', error);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row">
@@ -21,7 +42,6 @@ const VenueCard = () => {
           activeDotColor="#ff6347"
         />
       </div>
-
 
       {/* Details Section */}
       <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
@@ -45,7 +65,6 @@ const VenueCard = () => {
         </div>
       </div>
     </div>
-    
   );
 };
 
