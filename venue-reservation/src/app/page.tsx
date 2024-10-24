@@ -1,33 +1,90 @@
-"use client"; 
+"use client";
 
 import React from 'react';
-import Image from 'next/image';
-import Footer from '../Components/Footer';
+import Carousel from '@/app/components/Carousel';
 
 interface FontsPageProps {
   title: string;
 }
 
+// VenueCard component
+const VenueCard = () => {
+  const images = [
+    '/images/image1.jpg',
+    '/images/image2.jpg',
+    '/images/image3.jpg',
+  ];
+
+  return (
+    <div className="mx-auto mt-8 p-4 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+      <div className="w-full md:w-1/3 mt-10 h-64 md:h-400">
+        <div className="h-full border border-gray-300 rounded-lg shadow-lg">
+          <Carousel images={images} autoSlide={false} />
+        </div>
+      </div>
+
+      <div className="w-full md:w-2/3 p-4 flex flex-col justify-between">
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold">Trace Auditorium</h1>
+          <p className="text-gray-700">Bay 6, Trace Expert City, Maradana, Colombo, Western Province</p>
+          <p className="text-gray-700"><strong>Type:</strong> Auditorium</p>
+          <p className="text-gray-700"><strong>Capacity:</strong> 500 seated</p>
+          <p className="text-gray-700"><strong>Size:</strong> 5000 sqft</p>
+          <p className="text-gray-700"><strong>Time Schedule:</strong> Entire Day</p>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-semibold">Features:</h2>
+          <ul className="list-disc list-inside text-left text-gray-700">
+            <li>✓ State-of-the-art acoustics system for enhanced sound quality</li>
+            <li>✓ Ergonomic seating for maximum comfort</li>
+            <li>✓ Advanced lighting system with customizable ambiance</li>
+            <li>✓ High-definition projector and retractable screen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Footer component
+const Footer = () => {
+  return (
+    <footer className="bg-gray-800 text-white py-8">
+      <div className="container mx-auto px-4 text-center">
+        <p>&copy; 2024 MyVenue. All Rights Reserved.</p>
+        <nav className="mt-4">
+          <ul className="flex justify-center space-x-4">
+            <li><a href="#" className="hover:underline">Privacy Policy</a></li>
+            <li><a href="#" className="hover:underline">Terms of Service</a></li>
+            <li><a href="#" className="hover:underline">Contact Us</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  );
+};
+
+// Main FontsPage component
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
-    <div>
+    <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Header Section */}
-      <header className="bg-white">
-        <div className="max-w-[10000px] mx-auto px-8 py-4 flex justify-between items-center">
-          {/* Logo on the Left */}
-          <div className="text-2xl font-bold text-[#2d3748]">
+      <header className="bg-white shadow-lg">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          
+         
+          <div className="text-2xl font-bold text-gray-800" style={{ marginRight: 'auto' }}>
             MyLogo
           </div>
 
-          {/* Buttons on the Right */}
-          <nav className="flex gap-4">
-            <button
-              className="bg-[#e2e8f0] text-[#4a5568] px-4 py-2 rounded-lg transition-colors duration-200 ease-in-out hover:bg-[#cbd5e0] cursor-pointer"
-            >
+          <nav className="flex items-center space-x-4" style={{ marginLeft: 'auto' }}>
+            <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
               Login
             </button>
             <button
-              className="bg-[#584822] text-white px-4 py-2 rounded-lg transition-colors duration-200 ease-in-out hover:bg-[#6A5B3A] cursor-pointer"
+              style={{ backgroundColor: '#584822' }}
+              className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
             >
               Signup
             </button>
@@ -35,75 +92,78 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         </div>
       </header>
 
-      {/* Main Content Section */}
-      <main className="max-w-5xl mx-auto px-8 py-16 text-center">
-        <h1 className="text-4xl font-bold text-[#2d3748]">{title}</h1>
-        <p className="mt-4 text-lg text-[#718096]"></p>
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
 
-        {/* Full-Width Text Section */}
-        <div className="mt-16">
-          <h2 className="font-bold text-[68px] text-[#6A5B3A]">
-            Tailored Spaces, <br /> Reserved for You
-          </h2>
-          <p className="mt-4 text-lg text-[#718096]">
-            Instantly discover the best venues for events, meetings, and celebrations. <br />
-            Start planning your perfect event today.
-          </p>
-          <button
-            className="mt-8 bg-[#6A5B3A] text-white px-6 py-3 rounded-lg transition-colors duration-200 ease-in-out hover:bg-[#7B6C48] cursor-pointer"
-          >
-            Reserve Now
-          </button>
+        <div className="flex justify-center">
+          <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 w-full max-w-full md:max-w-[calc(100%+4rem)] mx-[-2rem] min-h-[300px] md:min-h-[500px] text-center" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+            <h2 className="text-2xl md:text-4xl font-bold" style={{ color: '#584822' }}>
+              Tailored Spaces, <br /> Reserved for You
+            </h2>
+            <p className="mt-6 text-gray-600 text-sm md:text-lg">
+              Instantly discover the best venues for events, meetings, and celebrations.<br /> Start planning your perfect event today.
+            </p>
+            <div className="flex justify-center">
+              <button
+                style={{ backgroundColor: '#584822' }} 
+                className="mt-10 md:mt-20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#6A5B3A] transition duration-200 ease-in-out flex items-center justify-center"
+              >
+                Reserve Now <span className="ml-2 text-xl md:text-4xl">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        
+        <VenueCard />
+
+        
+        <div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+          <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
+            <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
+              Are you looking for a venue?
+            </h1>
+
+            <div className="w-full md:w-1/2 space-y-6">
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
+                  <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12h4l1 1-6 6H9l-1-1 6-6zm-9 3v1m-1-1h1m-1 0v-1h1v1H5z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">02. Secure Your Perfect Venue</strong>
+                  <span className="text-xs md:text-sm">Tulis dan lengkapi data kamu untuk keperluan data booking.</span>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-2h2v2h-1zm-4-2h1v2H8v-2h1zm0-2h2v-2H9v-1H8v3h1v2zM6 8h2V6H7v2H6zm1-2V4H5v2H4v2h3V6zm5 5h-1v2h2v-2h-1zm-3-2H9v2h2v-2zm4 2h-1v2h2v-2h-1zm-6 4H4v1h5v-1H6v-1zM2 9v7h1v2h2v2h2v-2h2v-2H5v-7H4v2H3v-2H2zm8 0v7h2v1h-2v-2H8v-1H6v-7h4zm2 6h1v2h2v-2h-3zm-2 2h-2v2h-2v-2h-1v-1H4v-7H2v7h2v1h5v1h1v2zm6-3v1h2v1h1v2h2v2h2v-2h1v-1h1v-2h-1v-2h-2v1h1v1h-3zm-2-1h1v-1h2v2h-3z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">03. Confirm & Enjoy</strong>
+                  <span className="text-xs md:text-sm">Semua akan lebih mudah dan praktis dengan Destinize.</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 
-      {/* Venue Section */}
-      <div className="max-w-8xl mx-auto p-7">
-        {/* Header */}
-        <h1 className="text-[50px] font-bold text-center mb-8 text-[#6A5B3A]">
-          Are you looking for a venue?
-        </h1>
-
-        {/* Main Content */}
-        <div className="flex flex-wrap justify-between">
-          {/* Left Column */}
-          <div className="w-full md:w-1/2 space-y-6">
-            <div className="flex items-start">
-              <Image src="" alt="Icon 1" width={40} height={40} />
-              <div className="ml-4">
-                <strong className="block">01. Discover Your Ideal Venue</strong>
-                <span>Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <Image src="" alt="Icon 2" width={40} height={40} />
-              <div className="ml-4">
-                <strong className="block">02. Secure Your Perfect Venue</strong>
-                <span>Tulis dan lengkapi data kamu untuk keperluan data booking.</span>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <Image src="" alt="Icon 3" width={40} height={40} />
-              <div className="ml-4">
-                <strong className="block">03. Relish Your Perfect Reservation</strong>
-                <span>Kamu bisa langsung masuk dan enjoy liburan kamu tanpa hambatan.</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div className="w-full md:w-1/2">
-            <Image src="" alt="Venue" layout="responsive" width={800} height={300} />
-          </div>
-        </div>
-      </div>
-
-   {/*Footer Section*/}
-   <Footer />
+      {/* Footer */}
+      <Footer />
     </div>
   );
-}
+};
 
 export default FontsPage;
