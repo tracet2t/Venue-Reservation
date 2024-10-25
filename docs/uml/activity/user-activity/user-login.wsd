@@ -27,7 +27,7 @@ if (Email/Password?) then (yes)
     endif
 else (no)
 endif
-
+' // hv to stp
 if (Magic Link?) then (yes)
     :Enter Email for Magic Link;
     :Send Magic Link;
@@ -39,7 +39,7 @@ if (Magic Link?) then (yes)
     endif
 else (no)
 endif
-
+' hv to spt
 if (Google Login?) then (yes)
     :Authenticate via Google;
     |System|
