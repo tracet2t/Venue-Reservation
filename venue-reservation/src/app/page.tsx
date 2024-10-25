@@ -82,7 +82,7 @@ const VenueType = () => {
 
   return (
     <div className="mt-12">
-      <h2 className="text-2xl font-bold text-[#6A5B3A] mb-4 text-left">Type of Venues</h2>
+      <h2 className="text-2xl font-bold text-[#6A5B3A] mb-4 text-centre">Type of Venues</h2>
       <div className="overflow-x-auto">
         <div className="flex space-x-4 p-4">
           {venueTypes.map((venue, index) => (
