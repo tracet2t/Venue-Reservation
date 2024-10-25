@@ -10,29 +10,41 @@ interface FontsPageProps {
 }
 
 const AdditionalSection = () => {
-  const rightColumnImages = [
-    '/images/image3.jpg',
+  const images = [
+    '/images/image1.jpg',
     '/images/image2.jpg',
-    '/images/image1.jpg'
+    '/images/image3.jpg'
   ];
 
   return (
     <div
-      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-1/2"
+      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2"
       style={{
         marginLeft: '2mm',
         marginRight: '2mm',
       }}
     >
+      {/* Left Column */}
       <div className="flex flex-col space-y-4 md:w-5/12">
-        <div className="w-full h-[200px] md:h-[345px]">
+        
+        <div className="relative w-full h-[200px] md:h-[345px]">
           <img
             src="/images/image1.jpg"
             alt="Row 1 Image"
             className="w-full h-full object-cover rounded-[28px] shadow-lg"
           />
+       
+          <div className="absolute inset-0 flex items-center justify-center flex-col text-center space-y-1 text-white bg-black bg-opacity-40 rounded-[28px]">
+            <p className="text-lg md:text-2xl font-semibold">Explore more to get out of <br /> your comfort zone</p>
+            <p className="text-sm md:text-base">Find your perfect venue for unforgettable moments</p>
+          </div>
+
+          <button className="absolute bottom-4 left-4 bg-white text-black px-4 py-2 rounded-lg font-semibold shadow-md">
+            Reserve your venue
+          </button>
         </div>
 
+        {/* Second Image */}
         <div className="w-full h-[200px] md:h-[269px]">
           <img
             src="/images/image2.jpg"
@@ -42,11 +54,10 @@ const AdditionalSection = () => {
         </div>
       </div>
 
-      <div className="w-0 md:w-4" />
-
+      {/* Right Column with Carousel */}
       <div className="w-full md:w-7/12 h-[300px] md:h-[620px]">
         <Carousel
-          images={rightColumnImages}
+          images={images}
           width="100%"
           height="100%"
           arrowBgColor="rgba(0, 0, 0, 0.7)"
@@ -125,7 +136,7 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
           </div>
         </div>
 
-        {/* Venue Card */}
+        
         <LandingVenueCard />
 
         {/* Additional Section */}
