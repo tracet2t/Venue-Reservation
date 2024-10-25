@@ -1,10 +1,9 @@
 "use client";
 
 import React from 'react';
-import VenueCard from '@/components/venue_card/user_venue_card';
+import LandingVenueCard from '@/components/venue_card/landing_venue_card';
 import Header from '@/app/layout/Header';
 import Footer from '@/app/layout/Footer';
-import Logo from '@/app/layout/Logo';
 
 interface FontsPageProps {
   title: string;
@@ -119,7 +118,7 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         </div>
 
         {/* Venue Card */}
-        <VenueCard />
+        <LandingVenueCard />
 
         {/* Additional Section */}
 <div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>

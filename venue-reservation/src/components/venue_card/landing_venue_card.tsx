@@ -1,6 +1,6 @@
 import Carousel from '../carousel';
 
-const VenueCard = () => {
+const LandingVenueCard = () => {
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
@@ -22,11 +22,10 @@ const VenueCard = () => {
         />
       </div>
 
-
       {/* Details Section */}
       <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold font-blue-500">Trace Auditorium</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Trace Auditorium</h1>
           <p>Bay 6, Trace Expert City, Maradana, Colombo, Western Province</p>
           <p><strong>Type:</strong> Auditorium</p>
           <p><strong>Capacity:</strong> 500 seated</p>
@@ -43,10 +42,16 @@ const VenueCard = () => {
             <li>High-definition projector and screen</li>
           </ul>
         </div>
+
+        {/* Reserve Now Button */}
+        <div className="flex justify-end mt-4">
+          <button className="bg-[#584822] text-white px-6 py-2 rounded-lg font-semibold">
+            Reserve Now
+          </button>
+        </div>
       </div>
     </div>
-    
   );
 };
 
-export default VenueCard;
+export default LandingVenueCard;
