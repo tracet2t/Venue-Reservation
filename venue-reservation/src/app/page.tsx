@@ -1,26 +1,30 @@
 "use client";
 
+import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
 import Header from '@/app/layout/Header';
-import Footer from '@/app/layout/Footer';
 
 interface FontsPageProps {
   title: string;
 }
 
 const AdditionalSection = () => {
+  const rightColumnImages = [
+    '/images/image3.jpg',
+    '/images/image2.jpg',
+    '/images/image1.jpg'
+  ];
+
   return (
     <div
-      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4"
+      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-1/2"
       style={{
         marginLeft: '2mm',
         marginRight: '2mm',
       }}
     >
-      
-      <div className="flex flex-col space-y-4 md:w-1/3">
-        
+      <div className="flex flex-col space-y-4 md:w-5/12">
         <div className="w-full h-[200px] md:h-[345px]">
           <img
             src="/images/image1.jpg"
@@ -40,11 +44,15 @@ const AdditionalSection = () => {
 
       <div className="w-0 md:w-4" />
 
-      <div className="w-full md:w-2/3 h-[300px] md:h-[620px]">
-        <img
-          src="/images/image3.jpg"
-          alt="Right Column Image"
-          className="w-full h-full object-cover rounded-[28px] shadow-lg"
+      <div className="w-full md:w-7/12 h-[300px] md:h-[620px]">
+        <Carousel
+          images={rightColumnImages}
+          width="100%"
+          height="100%"
+          arrowBgColor="rgba(0, 0, 0, 0.7)"
+          arrowFgColor="#fff"
+          dotColor="#ccc"
+          activeDotColor="#ff6347"
         />
       </div>
     </div>
@@ -174,10 +182,8 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
 
         <VenueType />
         
-        <Footer />
       </main>
 
-   
     </div>
   );
 };
