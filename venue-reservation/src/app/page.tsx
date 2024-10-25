@@ -88,14 +88,14 @@ const VenueType = () => {
           {venueTypes.map((venue, index) => (
             <div 
               key={index}
-              className="w-[366px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
             >
               <img
                 src={venue.image}
                 alt={venue.name}
-                className="w-full h-3/5 object-cover rounded-t-lg"
+                className="w-full h-3/4 object-cover rounded-t-lg"
               />
-              <div className="w-[308px] h-[116px] p-4 flex flex-col items-center justify-center">
+              <div className="w-[308px] h-[110px] p-4 flex flex-col items-center justify-center">
                 <h3 className="text-lg font-semibold text-center">{venue.name}</h3>
                 <p className="text-sm text-gray-600 text-center mt-2">{venue.description}</p>
               </div>
