@@ -1,52 +1,14 @@
 "use client";
 
 import React from 'react';
-import Carousel from '@/app/components/Carousel';
-import Footer from '@/app/components/layout/Footer';
+import VenueCard from '@/components/venue_card/user_venue_card';
+import Header from '@/app/layout/Header';
+import Footer from '@/app/layout/Footer';
+import Logo from '@/app/layout/Logo';
 
 interface FontsPageProps {
   title: string;
 }
-
-// VenueCard component
-const VenueCard = () => {
-  const images = [
-    '/images/image1.jpg',
-    '/images/image2.jpg',
-    '/images/image3.jpg',
-  ];
-
-  return (
-    <div className="mx-auto mt-8 p-4 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-      <div className="w-full md:w-1/3 mt-10 h-64 md:h-400">
-        <div className="h-full border border-gray-300 rounded-lg shadow-lg">
-          <Carousel images={images} autoSlide={false} />
-        </div>
-      </div>
-
-      <div className="w-full md:w-2/3 p-4 flex flex-col justify-between">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold">Trace Auditorium</h1>
-          <p className="text-gray-700">Bay 6, Trace Expert City, Maradana, Colombo, Western Province</p>
-          <p className="text-gray-700"><strong>Type:</strong> Auditorium</p>
-          <p className="text-gray-700"><strong>Capacity:</strong> 500 seated</p>
-          <p className="text-gray-700"><strong>Size:</strong> 5000 sqft</p>
-          <p className="text-gray-700"><strong>Time Schedule:</strong> Entire Day</p>
-        </div>
-
-        <div>
-          <h2 className="text-lg font-semibold">Features:</h2>
-          <ul className="list-disc list-inside text-left text-gray-700">
-            <li>✓ State-of-the-art acoustics system for enhanced sound quality</li>
-            <li>✓ Ergonomic seating for maximum comfort</li>
-            <li>✓ Advanced lighting system with customizable ambiance</li>
-            <li>✓ High-definition projector and retractable screen</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const AdditionalSection = () => {
   return (
@@ -132,8 +94,8 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
-
-      <main className="container mx-auto px-4 py-8 text-center">
+      < Header />
+      <main className="container mx-auto px-4 py-8 text-left">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
 
         {/* Call-to-Action Section */}
@@ -212,7 +174,8 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         <AdditionalSection />
 
         <VenueType />
-
+        
+        <Footer />
       </main>
 
    
