@@ -131,10 +131,8 @@ const VenueType = () => {
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
-     
-      
-
       {/* Main Content */}
+
       <main className="container mx-auto px-4 py-8 text-center">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
 
