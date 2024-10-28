@@ -1,0 +1,71 @@
+@startuml
+!define RECTANGLE_COLOR #FDF5E6
+!define ENTITY_COLOR #FFFAFA
+
+entity USER {
+    *user_id : uuid [PK]
+    --
+    first_name : string
+    last_name : string
+    contact_number : int
+    address : string
+    email : string
+    password : string
+    user_type : enum {user, admin}
+}
+
+entity VENUE {
+    *venue_id : uuid [PK]
+    --
+    name : string
+    photo : string
+    description : string
+    capacity : int
+    venue_size : string
+    venue_type : enum {Auditorium, Outdoor, Co-Working Space, Conference Hall}
+    availability : enum {Available, Partial Available, Not Available, Reserved}
+    time_mode : enum {entire_day, hourly_time, session_time}
+    *location_id : uuid [FK]
+}
+
+entity LOCATION {
+    *location_id : uuid [PK]
+    --
+    city : string
+    district : string
+    provincial : string
+}
+
+entity RESERVATION {
+    *reservation_id : uuid [PK]
+    --
+    *user_id : uuid [FK]
+    *venue_id : uuid [FK]
+    title : string
+    purpose_of_reservation : string
+    time_duration : int
+    extra_services : enum {food, sound_system, private_parking, projectors, extend hours}
+    reservation_date : date
+    created_at : timestamp
+    updated_at : timestamp
+     question : string
+     option : string
+}
+
+entity RESERVATION_STATE {
+    *reservation_state_id : uuid [PK]
+    --
+    *reservation_id : uuid [FK]
+    status : enum {Pending, Rejected, Accepted}
+    admin_comments : string
+}
+
+
+
+USER ||--|{ RESERVATION : ""
+USER ||--o{ VENUE : ""
+USER ||--o{ RESERVATION_STATE : ""
+VENUE -- RESERVATION : ""
+RESERVATION -- RESERVATION_STATE : ""
+VENUE -- LOCATION : ""
+@enduml

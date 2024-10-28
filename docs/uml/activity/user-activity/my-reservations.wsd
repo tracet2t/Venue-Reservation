@@ -1,0 +1,36 @@
+@startuml
+|Registered User|
+start
+:Log In;
+:Navigate to My Reservations;
+
+|System|
+:Display List of Reservations as Cards (Pending, Accepted, Rejected);
+
+if (Click on Reservation Card?) then (yes)
+    :View Reservation Details;
+    
+    if (Reservation Status == "Pending") then (yes)
+        :Show Details with Message "Pending Approval";
+        :Option to Cancel Request;
+        if (Cancel Request?) then (yes)
+            :Submit Cancellation Request;
+            |System|
+            :Show Confirmation Message "Cancellation Requested";
+        else (no)
+            :Return to Reservations List;
+        endif
+    else if (Reservation Status == "Accepted") then (yes)
+        :Show Details with Message "Reservation Accepted";
+        :Return to Reservations List;
+       
+    else if (Reservation Status == "Rejected") then (yes)
+        :Show Details with Message "Reservation Rejected";
+         :Return to Reservations List;
+    endif
+else (no)
+    :Return to Dashboard;
+endif
+
+stop
+@enduml

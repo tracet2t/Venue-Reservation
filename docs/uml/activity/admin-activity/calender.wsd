@@ -1,0 +1,38 @@
+@startuml
+partition Admin {
+  :Log In;
+  :Navigate to Admin User Dashboard;
+  :Click "Manage" Button;
+  :Navigate to Admin Dashboard;
+  :Navigate to Calendar View;
+  :Select a Date on the Calendar;
+}
+
+partition  System {
+  if (Existing Reservation Status?) then (Yes)
+    :Display current Reservation Status;
+  else (No)
+    :Set status to "Available" by default;
+  endif
+}
+
+partition  Admin {
+  if (Add or Update Reservation Status?) then (Yes)
+    :Click to Add or Update Status;
+    :Select status ("Fully Reserved," "Partially Available," or "Not Available");
+
+    if (Partially Available?) then (Yes)
+      :Choose available hourly slots;
+    endif
+    
+    :Submit status;
+  else (No)
+    :Keep as "Available";
+  endif
+}
+
+partition  System {
+  :Save and show updated status on Calendar;
+}
+stop
+@enduml
