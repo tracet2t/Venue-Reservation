@@ -1,0 +1,38 @@
+@startuml
+|Admin|
+start
+:Log In;
+:Navigate to Admin User Dashboard;
+:Click "Manage" Button;
+:Navigate to Admin Dashboard;
+:Navigate to Reservation Requests;
+:View list of reservation requests;
+
+:Click "See More" on a reservation;
+
+|System|
+:Display detailed reservation information;
+
+|Admin|
+if (Approve or Reject?) then (Approve)
+  :Click "Approve";
+  :Admin adds comments if needed;
+  
+  |System|
+  :Update reservation status to "Approved";
+  :Show confirmation message;
+
+  |Admin|
+else (Reject)
+  :Click "Reject";
+  :Admin adds comments if needed;
+
+  |System|
+  :Update reservation status to "Rejected";
+  :Show rejection confirmation message;
+  
+  |Admin|
+endif
+
+stop
+@enduml
