@@ -6,21 +6,28 @@ start
 :Click "Manage" Button;
 
 :Navigate to Admin Dashboard;
+
 fork
-:View Utilization Charts (Last week, month, year);
+    if (View Utilization Charts?) then (yes)
+        :View Utilization Charts (Last week, month, year);
+    endif
 fork again
-:See Featured Venues (Most Reserved, Most Recent);
+    if (See Featured Venues?) then (yes)
+        :See Featured Venues (Most Reserved, Most Recent);
+    endif
 fork again
-if(Access Sidebar Options);
-fork
-    :Click "Reservations" (Redirect to Reservation Requests);
-fork again
-    :Click "Calendar" (Redirect to Venue Calendar);
-fork again
-    :Click "Venue Details" (Redirect to Venue Details);
-fork again
-    :Click "Payments" (Redirect to Payment Info);
-endfork
-endif
+    :Access Sidebar Options;
+    
+    if (Select Sidebar Option?) then (Reservations)
+        :Click "Reservations" (Redirect to Reservation Requests);
+    elseif (Select Sidebar Option?) then (Calendar)
+        :Click "Calendar" (Redirect to Venue Calendar);
+    elseif (Select Sidebar Option?) then (Venue Details)
+        :Click "Venue Details" (Redirect to Venue Details);
+    elseif (Select Sidebar Option?) then (Payments)
+        :Click "Payments" (Redirect to Payment Info);
+    endif
+
+end fork
 stop
 @enduml

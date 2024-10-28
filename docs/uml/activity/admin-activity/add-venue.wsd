@@ -1,0 +1,61 @@
+@startuml
+partition "Admin" {
+  start
+  :Log In;
+  :Navigate to Admin User Dashboard;
+  :Click "Manage" Button;
+  :Navigate to Admin Dashboard;
+  :Click "Venue Details";
+  
+  if (Add New Venue?) then (yes)
+    :Click "Add New Venue";
+    :Navigate to Add Venue Details Page;
+    :Enter General Venue Details;
+    :Enter Venue Related Settings;
+    :Enter Venue Related Questions;
+    
+    partition "System" {
+      :Validate Venue Information;
+      :Save Venue Details to Database;
+      :Show Confirmation Message;
+    }
+    
+  else (no)
+  endif
+
+  if (View Venues List?) then (yes)
+    :View Venues List;
+    
+    if (Edit Venue?) then (yes)
+      :Click "Edit Venue";
+      :Navigate to Edit Venue Details Page;
+      :Enter Updated Venue Details;
+      :Enter Updated Venue Settings;
+      :Update Venue Questions;
+      
+      partition "System" {
+        :Validate Updated Venue Information;
+        :Save Updated Venue Details to Database;
+        :Show Update Confirmation Message;
+      }
+      
+    else (no)
+    endif
+
+    if (Delete Venue?) then (yes)
+      :Click "Delete Venue";
+      
+      partition "System" {
+        :Confirm Deletion;
+        :Delete Venue from Database;
+        :Show Deletion Confirmation Message;
+      }
+      
+    else (no)
+    endif
+  else (no)
+  endif
+}
+
+stop
+@enduml
