@@ -34,5 +34,5 @@ partition  Admin {
 partition  System {
   :Save and show updated status on Calendar;
 }
-
+stop
 @enduml

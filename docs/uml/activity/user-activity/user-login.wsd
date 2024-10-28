@@ -26,29 +26,26 @@ if (Email/Password?) then (yes)
         :Show Error;
     endif
 else (no)
-endif
-' // hv to stp
-if (Magic Link?) then (yes)
-    :Enter Email for Magic Link;
-    :Send Magic Link;
-    |System|
-    if (Link Clicked & Valid?) then (yes)
-        :Redirect to User Dashboard;
+    if (Magic Link?) then (yes)
+        :Enter Email for Magic Link;
+        :Send Magic Link;
+        |System|
+        if (Link Clicked & Valid?) then (yes)
+            :Redirect to User Dashboard;
+        else (no)
+            :Show Link Expired Error;
+        endif
     else (no)
-        :Show Link Expired Error;
+        if (Google Login?) then (yes)
+            :Authenticate via Google;
+            |System|
+            if (Auth Success?) then (yes)
+                :Redirect to User Dashboard;
+            else (no)
+                :Show Auth Error;
+            endif
+        endif
     endif
-else (no)
-endif
-' hv to spt
-if (Google Login?) then (yes)
-    :Authenticate via Google;
-    |System|
-    if (Auth Success?) then (yes)
-        :Redirect to User Dashboard;
-    else (no)
-        :Show Auth Error;
-    endif
-else (no)
 endif
 
 stop
