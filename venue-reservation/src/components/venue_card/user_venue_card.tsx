@@ -1,4 +1,6 @@
+"use client"
 import Carousel from '../carousel';
+import { useRouter } from 'next/navigation'; 
 
 const VenueCard = () => {
   const images = [
@@ -6,6 +8,14 @@ const VenueCard = () => {
     '/images/image2.jpg',
     '/images/image3.jpg'
   ];
+
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    // Navigate to the reservation page
+    router.push('/reservations');
+  };
+
 
   return (
     <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row">
@@ -24,7 +34,7 @@ const VenueCard = () => {
 
 
       {/* Details Section */}
-      <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
+      <div className="w-full md:w-3/5 p-4 flex flex-col justify-between" onClick={handleCardClick}>
         <div>
           <h1 className="text-3xl md:text-4xl font-bold font-blue-500">Trace Auditorium</h1>
           <p>Bay 6, Trace Expert City, Maradana, Colombo, Western Province</p>
