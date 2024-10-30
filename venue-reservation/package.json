@@ -2,6 +2,7 @@
   "name": "venue-reservation",
   "version": "0.1.0",
   "private": true,
+  "workspaces":["database","venue-reservation"],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +12,8 @@
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "next": "14.2.15",
+    "database":"*"
   },
   "devDependencies": {
     "typescript": "^5",

@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Venue {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  type      String
+  capacity  Int
+  size      Int
+  schedule  String
+  features  String[]  // Use an array to store multiple features
+  images    String[]  // Array of image URLs
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
