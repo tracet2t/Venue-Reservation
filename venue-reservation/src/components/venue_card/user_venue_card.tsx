@@ -2,8 +2,21 @@
 import { useEffect, useState } from 'react';
 import Carousel from '../carousel';
 
+// Define an interface for the venue type
+interface Venue {
+  id: number; 
+  name: string;
+  address: string;
+  type: string;
+  capacity: number;
+  size: number;
+  schedule: string;
+  images: string[]; 
+  features: string[]; 
+}
+
 const VenueCard = () => {
-  const [venues, setVenues] = useState<any[]>([]);
+  const [venues, setVenues] = useState<Venue[]>([]); 
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -48,7 +61,7 @@ const VenueCard = () => {
             <div>
               <h2 className="text-lg font-bold">Features:</h2>
               <ul className="list-disc list-inside">
-                {venue.features.map((feature: string, index: number) => (
+                {venue.features.map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
