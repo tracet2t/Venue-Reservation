@@ -1,67 +1,122 @@
 "use client";
 
+import Carousel from '@/components/carousel';
 import React from 'react';
-import Carousel from '@/app/components/Carousel';
+import LandingVenueCard from '@/components/venue_card/landing_venue_card';
+import Header from '@/app/layout/Header';
 
 interface FontsPageProps {
   title: string;
 }
 
-// VenueCard component
-const VenueCard = () => {
+const AdditionalSection = () => {
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
-    '/images/image3.jpg',
+    '/images/image3.jpg'
   ];
 
   return (
-    <div className="mx-auto mt-8 p-4 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-      <div className="w-full md:w-1/3 mt-10 h-64 md:h-400">
-        <div className="h-full border border-gray-300 rounded-lg shadow-lg">
-          <Carousel images={images} autoSlide={false} />
+    <div
+      className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2"
+      style={{
+        marginLeft: '2mm',
+        marginRight: '2mm',
+      }}
+    >
+      {/* Left Column */}
+      <div className="flex flex-col space-y-4 md:w-5/12">
+        
+        <div className="relative w-full h-[200px] md:h-[345px]">
+          <img
+            src="/images/image1.jpg"
+            alt="Row 1 Image"
+            className="w-full h-full object-cover rounded-[28px] shadow-lg"
+          />
+       
+          <div className="absolute inset-0 flex items-center justify-center flex-col text-center space-y-1 text-white bg-black bg-opacity-40 rounded-[28px]">
+            <p className="text-lg md:text-2xl font-semibold">Explore more to get out of <br /> your comfort zone</p>
+            <p className="text-sm md:text-base">Find your perfect venue for unforgettable moments</p>
+          </div>
+
+          <button className="absolute bottom-4 left-4 bg-white text-black px-4 py-2 rounded-lg font-semibold shadow-md">
+            Reserve your venue
+          </button>
+        </div>
+
+        {/* Second Image */}
+        <div className="w-full h-[200px] md:h-[269px]">
+          <img
+            src="/images/image2.jpg"
+            alt="Row 2 Image"
+            className="w-full h-full object-cover rounded-[28px] shadow-lg"
+          />
         </div>
       </div>
 
-      <div className="w-full md:w-2/3 p-4 flex flex-col justify-between">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold">Trace Auditorium</h1>
-          <p className="text-gray-700">Bay 6, Trace Expert City, Maradana, Colombo, Western Province</p>
-          <p className="text-gray-700"><strong>Type:</strong> Auditorium</p>
-          <p className="text-gray-700"><strong>Capacity:</strong> 500 seated</p>
-          <p className="text-gray-700"><strong>Size:</strong> 5000 sqft</p>
-          <p className="text-gray-700"><strong>Time Schedule:</strong> Entire Day</p>
-        </div>
+      {/* Right Column with Carousel */}
+      <div className="w-full md:w-7/12 h-[300px] md:h-[620px]">
+        <Carousel
+          images={images}
+          width="100%"
+          height="100%"
+          arrowBgColor="rgba(0, 0, 0, 0.7)"
+          arrowFgColor="#fff"
+          dotColor="#ccc"
+          activeDotColor="#ff6347"
+        />
+      </div>
+    </div>
+  );
+};
 
-        <div>
-          <h2 className="text-lg font-semibold">Features:</h2>
-          <ul className="list-disc list-inside text-left text-gray-700">
-            <li>✓ State-of-the-art acoustics system for enhanced sound quality</li>
-            <li>✓ Ergonomic seating for maximum comfort</li>
-            <li>✓ Advanced lighting system with customizable ambiance</li>
-            <li>✓ High-definition projector and retractable screen</li>
-          </ul>
+// Types of venues
+const VenueType = () => {
+  const venueTypes = [
+    { name: "Auditorium", image: "/images/image1.jpg", description: "A large room for public gatherings." },
+    { name: "Conference Hall", image: "/images/image2.jpg", description: "Ideal for corporate events." },
+    { name: "Outdoor Garden", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
+    { name: "Banquet Hall", image: "/images/image2.jpg", description: "Spacious venue for dining events." },
+    { name: "Rooftop", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
+  ];
+
+  return (
+    <div className="mt-12">
+      <h2 className="text-2xl font-bold text-[#6A5B3A] mb-4 text-centre">Type of Venues</h2>
+      <div className="overflow-x-auto">
+        <div className="flex space-x-4 p-4">
+          {venueTypes.map((venue, index) => (
+            <div 
+              key={index}
+              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+            >
+              <img
+                src={venue.image}
+                alt={venue.name}
+                className="w-full h-3/4 object-cover rounded-t-lg"
+              />
+              <div className="w-[308px] h-[110px] p-4 flex flex-col items-center justify-center">
+                <h3 className="text-lg font-semibold text-center">{venue.name}</h3>
+                <p className="text-sm text-gray-600 text-center mt-2">{venue.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-
-
-
-
 // Main FontsPage component
 const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
-      {/* Header Section */}
-
-
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 text-center">
+      < Header />
+      <main className="container mx-auto px-4 py-8 text-left">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
 
+        {/* Call-to-Action Section */}
         <div className="flex justify-center">
           <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 w-full max-w-full md:max-w-[calc(100%+4rem)] mx-[-2rem] min-h-[300px] md:min-h-[500px] text-center" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
             <h2 className="text-2xl md:text-4xl font-bold" style={{ color: '#584822' }}>
@@ -82,55 +137,66 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         </div>
 
         
-        <VenueCard />
+        <LandingVenueCard />
 
-        
-        <div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-          <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
-            <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
-              Are you looking for a venue?
-            </h1>
+        {/* Additional Section */}
+<div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+  <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
+    <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
+      Are you looking for a venue?
+    </h1>
 
-            <div className="w-full md:w-1/2 space-y-6">
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
-                  <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12h4l1 1-6 6H9l-1-1 6-6zm-9 3v1m-1-1h1m-1 0v-1h1v1H5z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">02. Secure Your Perfect Venue</strong>
-                  <span className="text-xs md:text-sm">Tulis dan lengkapi data kamu untuk keperluan data booking.</span>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-2h2v2h-1zm-4-2h1v2H8v-2h1zm0-2h2v-2H9v-1H8v3h1v2zM6 8h2V6H7v2H6zm1-2V4H5v2H4v2h3V6zm5 5h-1v2h2v-2h-1zm-3-2H9v2h2v-2zm4 2h-1v2h2v-2h-1zm-6 4H4v1h5v-1H6v-1zM2 9v7h1v2h2v2h2v-2h2v-2H5v-7H4v2H3v-2H2zm8 0v7h2v1h-2v-2H8v-1H6v-7h4zm2 6h1v2h2v-2h-3zm-2 2h-2v2h-2v-2h-1v-1H4v-7H2v7h2v1h5v1h1v2zm6-3v1h2v1h1v2h2v2h2v-2h1v-1h1v-2h-1v-2h-2v1h1v1h-3zm-2-1h1v-1h2v2h-3z" />
-                </svg>
-                <div className="ml-2 md:ml-4">
-                  <strong className="block text-sm md:text-base">03. Confirm & Enjoy</strong>
-                  <span className="text-xs md:text-sm">Semua akan lebih mudah dan praktis dengan Destinize.</span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="w-full md:w-1/2 space-y-6 text-left">
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
+          <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
         </div>
-      </main>
+      </div>
 
-      {/* Footer */}
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
+          <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
+        </div>
+      </div>
+
+      <div className="flex items-start">
+        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+        </svg>
+        <div className="ml-2 md:ml-4">
+          <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
+          <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Side Image */}
+    <div className="w-full md:w-1/2">
+      <img 
+        src="/images/landing image.jpg" 
+        alt="Venue" 
+        className="w-full h-auto rounded-lg md:ml-4"
+      />
+    </div>
+  </div>
+</div>
+
+        <AdditionalSection />
+
+        <VenueType />
+        
+      </main>
 
     </div>
   );
 };
 
 export default FontsPage;
-
