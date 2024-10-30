@@ -8,7 +8,7 @@ const VenueCard = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row">
+    <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row text-[#584822]">
       {/* Image Section */}
       <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
         <Carousel
