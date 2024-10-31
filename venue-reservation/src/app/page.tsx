@@ -1,4 +1,5 @@
 import VenueCard from '@/components/venue_card/user_venue_card';
+import Reservations from './reservations/page';
 
 const LandingPage = () => {
   return (
@@ -6,6 +7,7 @@ const LandingPage = () => {
       
     {/* Main Content */}
       <main className="flex-grow p-8">
+        <Reservations />
         <VenueCard />
       </main>
 

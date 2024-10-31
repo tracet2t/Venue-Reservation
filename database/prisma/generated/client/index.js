@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\T2T Projects\\Database\\Venue-Reservation\\database\\prisma\\generated\\client",
+      "value": "E:\\Nagarro\\Projects\\Venue-Reservation\\database\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -144,7 +144,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\T2T Projects\\Database\\Venue-Reservation\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "E:\\Nagarro\\Projects\\Venue-Reservation\\database\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
