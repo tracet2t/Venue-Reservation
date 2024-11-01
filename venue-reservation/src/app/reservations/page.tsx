@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
+import Image from 'next/image'
 
 interface Location {
   id: number;
@@ -11,10 +12,6 @@ interface Location {
   districts: string[];
 }
 
-interface VenueType {
-  id: number;
-  type: string;
-}
 
 //data for provinces and districts
 const locations: Location[] = [
@@ -78,11 +75,11 @@ const Reservation = () => {
           <div className="relative z-10 w-full sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
                 className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <img src="https://img.icons8.com/ios/50/marker--v1.png" 
+              <Image src="https://Image.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
                 className="w-5 h-5" />
               <span style={{ color: "#584822" }}>Location</span>
-              <img src="https://img.icons8.com/ios/50/sort-down.png" 
+              <Image src="https://Image.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
                 className="w-4 h-4" />
             </button>
@@ -123,11 +120,11 @@ const Reservation = () => {
           {/* Venue Type Filter */}
           <div className="relative z-10 w-full sm:w-full md:w-auto ml-0 md:ml-12">
             <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <img src="https://img.icons8.com/ios/50/performance.png" 
+              <Image src="https://Image.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
                 className="w-6 h-6" />
               <span style={{ color: "#584822" }}> Venue Type</span>
-              <img src="https://img.icons8.com/ios/50/sort-down.png" 
+              <Image src="https://Image.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
                 className="w-4 h-4" />
             </button>

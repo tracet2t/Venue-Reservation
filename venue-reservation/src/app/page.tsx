@@ -6,10 +6,9 @@ import LandingVenueCard from '@/components/venue_card/landing_venue_card';
 import Header from '@/app/layouts/Header';
 import { useRouter } from 'next/navigation'; 
 import Footer from './layouts/Footer';
+import Image from 'next/image'
 
-interface FontsPageProps {
-  title: string;
-}
+
 
 const AdditionalSection = () => {
   const images = [
@@ -24,7 +23,7 @@ const AdditionalSection = () => {
       {/* Left Column */}
       <div className="flex flex-col space-y-4 md:w-5/12">
         <div className="relative w-full h-[200px] md:h-[345px]">
-          <img src="/images/image1.jpg" alt="Row 1 Image" className="w-full h-full object-cover rounded-[28px] shadow-lg" />
+          <Image src="/images/image1.jpg" alt="Row 1 Image" className="w-full h-full object-cover rounded-[28px] shadow-lg" />
           <div className="absolute inset-0 flex items-center justify-center flex-col text-center space-y-1 text-white bg-black bg-opacity-40 rounded-[28px]">
             <p className="text-lg md:text-2xl font-semibold">Explore more to get out of <br /> your comfort zone</p>
             <p className="text-sm md:text-base">Find your perfect venue for unforgettable moments</p>
@@ -34,7 +33,7 @@ const AdditionalSection = () => {
           </button>
         </div>
         <div className="w-full h-[200px] md:h-[269px]">
-          <img src="/images/image2.jpg" alt="Row 2 Image" className="w-full h-full object-cover rounded-[28px] shadow-lg" />
+          <Image src="/images/image2.jpg" alt="Row 2 Image" className="w-full h-full object-cover rounded-[28px] shadow-lg" />
         </div>
       </div>
       <div className="w-full md:w-7/12 h-[300px] md:h-[620px]">
@@ -69,7 +68,7 @@ const VenueType = () => {
         <div className="flex space-x-4 p-4">
           {venueTypes.map((venue, index) => (
             <div key={index} className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg">
-              <img src={venue.image} alt={venue.name} className="w-full h-3/4 object-cover rounded-t-lg" />
+              <Image src={venue.image} alt={venue.name} className="w-full h-3/4 object-cover rounded-t-lg" />
               <div className="w-[308px] h-[110px] p-4 flex flex-col items-center justify-center">
                 <h3 className="text-lg font-semibold text-center">{venue.name}</h3>
                 <p className="text-sm text-gray-600 text-center mt-2">{venue.description}</p>
@@ -83,7 +82,7 @@ const VenueType = () => {
 };
 
 // Main FontsPage component
-const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
+const FontsPage = () => {
   const router = useRouter(); // Move useRouter inside the component
 
   const navigateToReservation = () => {
@@ -96,7 +95,6 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
         <Header />
       </div>
       <main className="container mx-auto px-4 py-8 text-left">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
         <div className="flex justify-center">
           <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 w-full max-w-full md:max-w-[calc(100%+4rem)] mx-[-2rem] min-h-[300px] md:min-h-[500px] text-center" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
             <h2 className="text-2xl md:text-4xl font-bold" style={{ color: '#584822' }}>
