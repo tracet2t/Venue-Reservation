@@ -15,6 +15,9 @@ const config: Config = {
       borderRadius: {
         'xl': '28px', 
       },
+      zIndex: {
+        '1': '1',
+      },
     },
   },
   plugins: [],
