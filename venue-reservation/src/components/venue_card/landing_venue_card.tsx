@@ -8,7 +8,7 @@ const LandingVenueCard = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row text-[#584822]">
+    <div className="container mx-auto mt-6 px-4 py-8 shadow-lg rounded-xl flex flex-col md:flex-row text-[#584822]">
       {/* Image Section */}
       <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg md:w-2/5">
         <Carousel

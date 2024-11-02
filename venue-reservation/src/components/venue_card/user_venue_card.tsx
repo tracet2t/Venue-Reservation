@@ -1,8 +1,8 @@
-"use client"
+// VenueCard.tsx
+'use client'
 import { useEffect, useState } from 'react';
 import Carousel from '../carousel';
 
-// Define an interface for the venue type
 interface Venue {
   id: number; 
   name: string;
