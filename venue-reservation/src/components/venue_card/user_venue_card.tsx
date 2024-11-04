@@ -1,4 +1,3 @@
-// VenueCard.tsx
 'use client'
 import { useEffect, useState } from 'react';
 import Carousel from '../carousel';
@@ -15,8 +14,18 @@ interface Venue {
   features: string[]; 
 }
 
-const VenueCard = () => {
+interface VenueCardProps {
+  province: string;
+  district: string;
+  venueType: string | null; 
+  searchTerm: string;
+  currentPage: number;
+  venuesPerPage: number;
+}
+
+const VenueCard = ({ province, district, venueType, searchTerm, currentPage, venuesPerPage }: VenueCardProps) => {
   const [venues, setVenues] = useState<Venue[]>([]); 
+  const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -27,26 +36,36 @@ const VenueCard = () => {
     fetchVenues();
   }, []);
 
+  useEffect(() => {
+    const filtered = venues.filter((venue) => {
+      const matchesProvince = !province || venue.address.includes(province);
+      const matchesDistrict = !district || venue.address.includes(district);
+      const matchesVenueType = !venueType || venue.type === venueType;
+      const matchesSearchTerm = !searchTerm || venue.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesProvince && matchesDistrict && matchesVenueType && matchesSearchTerm;
+    });
+    setFilteredVenues(filtered);
+  }, [venues, province, district, venueType, searchTerm]);
+
+  const startIndex = (currentPage - 1) * venuesPerPage;
+  const currentVenues = filteredVenues.slice(startIndex, startIndex + venuesPerPage);
+
   return (
     <div className="container mx-auto mt-6 p-4">
-      {venues.map((venue) => (
-        <div
-          key={venue.id}
-          className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4"
-        >
-          {/* Image Section */}
-          <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
-            <Carousel
-              images={venue.images}
-              width="100%"
-              height="340px"
-              arrowBgColor="rgba(0, 0, 0, 0.7)"
-              arrowFgColor="#fff"
-              dotColor="#ccc"
-              activeDotColor="#ff6347"
-            />
-          </div>
+      {currentVenues.map((venue) => (
+        <div key={venue.id} className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4">
 
+          <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
+          <Carousel 
+          images={venue.images}
+          width="100%"
+          height="340px"
+          arrowBgColor="rgba(0, 0, 0, 0.7)"
+          arrowFgColor="#fff"
+          dotColor="#ccc"
+          activeDotColor="#ff6347"
+          />
+          </div>
           {/* Details Section */}
           <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
             <div>

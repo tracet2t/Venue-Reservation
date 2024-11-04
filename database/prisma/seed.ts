@@ -36,9 +36,9 @@ async function main() {
             images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
           },
           {
-            name: 'Nelum Pokuna Mahinda Rajapaksa Theatre',
+            name: 'Nelum Pokuna',
             address: 'Nelum Pokuna Mawatha, Colombo 07, Western Province',
-            type: 'Theatre',
+            type: 'Auditorium',
             capacity: 1200,
             size: 8000,
             schedule: 'Evening',
@@ -53,7 +53,7 @@ async function main() {
           {
             name: 'Lotus Tower Banquet Hall',
             address: 'Lotus Tower, Colombo, Western Province',
-            type: 'Banquet Hall',
+            type: 'Co-Working Space',
             capacity: 700,
             size: 6000,
             schedule: 'Entire Day',
@@ -66,9 +66,9 @@ async function main() {
             images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
           },
           {
-            name: 'Galle Face Hotel Conference Room',
+            name: 'Galle Face Hotel Conference Hall',
             address: 'Galle Road, Colombo 03, Western Province',
-            type: 'Conference Room',
+            type: 'Conference Hall',
             capacity: 300,
             size: 3000,
             schedule: 'Half Day, Entire Day',
@@ -83,7 +83,7 @@ async function main() {
           {
             name: 'Mahaweli Reach Hotel Garden',
             address: 'P.B.A Weerakoon Mawatha, Kandy, Central Province',
-            type: 'Outdoor Garden',
+            type: 'Outdoor',
             capacity: 400,
             size: 7000,
             schedule: 'Evening',
@@ -96,9 +96,9 @@ async function main() {
             images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
           },
           {
-            name: 'Shangri-La Ballroom',
+            name: 'Shangri-La Auditorium',
             address: 'Shangri-La Hotel, One Galle Face, Colombo 02, Western Province',
-            type: 'Ballroom',
+            type: 'Auditorium',
             capacity: 800,
             size: 9500,
             schedule: 'Half Day, Entire Day',
@@ -113,7 +113,7 @@ async function main() {
           {
             name: 'Araliya Green City Rooftop',
             address: 'Araliya Green City, Nuwara Eliya, Central Province',
-            type: 'Rooftop Venue',
+            type: 'Co-Working Space',
             capacity: 200,
             size: 4000,
             schedule: 'Evening',
@@ -126,9 +126,9 @@ async function main() {
             images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
           },
           {
-            name: 'Jetwing Lighthouse Pavilion',
+            name: 'Jetwing Lighthouse Outdoor',
             address: 'Dadella, Galle, Southern Province',
-            type: 'Pavilion',
+            type: 'Outdoor',
             capacity: 250,
             size: 4500,
             schedule: 'Entire Day',
@@ -143,7 +143,7 @@ async function main() {
           {
             name: 'Mount Lavinia Hotel Beach Venue',
             address: '100 Hotel Road, Mount Lavinia, Western Province',
-            type: 'Beach Venue',
+            type: 'Outdoor',
             capacity: 500,
             size: 6000,
             schedule: 'Evening',
