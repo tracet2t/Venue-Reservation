@@ -4,10 +4,7 @@ import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
 import Header from '@/app/layout/Header';
-
-interface FontsPageProps {
-  title: string;
-}
+import Image from 'next/image';
 
 const AdditionalSection = () => {
   const images = [
@@ -28,7 +25,7 @@ const AdditionalSection = () => {
       <div className="flex flex-col space-y-4 md:w-5/12">
         
         <div className="relative w-full h-[200px] md:h-[345px]">
-          <img
+          <Image
             src="/images/image1.jpg"
             alt="Row 1 Image"
             className="w-full h-full object-cover rounded-[28px] shadow-lg"
@@ -46,7 +43,7 @@ const AdditionalSection = () => {
 
         {/* Second Image */}
         <div className="w-full h-[200px] md:h-[269px]">
-          <img
+          <Image
             src="/images/image2.jpg"
             alt="Row 2 Image"
             className="w-full h-full object-cover rounded-[28px] shadow-lg"
@@ -90,7 +87,7 @@ const VenueType = () => {
               key={index}
               className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
             >
-              <img
+              <Image
                 src={venue.image}
                 alt={venue.name}
                 className="w-full h-3/4 object-cover rounded-t-lg"
@@ -108,13 +105,13 @@ const VenueType = () => {
 };
 
 // Main FontsPage component
-const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
+const FontsPage = (): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
       < Header />
       <main className="container mx-auto px-4 py-8 text-left">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{title}</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{}</h1>
 
         {/* Call-to-Action Section */}
         <div className="flex justify-center">
@@ -180,7 +177,7 @@ const FontsPage = ({ title }: FontsPageProps): JSX.Element => {
 
     {/* Right Side Image */}
     <div className="w-full md:w-1/2">
-      <img 
+      <Image 
         src="/images/landing image.jpg" 
         alt="Venue" 
         className="w-full h-auto rounded-lg md:ml-4"
