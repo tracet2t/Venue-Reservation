@@ -1,16 +1,23 @@
-// Reservation.tsx
 'use client'
 import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
-import Image from 'next/image'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 interface Location {
   id: number;
   province: string;
   districts: string[];
 }
+
 
 //data for provinces and districts
 const locations: Location[] = [
@@ -25,17 +32,23 @@ const locations: Location[] = [
   { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
-
 const Reservation = () => {
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [selectedVenueType, setSelectedVenueType] = useState("");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
-
+  const [isSearchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const venuesPerPage = 5;
 
   const toggleLocationDropdown = () => {
     setIsLocationDropdownOpen(!isLocationDropdownOpen);
+  };
+
+  
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const toggleVenueDropdown = () => {
@@ -62,6 +75,11 @@ const Reservation = () => {
     setSelectedVenueType(type);
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const totalPages = Math.ceil(15 / venuesPerPage); // Assuming you have a total of 15 venues
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
@@ -77,16 +95,12 @@ const Reservation = () => {
           <div className="relative z-10 w-full sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
                 className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <Image src="/images/marker--v1.png" 
+              <img src="https://img.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
-                width="100"
-                height="100"
                 className="w-5 h-5" />
               <span style={{ color: "#584822" }}>Location</span>
-              <Image src="/images/sort-down.png" 
+              <img src="https://img.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
-                width="100"
-                height="100"
                 className="w-4 h-4" />
             </button>
             {isLocationDropdownOpen && (
@@ -126,14 +140,12 @@ const Reservation = () => {
           {/* Venue Type Filter */}
           <div className="relative z-10 w-full sm:w-full md:w-auto ml-0 md:ml-12">
             <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <img src="/images/performance.png" 
+              <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
                 className="w-6 h-6" />
               <span style={{ color: "#584822" }}> Venue Type</span>
-              <Image src="/images/sort-down.png" 
+              <img src="https://img.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
-                width="100"
-                height="100"
                 className="w-4 h-4" />
             </button>
             {isVenueDropdownOpen && (
@@ -190,6 +202,8 @@ const Reservation = () => {
             </svg>
             <input type="text" className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#584822]" 
              placeholder="Enter Venue Name"
+             value={isSearchTerm}
+             onChange={handleSearchTermChange} 
                />
           </div>
           {/* Search Button */}
@@ -199,10 +213,39 @@ const Reservation = () => {
         </div>
 
         {/* Venue Card */}
-        <VenueCard />
+        <VenueCard
+          province={selectedProvince || ""}
+          district={selectedDistricts.join(', ')}
+          venueType={selectedVenueType}
+          searchTerm={isSearchTerm}
+          currentPage={currentPage}
+          venuesPerPage={venuesPerPage}
+        />
+      
+      {/* Pagination */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <button  onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+            <PaginationPrevious href="#" />
+            </button>
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, page) => (
+            <PaginationItem key={page}>
+              <PaginationLink href="#" onClick={() => handlePageChange(page + 1)}>{page + 1}</PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+            <PaginationNext href="#"  />
+            </button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
       </main>
 
       {/* Footer */}
+      
       <Footer />
     </div>
   );
