@@ -1,15 +1,19 @@
-// Reservation.tsx
+
 'use client'
 import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
-import Image from 'next/image'
 
 interface Location {
   id: number;
   province: string;
   districts: string[];
+}
+
+interface VenueType {
+  id: number;
+  type: string;
 }
 
 //data for provinces and districts
@@ -32,11 +36,23 @@ const Reservation = () => {
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [selectedVenueType, setSelectedVenueType] = useState("");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
+  const [isSearchTerm, setSearchTerm] = useState<string>("");
 
 
   const toggleLocationDropdown = () => {
     setIsLocationDropdownOpen(!isLocationDropdownOpen);
   };
+
+  //search term
+  const searchTermVenues = () => {
+    console.log("Searching for venues with term:", isSearchTerm);
+  };
+  
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+  
+  
 
   const toggleVenueDropdown = () => {
     setIsVenueDropdownOpen(!isVenueDropdownOpen);
@@ -62,6 +78,7 @@ const Reservation = () => {
     setSelectedVenueType(type);
   };
 
+  
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
@@ -77,16 +94,12 @@ const Reservation = () => {
           <div className="relative z-10 w-full sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
                 className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <Image src="/images/marker--v1.png" 
+              <img src="https://img.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
-                width="100"
-                height="100"
                 className="w-5 h-5" />
               <span style={{ color: "#584822" }}>Location</span>
-              <Image src="/images/sort-down.png" 
+              <img src="https://img.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
-                width="100"
-                height="100"
                 className="w-4 h-4" />
             </button>
             {isLocationDropdownOpen && (
@@ -126,14 +139,12 @@ const Reservation = () => {
           {/* Venue Type Filter */}
           <div className="relative z-10 w-full sm:w-full md:w-auto ml-0 md:ml-12">
             <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
-              <img src="/images/performance.png" 
+              <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
                 className="w-6 h-6" />
               <span style={{ color: "#584822" }}> Venue Type</span>
-              <Image src="/images/sort-down.png" 
+              <img src="https://img.icons8.com/ios/50/sort-down.png" 
                 alt="Dropdown Icon" 
-                width="100"
-                height="100"
                 className="w-4 h-4" />
             </button>
             {isVenueDropdownOpen && (
@@ -190,6 +201,8 @@ const Reservation = () => {
             </svg>
             <input type="text" className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#584822]" 
              placeholder="Enter Venue Name"
+             value={isSearchTerm}
+             onChange={handleSearchTermChange} 
                />
           </div>
           {/* Search Button */}
@@ -199,10 +212,16 @@ const Reservation = () => {
         </div>
 
         {/* Venue Card */}
-        <VenueCard />
+        <VenueCard
+          province={selectedProvince || ""}
+          district={selectedDistricts.join(', ')}
+          venueType={selectedVenueType}
+          searchTerm={isSearchTerm}
+        />
       </main>
 
       {/* Footer */}
+      
       <Footer />
     </div>
   );

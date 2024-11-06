@@ -1,4 +1,4 @@
-// VenueCard.tsx
+
 'use client'
 import { useEffect, useState } from 'react';
 import Carousel from '../carousel';
@@ -15,8 +15,16 @@ interface Venue {
   features: string[]; 
 }
 
-const VenueCard = () => {
+interface VenueCardProps {
+  province: string;
+  district: string;
+  venueType: string | null; 
+  searchTerm: string;
+}
+
+const VenueCard = ({ province, district, venueType, searchTerm }: VenueCardProps) => {
   const [venues, setVenues] = useState<Venue[]>([]); 
+  const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -27,9 +35,20 @@ const VenueCard = () => {
     fetchVenues();
   }, []);
 
+  useEffect(() => {
+    const filtered = venues.filter((venue) => {
+      const matchesProvince = !province || venue.address.includes(province);
+      const matchesDistrict = !district || venue.address.includes(district);
+      const matchesType = !venueType || venue.type === venueType; // Filter by venue type
+      const matchesSearch = venue.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesProvince && matchesDistrict && matchesType && matchesSearch;
+    });
+    setFilteredVenues(filtered);
+  }, [province, district, venueType, searchTerm, venues]); // Add venueType to dependencies
+
   return (
     <div className="container mx-auto mt-6 p-4">
-      {venues.map((venue) => (
+      {filteredVenues.map((venue) => (
         <div
           key={venue.id}
           className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4"
