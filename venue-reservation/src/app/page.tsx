@@ -4,7 +4,7 @@ import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
 import Header from '@/app/layout/Header';
-import Image from 'next/image';
+import Footer from "@/app/layout/Footer";
 
 const AdditionalSection = () => {
   const images = [
@@ -25,7 +25,7 @@ const AdditionalSection = () => {
       <div className="flex flex-col space-y-4 md:w-5/12">
         
         <div className="relative w-full h-[200px] md:h-[345px]">
-          <Image
+          <img
             src="/images/image1.jpg"
             alt="Row 1 Image"
             className="w-full h-full object-cover rounded-[28px] shadow-lg"
@@ -43,7 +43,7 @@ const AdditionalSection = () => {
 
         {/* Second Image */}
         <div className="w-full h-[200px] md:h-[269px]">
-          <Image
+          <img
             src="/images/image2.jpg"
             alt="Row 2 Image"
             className="w-full h-full object-cover rounded-[28px] shadow-lg"
@@ -52,7 +52,7 @@ const AdditionalSection = () => {
       </div>
 
       {/* Right Column with Carousel */}
-      <div className="w-full md:w-7/12 h-[300px] md:h-[620px]">
+      <div className="w-full md:w-8/12 h-[300px] md:h-[628px]"> 
         <Carousel
           images={images}
           width="100%"
@@ -78,16 +78,16 @@ const VenueType = () => {
   ];
 
   return (
-    <div className="mt-12">
-      <h2 className="text-2xl font-bold text-[#6A5B3A] mb-4 text-centre">Type of Venues</h2>
-      <div className="overflow-x-auto">
-        <div className="flex space-x-4 p-4">
-          {venueTypes.map((venue, index) => (
-            <div 
-              key={index}
-              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
-            >
-              <Image
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-[#6A5B3A] mb-4 text-centre">Type of Venues</h2>
+        <div className="overflow-x-auto">
+          <div className="flex space-x-4 p-4">
+            {venueTypes.map((venue, index) => (
+              <div 
+                key={index}
+                className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+              >
+              <img
                 src={venue.image}
                 alt={venue.name}
                 className="w-full h-3/4 object-cover rounded-t-lg"
@@ -106,6 +106,7 @@ const VenueType = () => {
 
 // Main FontsPage component
 const FontsPage = (): JSX.Element => {
+  
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
@@ -126,7 +127,9 @@ const FontsPage = (): JSX.Element => {
               <button
                 style={{ backgroundColor: '#584822' }} 
                 className="mt-10 md:mt-20 text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#6A5B3A] transition duration-200 ease-in-out flex items-center justify-center"
+              
               >
+                
                 Reserve Now <span className="ml-2 text-xl md:text-4xl">→</span>
               </button>
             </div>
@@ -137,59 +140,59 @@ const FontsPage = (): JSX.Element => {
         <LandingVenueCard />
 
         {/* Additional Section */}
-<div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-  <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
-    <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
-      Are you looking for a venue?
-    </h1>
+        <div className="max-w-full mx-auto p-4 md:p-7" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+          <div className="flex flex-col md:flex-row flex-wrap justify-between border border-gray-300 rounded-lg shadow-lg p-6 items-center w-full">
+            <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
+              Are you looking for a venue?
+            </h1>
 
-    <div className="w-full md:w-1/2 space-y-6 text-left">
-      <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
-        <div className="ml-2 md:ml-4">
-          <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
-          <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
+            <div className="w-full md:w-1/2 space-y-6 text-left">
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
+                  <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
+                  <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+                <div className="ml-2 md:ml-4">
+                  <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
+                  <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
+                </div>
+              </div>
+            </div>
+
+              {/* Right Side Image */}
+              <div className="w-full md:w-1/2">
+                <img 
+                  src="/images/landing image.jpg" 
+                  alt="Venue" 
+                  className="w-full h-auto rounded-lg md:ml-4"
+                />
+              </div>
+          </div>
         </div>
-      </div>
-
-      <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
-        <div className="ml-2 md:ml-4">
-          <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
-          <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
-        </div>
-      </div>
-
-      <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
-        <div className="ml-2 md:ml-4">
-          <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
-          <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>
-        </div>
-      </div>
-    </div>
-
-    {/* Right Side Image */}
-    <div className="w-full md:w-1/2">
-      <Image 
-        src="/images/landing image.jpg" 
-        alt="Venue" 
-        className="w-full h-auto rounded-lg md:ml-4"
-      />
-    </div>
-  </div>
-</div>
 
         <AdditionalSection />
 
         <VenueType />
-        
+        <Footer />
       </main>
 
     </div>

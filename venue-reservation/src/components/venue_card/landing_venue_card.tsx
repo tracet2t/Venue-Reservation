@@ -1,6 +1,7 @@
 import Carousel from '../carousel';
 
 const LandingVenueCard = () => {
+
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
