@@ -1,8 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Logo from "./Logo";
+import { useRouter } from "next/navigation";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router =useRouter();
+
+  const handleSignupClick = () => {
+    router.push("/signup-landing"); 
+  };
 
   return (
     <header className="bg-white shadow-lg z-1">
@@ -41,6 +47,7 @@ const Header = () => {
             Login
           </button>
           <button
+            onClick={handleSignupClick} 
             style={{ backgroundColor: "#584822" }}
             className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
           >
@@ -80,6 +87,7 @@ const Header = () => {
             Login
           </button>
           <button
+            onClick={handleSignupClick} 
             style={{ backgroundColor: "#584822" }}
             className="text-white w-full text-left px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out text-sm"
           >
