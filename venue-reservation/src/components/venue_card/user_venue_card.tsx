@@ -1,31 +1,34 @@
-'use client'
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Carousel from '../carousel';
 
 interface Venue {
-  id: number; 
+  id: number;
   name: string;
-  address: string;
+  street_name: string[];
+  district: string;
+  province: string;
   type: string;
   capacity: number;
   size: number;
   schedule: string;
-  images: string[]; 
-  features: string[]; 
+  images: string[];
+  features: string[];
 }
 
 interface VenueCardProps {
   province: string;
   district: string;
-  venueType: string | null; 
+  venueType: string | null;
   searchTerm: string;
   currentPage: number;
   venuesPerPage: number;
 }
 
 const VenueCard = ({ province, district, venueType, searchTerm, currentPage, venuesPerPage }: VenueCardProps) => {
-  const [venues, setVenues] = useState<Venue[]>([]); 
+  const [venues, setVenues] = useState<Venue[]>([]);
   const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
+  const router = typeof window !== 'undefined' ? useRouter() : null;
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -38,8 +41,8 @@ const VenueCard = ({ province, district, venueType, searchTerm, currentPage, ven
 
   useEffect(() => {
     const filtered = venues.filter((venue) => {
-      const matchesProvince = !province || venue.address.includes(province);
-      const matchesDistrict = !district || venue.address.includes(district);
+      const matchesProvince = !province || venue.province === province;
+      const matchesDistrict = !district || venue.district === district;
       const matchesVenueType = !venueType || venue.type === venueType;
       const matchesSearchTerm = !searchTerm || venue.name.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesProvince && matchesDistrict && matchesVenueType && matchesSearchTerm;
@@ -50,27 +53,36 @@ const VenueCard = ({ province, district, venueType, searchTerm, currentPage, ven
   const startIndex = (currentPage - 1) * venuesPerPage;
   const currentVenues = filteredVenues.slice(startIndex, startIndex + venuesPerPage);
 
+  const handleCardClick = (venueId: number) => {
+    if (router) {
+      router.push(`/reservation/${venueId}`);
+    }
+  };
+
   return (
     <div className="container mx-auto mt-6 p-4">
       {currentVenues.map((venue) => (
-        <div key={venue.id} className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4">
-
+        <div
+          key={venue.id}
+          className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4 cursor-pointer"
+          onClick={() => handleCardClick(venue.id)}
+        >
           <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
-          <Carousel 
-          images={venue.images}
-          width="100%"
-          height="340px"
-          arrowBgColor="rgba(0, 0, 0, 0.7)"
-          arrowFgColor="#fff"
-          dotColor="#ccc"
-          activeDotColor="#ff6347"
-          />
+            <Carousel
+              images={venue.images}
+              width="100%"
+              height="340px"
+              arrowBgColor="rgba(0, 0, 0, 0.7)"
+              arrowFgColor="#fff"
+              dotColor="#ccc"
+              activeDotColor="#ff6347"
+            />
           </div>
-          {/* Details Section */}
+
           <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-black-500">{venue.name}</h1>
-              <p>{venue.address}</p>
+              <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>
               <p><strong>Type:</strong> {venue.type}</p>
               <p><strong>Capacity:</strong> {venue.capacity} seated</p>
               <p><strong>Size:</strong> {venue.size} sqft</p>
