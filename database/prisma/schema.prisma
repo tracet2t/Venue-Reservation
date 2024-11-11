@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId        String         @id @default(uuid()) 
+  firstName     String
+  lastName      String
+  contactNumber BigInt         // Change from Int to BigInt
+  address       String
+  email         String         @unique
+  password      String
+  userType      UserType
+  reservations  Reservation[]  @relation("UserReservations")
+}
+
+
+model Venue {
+  id            Int            @id @default(autoincrement())
+  name          String
+  street_name   String[]
+  district      String
+  province      String
+  type          String
+  capacity      Int
+  size          Int
+  schedule      String
+  features      String[] 
+  images        String[] 
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  reservations  Reservation[]  @relation("VenueReservations")
+}
+
+model Reservation {
+  reservationId         String           @id @default(uuid()) 
+  userId                String
+  venueId               Int
+  title                 String
+  purposeOfReservation  String
+  timeDuration          Int
+  extraServices         ExtraService[]
+  reservationDate       DateTime
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  user                  User             @relation("UserReservations", fields: [userId], references: [userId])
+  venue                 Venue            @relation("VenueReservations", fields: [venueId], references: [id])
+  reservationState      ReservationState?
+}
+
+model ReservationState {
+  reservationStateId String            @id @default(uuid()) 
+  reservationId      String            @unique
+  status             Status
+  adminComments      String?
+  reservation        Reservation       @relation(fields: [reservationId], references: [reservationId])
+}
+
+enum ExtraService {
+  food
+  sound_system
+  private_parking
+  projectors
+  extend_hours
+}
+
+enum Status {
+  Pending
+  Rejected
+  Accepted
+}
+
+enum UserType {
+  Admin
+  Regular
+  Guest
+}
