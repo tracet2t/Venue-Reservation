@@ -1,80 +1,100 @@
 'use client'
 import { useEffect, useState } from 'react';
 import Carousel from '../carousel';
+import { useRouter } from 'next/navigation';
 
 interface Venue {
-  id: number; 
+  id: number;
   name: string;
-  address: string;
+  street_name: string[];
+  district: string;
+  province: string;
   type: string;
   capacity: number;
   size: number;
   schedule: string;
-  images: string[]; 
-  features: string[]; 
+  images: string[];
+  features: string[];
 }
 
 interface VenueCardProps {
-  province: string;
-  district: string;
-  venueType: string | null; 
+  provinces: string[];
+  districts: string[];
+  venueType: string;
   searchTerm: string;
-  currentPage: number;
-  venuesPerPage: number;
 }
 
-const VenueCard = ({ province, district, venueType, searchTerm, currentPage, venuesPerPage }: VenueCardProps) => {
-  const [venues, setVenues] = useState<Venue[]>([]); 
-  const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
-
+const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, searchTerm }) => {
+  const [venues, setVenues] = useState<Venue[]>([]);
+  const router = useRouter();
   useEffect(() => {
     const fetchVenues = async () => {
-      const res = await fetch('http://localhost:3000/api/venues');
-      const data = await res.json();
-      setVenues(data);
+      try {
+        const queryParams = new URLSearchParams({
+          provinces: provinces.join(','),
+          districts: districts.join(','),
+          venueType,
+          searchTerm,
+        });
+
+        const response = await fetch(`/api/venues?${queryParams.toString()}`);
+        const data = await response.json();
+
+        // Log data to verify its structure
+        console.log('Fetched data:', data);
+
+        // Ensure data is an array before setting it to venues
+        if (Array.isArray(data)) {
+          setVenues(data);
+        } else {
+          console.error("Expected an array, but received:", data);
+          setVenues([]);  // Set to an empty array if data is not an array
+        }
+      } catch (error) {
+        console.error("Error fetching venues:", error);
+        setVenues([]);  // Set to an empty array in case of an error
+      }
     };
+
     fetchVenues();
-  }, []);
+  }, [provinces, districts, venueType, searchTerm]);
 
-  useEffect(() => {
-    const filtered = venues.filter((venue) => {
-      const matchesProvince = !province || venue.address.includes(province);
-      const matchesDistrict = !district || venue.address.includes(district);
-      const matchesVenueType = !venueType || venue.type === venueType;
-      const matchesSearchTerm = !searchTerm || venue.name.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesProvince && matchesDistrict && matchesVenueType && matchesSearchTerm;
-    });
-    setFilteredVenues(filtered);
-  }, [venues, province, district, venueType, searchTerm]);
-
-  const startIndex = (currentPage - 1) * venuesPerPage;
-  const currentVenues = filteredVenues.slice(startIndex, startIndex + venuesPerPage);
+  const handleCardClick = (venueId: number) => {
+    if (router) {
+      router.push(`/reservation/${venueId}`);
+    }
+  };
 
   return (
     <div className="container mx-auto mt-6 p-4">
-      {currentVenues.map((venue) => (
-        <div key={venue.id} className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4">
-
+      {venues.map((venue) => (
+        <div
+          key={venue.id}
+          className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4 cursor-pointer"
+          onClick={() => handleCardClick(venue.id)}
+        >
+          {/* Image Section */}
           <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
-          <Carousel 
-          images={venue.images}
-          width="100%"
-          height="340px"
-          arrowBgColor="rgba(0, 0, 0, 0.7)"
-          arrowFgColor="#fff"
-          dotColor="#ccc"
-          activeDotColor="#ff6347"
-          />
+            <Carousel
+              images={venue.images}
+              width="100%"
+              height="340px"
+              arrowBgColor="rgba(0, 0, 0, 0.7)"
+              arrowFgColor="#fff"
+              dotColor="#ccc"
+              activeDotColor="#ff6347"
+            />
           </div>
+
           {/* Details Section */}
-          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between">
+          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between  text-olive">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-black-500">{venue.name}</h1>
-              <p>{venue.address}</p>
-              <p><strong>Type:</strong> {venue.type}</p>
-              <p><strong>Capacity:</strong> {venue.capacity} seated</p>
-              <p><strong>Size:</strong> {venue.size} sqft</p>
-              <p><strong>Time Schedule:</strong> {venue.schedule}</p>
+              <h1 className="text-3xl md:text-4xl font-bold">{venue.name}</h1>
+              <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>
+              <p><strong>Type: {venue.type}</strong></p>
+              <p><strong>Capacity: {venue.capacity} seated</strong></p>
+              <p><strong>Size: {venue.size} sqft</strong></p>
+              <p><strong>Time Schedule: {venue.schedule} </strong></p>
             </div>
 
             <div>
