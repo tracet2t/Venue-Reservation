@@ -1,23 +1,15 @@
+// Reservation.tsx
 'use client'
 import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 
 interface Location {
   id: number;
   province: string;
   districts: string[];
 }
-
 
 //data for provinces and districts
 const locations: Location[] = [
@@ -32,6 +24,7 @@ const locations: Location[] = [
   { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
+
 const Reservation = () => {
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
@@ -39,62 +32,66 @@ const Reservation = () => {
   const [selectedVenueType, setSelectedVenueType] = useState("");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
   const [isSearchTerm, setSearchTerm] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const venuesPerPage = 5;
 
   const toggleLocationDropdown = () => {
     setIsLocationDropdownOpen(!isLocationDropdownOpen);
   };
 
-  
-  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
 
   const toggleVenueDropdown = () => {
     setIsVenueDropdownOpen(!isVenueDropdownOpen);
   };
 
   const handleDistrictCheckboxChange = (district: string) => {
-    setSelectedDistricts((prev) =>
-      prev.includes(district) ? prev.filter((item) => item !== district) : [...prev, district]
-    );
+    setSelectedDistricts((prev) => {
+      if (prev.includes(district)) {
+        return prev.filter((item) => item !== district);
+      } else {
+        return [...prev, district];
+      }
+    });
   };
 
-  const handleProvinceCheckboxChange = (province: string) => {
-    if (selectedProvince === province) {
+  const handleProvinceCheckboxChange = (provinces: string) => {
+    if (selectedProvince === provinces) {
       setSelectedProvince(null);
       setSelectedDistricts([]);
     } else {
-      setSelectedProvince(province);
+      setSelectedProvince(provinces);
       setSelectedDistricts([]);
     }
   };
-
+  
   const handleVenueTypeChange = (type: string) => {
-    setSelectedVenueType(type);
+    setSelectedVenueType((prev) => (prev === type ? "" : type));
   };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
-
-  const totalPages = Math.ceil(15 / venuesPerPage); // Assuming you have a total of 15 venues
-
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Header */}
       <div className='z-1'>
       <Header />
       </div>
+
+      {/*- Hero Section --*/}
+
       {/* Main Content */}
       <main className="flex-grow p-8">
+        <div className="text-center mt-12">
+          <h1 className="text-4xl gab-4 p-4 font-bold text-olive text-5xl">Tailored Spaces, <br/>Reserved For You</h1>
+          <p className="mt-4 text-2xl text-olive">Instantly discover the best venues for events, meetings, and celebrations.<br/>Start planning your perfect event today</p>
+        </div>
         {/* Location and Venue Type Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-4 p-4 bg-white border rounded-lg shadow-lg max-w-[1400px] mx-auto space-y-0 space-x-0 md:space-x-8">
+        <div className="flex flex-wrap py-2 items-center justify-center mt-5  gap-2 p-4 bg-olive border rounded-lg shadow-lg max-w-[1470px] mx-auto space-y-0 space-x-0 md:space-x-8">
+        
           {/* Location Filter */}
           <div className="relative z-10 w-full sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
-                className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
+                className="flex items-center justify-between gap-6 px-7 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
                 className="w-5 h-5" />
@@ -139,7 +136,7 @@ const Reservation = () => {
 
           {/* Venue Type Filter */}
           <div className="relative z-10 w-full sm:w-full md:w-auto ml-0 md:ml-12">
-            <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-6 px-4 py-2 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
+            <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
                 className="w-6 h-6" />
@@ -200,53 +197,34 @@ const Reservation = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#584822]">
               <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z M 21 11 C 16.59375 11 13 14.59375 13 19 C 13 19.550781 13.449219 20 14 20 C 14.550781 20 15 19.550781 15 19 C 15 15.691406 17.691406 13 21 13 C 24.308594 13 27 15.691406 27 19 C 27 22.308594 24.308594 25 21 25 C 19.820312 25 18.664063 24.6875 17.65625 24.125 L 16.28125 22.875 C 15.851563 22.527344 15.199219 22.570313 14.875 23 C 14.527344 23.46875 14.570313 24.152344 15 24.5 L 16.375 25.75 C 17.660156 26.570313 19.296875 27 21 27 C 25.40625 27 29 23.40625 29 19 C 29 14.59375 25.40625 11 21 11 Z" />
             </svg>
-            <input type="text" className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#584822]" 
+            <input type="text" className="pl-10 gap-1 pr-4 py-4 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#584822]" 
              placeholder="Enter Venue Name"
              value={isSearchTerm}
              onChange={handleSearchTermChange} 
                />
           </div>
           {/* Search Button */}
-        <button className="px-6 py-2 w-full sm:w-full md:w-64 text-white bg-[#584822] rounded-lg hover:bg-[#7b5e34] focus:outline-none">
+        <button className="px-6 py-4 w-full sm:w-full md:w-64 text-white bg-[#584822] rounded-lg hover:bg-[#7b5e34] focus:outline-none">
           Search
         </button>
         </div>
 
         {/* Venue Card */}
-        <VenueCard
-          province={selectedProvince || ""}
-          district={selectedDistricts.join(', ')}
-          venueType={selectedVenueType}
-          searchTerm={isSearchTerm}
-          currentPage={currentPage}
-          venuesPerPage={venuesPerPage}
-        />
-      
-      {/* Pagination */}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <button  onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-            <PaginationPrevious href="#" />
-            </button>
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, page) => (
-            <PaginationItem key={page}>
-              <PaginationLink href="#" onClick={() => handlePageChange(page + 1)}>{page + 1}</PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-            <PaginationNext href="#"  />
-            </button>
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+        <div className="max-h-[1000px] overflow-y-auto">
+          <VenueCard
+            provinces={selectedProvince ? [selectedProvince] : []}
+            districts={selectedDistricts}
+            venueType={selectedVenueType}
+            searchTerm={isSearchTerm}
+          />
+        </div>
+
       </main>
 
       {/* Footer */}
       
       <Footer />
+
     </div>
   );
 };

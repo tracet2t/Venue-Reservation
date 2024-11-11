@@ -122,10 +122,23 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  userId: 'userId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  contactNumber: 'contactNumber',
+  address: 'address',
+  email: 'email',
+  password: 'password',
+  userType: 'userType'
+};
+
 exports.Prisma.VenueScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  address: 'address',
+  street_name: 'street_name',
+  district: 'district',
+  province: 'province',
   type: 'type',
   capacity: 'capacity',
   size: 'size',
@@ -134,6 +147,26 @@ exports.Prisma.VenueScalarFieldEnum = {
   images: 'images',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReservationScalarFieldEnum = {
+  reservationId: 'reservationId',
+  userId: 'userId',
+  venueId: 'venueId',
+  title: 'title',
+  purposeOfReservation: 'purposeOfReservation',
+  timeDuration: 'timeDuration',
+  extraServices: 'extraServices',
+  reservationDate: 'reservationDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReservationStateScalarFieldEnum = {
+  reservationStateId: 'reservationStateId',
+  reservationId: 'reservationId',
+  status: 'status',
+  adminComments: 'adminComments'
 };
 
 exports.Prisma.SortOrder = {
@@ -146,9 +179,35 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.UserType = exports.$Enums.UserType = {
+  Admin: 'Admin',
+  Regular: 'Regular',
+  Guest: 'Guest'
+};
+
+exports.ExtraService = exports.$Enums.ExtraService = {
+  food: 'food',
+  sound_system: 'sound_system',
+  private_parking: 'private_parking',
+  projectors: 'projectors',
+  extend_hours: 'extend_hours'
+};
+
+exports.Status = exports.$Enums.Status = {
+  Pending: 'Pending',
+  Rejected: 'Rejected',
+  Accepted: 'Accepted'
+};
 
 exports.Prisma.ModelName = {
-  Venue: 'Venue'
+  User: 'User',
+  Venue: 'Venue',
+  Reservation: 'Reservation',
+  ReservationState: 'ReservationState'
 };
 
 /**

@@ -1,5 +1,4 @@
 "use client";
-
 import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
@@ -112,7 +111,7 @@ const FontsPage = (): JSX.Element => {
   const router = useRouter();
 
   const navigateToReservation = () => {
-    router.push('/reservations');
+    router.push('/card_view');
   };
 
   return (
