@@ -1,21 +1,46 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import Footer from "../layouts/Footer";
+import axios from "axios";
+interface UserProfile {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  address: string; 
+  contactNumber: string;
+  email: string;
+  profilePicture?: string;
+}
 
 export default function UserProfilePage() {
-  // Temporarily user data 
-  const [userProfile, setUserProfile] = useState({
-    name: "Uthpala Devaki",
-    firstName: "Uthpala",
-    lastName: "Devaki",
-    address: "60, Hill Street, Dehiwela",
-    phoneNumber: "0709874509",
-    email: "uthpaladevaki@gmail.com",
-   
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    userId: "1", // userId for testing
+    firstName: "",
+    lastName: "",
+    address: "",
+    contactNumber: "",
+    email: "",
+    profilePicture: "",
   });
 
-  const [isEditing, setIsEditing] = useState(false); 
+  const [isEditing, setIsEditing] = useState(false);
 
-  const handleChange = (e) => { // Updates userProfile 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get<UserProfile>(
+          `http://localhost:3000/api/user/profile?userId=${userProfile.userId}`
+        );
+        setUserProfile(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [userProfile.userId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserProfile((prevProfile) => ({
       ...prevProfile,
@@ -23,22 +48,33 @@ export default function UserProfilePage() {
     }));
   };
 
-  // Save changes and toggle off edit mode
-  const handleSave = () => {
-    setIsEditing(false);
-    
+  const handleSave = async () => {
+    try {
+      await axios.post(`http://localhost:3000/api/user/profile`, {
+        userId: userProfile.userId,
+        firstName: userProfile.firstName,
+        lastName: userProfile.lastName,
+        contactNumber: userProfile.contactNumber,
+        address: userProfile.address,
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
   };
 
   return (
-    <div className="flex justify-center mt-8">
-        <div className="w-4/5 bg-white rounded-lg shadow p-8 mb-4">
-          <div className="flex justify-center">
-            <p className="text-2xl font-bold text-[#584822] mb-4">User Profile</p>
-          </div>
+    <div>
+      <div className="flex justify-center mt-8">
+            <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
+      </div>
+      <div className="flex justify-center mt-8">
+        <div className="w-3/5 bg-white rounded-lg shadow p-8 mb-4">
+          
           {/* add profile pictrue */}
         
             <h2 className="text-2xl font-bold text-[#584822] mb-2">{userProfile.firstName} {userProfile.lastName}</h2>
-            <p className="text-gray-500 mb-8">{userProfile.email}</p>
+            <p className="text-gray-600 mb-8">{userProfile.email}</p>
 
             <div className="grid grid-cols-2 gap-6">
             <div className="flex items-center">
@@ -82,12 +118,12 @@ export default function UserProfilePage() {
                 <input
                   type="text"
                   name="phoneNumber"
-                  value={userProfile.phoneNumber}
+                  value={userProfile.contactNumber}
                   onChange={handleChange}
                   className="border rounded px-2 py-1"
                 />
               ) : (
-                <p> {userProfile.phoneNumber}</p>)}
+                <p> {userProfile.contactNumber}</p>)}
               </div>
               <div><p><strong>My Email Address:</strong> {userProfile.email}</p>{/* Email is not editable */}
               </div>
@@ -104,21 +140,28 @@ export default function UserProfilePage() {
               </button>
               <button
                 className="bg-[#584822] text-white px-8 py-2 rounded mr-16"
-                onClick={handleSave} // Saves changes
+                onClick={handleSave} 
               >
                 Save
               </button>
             </>
           ) : (
+           <> 
+            <button className="border border-[#584822] text-[#584822] px-8 py-2 rounded mr-8">Cancel</button>
             <button
-              className="bg-[#584822] text-white px-8 py-2 rounded mr-16"
-              onClick={() => setIsEditing(true)} // Enables edit mode
-            >
-              Edit
-            </button>
+            className="bg-[#584822] text-white px-8 py-2 rounded mr-16"
+            onClick={() => setIsEditing(true)} 
+              >
+                Edit
+              </button>
+         </> 
+           
           )}
           </div>
       </div>
+     
+    </div>
+     <Footer />
     </div>
   );
 }
