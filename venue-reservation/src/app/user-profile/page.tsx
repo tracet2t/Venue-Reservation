@@ -1,6 +1,7 @@
 "use client";
 import { useState,useEffect } from "react";
 import Footer from "../layouts/Footer";
+import RegisteredHeader from "../layouts/RegisteredHeader";
 import axios from "axios";
 interface UserProfile {
   userId: string;
@@ -14,7 +15,7 @@ interface UserProfile {
 
 export default function UserProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    userId: "1", // userId for testing
+    userId: "a00a0cc5-3c60-4df5-89ff-1c67a140915e", // userId for testing
     firstName: "",
     lastName: "",
     address: "",
@@ -54,7 +55,7 @@ export default function UserProfilePage() {
         userId: userProfile.userId,
         firstName: userProfile.firstName,
         lastName: userProfile.lastName,
-        contactNumber: userProfile.contactNumber,
+        contactNumber: userProfile.contactNumber.toString(),
         address: userProfile.address,
       });
       setIsEditing(false);
@@ -64,12 +65,13 @@ export default function UserProfilePage() {
   };
 
   return (
-    <div>
+    <div><RegisteredHeader userName={""} />
+     
       <div className="flex justify-center mt-8">
             <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
       </div>
       <div className="flex justify-center mt-8">
-        <div className="w-3/5 bg-white rounded-lg shadow p-8 mb-4">
+        <div className="w-4/5 bg-white rounded-lg shadow p-8 mb-4">
           
           {/* add profile pictrue */}
         

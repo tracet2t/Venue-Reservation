@@ -4,8 +4,9 @@ import prisma from '../../../dbclient';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req;
 
-  const userId = 'USER_ID_HERE'; 
+  const userId = 'a00a0cc5-3c60-4df5-89ff-1c67a140915e'; 
 
+  
   switch (method) {
     case 'GET':
       try {
