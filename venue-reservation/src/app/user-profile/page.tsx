@@ -82,22 +82,22 @@ export default function UserProfilePage() {
   };
   
   return (
-    <div><RegisteredHeader userName={""} />
-     
-      <div className="flex justify-center mt-8">
+    <div>
+      <RegisteredHeader userName={""} />
+      <div className="flex justify-center mt-8 ">
             <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
       </div>
       <div className="flex justify-center mt-8">
-        <div className="w-4/5 bg-white rounded-lg shadow p-8 mb-4">
+        <div className="w-3/4 bg-white rounded-lg shadow-lg z-10 p-8 mb-4">
           
           {/* add profile pictrue */}
         
             <h2 className="text-2xl font-bold text-[#584822] mb-2">{userProfile.firstName} {userProfile.lastName}</h2>
             <p className="text-gray-600 mb-8">{userProfile.email}</p>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-8">
             <div className="flex items-center">
-              <label className="mr-2 font-bold">First Name:</label>{isEditing ? ( 
+              <label className="mr-2 font-bold">First Name</label>{isEditing ? ( 
                   <input
                     type="text"
                     name="firstName"
@@ -108,19 +108,19 @@ export default function UserProfilePage() {
                 ) : (<p className="m-0"> {userProfile.firstName}</p>)}
               </div>
               <div className="flex items-center">
-                <label className="mr-2 font-bold">Last Name:</label> {isEditing ? ( 
+                <label className="mr-2 font-bold">Last Name</label> {isEditing ? ( 
                 <input
                   type="text"
                   name="lastName"
                   value={userProfile.lastName}
                   onChange={handleChange}
-                  className="border rounded px-2 py-1 "
+                  className="border rounded px-2 py-2 "
                 />
               ) : (
                 <p>{userProfile.lastName}</p> )}
               </div>
               <div className="flex items-center">
-              <label className="mr-2 font-bold">Address:</label> {isEditing ? ( 
+              <label className="mr-2 font-bold">Address</label> {isEditing ? ( 
                 <input
                   type="text"
                   name="address"
@@ -133,7 +133,7 @@ export default function UserProfilePage() {
               </div><br>
               </br>
               <div className="flex items-center">
-              <label className="mr-2 font-bold">Phone Number:</label>
+              <label className="mr-2 font-bold">Phone Number</label>
               {isEditing ? ( 
                 <input
                   type="text"
@@ -145,7 +145,7 @@ export default function UserProfilePage() {
               ) : (
                 <p> {userProfile.contactNumber}</p>)}
               </div><br></br>
-              <div><p><strong>My Email Address:</strong> {userProfile.email}</p>{/* Email is not editable */}
+              <div><p><strong>My Email Address</strong> {userProfile.email}</p>{/* Email is not editable */}
               </div>
             </div>
 
