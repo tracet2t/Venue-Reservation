@@ -10,7 +10,7 @@ async function seed() {
       lastName: "Jude",
       contactNumber: +94763751121,
       address: "123 Main St, Cityville",
-      email: "shanjude1121Sgmail.com",
+      email: "shanjude1121S@gmail.com",
       password: "password123",  
       userType: UserType.Admin,
     },
