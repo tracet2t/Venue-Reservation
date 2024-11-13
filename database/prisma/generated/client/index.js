@@ -189,7 +189,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\Nagarro\\Reservation Project\\user profile\\Venue-Reservation\\database\\prisma\\generated\\client",
+      "value": "E:\\Nagarro\\Reservation Project\\User-profile\\Venue-Reservation\\database\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -203,7 +203,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "E:\\Nagarro\\Reservation Project\\user profile\\Venue-Reservation\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "E:\\Nagarro\\Reservation Project\\User-profile\\Venue-Reservation\\database\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -217,10 +217,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-<<<<<<< HEAD
-  "postinstall": true,
-=======
->>>>>>> 3d5d180490aa82d21d05029a6042404a713afb03
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
