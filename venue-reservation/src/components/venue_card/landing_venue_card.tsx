@@ -1,6 +1,13 @@
 import Carousel from '../carousel';
+import { useRouter } from 'next/navigation';
 
 const LandingVenueCard = () => {
+  const router = useRouter();
+
+  // Handle navigation to signup page
+  const handleReserveNowClick = () => {
+    router.push('/signup');
+  };
 
   const images = [
     '/images/image1.jpg',
@@ -46,7 +53,9 @@ const LandingVenueCard = () => {
 
         {/* Reserve Now Button */}
         <div className="flex justify-end mt-4">
-          <button className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold">
+          <button className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold"
+          onClick={handleReserveNowClick} // Navigate to signup page
+          >
             Reserve Now
           </button>
         </div>
