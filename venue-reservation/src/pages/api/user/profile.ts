@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           firstName: user.firstName,
           lastName: user.lastName,
           address: user.address,
-          phoneNumber: user.contactNumber.toString(),
+          contactNumber: user.contactNumber.toString(),
           email: user.email,
         });
       } catch (error) {
@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case 'PUT':
       try {
-        const { firstName, lastName, address, phoneNumber } = req.body;
+        const { firstName, lastName, address, contactNumber } = req.body;
 
         // Update the user profile in the database
         const updatedUser = await prisma.user.update({
@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             firstName,
             lastName,
             address,
-            contactNumber: BigInt(phoneNumber), // Convert to BigInt as Prisma expects it
+            contactNumber: BigInt(contactNumber), // Convert to BigInt
           },
         });
 

@@ -51,19 +51,36 @@ export default function UserProfilePage() {
 
   const handleSave = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/user/profile`, {
+      if (!userProfile.contactNumber || isNaN(Number(userProfile.contactNumber))) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+  
+      const contactNumber = BigInt(userProfile.contactNumber); // Convert to BigInt 
+  
+      await axios.put(`http://localhost:3000/api/user/profile`, {
         userId: userProfile.userId,
         firstName: userProfile.firstName,
         lastName: userProfile.lastName,
-        contactNumber: userProfile.contactNumber.toString(),
+        contactNumber, // Send as BigInt
         address: userProfile.address,
       });
+
+     // Update the new data after a successful save
+     setUserProfile((prevProfile) => ({
+      ...prevProfile,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
+      address: userProfile.address,
+      contactNumber: userProfile.contactNumber,
+    }));
+
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating user data:", error);
     }
   };
-
+  
   return (
     <div><RegisteredHeader userName={""} />
      
@@ -113,7 +130,8 @@ export default function UserProfilePage() {
                 />
               ) : (
                 <p> {userProfile.address}</p>)} 
-              </div>
+              </div><br>
+              </br>
               <div className="flex items-center">
               <label className="mr-2 font-bold">Phone Number:</label>
               {isEditing ? ( 
@@ -126,7 +144,7 @@ export default function UserProfilePage() {
                 />
               ) : (
                 <p> {userProfile.contactNumber}</p>)}
-              </div>
+              </div><br></br>
               <div><p><strong>My Email Address:</strong> {userProfile.email}</p>{/* Email is not editable */}
               </div>
             </div>
