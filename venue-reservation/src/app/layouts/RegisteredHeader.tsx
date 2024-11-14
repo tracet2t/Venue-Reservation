@@ -35,7 +35,7 @@ const RegisteredHeader = ({ userName }: { userName: string }) => {
 
         {isOpen && (
           <div className="fixed inset-0 bg-white flex flex-col space-y-4 p-6 lg:hidden">
-            <button onClick={() => setIsOpen(false)} className="text-gray-700 self-end">
+            <button onClick={() => setIsOpen(false)} className="text-gray-700 self-end focus:outline-none">
               {/* SVG for Close */}
             </button>
             <Link href="/" className="text-[#6A5B3A] text-lg font-medium" onClick={() => setIsOpen(false)}>
