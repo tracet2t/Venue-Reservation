@@ -6,7 +6,7 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-lg z-1">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 z-50 flex items-center justify-between">
         <div>
           {/* Add the Logo here */}
           <Logo />
@@ -75,8 +75,8 @@ const Header = () => {
           </button>
         </div>
 
-        <nav className="flex flex-col items-start space-y-4 p-4">
-          <button className="bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm">
+        <nav className="z-100 flex flex-col items-start space-y-4 p-4">
+          <button className="z-1 bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm">
             Login
           </button>
           <button

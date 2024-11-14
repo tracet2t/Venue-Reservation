@@ -1,4 +1,10 @@
 -- CreateEnum
+CREATE TYPE "AvailabilityStatus" AS ENUM ('FULLY_BOOKED', 'PARTIALLY_BOOKED', 'NOT_AVAILABLE', 'AVAILABLE');
+
+-- CreateEnum
+CREATE TYPE "Schedule" AS ENUM ('EntireDay', 'SessionTime', 'HourlyTime');
+
+-- CreateEnum
 CREATE TYPE "ExtraService" AS ENUM ('food', 'sound_system', 'private_parking', 'projectors', 'extend_hours');
 
 -- CreateEnum
@@ -31,13 +37,34 @@ CREATE TABLE "Venue" (
     "type" TEXT NOT NULL,
     "capacity" INTEGER NOT NULL,
     "size" INTEGER NOT NULL,
-    "schedule" TEXT NOT NULL,
+    "schedule" "Schedule" NOT NULL,
     "features" TEXT[],
     "images" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Venue_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VenueAvailability" (
+    "id" SERIAL NOT NULL,
+    "venueId" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "status" "AvailabilityStatus" NOT NULL,
+
+    CONSTRAINT "VenueAvailability_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TimeSlot" (
+    "id" SERIAL NOT NULL,
+    "availabilityId" INTEGER NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
+    "status" "AvailabilityStatus" NOT NULL,
+
+    CONSTRAINT "TimeSlot_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -71,6 +98,12 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ReservationState_reservationId_key" ON "ReservationState"("reservationId");
+
+-- AddForeignKey
+ALTER TABLE "VenueAvailability" ADD CONSTRAINT "VenueAvailability_venueId_fkey" FOREIGN KEY ("venueId") REFERENCES "Venue"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TimeSlot" ADD CONSTRAINT "TimeSlot_availabilityId_fkey" FOREIGN KEY ("availabilityId") REFERENCES "VenueAvailability"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Reservation" ADD CONSTRAINT "Reservation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;

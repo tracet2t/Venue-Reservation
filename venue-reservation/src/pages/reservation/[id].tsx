@@ -1,5 +1,5 @@
 "use client";
-"use cache"
+"use cache";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from "@/app/layouts/Header";
@@ -18,6 +18,7 @@ const Availability = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availability, setAvailability] = useState({
@@ -31,6 +32,17 @@ const Availability = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check user authentication status on component mount
+    const checkAuthStatus = async () => {
+      // Replace with your actual authentication check
+      const response = await fetch('/api/auth/status');
+      if (response.ok) {
+        const { loggedIn } = await response.json();
+        setIsLoggedIn(loggedIn);
+      }
+    };
+    checkAuthStatus();
+
     if (!id) return;
 
     const fetchVenueInfo = async () => {
@@ -60,6 +72,12 @@ const Availability = () => {
   }, [id]);
 
   const handleSelectDate = (date: Date) => {
+    if (!isLoggedIn) {
+      alert("Please log in to select a date.");
+      router.push('/login'); // Redirect to login page if not logged in
+      return;
+    }
+    
     setSelectedDate(date);
     setAvailability({
       morning: false,
@@ -81,11 +99,13 @@ const Availability = () => {
 
   return (
     <div>
+      <div className="z-50">
       <Header />
+      </div>
       <div className="flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
         {/* Calendar */}
         <div className="w-full lg:w-1/2 mb-6 lg:mb-0">
-          <Calendar onSelectDate={handleSelectDate} />
+          <Calendar onSelectDate={handleSelectDate} id={Number(id)}/>
         </div>
 
         {/* Q&A Box */}
@@ -108,7 +128,7 @@ const Availability = () => {
 
         {/* Availability Modal */}
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-semibold mb-4">Select Availability</h2>
               <p className="text-gray-700 mb-6">Select availability for {selectedDate?.toLocaleDateString()}</p>

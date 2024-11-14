@@ -12,7 +12,7 @@ model User {
   userId        String        @id @default(uuid())
   firstName     String
   lastName      String
-  contactNumber BigInt // Change from Int to BigInt
+  contactNumber BigInt
   address       String
   email         String        @unique
   password      String
@@ -21,20 +21,52 @@ model User {
 }
 
 model Venue {
-  id           Int           @id @default(autoincrement())
+  id           Int                 @id @default(autoincrement())
   name         String
-  street_name  String[]
+  street_name  String[] // If multiple street names are needed, else make it String
   district     String
   province     String
   type         String
   capacity     Int
   size         Int
-  schedule     String
+  schedule     Schedule
   features     String[]
   images       String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  reservations Reservation[] @relation("VenueReservations")
+  availability VenueAvailability[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  reservations Reservation[]       @relation("VenueReservations")
+}
+
+model VenueAvailability {
+  id        Int                @id @default(autoincrement())
+  venueId   Int
+  date      DateTime
+  status    AvailabilityStatus
+  timeSlots TimeSlot[]
+  venue     Venue              @relation(fields: [venueId], references: [id])
+}
+
+model TimeSlot {
+  id                Int                @id @default(autoincrement())
+  availabilityId    Int
+  startTime         DateTime
+  endTime           DateTime
+  status            AvailabilityStatus
+  venueAvailability VenueAvailability  @relation(fields: [availabilityId], references: [id])
+}
+
+enum AvailabilityStatus {
+  FULLY_BOOKED
+  PARTIALLY_BOOKED
+  NOT_AVAILABLE
+  AVAILABLE
+}
+
+enum Schedule {
+  EntireDay
+  SessionTime
+  HourlyTime
 }
 
 model Reservation {

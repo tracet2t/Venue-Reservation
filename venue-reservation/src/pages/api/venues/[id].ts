@@ -1,40 +1,45 @@
-// pages/api/venues/[id].tsx
-
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../dbclient'; // Adjust the path if necessary
+import prisma from '../../../dbclient'; // Ensure Prisma is correctly configured here
 
-const getVenueById = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Extract 'id' from the query parameters
   const { id } = req.query;
 
-  // Validate the id
-  if (!id || Array.isArray(id)) {
+  // Ensure 'id' exists and is a valid number
+  if (typeof id !== 'string' || isNaN(Number(id))) {
     return res.status(400).json({ error: 'Invalid venue ID' });
   }
 
-  try {
-    // Fetch the venue by ID
-    const venue = await prisma.venue.findUnique({
-      where: { id: Number(id) }, // Ensure ID is a number; adjust if using different data types
-    });
+  const venueId = Number(id); // Convert 'id' to a number
 
-    if (!venue) {
-      return res.status(404).json({ error: 'Venue not found' });
-    }
-
-    // Return the venue data
-    return res.status(200).json(venue);
-  } catch (error) {
-    console.error("Error fetching venue:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    return await getVenueById(req, res);
-  }
+    try {
+      // Fetch the venue by ID, including availability and time slots
+      const venue = await prisma.venue.findUnique({
+        where: { id: venueId },  // Use the validated venueId
+        include: {
+          availability: {
+            include: {
+              timeSlots: true,  // Fetch time slots for each availability entry
+            }
+          }
+        }
+      });
 
-  // Handle unsupported methods
-  res.setHeader('Allow', ['GET']);
-  return res.status(405).end(`Method ${req.method} Not Allowed`);
+      // If no venue is found, return a 404 error
+      if (!venue) {
+        return res.status(404).json({ error: 'Venue not found' });
+      }
+
+      // Return the venue data along with its availability and time slots
+      return res.status(200).json(venue);
+    } catch (error) {
+      console.error('Error fetching venue and availability:', error);
+      return res.status(500).json({ error: 'Failed to fetch venue data and availability' });
+    }
+  } else {
+    // Handle unsupported HTTP methods
+    res.setHeader('Allow', ['GET']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }

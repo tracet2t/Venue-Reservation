@@ -36,7 +36,6 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
           venueType,
           searchTerm,
         });
-
         const response = await fetch(`/api/venues?${queryParams.toString()}`);
         const data = await response.json();
 
