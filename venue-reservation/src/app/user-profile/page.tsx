@@ -2,6 +2,7 @@
 import { useState,useEffect } from "react";
 import Footer from "../layouts/Footer";
 import RegisteredHeader from "../layouts/RegisteredHeader";
+import { useRouter } from 'next/navigation';
 import axios from "axios";
 interface UserProfile {
   userId: string;
@@ -25,6 +26,7 @@ export default function UserProfilePage() {
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -59,14 +61,11 @@ export default function UserProfilePage() {
       const contactNumber = BigInt(userProfile.contactNumber); // Convert to BigInt 
   
       await axios.put(`http://localhost:3000/api/user/profile`, {
-        userId: userProfile.userId,
-        firstName: userProfile.firstName,
-        lastName: userProfile.lastName,
-        contactNumber, // Send as BigInt
-        address: userProfile.address,
+        ...userProfile,
+        contactNumber: userProfile.contactNumber.toString(), 
       });
 
-     // Update the new data after a successful save
+     // Update the new data after the save successful
      setUserProfile((prevProfile) => ({
       ...prevProfile,
       firstName: userProfile.firstName,
@@ -76,6 +75,7 @@ export default function UserProfilePage() {
     }));
 
       setIsEditing(false);
+      router.push('/user-profile');
     } catch (error) {
       console.error("Error updating user data:", error);
     }
