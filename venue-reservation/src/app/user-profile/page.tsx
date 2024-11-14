@@ -138,7 +138,7 @@ export default function UserProfilePage() {
               {isEditing ? ( 
                 <input
                   type="text"
-                  name="phoneNumber"
+                  name="contactNumber"
                   value={userProfile.contactNumber}
                   onChange={handleChange}
                   className="border rounded px-2 py-1"
