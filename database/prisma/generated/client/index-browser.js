@@ -149,6 +149,21 @@ exports.Prisma.VenueScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VenueAvailabilityScalarFieldEnum = {
+  id: 'id',
+  venueId: 'venueId',
+  date: 'date',
+  status: 'status'
+};
+
+exports.Prisma.TimeSlotScalarFieldEnum = {
+  id: 'id',
+  availabilityId: 'availabilityId',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  status: 'status'
+};
+
 exports.Prisma.ReservationScalarFieldEnum = {
   reservationId: 'reservationId',
   userId: 'userId',
@@ -189,6 +204,19 @@ exports.UserType = exports.$Enums.UserType = {
   Guest: 'Guest'
 };
 
+exports.Schedule = exports.$Enums.Schedule = {
+  EntireDay: 'EntireDay',
+  SessionTime: 'SessionTime',
+  HourlyTime: 'HourlyTime'
+};
+
+exports.AvailabilityStatus = exports.$Enums.AvailabilityStatus = {
+  FULLY_BOOKED: 'FULLY_BOOKED',
+  PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
+  NOT_AVAILABLE: 'NOT_AVAILABLE',
+  AVAILABLE: 'AVAILABLE'
+};
+
 exports.ExtraService = exports.$Enums.ExtraService = {
   food: 'food',
   sound_system: 'sound_system',
@@ -206,6 +234,8 @@ exports.Status = exports.$Enums.Status = {
 exports.Prisma.ModelName = {
   User: 'User',
   Venue: 'Venue',
+  VenueAvailability: 'VenueAvailability',
+  TimeSlot: 'TimeSlot',
   Reservation: 'Reservation',
   ReservationState: 'ReservationState'
 };
