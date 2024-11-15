@@ -63,6 +63,7 @@ export default function UserProfilePage() {
       await axios.put(`http://localhost:3000/api/user/profile`, {
         ...userProfile,
         contactNumber: userProfile.contactNumber.toString(), 
+        profilePicture: userProfile.profilePicture,
       });
 
      // Update the new data after the save successful
@@ -80,22 +81,56 @@ export default function UserProfilePage() {
       console.error("Error updating user data:", error);
     }
   };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        setUserProfile((prevProfile) => ({
+          ...prevProfile,
+          profilePicture: reader.result as string, // Base64 image string
+        }));
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  };
   
   return (
     <div>
       <RegisteredHeader userName={""} />
-      <div className="flex justify-center mt-8 ">
+      <div className="flex justify-center mt-8 max-w-2x">
             <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
       </div>
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center items-center flex-grow">
         <div className="w-3/4 bg-white rounded-lg shadow-lg z-10 p-8 mb-4">
-          
-          {/* add profile pictrue */}
-        
-            <h2 className="text-2xl font-bold text-[#584822] mb-2">{userProfile.firstName} {userProfile.lastName}</h2>
-            <p className="text-gray-600 mb-8">{userProfile.email}</p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col place-items-start">
+            <div className="relative mb-4">
+              {userProfile.profilePicture ? (
+                <img
+                  src={userProfile.profilePicture}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
+              {isEditing && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              )}
+              <h2 className="text-2xl font-bold text-[#584822] mb-2">{userProfile.firstName} {userProfile.lastName}</h2>
+              <p className="text-gray-600 mb-8">{userProfile.email}</p>
+            </div>
+          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between">
               
             <div className="flex items-center">
               <label className="mr-2 font-bold">First Name</label>{isEditing ? ( 

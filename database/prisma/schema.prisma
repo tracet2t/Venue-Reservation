@@ -18,6 +18,7 @@ model User {
   password      String
   userType      UserType
   reservations  Reservation[]  @relation("UserReservations")
+  profilePicture String?
 }
 
 

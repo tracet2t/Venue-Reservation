@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case 'PUT':
       try {
-        const { firstName, lastName, address, contactNumber } = req.body;
+        const { firstName, lastName, address, contactNumber, profilePicture } = req.body;
 
         // Update the user profile in the database
         const updatedUser = await prisma.user.update({
@@ -51,6 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             lastName,
             address,
             contactNumber: BigInt(contactNumber), // Convert to BigInt
+            profilePicture,
           },
         });
 
