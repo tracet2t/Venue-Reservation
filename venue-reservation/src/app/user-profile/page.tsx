@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import Footer from "../layouts/Footer";
 import RegisteredHeader from "../layouts/RegisteredHeader";
 import { useRouter } from 'next/navigation';
-import axios from "axios";
+
 interface UserProfile {
   userId: string;
   firstName: string;
@@ -31,10 +31,14 @@ export default function UserProfilePage() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get<UserProfile>(
-          `http://localhost:3000/api/user/profile?userId=${userProfile.userId}`
+        const response = await fetch(
+          `/api/user/profile?userId=${userProfile.userId}`
         );
-        setUserProfile(response.data);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data: UserProfile = await response.json();
+        setUserProfile(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -60,11 +64,18 @@ export default function UserProfilePage() {
   
       const contactNumber = BigInt(userProfile.contactNumber); // Convert to BigInt 
   
-      await axios.put(`http://localhost:3000/api/user/profile`, {
-        ...userProfile,
-        contactNumber: userProfile.contactNumber.toString(), 
-        profilePicture: userProfile.profilePicture,
+      const response = await fetch(`/api/user/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...userProfile,
+          contactNumber: userProfile.contactNumber.toString(),
+          profilePicture: userProfile.profilePicture,
+        }),
       });
+
 
      // Update the new data after the save successful
      setUserProfile((prevProfile) => ({
