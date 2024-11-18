@@ -23,6 +23,6 @@
       "database/*": ["../database/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/card_view"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/card_view", "../auth.config.ts"],
   "exclude": ["node_modules"]
 }

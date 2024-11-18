@@ -1,11 +1,12 @@
-"use client";
 "use cache";
+"use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from "@/app/layouts/Header";
 import Footer from "@/app/layouts/Footer";
 import Calendar from "@/components/calendar";
 import "/src/app/globals.css";
+import Question from "@/components/questions"
 
 interface VenueInfo {
   id: number;
@@ -102,34 +103,21 @@ const Availability = () => {
       <div className="z-50">
       <Header />
       </div>
-      <div className="flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
+      <div className="z-20 flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
         {/* Calendar */}
-        <div className="w-full lg:w-1/2 mb-6 lg:mb-0">
+        <div className="w-full z-20 lg:w-1/2 mb-6 lg:mb-0">
           <Calendar onSelectDate={handleSelectDate} id={Number(id)}/>
         </div>
 
         {/* Q&A Box */}
-        <div className="w-full lg:w-1/2 lg:ml-4 p-4 bg-gray-100 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Questions & Answers</h2>
-          {loading ? (
-            <p>Loading venue details...</p>
-          ) : error ? (
-            <p className="text-red-500">Error: {error}</p>
-          ) : venueInfo ? (
-            <div>
-              <p><strong>Venue Name:</strong> {venueInfo.name}</p>
-              <p><strong>Type:</strong> {venueInfo.type}</p>
-              <p><strong>Schedule:</strong> {venueInfo.schedule}</p>
-            </div>
-          ) : (
-            <p>No venue information available.</p>
-          )}
+        <div className="w-full lg:w-1/2 lg:ml-8 p-4 bg-white border rounded-lg shadow-lg">
+          <Question />
         </div>
 
         {/* Availability Modal */}
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-semibold mb-4">Select Availability</h2>
               <p className="text-gray-700 mb-6">Select availability for {selectedDate?.toLocaleDateString()}</p>
 

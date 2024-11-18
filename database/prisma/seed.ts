@@ -8,14 +8,15 @@ async function seed() {
     data: {
       firstName: "shan",
       lastName: "Jude",
-      contactNumber: +94763751121,
+      contactNumber: 94763751121,
       address: "123 Main St, Cityville",
       email: "shanjude1121Sgmail.com",
-      password: "password123",  
-      userType: UserType.Admin,
+      password: "password123",
+      userType: "Admin",
+      emailVerified: null, 
     },
   });
-
+  
   const user2 = await prisma.user.create({
     data: {
       firstName: "Ranjan",
@@ -24,9 +25,11 @@ async function seed() {
       address: "456 Oak St, Townsville",
       email: "jane0e@gmail.com.com",
       password: "password456",
-      userType: UserType.Regular,
+      userType: "Regular",
+      emailVerified: null,  // Or a valid DateTime if you want to set it
     },
   });
+  
 
   // Create venues
   const venue1 = await prisma.venue.create({

@@ -90,9 +90,9 @@ const Reservation = () => {
         <div className="flex flex-wrap py-2 items-center justify-center mt-5  gap-2 p-4 bg-olive border rounded-lg shadow-lg max-w-[1470px] mx-auto space-y-0 space-x-0 md:space-x-8">
         
           {/* Location Filter */}
-          <div className="relative w-full sm:w-auto md:w-auto ml-0 md:ml-12">
+          <div className="relative w-full z-30 sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
-                className="flex z-50 items-center justify-between gap-6 px-7 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
+                className="flex items-center justify-between gap-6 px-7 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
                 className="w-5 h-5" />
@@ -136,7 +136,7 @@ const Reservation = () => {
           </div>
 
           {/* Venue Type Filter */}
-          <div className="relative w-full sm:w-full md:w-auto ml-0 md:ml-12">
+          <div className="relative w-full z-20 sm:w-full md:w-auto ml-0 md:ml-12">
             <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
@@ -211,7 +211,7 @@ const Reservation = () => {
         </div>
 
         {/* Venue Card */}
-        <div className="max-h-[1000px] overflow-y-auto">
+        <div className="max-h-[1000px] z-0 overflow-y-auto">
           <VenueCard
             provinces={selectedProvince ? [selectedProvince] : []}
             districts={selectedDistricts}

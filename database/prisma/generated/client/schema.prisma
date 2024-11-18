@@ -13,11 +13,22 @@ model User {
   firstName     String
   lastName      String
   contactNumber BigInt
-  address       String
+  address       String?
   email         String        @unique
+  emailVerified DateTime?
   password      String
   userType      UserType
   reservations  Reservation[] @relation("UserReservations")
+}
+
+model VerficationToken {
+  id         String   @id @default(uuid())
+  identifier String
+  email      String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Venue {
@@ -57,10 +68,10 @@ model TimeSlot {
 }
 
 enum AvailabilityStatus {
-  FULLY_BOOKED
-  PARTIALLY_BOOKED
-  NOT_AVAILABLE
-  AVAILABLE
+  FULLY_BOOKED // Orange color
+  PARTIALLY_BOOKED // Green color
+  NOT_AVAILABLE // Red color
+  AVAILABLE // Blue color (for the selected date by user)
 }
 
 enum Schedule {

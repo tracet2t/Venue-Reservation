@@ -17,11 +17,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.21.1
+ * Prisma Client JS version: 5.22.0
  * Query Engine version: bf0e5e8a04cada8225617067eaa03d041e2bba36
  */
 Prisma.prismaVersion = {
-  client: "5.21.1",
+  client: "5.22.0",
   engine: "bf0e5e8a04cada8225617067eaa03d041e2bba36"
 }
 
@@ -129,8 +129,17 @@ exports.Prisma.UserScalarFieldEnum = {
   contactNumber: 'contactNumber',
   address: 'address',
   email: 'email',
+  emailVerified: 'emailVerified',
   password: 'password',
   userType: 'userType'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  email: 'email',
+  token: 'token',
+  expires: 'expires'
 };
 
 exports.Prisma.VenueScalarFieldEnum = {
@@ -233,6 +242,7 @@ exports.Status = exports.$Enums.Status = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  VerificationToken: 'VerificationToken',
   Venue: 'Venue',
   VenueAvailability: 'VenueAvailability',
   TimeSlot: 'TimeSlot',
