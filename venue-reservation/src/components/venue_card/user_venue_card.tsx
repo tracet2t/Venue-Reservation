@@ -22,9 +22,10 @@ interface VenueCardProps {
   districts: string[];
   venueType: string;
   searchTerm: string;
+  isAuthenticated?: boolean;
 }
 
-const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, searchTerm }) => {
+const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, searchTerm, isAuthenticated = false }) => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const router = useRouter();
   useEffect(() => {
@@ -104,6 +105,19 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
                 ))}
               </ul>
             </div>
+          </div>
+
+          {/* Conditional rendering for edit buttons */}
+          {isAuthenticated && (
+            <div className="venue-actions">
+              <button className="edit-btn">Edit Details</button>
+              <button className="edit-calendar-btn">Edit Calendar</button>
+            </div>
+          )}
+
+          {/* Always visible calendar view */}
+          <div className="calendar-view">
+            {/* Read-only calendar implementation */}
           </div>
         </div>
       ))}

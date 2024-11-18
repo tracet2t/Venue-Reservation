@@ -120,7 +120,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="h-auto inset-0 p-4 md:p-8 rounded-xl">
+    <div className="h-auto inset-0 p-4 md:p-8 rounded-xl border rounded-xl">
       <Calendar
         localizer={localizer}
         events={events}
@@ -133,7 +133,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
         onNavigate={setCurrentDate}
         toolbar={false}
         views={['month']}
-        style={{ height: 600 }}
+        style={{ height: 650, zIndex:-5 }}
         className="text-gray-1000"
         eventPropGetter={eventStyleGetter}
       />

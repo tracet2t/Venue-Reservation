@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@prisma/client": "^5.21.1",
+    "@prisma/client": "^5.22.0",
     "nanoid": "^5.0.8",
     "prisma": "^5.21.1"
   },
   "prisma": {
-  "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "devDependencies": {
     "@types/node": "^22.8.4",

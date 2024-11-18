@@ -1,8 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import Logo from "./Logo";
+import { useRouter } from "next/navigation";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router =useRouter();
+
+  const handleSignupClick = () => {
+    router.push("/signup-landing"); 
+  };
+
+  3
+  
+  const navigateToLogin = () => {
+     router.push('/login');
+  };
 
   return (
     <header className="bg-white shadow-lg z-1">
@@ -37,10 +49,11 @@ const Header = () => {
 
         {/* Nav menu for larger screens */}
         <nav className="hidden lg:flex items-center space-x-4">
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
+          <button onClick={navigateToLogin} className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out">
             Login
           </button>
           <button
+            onClick={handleSignupClick} 
             style={{ backgroundColor: "#584822" }}
             className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
           >
@@ -76,10 +89,11 @@ const Header = () => {
         </div>
 
         <nav className="z-100 flex flex-col items-start space-y-4 p-4">
-          <button className="z-1 bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm">
+          <button onClick={navigateToLogin} className="z-1 bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm">
             Login
           </button>
           <button
+            onClick={handleSignupClick} 
             style={{ backgroundColor: "#584822" }}
             className="text-white w-full text-left px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out text-sm"
           >
