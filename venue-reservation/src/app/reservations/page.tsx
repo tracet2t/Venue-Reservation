@@ -5,7 +5,7 @@ import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import CalendarComponent from "@/components/calendar";
 
-const Availability = () => {
+const Availability = async () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [availability, setAvailability] = useState({
