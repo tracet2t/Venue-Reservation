@@ -1,5 +1,5 @@
 // src/lib/auth.ts
-export async function sendMagicLinkEmail(email: string, firstName: string) {
+export async function sendMagicLinkEmail(email: string) {
   const res = await fetch("/api/send-email", {
     method: "POST",
     headers: {

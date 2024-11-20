@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import type { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
+import prisma from "../../dbclient"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -11,8 +12,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
+      // Verify the user exists
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
       // Generate the token
-      const token = jwt.sign({ email }, process.env.JWT_SECRET as string, { expiresIn: "12h" });
+      const token = jwt.sign({ email, userId: user.userId }, process.env.JWT_SECRET as string, { expiresIn: "12h" });
       const magicLink = `${process.env.NEXTAUTH_URL}/auth/callback?token=${token}`;
 
       // Email HTML template

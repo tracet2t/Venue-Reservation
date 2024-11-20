@@ -58,6 +58,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throw new Error('Failed to send email');
     }
 
+    // Generate JWT token after verification
+    const jwtToken = jwt.sign(
+      { userId: user.userId },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    // Set the cookie
+    res.setHeader('Set-Cookie', `auth_token=${jwtToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`);
+
     return res.status(200).json({
       success: true,
       message: "Magic link sent to your email address. Please check your inbox.",

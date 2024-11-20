@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input"; // Custom input component
 import { Button } from "@/components/ui/button"; // Custom button component
-import { useRouter } from "next/navigation";
 import BrandingSection from "@/components/design/branding-section"; 
 import Link from "next/link";
 
@@ -10,7 +9,6 @@ const MagicLinkLoginPage = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +79,7 @@ const MagicLinkLoginPage = () => {
             </form>
             <div className="mt-6 text-center text-sm text-gray-500">
               <p>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/auth/signup" className="text-blue-600 hover:underline">
                   Sign up here
                 </Link>.

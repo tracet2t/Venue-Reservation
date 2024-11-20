@@ -1,18 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input"; // Custom input component
-import { Button } from "@/components/ui/button"; // Custom button component
-import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input"; 
+import { Button } from "@/components/ui/button";
 import BrandingSection from "@/components/design/branding-section"; 
 import Link from "next/link";
-import { sendMagicLinkEmail } from "@/lib/auth"; // Assuming this function exists for sending magic link
 
 const MagicLinkSignupPage = () => {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +23,8 @@ const MagicLinkSignupPage = () => {
     setMessage("");
 
     try {
-      const response = await fetch("/api/send-email", {
+      // First, create the user in the database
+      const signupResponse = await fetch("/api/auth/signup-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -35,11 +33,25 @@ const MagicLinkSignupPage = () => {
         }),
       });
 
-      const data = await response.json();
-      console.log('Response:', data); // Add this for debugging
+      const signupData = await signupResponse.json();
+      
+      if (!signupResponse.ok) {
+        throw new Error(signupData.message || "Something went wrong");
+      }
 
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+      // Then, send the magic link email
+      const emailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email: email.trim()
+        }),
+      });
+
+      const emailData = await emailResponse.json();
+      
+      if (!emailResponse.ok) {
+        throw new Error(emailData.message || "Something went wrong");
       }
 
       setMessage("Registration successful! Please check your email.");

@@ -60,7 +60,7 @@ const AuthPage = () => {
       } else {
         setMessage(data.message || "Invalid email or password.");
       }
-    } catch (error) {
+    } catch {
       setMessage("Something went wrong. Please try again later.");
     } finally {
       setLoading(false);
@@ -155,15 +155,15 @@ const AuthPage = () => {
             </div>
             {!isMagicLink && (
               <div className="mt-4 text-center text-sm text-gray-500">
-                <p>
-                  Don't have an account?{" "}
-                  <Link
-                    href="/signup-landing"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Sign up here
-                  </Link>.
-                </p>
+               <p>
+                Don&apos;t have an account?{" "}
+                <Link
+                  href="/signup-landing"
+                  className="text-blue-600 hover:underline"
+                >
+                  Sign up here
+                </Link>.
+              </p>
               </div>
             )}
           </div>
