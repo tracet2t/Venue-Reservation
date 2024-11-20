@@ -81,7 +81,7 @@ const Reservation = () => {
       {/*- Hero Section --*/}
 
       {/* Main Content */}
-      <main className="flex-grow p-8">
+      <main className="flex-grow p-8 mt-16">
         <div className="text-center mt-12">
           <h1 className="text-4xl gab-4 p-4 font-bold text-olive text-5xl">Tailored Spaces, <br/>Reserved For You</h1>
           <p className="mt-4 text-2xl text-olive">Instantly discover the best venues for events, meetings, and celebrations.<br/>Start planning your perfect event today</p>

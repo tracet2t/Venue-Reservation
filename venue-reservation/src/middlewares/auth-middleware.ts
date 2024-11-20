@@ -1,41 +1,48 @@
-import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/server";
-import { verify } from 'jsonwebtoken'; // Import from jsonwebtoken
+import { NextRequest, NextResponse } from "next/server";
+import { verify, JwtPayload } from "jsonwebtoken";
 
-export function withAuthMiddleware(middleware: NextMiddleware): NextMiddleware {
-    return async (request: NextRequest, event: NextFetchEvent) => {
-        let token = request.cookies.get("token");
+export function withAuthMiddleware() {
+  return async (req: NextRequest) => {
+    const token = req.cookies.get("token");
+    const publicRoutes = ["/card_view", "/reservations", "/"];
+    const { pathname } = req.nextUrl;
 
-        // Allow access to public routes without token
-        const publicRoutes = ['/card_view', '/reservations', '/'];
-        if (publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
-            return middleware(request, event);
-        }
+    // Allow access to public routes
+    if (publicRoutes.some((route) => pathname.startsWith(route))) {
+      return NextResponse.next();
+    }
 
-        // Require authentication for protected routes
-        if (!token) {
-            return NextResponse.redirect(`${process.env.BASE_URL}/login`);
-        }
+    if (!token) {
+      return NextResponse.redirect(`${process.env.BASE_URL}/login`);
+    }
 
-        try {
-            const secret = process.env.JWT_SECRET!;
-            const payload = verify(token.value, secret);
-            return middleware(request, event);
-        } catch (error) {
-            console.error(error);
+    try {
+      const payload = verify(token.value, process.env.JWT_SECRET!) as JwtPayload;
+      console.log("Token Verified:", payload);
+      return NextResponse.next();
+    } catch (error: unknown) {
+      const err = error as Error;
+      const errorMessage =
+        err.name === "TokenExpiredError"
+          ? "Session expired. Please log in again."
+          : "Authentication error. Please log in.";
 
-            const headers = new Headers(request.headers);
+      const headers = new Headers(req.headers);
 
-            // Check for expired token 
-            if ((error as any).name === "TokenExpiredError") {
-                headers.set("Set-Cookie", "redirect_error=Session expired. Please login again.; Path=/login;");
-            } else {
-                headers.set("Set-Cookie", "redirect_error=An error occurred while logging you in.; Path=/login;");
-            }
+      headers.set(
+        "Set-Cookie",
+        `redirect_error=${errorMessage}; Path=/login; HttpOnly`
+      );
+      headers.append(
+        "Set-Cookie",
+        `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; Path=/; HttpOnly`
+      );
 
-            // Clear the invalid token cookie
-            headers.append("Set-Cookie", `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; Path=/; HttpOnly`);
-
-            return NextResponse.redirect(`${process.env.BASE_URL}/login`, { status: 303, headers: headers });
-        }
-    };
+      console.error("Authentication Error:", err.message);
+      return NextResponse.redirect(`${process.env.BASE_URL}/login`, {
+        status: 303,
+        headers,
+      });
+    }
+  };
 }

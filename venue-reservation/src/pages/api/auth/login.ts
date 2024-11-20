@@ -38,6 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         SECRET_KEY,
         { expiresIn: "1h" } // Token expiration time
       );
+      console.log("Token:", token);
 
       // Set token as a secure cookie
       res.setHeader(
@@ -51,7 +52,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       );
 
-      return res.status(200).json({ message: "Login successful!" });
+      return res.status(200).json({ 
+        message: "Login successful!",
+        user: {
+          name: user.firstName,
+          email: user.email,
+          userType: user.userType
+        }
+      });
     } catch (error) {
       console.error("Login error:", error);
       return res.status(500).json({ message: "Something went wrong. Please try again later." });
@@ -61,3 +69,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 }
+  

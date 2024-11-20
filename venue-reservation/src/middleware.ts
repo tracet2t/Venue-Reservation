@@ -6,6 +6,6 @@ export default chain([withAuthMiddleware, withRoleBasedRoutingMiddleware])
 
 export const config = {
     matcher: [
-        '/((?!login|api/auth/login|_next/static|_next/image|favicon.ico|api/auth/logout|api/auth/user|card_view|signup-link|api/venues|reservations).*)',
+        '/((?!login|api/auth/login|_next/static|_next/image|favicon.ico|api/auth/logout|api/auth/user|card_view_user|signup-link|api/venues|reservations|layouts/Header|api/auth/session|api/auth/signin|api/auth/callback|api/auth/signout|user-profile|api/user/profile).*)',
     ],
 }

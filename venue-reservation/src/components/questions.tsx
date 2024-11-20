@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -11,6 +11,21 @@ const ReservationForm = () => {
     publicOrPrivate: '',
     specialSecurity: '',
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check');
+        const data = await response.json();
+        setIsLoggedIn(!!data.user);
+      } catch {
+        setIsLoggedIn(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const toggleDropdown = (dropdown: string, event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault(); // Prevent form submission
@@ -43,7 +58,7 @@ const ReservationForm = () => {
               type="text"
               placeholder="Enter the title"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              disabled
+              disabled={!isLoggedIn}
             />
           </div>
 
@@ -57,7 +72,7 @@ const ReservationForm = () => {
               type="text"
               placeholder="Enter the purpose"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              disabled
+              disabled={!isLoggedIn}
             />
           </div>
 
@@ -100,6 +115,7 @@ const ReservationForm = () => {
               value={dropdownValues.timeSchedule}
               onChange={(e) => handleDropdownChange('timeSchedule', e.target.value)}
               className="block w-full px-4 py-4 border rounded-lg bg-white focus:outline-none"
+              disabled={!isLoggedIn}
             >
               <option value="" disabled>
                 Select Time Schedule
@@ -118,6 +134,7 @@ const ReservationForm = () => {
               value={dropdownValues.publicOrPrivate}
               onChange={(e) => handleDropdownChange('publicOrPrivate', e.target.value)}
               className="block w-full px-4 py-4 border rounded-lg bg-white focus:outline-none"
+              disabled={!isLoggedIn}
             >
               <option value="" disabled>
                 Open to the public or private
@@ -136,6 +153,7 @@ const ReservationForm = () => {
               value={dropdownValues.specialSecurity}
               onChange={(e) => handleDropdownChange('specialSecurity', e.target.value)}
               className="block w-full px-4 py-4 border rounded-lg bg-white focus:outline-none"
+              disabled={!isLoggedIn}
             >
               <option value="" disabled>
                 Special Security Required
@@ -149,7 +167,7 @@ const ReservationForm = () => {
           </div>
         </div>
 
-        <Button type="submit" className="mt-4 bg-olive text-white px-4 py-2 rounded" disabled>
+        <Button type="submit" className="mt-4 bg-olive text-white px-4 py-2 rounded" disabled={!isLoggedIn}>
           Submit Reservation
         </Button>
         </div>

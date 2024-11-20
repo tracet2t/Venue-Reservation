@@ -33,16 +33,16 @@ const Availability = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check user authentication status on component mount
-    const checkAuthStatus = async () => {
-      // Replace with your actual authentication check
-      const response = await fetch('/api/auth/status');
-      if (response.ok) {
-        const { loggedIn } = await response.json();
-        setIsLoggedIn(loggedIn);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check');
+        const data = await response.json();
+        setIsLoggedIn(!!data.user);
+      } catch {
+        setIsLoggedIn(false);
       }
     };
-    checkAuthStatus();
+    checkAuth();
 
     if (!id) return;
 
@@ -98,14 +98,39 @@ const Availability = () => {
     setSelectedDate(null);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="flex justify-center items-center h-64">
+          <div className="text-xl">Loading venue information...</div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="flex justify-center items-center h-64">
+          <div className="text-xl text-red-600">Error: {error}</div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="z-50">
-      <Header />
+      <div className="z-1">
+        <Header />
       </div>
-      <div className="z-20 flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
+      <div className="z-0 flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
+
         {/* Calendar */}
-        <div className="w-full z-20 lg:w-1/2 mb-6 lg:mb-0">
+        <div className="w-full z-0 lg:w-1/2 mb-6 lg:mb-0">
           <Calendar onSelectDate={handleSelectDate} id={Number(id)}/>
         </div>
 

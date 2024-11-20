@@ -2,27 +2,35 @@ import { cookies as serverCookies } from "next/headers";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { Role } from "@/type";
 
-class JwtPayloadSession {
-    private payload: any;
+// Define the interface for JWT payload
+interface JwtPayload {
+    email: string;
+    role: Role;
+    id: string;
+    // Add other fields that might be in your JWT payload
+    iat?: number;
+    exp?: number;
+}
 
-    constructor(payload: any) {
+class JwtPayloadSession {
+    private payload: JwtPayload | null;
+
+    constructor(payload: JwtPayload | null) {
         this.payload = payload;
     }
 
     isAuthenticated() {
         return !!this.payload && !!this.payload.email && !!this.payload.role;
     }
-
     getUsername() {
-        return this.isAuthenticated() ? this.payload.email : null;
+        return this.isAuthenticated() ? this.payload!.email : null;
     }
 
     getRole(): Role | null {
-        return this.isAuthenticated() ? this.payload.role : null;
+        return this.isAuthenticated() ? this.payload!.role : null;
     }
-
     getUserId(): string | null {
-        return this.isAuthenticated() ? this.payload.id : null;
+        return this.isAuthenticated() ? this.payload!.id : null;
     }
 }
 
