@@ -374,7 +374,7 @@ export namespace Prisma {
 
   /**
    * Prisma Client JS version: 5.22.0
-   * Query Engine version: bf0e5e8a04cada8225617067eaa03d041e2bba36
+   * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
    */
   export type PrismaVersion = {
     client: string
@@ -6524,6 +6524,8 @@ export namespace Prisma {
     title: string | null
     purposeOfReservation: string | null
     timeDuration: number | null
+    timeMode: $Enums.Schedule | null
+    venueType: string | null
     reservationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6536,6 +6538,8 @@ export namespace Prisma {
     title: string | null
     purposeOfReservation: string | null
     timeDuration: number | null
+    timeMode: $Enums.Schedule | null
+    venueType: string | null
     reservationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6548,6 +6552,9 @@ export namespace Prisma {
     title: number
     purposeOfReservation: number
     timeDuration: number
+    timeMode: number
+    venueType: number
+    amenities: number
     extraServices: number
     reservationDate: number
     createdAt: number
@@ -6573,6 +6580,8 @@ export namespace Prisma {
     title?: true
     purposeOfReservation?: true
     timeDuration?: true
+    timeMode?: true
+    venueType?: true
     reservationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -6585,6 +6594,8 @@ export namespace Prisma {
     title?: true
     purposeOfReservation?: true
     timeDuration?: true
+    timeMode?: true
+    venueType?: true
     reservationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -6597,6 +6608,9 @@ export namespace Prisma {
     title?: true
     purposeOfReservation?: true
     timeDuration?: true
+    timeMode?: true
+    venueType?: true
+    amenities?: true
     extraServices?: true
     reservationDate?: true
     createdAt?: true
@@ -6697,6 +6711,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities: string[]
     extraServices: $Enums.ExtraService[]
     reservationDate: Date
     createdAt: Date
@@ -6729,6 +6746,9 @@ export namespace Prisma {
     title?: boolean
     purposeOfReservation?: boolean
     timeDuration?: boolean
+    timeMode?: boolean
+    venueType?: boolean
+    amenities?: boolean
     extraServices?: boolean
     reservationDate?: boolean
     createdAt?: boolean
@@ -6745,6 +6765,9 @@ export namespace Prisma {
     title?: boolean
     purposeOfReservation?: boolean
     timeDuration?: boolean
+    timeMode?: boolean
+    venueType?: boolean
+    amenities?: boolean
     extraServices?: boolean
     reservationDate?: boolean
     createdAt?: boolean
@@ -6760,6 +6783,9 @@ export namespace Prisma {
     title?: boolean
     purposeOfReservation?: boolean
     timeDuration?: boolean
+    timeMode?: boolean
+    venueType?: boolean
+    amenities?: boolean
     extraServices?: boolean
     reservationDate?: boolean
     createdAt?: boolean
@@ -6790,6 +6816,9 @@ export namespace Prisma {
       title: string
       purposeOfReservation: string
       timeDuration: number
+      timeMode: $Enums.Schedule
+      venueType: string
+      amenities: string[]
       extraServices: $Enums.ExtraService[]
       reservationDate: Date
       createdAt: Date
@@ -7196,6 +7225,9 @@ export namespace Prisma {
     readonly title: FieldRef<"Reservation", 'String'>
     readonly purposeOfReservation: FieldRef<"Reservation", 'String'>
     readonly timeDuration: FieldRef<"Reservation", 'Int'>
+    readonly timeMode: FieldRef<"Reservation", 'Schedule'>
+    readonly venueType: FieldRef<"Reservation", 'String'>
+    readonly amenities: FieldRef<"Reservation", 'String[]'>
     readonly extraServices: FieldRef<"Reservation", 'ExtraService[]'>
     readonly reservationDate: FieldRef<"Reservation", 'DateTime'>
     readonly createdAt: FieldRef<"Reservation", 'DateTime'>
@@ -8555,6 +8587,9 @@ export namespace Prisma {
     title: 'title',
     purposeOfReservation: 'purposeOfReservation',
     timeDuration: 'timeDuration',
+    timeMode: 'timeMode',
+    venueType: 'venueType',
+    amenities: 'amenities',
     extraServices: 'extraServices',
     reservationDate: 'reservationDate',
     createdAt: 'createdAt',
@@ -9098,6 +9133,9 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
+    timeMode?: EnumScheduleFilter<"Reservation"> | $Enums.Schedule
+    venueType?: StringFilter<"Reservation"> | string
+    amenities?: StringNullableListFilter<"Reservation">
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -9114,6 +9152,9 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    timeMode?: SortOrder
+    venueType?: SortOrder
+    amenities?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
@@ -9133,6 +9174,9 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
+    timeMode?: EnumScheduleFilter<"Reservation"> | $Enums.Schedule
+    venueType?: StringFilter<"Reservation"> | string
+    amenities?: StringNullableListFilter<"Reservation">
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -9149,6 +9193,9 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    timeMode?: SortOrder
+    venueType?: SortOrder
+    amenities?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
@@ -9170,6 +9217,9 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Reservation"> | string
     purposeOfReservation?: StringWithAggregatesFilter<"Reservation"> | string
     timeDuration?: IntWithAggregatesFilter<"Reservation"> | number
+    timeMode?: EnumScheduleWithAggregatesFilter<"Reservation"> | $Enums.Schedule
+    venueType?: StringWithAggregatesFilter<"Reservation"> | string
+    amenities?: StringNullableListFilter<"Reservation">
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
@@ -9593,6 +9643,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -9609,6 +9662,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -9621,6 +9677,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9637,6 +9696,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9651,6 +9713,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -9662,6 +9727,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9675,6 +9743,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10220,6 +10291,9 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    timeMode?: SortOrder
+    venueType?: SortOrder
+    amenities?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
@@ -10238,6 +10312,8 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    timeMode?: SortOrder
+    venueType?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10250,6 +10326,8 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    timeMode?: SortOrder
+    venueType?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10570,6 +10648,10 @@ export namespace Prisma {
     update?: XOR<XOR<VenueAvailabilityUpdateToOneWithWhereWithoutTimeSlotsInput, VenueAvailabilityUpdateWithoutTimeSlotsInput>, VenueAvailabilityUncheckedUpdateWithoutTimeSlotsInput>
   }
 
+  export type ReservationCreateamenitiesInput = {
+    set: string[]
+  }
+
   export type ReservationCreateextraServicesInput = {
     set: $Enums.ExtraService[]
   }
@@ -10596,6 +10678,11 @@ export namespace Prisma {
     create?: XOR<ReservationStateCreateWithoutReservationInput, ReservationStateUncheckedCreateWithoutReservationInput>
     connectOrCreate?: ReservationStateCreateOrConnectWithoutReservationInput
     connect?: ReservationStateWhereUniqueInput
+  }
+
+  export type ReservationUpdateamenitiesInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type ReservationUpdateextraServicesInput = {
@@ -10929,6 +11016,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -10943,6 +11033,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -10986,6 +11079,9 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
+    timeMode?: EnumScheduleFilter<"Reservation"> | $Enums.Schedule
+    venueType?: StringFilter<"Reservation"> | string
+    amenities?: StringNullableListFilter<"Reservation">
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -11020,6 +11116,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11034,6 +11133,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11458,6 +11560,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11473,6 +11578,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11500,6 +11608,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11515,6 +11626,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11527,6 +11641,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11538,6 +11655,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11552,6 +11672,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11565,6 +11688,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11583,6 +11709,9 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
+    timeMode: $Enums.Schedule
+    venueType: string
+    amenities?: ReservationCreateamenitiesInput | string[]
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
     createdAt?: Date | string
@@ -11613,6 +11742,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11627,6 +11759,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11640,6 +11775,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
+    timeMode?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    venueType?: StringFieldUpdateOperationsInput | string
+    amenities?: ReservationUpdateamenitiesInput | string[]
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
