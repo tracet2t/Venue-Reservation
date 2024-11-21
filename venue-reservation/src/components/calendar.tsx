@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-import { useParams } from "next/navigation";
-import { useRouter } from 'next/compat/router';
-
+import { useRouter } from 'next/router';
 
 const localizer = momentLocalizer(moment);
 
@@ -15,7 +12,6 @@ interface Event {
   title: string;
   status: string;
 }
-
 
 interface CalendarComponentProps {
   onSelectDate: (date: Date) => void;
@@ -36,8 +32,16 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
   const router = useRouter();
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check');
+        const data = await response.json();
+        setIsLoggedIn(!!data.user);
+      } catch {
+        setIsLoggedIn(false);
+      }
+    };
+    checkAuth();
 
     if (!id) return;
 
@@ -78,12 +82,30 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
 
   const handleDateClick = (date: Date) => {
     if (!isLoggedIn) {
-      alert("Please log in to select a date.");
+      alert("Please log in to make reservations.");
       router.push('/login');
       return;
     }
-
     onSelectDate(date);
+  };
+  const currentYear = moment().year();
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = Number(e.target.value);
+    setCurrentDate(moment(currentDate).year(newYear).toDate());
+  };
+
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMonth = Number(e.target.value);
+    setCurrentDate(moment(currentDate).month(newMonth).toDate());
+  };
+
+  const goToPreviousMonth = () => {
+    setCurrentDate(moment(currentDate).subtract(1, 'months').toDate());
+  };
+
+  const goToNextMonth = () => {
+    setCurrentDate(moment(currentDate).add(1, 'months').toDate());
   };
 
   const eventStyleGetter = (event: Event) => {
@@ -112,7 +134,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
         color: 'white',
         border: '0px',
         display: 'block',
-        height: '110px',
+        height: '120px',
         marginTop: '-22px',
         width: '100%',
         marginLeft: '1px',
@@ -124,7 +146,40 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="h-auto inset-0 p-4 md:p-8 rounded-xl border rounded-xl">
+    <div className="h-auto p-4 md:p-8 rounded-xl border rounded-xl">
+        <div className="flex justify-between items-center mb-4">
+        <button onClick={goToPreviousMonth} className="text-blue-500 font-semibold">
+          &lt; Previous
+        </button>
+        <div className="flex items-center">
+          <select
+            className="mr-2 w-28 h-8 font-bold shadow-lg text-center"
+            onChange={handleMonthChange}
+            value={moment(currentDate).month()}
+          >
+            {moment.months().map((month, index) => (
+              <option key={index} value={index}>
+                {month}
+              </option>
+            ))}
+          </select>
+          <select
+            className="mr-2 w-28 h-8 font-bold shadow-lg text-center"
+            onChange={handleYearChange}
+            value={moment(currentDate).year()}
+          >
+            {Array.from({ length: 10 }, (_, index) => currentYear + index).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button onClick={goToNextMonth} className="text-blue-500 font-semibold">
+          Next &gt;
+        </button>
+      </div>
+
       <Calendar
         localizer={localizer}
         events={events}
@@ -137,7 +192,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
         onNavigate={setCurrentDate}
         toolbar={false}
         views={['month']}
-        style={{ height: 650, zIndex:-5 }}
+        style={{ height: 650 }}
         className="text-gray-1000"
         eventPropGetter={eventStyleGetter}
       />
