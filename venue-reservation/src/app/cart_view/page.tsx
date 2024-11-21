@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
+import { useRouter } from 'next/navigation'
+
+
 import {
   Pagination,
   PaginationContent,
@@ -59,9 +62,10 @@ const Reservation = () => {
     fetchVenues(currentPage);
   }, [currentPage]);
 
+
   const handleVenueClick = (venue: any) => {
-    setSelectedVenue(venue);
-    setIsModalOpen(true); // Open modal
+    const venueId = venue.id; // Use the unique venue ID
+    router.push(`/reservations/${venueId}`); // Navigate to the reservation page with the venue ID
   };
 
   const closeModal = () => {
@@ -87,6 +91,7 @@ const Reservation = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const router = useRouter();
 
   const fetchVenues = async (page: number = 1) => {
     const response = await fetch(`http://localhost:3000/api/pagination?page=${page}&limit=${venuesPerPage}&province=${selectedProvince}&districts=${selectedDistricts.join(',')}&searchTerm=${isSearchTerm}`);
