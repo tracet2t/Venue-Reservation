@@ -128,6 +128,16 @@ const Availability = () => {
         <Header />
       </div>
       <div className="z-0 flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
+        {/* Add Venue Information Section */}
+        {venueInfo && (
+          <div className="w-full mb-6 p-4 bg-white border rounded-lg shadow-lg">
+            <h1 className="text-2xl font-bold mb-2">{venueInfo.name}</h1>
+            <div className="text-gray-600">
+              <p>Venue Type: {venueInfo.type}</p>
+              <p>Schedule: {venueInfo.schedule}</p>
+            </div>
+          </div>
+        )}
 
         {/* Calendar */}
         <div className="w-full z-0 lg:w-1/2 mb-6 lg:mb-0">
