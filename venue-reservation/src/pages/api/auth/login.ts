@@ -52,10 +52,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       );
 
+      // Update user provider
+      await prisma.user.update({
+        where: { email },
+        data: {
+          provider: "credentials"
+        }
+      });
+
       return res.status(200).json({ 
+        success: true,
         message: "Login successful!",
         user: {
-          name: user.firstName,
+          firstName: user.firstName,
           email: user.email,
           userType: user.userType
         }

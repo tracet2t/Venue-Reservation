@@ -42,6 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         firstName,
         email,
         userType: 'Regular',
+        provider: 'magic-link',
       },
     });
 

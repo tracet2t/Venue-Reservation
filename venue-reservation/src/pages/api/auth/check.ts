@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import prisma from "../../../dbclient";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../../../auth.config";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
@@ -11,6 +13,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    // First check for NextAuth session
+    const session = await getServerSession(req, res, authOptions);
+    
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: {
+          firstName: true,
+          email: true,
+          userType: true,
+          provider: true
+        }
+      });
+      
+      if (user) {
+        return res.status(200).json({ user });
+      }
+    }
+
+    // If no NextAuth session, check for JWT token
     const token = req.cookies.auth_token;
 
     if (!token) {
@@ -23,7 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       select: {
         firstName: true,
         email: true,
-        userType: true
+        userType: true,
+        provider: true
       }
     });
 

@@ -1,21 +1,57 @@
 // src/lib/auth.ts
-export async function sendMagicLinkEmail(email: string) {
-  const res = await fetch("/api/send-email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      subject: "Your Magic Link",
-      message: "Click here to log in with your magic link!",
+import { NextAuthOptions } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import prisma from "@/dbclient"
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-  });
+  ],
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (!user.email) return false;
 
-  if (!res.ok) {
-    throw new Error("Failed to send magic link");
-  }
+      // Create or update user in your database
+      await prisma.user.upsert({
+        where: { email: user.email },
+        update: {
+          firstName: user.name?.split(' ')[0],
+          lastName: user.name?.split(' ')[1],
+        },
+        create: {
+          email: user.email,
+          firstName: user.name?.split(' ')[0] ?? '',
+          lastName: user.name?.split(' ')[1] ?? '',
+          userType: 'Regular',
+        },
+      });
 
-  return res.json();
+      return true;
+    },
+    async session({ session, token }) {
+      if (session.user?.email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: session.user.email },
+          select: {
+            firstName: true,
+            lastName: true,
+            userType: true,
+          },
+        });
+
+        session.user = {
+          ...session.user,
+          ...dbUser,
+        };
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/signup-landing',
+  },
 }
 

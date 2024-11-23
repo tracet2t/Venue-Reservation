@@ -28,8 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         contactNumber: BigInt(phoneNumber), // Ensure valid phone_number
         password: hashedPassword,
         address: null, // Optional field
-        emailVerified: null, // Optional field
+        emailVerified: false, // Optional field
         userType: "Regular",
+        provider: "Email",
       },
     });
 

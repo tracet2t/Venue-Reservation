@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import prisma from "../../../dbclient";
+import { getServerSession } from "next-auth";
+import { authOptions } from "auth.config";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
@@ -10,16 +12,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const token = req.cookies.auth_token;
-    if (!token) {
-      return res.status(401).json({ message: "Not authenticated" });
+    let userId: string | undefined;
+    
+    // Check for NextAuth session first
+    const session = await getServerSession(req, res, authOptions);
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { userId: true }
+      });
+      if (user) {
+        userId = user.userId;
+      }
+    } else {
+      // Fall back to JWT token
+      const token = req.cookies.auth_token;
+      if (!token) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const decoded = jwt.verify(token, SECRET_KEY) as { userId: string };
+      userId = decoded.userId;
     }
 
-    const decoded = jwt.verify(token, SECRET_KEY) as { userId: string };
+    if (!userId) {
+      return res.status(401).json({ message: "User ID not found" });
+    }
 
     if (req.method === "GET") {
       const user = await prisma.user.findUnique({
-        where: { userId: decoded.userId },
+        where: { userId },
         select: {
           userId: true,
           firstName: true,
@@ -27,6 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email: true,
           address: true,
           contactNumber: true,
+          userType: true,
         },
       });
 
@@ -34,26 +56,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: "User not found" });
       }
 
-      const sanitizedUser = {
-        ...user,
-        userId: user.userId.toString(),
-        contactNumber: user.contactNumber?.toString()
-      };
-
-      return res.status(200).json(sanitizedUser);
+      return res.status(200).json(user);
     }
 
     if (req.method === "PUT") {
-      const { firstName, lastName, address, contactNumber } = req.body;
+      const { address, contactNumber } = req.body;
 
       const updatedUser = await prisma.user.update({
-        where: { userId: decoded.userId },
-        data: {
-          firstName,
-          lastName,
-          address,
-          contactNumber,
-        },
+        where: { userId },
+        data: { address, contactNumber },
         select: {
           userId: true,
           firstName: true,
@@ -61,16 +72,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email: true,
           address: true,
           contactNumber: true,
+          userType: true,
         },
       });
 
-      const sanitizedUpdatedUser = {
-        ...updatedUser,
-        userId: updatedUser.userId.toString(),
-        contactNumber: updatedUser.contactNumber?.toString()
-      };
-
-      return res.status(200).json(sanitizedUpdatedUser);
+      return res.status(200).json(updatedUser);
     }
   } catch (error) {
     console.error("Profile API error:", error);

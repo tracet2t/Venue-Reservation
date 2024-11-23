@@ -68,9 +68,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Set the cookie
     res.setHeader('Set-Cookie', `auth_token=${jwtToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`);
 
+    // Update the provider field
+    await prisma.user.update({
+      where: { email },
+      data: {
+        provider: "magic-link"
+      }
+    });
+
     return res.status(200).json({
       success: true,
       message: "Magic link sent to your email address. Please check your inbox.",
+      user: {
+        firstName: user.firstName,
+        email: user.email,
+        userType: user.userType
+      }
     });
 
   } catch (error) {
