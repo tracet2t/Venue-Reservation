@@ -7,6 +7,9 @@ import Footer from "@/app/layouts/Footer";
 import Calendar from "@/components/calendar";
 import "/src/app/globals.css";
 import Question from "@/components/questions"
+import ReservationSummary from "@/components/ReservationSummary";
+import ReservationConfirmation from "@/components/ReservationConfirmation";
+import ReservationCarousel from "@/components/reservation-carousel"; 
 
 interface VenueInfo {
   id: number;
@@ -14,6 +17,13 @@ interface VenueInfo {
   type: string;
   schedule: string;
 }
+interface ReservationSummaryProps {
+  venueName: string;
+  selectedDate: Date | null;
+  capacity: number;
+  onConfirm: () => void;
+}
+
 
 const Availability = () => {
   const router = useRouter();
@@ -22,6 +32,7 @@ const Availability = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [availability, setAvailability] = useState({
     morning: false,
     evening: false,
@@ -97,6 +108,14 @@ const Availability = () => {
     setShowModal(false);
     setSelectedDate(null);
   };
+  const handleReserveNow = () => {
+    setShowConfirmation(true); // Show reservation summary
+  };
+
+  const handleReservationConfirm = () => {
+    console.log('Reservation confirmed!');
+    setShowConfirmation(false); // Hide confirmation after action
+  };
 
   if (loading) {
     return (
@@ -127,7 +146,13 @@ const Availability = () => {
       <div className="z-1">
         <Header />
       </div>
-      <div className="z-0 flex flex-col lg:flex-row justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
+      <div className="relative w-full h-[calc(100vh-100px)]">
+        {/* ReservationCarousel */}
+        <ReservationCarousel
+          images={[
+            (
+
+      <div className="z-0 flex flex-wrap lg:flex-nowrap justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
         {/* Add Venue Information Section */}
         {venueInfo && (
           <div className="w-full mb-6 p-4 bg-white border rounded-lg shadow-lg">
@@ -203,6 +228,26 @@ const Availability = () => {
           </div>
         )}
       </div>
+      ),
+      (
+        <ReservationSummary
+          venueName={venueInfo?.name || "Unknown"}
+          selectedDate={selectedDate}
+          capacity={50}
+          onConfirm={handleReservationConfirm}
+        />
+      ),
+      (
+        <ReservationConfirmation />
+      ),
+        ]}
+        width="100%"
+        height="100%"
+        dotColor="#ccc"
+        activeDotColor="#584822"
+      />
+    </div>
+
       <Footer />
     </div>
   );
