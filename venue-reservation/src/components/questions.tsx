@@ -9,7 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  
 } from '@/components/ui/form';
 import {
   Select,
@@ -43,9 +43,44 @@ const ReservationForm = () => {
     }
   };
 
-  const onSubmit = (data) => {
-    console.log({ ...data, selectedAmenities }); 
+  const onSubmit = async (data) => {
+    const reservationData = {
+      userId: "2000", 
+      venueId: 1,           
+      title: data.title,
+      purposeOfReservation: data.purposeOfReservation,
+      amenities: selectedAmenities,
+      timeDuration: parseInt(data.timeDuration),  
+      eventType: data.eventType,
+      specialPermits: data.specialPermits || '',  
+      securityRequirements: data.securityRequirements || '',
+      mediaCoverage: data.mediaCoverage || '',
+      auditoriumRules: data.auditoriumRules || '',
+      reservationDate: new Date().toISOString(),  
+    };
+  
+    try {
+      const response = await fetch('/api/reservation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservationData),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Reservation saved:', result);
+      } else {
+        const error = await response.json();
+        console.error('Error saving reservation:', error);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
   };
+  
+  
 
   return (
     <div className="bg-gray-100 p-6 rounded-lg flex justify-center">
@@ -74,7 +109,7 @@ const ReservationForm = () => {
                           {...field}
                         />
                       </FormControl>
-                      {errors.title && <FormMessage>{errors.title.message}</FormMessage>}
+                      
                     </FormItem>
                   )}
                 />
@@ -82,7 +117,7 @@ const ReservationForm = () => {
                 {/* Purpose Field */}
                 <FormField
                   control={methods.control}
-                  name="purpose"
+                  name="purposeOfReservation"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Purpose of Reservation</FormLabel>
@@ -93,7 +128,7 @@ const ReservationForm = () => {
                           {...field}
                         />
                       </FormControl>
-                      {errors.purpose && <FormMessage>{errors.purpose.message}</FormMessage>}
+                
                     </FormItem>
                   )}
                 />
@@ -111,20 +146,21 @@ const ReservationForm = () => {
 
                     {isAmenitiesDropdownOpen && (
                       <div className="absolute mt-2 w-[600px] bg-white border-[3px] border-[#584822] rounded-lg shadow-lg p-2">
-                        {['Food', 'Private Parking', 'Sound System', 'Extend Hours'].map((amenity) => (
-                          <label key={amenity} className="block mb-2 font-light">
+                        {['Food', 'Private Parking', 'Sound System', 'Extend Hours'].map((amenities) => (
+                          <label key={amenities} className="block mb-2 font-light">
                             <input
                               type="checkbox"
-                              value={amenity}
+                              name = "selectedAmenities"
+                              value={amenities}
                               onChange={(e) => {
                                 const selected = e.target.checked
-                                  ? [...selectedAmenities, amenity] 
-                                  : selectedAmenities.filter((item) => item !== amenity); 
+                                  ? [...selectedAmenities, amenities] 
+                                  : selectedAmenities.filter((item) => item !== amenities); 
                                 setSelectedAmenities(selected);
                               }}
-                              checked={selectedAmenities.includes(amenity)} 
+                              checked={selectedAmenities.includes(amenities)} 
                             />
-                            <span className="ml-2">{amenity}</span>
+                            <span className="ml-2">{amenities}</span>
                           </label>
                         ))}
                       </div>
@@ -135,7 +171,7 @@ const ReservationForm = () => {
                 {/* Time Schedule Dropdown */}
                 <FormField
                   control={methods.control}
-                  name="timeSchedule"
+                  name="timeDuration"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Time Schedule</FormLabel>
@@ -154,7 +190,7 @@ const ReservationForm = () => {
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      {errors.timeSchedule && <FormMessage>{errors.timeSchedule.message}</FormMessage>}
+                    
                     </FormItem>
                   )}
                 />
@@ -207,7 +243,7 @@ const ReservationForm = () => {
                 {/* Security or Safety Requirements Question */}
                 <FormField
                   control={methods.control}
-                  name="specialSecurity"
+                  name="securityRequirements"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Are there any special security or safety requirements for your event?</FormLabel>
@@ -228,7 +264,7 @@ const ReservationForm = () => {
 
 <FormField
                   control={methods.control}
-                  name="specialSecurity"
+                  name="mediaCoverage"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Do you anticipate any media coverage or external guests</FormLabel>
@@ -249,7 +285,7 @@ const ReservationForm = () => {
                
                 <FormField
                   control={methods.control}
-                  name="specialSecurity"
+                  name="auditoriumRules"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel> Are you aware of the rules and regulations regarding the use of the auditorium</FormLabel>
@@ -267,24 +303,26 @@ const ReservationForm = () => {
                     </FormItem>
                   )}
                 />
-{/* Fixed Buttons at the Bottom */}
-<CardFooter className="sticky bottom-0 bg-white z-10 p-6">
-  <div className="flex justify-between mt-2 space-x-12"> 
-    <Button
-      variant="outline"
-      className="w-[250px] h-[50px] bg-[#EBEBEB] text-[#584822] border-[3px] border-[#584822]"
-    >
-      Cancel
-    </Button>
-    <Button
-      type="submit"
-      form="reservationForm"
-      className="w-[250px] h-[50px] bg-[#584822] text-white border-[3px] border-[#584822]"
-    >
-      Submit Reservation
-    </Button>
-  </div>
-</CardFooter>
+ {/* Footer with Buttons */}
+ <CardFooter className="sticky bottom-0 bg-white z-10 p-6">
+        <div className="flex justify-between mt-2 space-x-12">
+          <Button
+            variant="outline"
+            className="w-[250px] h-[50px] bg-[#EBEBEB] text-[#584822] border-[3px] border-[#584822]"
+            type="button" 
+            onClick={() => { /* Add cancel logic if needed */ }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button" 
+            onClick={handleSubmit(onSubmit)} 
+            className="w-[250px] h-[50px] bg-[#584822] text-white border-[3px] border-[#584822]"
+          >
+            Submit Reservation
+          </Button>
+        </div>
+      </CardFooter>
 
             
                
