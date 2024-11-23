@@ -1560,9 +1560,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
-    emailVerified: Date | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1572,9 +1573,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
-    emailVerified: Date | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1587,6 +1589,7 @@ export namespace Prisma {
     emailVerified: number
     password: number
     userType: number
+    provider: number
     _all: number
   }
 
@@ -1609,6 +1612,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1621,6 +1625,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1633,6 +1638,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
     _all?: true
   }
 
@@ -1729,9 +1735,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string
-    emailVerified: Date | null
+    emailVerified: boolean
     password: string | null
     userType: $Enums.UserType
+    provider: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1763,6 +1770,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
     reservations?: boolean | User$reservationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1777,6 +1785,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1789,6 +1798,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1809,9 +1819,10 @@ export namespace Prisma {
       contactNumber: bigint | null
       address: string | null
       email: string
-      emailVerified: Date | null
+      emailVerified: boolean
       password: string | null
       userType: $Enums.UserType
+      provider: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2212,9 +2223,10 @@ export namespace Prisma {
     readonly contactNumber: FieldRef<"User", 'BigInt'>
     readonly address: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly emailVerified: FieldRef<"User", 'DateTime'>
+    readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly password: FieldRef<"User", 'String'>
     readonly userType: FieldRef<"User", 'UserType'>
+    readonly provider: FieldRef<"User", 'String'>
   }
     
 
@@ -8491,7 +8503,8 @@ export namespace Prisma {
     email: 'email',
     emailVerified: 'emailVerified',
     password: 'password',
-    userType: 'userType'
+    userType: 'userType',
+    provider: 'provider'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8632,16 +8645,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Boolean'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8656,6 +8662,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserType[]'
    */
   export type ListEnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -8756,9 +8776,10 @@ export namespace Prisma {
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }
 
@@ -8769,9 +8790,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
-    emailVerified?: SortOrderInput | SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     reservations?: ReservationOrderByRelationAggregateInput
   }
 
@@ -8785,9 +8807,10 @@ export namespace Prisma {
     lastName?: StringNullableFilter<"User"> | string | null
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }, "userId" | "email">
 
@@ -8798,9 +8821,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
-    emailVerified?: SortOrderInput | SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8818,9 +8842,10 @@ export namespace Prisma {
     contactNumber?: BigIntNullableWithAggregatesFilter<"User"> | bigint | number | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
-    emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     userType?: EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
+    provider?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -9233,9 +9258,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
   }
 
@@ -9246,9 +9272,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -9259,9 +9286,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
   }
 
@@ -9272,9 +9300,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -9285,9 +9314,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9297,9 +9327,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9309,9 +9340,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -9770,15 +9802,9 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type EnumUserTypeFilter<$PrismaModel = never> = {
@@ -9813,6 +9839,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9829,6 +9856,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9841,6 +9869,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9899,18 +9928,12 @@ export namespace Prisma {
     _max?: NestedBigIntNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10333,8 +10356,8 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type EnumUserTypeFieldUpdateOperationsInput = {
@@ -10696,15 +10719,9 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedEnumUserTypeFilter<$PrismaModel = never> = {
@@ -10797,18 +10814,12 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -11274,9 +11285,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUncheckedCreateWithoutReservationsInput = {
@@ -11286,9 +11298,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserCreateOrConnectWithoutReservationsInput = {
@@ -11369,9 +11382,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateWithoutReservationsInput = {
@@ -11381,9 +11395,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueUpsertWithoutReservationsInput = {

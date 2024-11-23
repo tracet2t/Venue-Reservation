@@ -131,7 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   password: 'password',
-  userType: 'userType'
+  userType: 'userType',
+  provider: 'provider'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

@@ -13,7 +13,8 @@ async function seed() {
       email: "shanjude1121Sgmail.com",
       password: "password123",
       userType: "Admin",
-      emailVerified: null, 
+      emailVerified: false, 
+      provider: null,
     },
   });
   
@@ -26,7 +27,8 @@ async function seed() {
       email: "jane0e@gmail.com.com",
       password: "password456",
       userType: "Regular",
-      emailVerified: null,  // Or a valid DateTime if you want to set it
+      emailVerified: false,  // Or a valid DateTime if you want to set it
+      provider: null,
     },
   });
   

@@ -17,14 +17,27 @@ CREATE TYPE "UserType" AS ENUM ('Admin', 'Regular', 'Guest');
 CREATE TABLE "User" (
     "userId" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
-    "contactNumber" BIGINT NOT NULL,
-    "address" TEXT NOT NULL,
+    "lastName" TEXT,
+    "contactNumber" BIGINT,
+    "address" TEXT,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "password" TEXT,
     "userType" "UserType" NOT NULL,
+    "provider" TEXT DEFAULT 'credentials',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "id" TEXT NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -95,6 +108,12 @@ CREATE TABLE "ReservationState" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ReservationState_reservationId_key" ON "ReservationState"("reservationId");
