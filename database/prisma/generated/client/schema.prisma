@@ -89,6 +89,10 @@ model Reservation {
   timeDuration         Int
   extraServices        ExtraService[]
   reservationDate      DateTime
+  timeMode             Schedule?
+  venueType            String?
+  amenities            String[]
+  additionalQuestions  Json?
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
 

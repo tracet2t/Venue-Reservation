@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "lastName" DROP NOT NULL,
-ALTER COLUMN "contactNumber" DROP NOT NULL,
-ALTER COLUMN "password" DROP NOT NULL;

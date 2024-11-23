@@ -87,11 +87,12 @@ model Reservation {
   title                 String
   purposeOfReservation  String
   timeDuration          Int
-  timeMode              Schedule         // Hourly, entire day, or session time
-  venueType             String          
-  amenities             String[]         // Selected amenities (e.g., food, sound system)
   extraServices         ExtraService[]
   reservationDate       DateTime
+  timeMode              Schedule?
+  venueType             String?
+  amenities             String[]   
+  additionalQuestions   Json?  
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
