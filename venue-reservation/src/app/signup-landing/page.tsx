@@ -4,8 +4,7 @@ import Card from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import BrandingSection from "@/components/design/branding-section";
 import { useRouter } from 'next/navigation';
-import { signIn, useSession } from "next-auth/react"
-import { TrendingUpIcon } from "lucide-react";
+import { signIn } from "next-auth/react"
 
 const SignupLanding = () => {
   const router =useRouter();
