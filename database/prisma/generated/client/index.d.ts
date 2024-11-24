@@ -1560,9 +1560,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
-    emailVerified: Date | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1572,9 +1573,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
-    emailVerified: Date | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1587,6 +1589,7 @@ export namespace Prisma {
     emailVerified: number
     password: number
     userType: number
+    provider: number
     _all: number
   }
 
@@ -1609,6 +1612,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1621,6 +1625,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1633,6 +1638,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
     _all?: true
   }
 
@@ -1729,9 +1735,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string
-    emailVerified: Date | null
+    emailVerified: boolean
     password: string | null
     userType: $Enums.UserType
+    provider: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1763,6 +1770,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
     reservations?: boolean | User$reservationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1777,6 +1785,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1789,6 +1798,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1809,9 +1819,10 @@ export namespace Prisma {
       contactNumber: bigint | null
       address: string | null
       email: string
-      emailVerified: Date | null
+      emailVerified: boolean
       password: string | null
       userType: $Enums.UserType
+      provider: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2212,9 +2223,10 @@ export namespace Prisma {
     readonly contactNumber: FieldRef<"User", 'BigInt'>
     readonly address: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly emailVerified: FieldRef<"User", 'DateTime'>
+    readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly password: FieldRef<"User", 'String'>
     readonly userType: FieldRef<"User", 'UserType'>
+    readonly provider: FieldRef<"User", 'String'>
   }
     
 
@@ -6525,8 +6537,6 @@ export namespace Prisma {
     purposeOfReservation: string | null
     timeDuration: number | null
     reservationDate: Date | null
-    timeMode: $Enums.Schedule | null
-    venueType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6539,8 +6549,6 @@ export namespace Prisma {
     purposeOfReservation: string | null
     timeDuration: number | null
     reservationDate: Date | null
-    timeMode: $Enums.Schedule | null
-    venueType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6554,10 +6562,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices: number
     reservationDate: number
-    timeMode: number
-    venueType: number
-    amenities: number
-    additionalQuestions: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6582,8 +6586,6 @@ export namespace Prisma {
     purposeOfReservation?: true
     timeDuration?: true
     reservationDate?: true
-    timeMode?: true
-    venueType?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6596,8 +6598,6 @@ export namespace Prisma {
     purposeOfReservation?: true
     timeDuration?: true
     reservationDate?: true
-    timeMode?: true
-    venueType?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6611,10 +6611,6 @@ export namespace Prisma {
     timeDuration?: true
     extraServices?: true
     reservationDate?: true
-    timeMode?: true
-    venueType?: true
-    amenities?: true
-    additionalQuestions?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6715,10 +6711,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices: $Enums.ExtraService[]
     reservationDate: Date
-    timeMode: $Enums.Schedule | null
-    venueType: string | null
-    amenities: string[]
-    additionalQuestions: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: ReservationCountAggregateOutputType | null
@@ -6751,10 +6743,6 @@ export namespace Prisma {
     timeDuration?: boolean
     extraServices?: boolean
     reservationDate?: boolean
-    timeMode?: boolean
-    venueType?: boolean
-    amenities?: boolean
-    additionalQuestions?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6771,10 +6759,6 @@ export namespace Prisma {
     timeDuration?: boolean
     extraServices?: boolean
     reservationDate?: boolean
-    timeMode?: boolean
-    venueType?: boolean
-    amenities?: boolean
-    additionalQuestions?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6790,10 +6774,6 @@ export namespace Prisma {
     timeDuration?: boolean
     extraServices?: boolean
     reservationDate?: boolean
-    timeMode?: boolean
-    venueType?: boolean
-    amenities?: boolean
-    additionalQuestions?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -6824,10 +6804,6 @@ export namespace Prisma {
       timeDuration: number
       extraServices: $Enums.ExtraService[]
       reservationDate: Date
-      timeMode: $Enums.Schedule | null
-      venueType: string | null
-      amenities: string[]
-      additionalQuestions: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["reservation"]>
@@ -7234,10 +7210,6 @@ export namespace Prisma {
     readonly timeDuration: FieldRef<"Reservation", 'Int'>
     readonly extraServices: FieldRef<"Reservation", 'ExtraService[]'>
     readonly reservationDate: FieldRef<"Reservation", 'DateTime'>
-    readonly timeMode: FieldRef<"Reservation", 'Schedule'>
-    readonly venueType: FieldRef<"Reservation", 'String'>
-    readonly amenities: FieldRef<"Reservation", 'String[]'>
-    readonly additionalQuestions: FieldRef<"Reservation", 'Json'>
     readonly createdAt: FieldRef<"Reservation", 'DateTime'>
     readonly updatedAt: FieldRef<"Reservation", 'DateTime'>
   }
@@ -8531,7 +8503,8 @@ export namespace Prisma {
     email: 'email',
     emailVerified: 'emailVerified',
     password: 'password',
-    userType: 'userType'
+    userType: 'userType',
+    provider: 'provider'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8597,10 +8570,6 @@ export namespace Prisma {
     timeDuration: 'timeDuration',
     extraServices: 'extraServices',
     reservationDate: 'reservationDate',
-    timeMode: 'timeMode',
-    venueType: 'venueType',
-    amenities: 'amenities',
-    additionalQuestions: 'additionalQuestions',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8626,14 +8595,6 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -8648,15 +8609,6 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
-  };
-
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -8693,16 +8645,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Boolean'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8717,6 +8662,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserType[]'
    */
   export type ListEnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -8777,13 +8736,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
    * Reference to a field of type 'Status'
    */
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
@@ -8824,9 +8776,10 @@ export namespace Prisma {
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }
 
@@ -8837,9 +8790,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
-    emailVerified?: SortOrderInput | SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     reservations?: ReservationOrderByRelationAggregateInput
   }
 
@@ -8853,9 +8807,10 @@ export namespace Prisma {
     lastName?: StringNullableFilter<"User"> | string | null
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }, "userId" | "email">
 
@@ -8866,9 +8821,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
-    emailVerified?: SortOrderInput | SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8886,9 +8842,10 @@ export namespace Prisma {
     contactNumber?: BigIntNullableWithAggregatesFilter<"User"> | bigint | number | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
-    emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     userType?: EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
+    provider?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -9168,10 +9125,6 @@ export namespace Prisma {
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
-    timeMode?: EnumScheduleNullableFilter<"Reservation"> | $Enums.Schedule | null
-    venueType?: StringNullableFilter<"Reservation"> | string | null
-    amenities?: StringNullableListFilter<"Reservation">
-    additionalQuestions?: JsonNullableFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -9188,10 +9141,6 @@ export namespace Prisma {
     timeDuration?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
-    timeMode?: SortOrderInput | SortOrder
-    venueType?: SortOrderInput | SortOrder
-    amenities?: SortOrder
-    additionalQuestions?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -9211,10 +9160,6 @@ export namespace Prisma {
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
-    timeMode?: EnumScheduleNullableFilter<"Reservation"> | $Enums.Schedule | null
-    venueType?: StringNullableFilter<"Reservation"> | string | null
-    amenities?: StringNullableListFilter<"Reservation">
-    additionalQuestions?: JsonNullableFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
@@ -9231,10 +9176,6 @@ export namespace Prisma {
     timeDuration?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
-    timeMode?: SortOrderInput | SortOrder
-    venueType?: SortOrderInput | SortOrder
-    amenities?: SortOrder
-    additionalQuestions?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ReservationCountOrderByAggregateInput
@@ -9256,10 +9197,6 @@ export namespace Prisma {
     timeDuration?: IntWithAggregatesFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
-    timeMode?: EnumScheduleNullableWithAggregatesFilter<"Reservation"> | $Enums.Schedule | null
-    venueType?: StringNullableWithAggregatesFilter<"Reservation"> | string | null
-    amenities?: StringNullableListFilter<"Reservation">
-    additionalQuestions?: JsonNullableWithAggregatesFilter<"Reservation">
     createdAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
   }
@@ -9321,9 +9258,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
   }
 
@@ -9334,9 +9272,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -9347,9 +9286,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
   }
 
@@ -9360,9 +9300,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -9373,9 +9314,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9385,9 +9327,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9397,9 +9340,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -9683,10 +9627,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutReservationsInput
@@ -9703,10 +9643,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     reservationState?: ReservationStateUncheckedCreateNestedOneWithoutReservationInput
@@ -9719,10 +9655,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReservationsNestedInput
@@ -9739,10 +9671,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservationState?: ReservationStateUncheckedUpdateOneWithoutReservationNestedInput
@@ -9757,10 +9685,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9772,10 +9696,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9789,10 +9709,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9886,15 +9802,9 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type EnumUserTypeFilter<$PrismaModel = never> = {
@@ -9929,6 +9839,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9945,6 +9856,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9957,6 +9869,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -10015,18 +9928,12 @@ export namespace Prisma {
     _max?: NestedBigIntNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10319,35 +10226,6 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type EnumScheduleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumScheduleNullableFilter<$PrismaModel> | $Enums.Schedule | null
-  }
-  export type JsonNullableFilter<$PrismaModel = never> = 
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
   export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -10367,10 +10245,6 @@ export namespace Prisma {
     timeDuration?: SortOrder
     extraServices?: SortOrder
     reservationDate?: SortOrder
-    timeMode?: SortOrder
-    venueType?: SortOrder
-    amenities?: SortOrder
-    additionalQuestions?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10388,8 +10262,6 @@ export namespace Prisma {
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
     reservationDate?: SortOrder
-    timeMode?: SortOrder
-    venueType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10402,8 +10274,6 @@ export namespace Prisma {
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
     reservationDate?: SortOrder
-    timeMode?: SortOrder
-    venueType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10411,41 +10281,6 @@ export namespace Prisma {
   export type ReservationSumOrderByAggregateInput = {
     venueId?: SortOrder
     timeDuration?: SortOrder
-  }
-
-  export type EnumScheduleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumScheduleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Schedule | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumScheduleNullableFilter<$PrismaModel>
-    _max?: NestedEnumScheduleNullableFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumStatusFilter<$PrismaModel = never> = {
@@ -10521,8 +10356,8 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type EnumUserTypeFieldUpdateOperationsInput = {
@@ -10762,10 +10597,6 @@ export namespace Prisma {
     set: $Enums.ExtraService[]
   }
 
-  export type ReservationCreateamenitiesInput = {
-    set: string[]
-  }
-
   export type UserCreateNestedOneWithoutReservationsInput = {
     create?: XOR<UserCreateWithoutReservationsInput, UserUncheckedCreateWithoutReservationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutReservationsInput
@@ -10793,15 +10624,6 @@ export namespace Prisma {
   export type ReservationUpdateextraServicesInput = {
     set?: $Enums.ExtraService[]
     push?: $Enums.ExtraService | $Enums.ExtraService[]
-  }
-
-  export type NullableEnumScheduleFieldUpdateOperationsInput = {
-    set?: $Enums.Schedule | null
-  }
-
-  export type ReservationUpdateamenitiesInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutReservationsNestedInput = {
@@ -10897,15 +10719,9 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedEnumUserTypeFilter<$PrismaModel = never> = {
@@ -10998,18 +10814,12 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -11108,45 +10918,6 @@ export namespace Prisma {
     _max?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumScheduleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumScheduleNullableFilter<$PrismaModel> | $Enums.Schedule | null
-  }
-
-  export type NestedEnumScheduleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumScheduleNullableWithAggregatesFilter<$PrismaModel> | $Enums.Schedule | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumScheduleNullableFilter<$PrismaModel>
-    _max?: NestedEnumScheduleNullableFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> = 
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
   export type NestedEnumStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
@@ -11171,10 +10942,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     venue: VenueCreateNestedOneWithoutReservationsInput
@@ -11189,10 +10956,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     reservationState?: ReservationStateUncheckedCreateNestedOneWithoutReservationInput
@@ -11236,10 +10999,6 @@ export namespace Prisma {
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
-    timeMode?: EnumScheduleNullableFilter<"Reservation"> | $Enums.Schedule | null
-    venueType?: StringNullableFilter<"Reservation"> | string | null
-    amenities?: StringNullableListFilter<"Reservation">
-    additionalQuestions?: JsonNullableFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
   }
@@ -11274,10 +11033,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutReservationsInput
@@ -11292,10 +11047,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     reservationState?: ReservationStateUncheckedCreateNestedOneWithoutReservationInput
@@ -11534,9 +11285,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUncheckedCreateWithoutReservationsInput = {
@@ -11546,9 +11298,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
-    emailVerified?: Date | string | null
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserCreateOrConnectWithoutReservationsInput = {
@@ -11629,9 +11382,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateWithoutReservationsInput = {
@@ -11641,9 +11395,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueUpsertWithoutReservationsInput = {
@@ -11720,10 +11475,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutReservationsInput
@@ -11739,10 +11490,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11770,10 +11517,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReservationsNestedInput
@@ -11789,10 +11532,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11805,10 +11544,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11820,10 +11555,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     venue?: VenueUpdateOneRequiredWithoutReservationsNestedInput
@@ -11838,10 +11569,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservationState?: ReservationStateUncheckedUpdateOneWithoutReservationNestedInput
@@ -11855,10 +11582,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11877,10 +11600,6 @@ export namespace Prisma {
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
     reservationDate: Date | string
-    timeMode?: $Enums.Schedule | null
-    venueType?: string | null
-    amenities?: ReservationCreateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11911,10 +11630,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutReservationsNestedInput
@@ -11929,10 +11644,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservationState?: ReservationStateUncheckedUpdateOneWithoutReservationNestedInput
@@ -11946,10 +11657,6 @@ export namespace Prisma {
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    timeMode?: NullableEnumScheduleFieldUpdateOperationsInput | $Enums.Schedule | null
-    venueType?: NullableStringFieldUpdateOperationsInput | string | null
-    amenities?: ReservationUpdateamenitiesInput | string[]
-    additionalQuestions?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

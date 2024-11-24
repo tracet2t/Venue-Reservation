@@ -15,10 +15,11 @@ model User {
   contactNumber BigInt?
   address       String?
   email         String         @unique
-  emailVerified DateTime?
+  emailVerified Boolean     @default(false)
   password      String?
   userType      UserType
   reservations  Reservation[]  @relation("UserReservations")
+  provider    String?   @default("credentials")
 }
 
 model VerificationToken {
@@ -89,10 +90,6 @@ model Reservation {
   timeDuration          Int
   extraServices         ExtraService[]
   reservationDate       DateTime
-  timeMode              Schedule?
-  venueType             String?
-  amenities             String[]   
-  additionalQuestions   Json?  
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 

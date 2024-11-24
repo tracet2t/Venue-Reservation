@@ -16,11 +16,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       // Fetch the venue by ID, including availability and time slots
       const venue = await prisma.venue.findUnique({
-        where: { id: venueId },  // Use the validated venueId
-        include: {
+        where: { id: venueId },
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          schedule: true,
           availability: {
             include: {
-              timeSlots: true,  // Fetch time slots for each availability entry
+              timeSlots: true,
             }
           }
         }

@@ -18,6 +18,16 @@ const ReservationSummary: React.FC = () => {
     <div className="max-w-6xl mx-auto my-8 p-4 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white shadow-lg rounded-lg">
       {/* Left Section - Venue Details */}
       <div className="flex flex-col items-center lg:items-start">
+            {/* Add Venue Information Section */}
+        {/* {venueInfo && (
+          <div className="w-full mb-6 p-4 bg-white border rounded-lg shadow-lg">
+            <h1 className="text-2xl font-bold mb-2">{venueInfo.name}</h1>
+            <div className="text-gray-600">
+              <p>Venue Type: {venueInfo.type}</p>
+              <p>Schedule: {venueInfo.schedule}</p>
+            </div>
+          </div>
+        )} */}
         {/* <img
           src={reservationDetails.imageUrl}
           alt={reservationDetails.venueName}

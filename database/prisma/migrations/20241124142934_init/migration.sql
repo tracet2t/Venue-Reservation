@@ -21,9 +21,10 @@ CREATE TABLE "User" (
     "contactNumber" BIGINT,
     "address" TEXT,
     "email" TEXT NOT NULL,
-    "emailVerified" TIMESTAMP(3),
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "password" TEXT,
     "userType" "UserType" NOT NULL,
+    "provider" TEXT DEFAULT 'credentials',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
 );
@@ -89,10 +90,6 @@ CREATE TABLE "Reservation" (
     "timeDuration" INTEGER NOT NULL,
     "extraServices" "ExtraService"[],
     "reservationDate" TIMESTAMP(3) NOT NULL,
-    "timeMode" "Schedule",
-    "venueType" TEXT,
-    "amenities" TEXT[],
-    "additionalQuestions" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -85,6 +85,7 @@ const MagicLinkLoginPage = () => {
                 </Link>.
               </p>
             </div>
+      
           </div>
         </div>
       </div>

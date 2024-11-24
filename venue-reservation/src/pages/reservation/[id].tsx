@@ -38,7 +38,9 @@ const Availability = () => {
     evening: false,
     lateEvening: false,
     earlyMorning: false,
+    fullDay: false,
   });
+  const [hourlySlots, setHourlySlots] = useState<{ [key: string]: boolean }>({});
   const [venueInfo, setVenueInfo] = useState<VenueInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -96,6 +98,7 @@ const Availability = () => {
       evening: false,
       lateEvening: false,
       earlyMorning: false,
+      fullDay: false,
     });
     setShowModal(true);
   };
@@ -153,18 +156,8 @@ const Availability = () => {
             (
 
       <div className="z-0 flex flex-wrap lg:flex-nowrap justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
-        {/* Add Venue Information Section */}
-        {venueInfo && (
-          <div className="w-full mb-6 p-4 bg-white border rounded-lg shadow-lg">
-            <h1 className="text-2xl font-bold mb-2">{venueInfo.name}</h1>
-            <div className="text-gray-600">
-              <p>Venue Type: {venueInfo.type}</p>
-              <p>Schedule: {venueInfo.schedule}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Calendar */}
+        
+      {/* Calendar */}
         <div className="w-full z-0 lg:w-1/2 mb-6 lg:mb-0">
           <Calendar onSelectDate={handleSelectDate} id={Number(id)}/>
         </div>
@@ -181,44 +174,90 @@ const Availability = () => {
               <h2 className="text-xl font-semibold mb-4">Select Availability</h2>
               <p className="text-gray-700 mb-6">Select availability for {selectedDate?.toLocaleDateString()}</p>
 
-              <div className="mb-4">
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.morning}
-                    onChange={() => handleCheckboxChange('morning')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Morning (8AM - 12PM)
-                </label>
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.evening}
-                    onChange={() => handleCheckboxChange('evening')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Evening (12PM - 8PM)
-                </label>
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.lateEvening}
-                    onChange={() => handleCheckboxChange('lateEvening')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Late Evening (8PM - 12AM)
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={availability.earlyMorning}
-                    onChange={() => handleCheckboxChange('earlyMorning')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Early Morning (12AM - 8AM)
-                </label>
-              </div>
+               {/* Render different forms based on schedule type */}
+              {venueInfo?.schedule === 'HourlyTime' && (
+                <div className="max-h-96 overflow-y-auto mb-4">
+                  {Array.from({ length: 24 }, (_, i) => {
+                    const currentHour = i;
+                    const nextHour = (i + 1) % 24;
+                    const formattedCurrentHour = currentHour.toString().padStart(2, '0');
+                    const formattedNextHour = nextHour.toString().padStart(2, '0');
+                    const timeSlot = `${formattedCurrentHour}:00-${formattedNextHour}:00`;
+                    
+                    return (
+                      <label key={timeSlot} className="flex items-center mb-2">
+                        <input
+                          type="checkbox"
+                          checked={hourlySlots[timeSlot] || false}
+                          onChange={() => {
+                            setHourlySlots(prev => ({
+                              ...prev,
+                              [timeSlot]: !prev[timeSlot]
+                            }));
+                          }}
+                          className="form-checkbox text-blue-500 mr-2"
+                        />
+                        {`${formattedCurrentHour}:00 - ${formattedNextHour}:00`}
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+
+              {venueInfo?.schedule === 'SessionTime' && (
+                <div className="mb-4">
+                  <label className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={availability.morning}
+                      onChange={() => handleCheckboxChange('morning')}
+                      className="form-checkbox text-blue-500 mr-2"
+                    />
+                    Morning Session (08:00 - 12:00)
+                  </label>
+                  <label className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={availability.evening}
+                      onChange={() => handleCheckboxChange('evening')}
+                      className="form-checkbox text-blue-500 mr-2"
+                    />
+                    Afternoon Session (12:00 - 0:00)
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={availability.lateEvening}
+                      onChange={() => handleCheckboxChange('lateEvening')}
+                      className="form-checkbox text-blue-500 mr-2"
+                    />
+                    Late Evening Session (08:00 - 12:00)
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={availability.lateEvening}
+                      onChange={() => handleCheckboxChange('lateEvening')}
+                      className="form-checkbox text-blue-500 mr-2"
+                    />
+                    Early Morning Session (12:00 - 08:00)
+                  </label>
+                </div>
+              )}
+
+              {venueInfo?.schedule === 'EntireDay' && (
+                <div className="mb-4">
+                  <label className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={availability.fullDay}
+                      onChange={() => handleCheckboxChange('fullDay')}
+                      className="form-checkbox text-blue-500 mr-2"
+                    />
+                    Full Day (00:00 - 24:00)
+                  </label>
+                </div>
+              )}
 
               <div className="flex justify-between">
                 <button onClick={closeModal} className="bg-gray-500 text-white py-2 px-4 rounded-lg">Cancel</button>

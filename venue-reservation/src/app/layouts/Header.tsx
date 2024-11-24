@@ -3,9 +3,13 @@
 import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface User {
   firstName: string;
+  email: string;
+  userType: string;
+  provider?: string;
 }
 
 const Header = () => {
@@ -33,10 +37,15 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
+      // First clear custom auth token
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
+      
+      // Then sign out from NextAuth
+      await signOut({ redirect: false });
+      
       setUser(null);
       router.push("/");
     } catch (error) {
@@ -68,7 +77,7 @@ const Header = () => {
         <nav className="hidden lg:flex items-center space-x-4">
           {user ? (
             <>
-              <button 
+              <button
                 onClick={navigateToProfile}
                 className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
               >
@@ -102,7 +111,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(!isOpen)}
           className="lg:hidden p-2 text-gray-700"
         >
           <svg
@@ -128,7 +137,6 @@ const Header = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out z-50`}
       >
-        {/* Mobile Menu Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <Logo />
           <button
