@@ -11,17 +11,28 @@ datasource db {
 model User {
   userId        String        @id @default(uuid())
   firstName     String
-  lastName      String
-  contactNumber BigInt // Change from Int to BigInt
-  address       String
+  lastName      String?
+  contactNumber BigInt?
+  address       String?
   email         String        @unique
-  password      String
+  password      String?
   userType      UserType
+  emailVerified DateTime?
   reservations  Reservation[] @relation("UserReservations")
 }
 
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String
+  email      String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model Venue {
-  id           Int           @id @default(autoincrement())
+  id           Int                 @id @default(autoincrement())
   name         String
   street_name  String[]
   district     String
@@ -29,29 +40,52 @@ model Venue {
   type         String
   capacity     Int
   size         Int
-  schedule     String
   features     String[]
   images       String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  reservations Reservation[] @relation("VenueReservations")
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  schedule     Schedule
+  reservations Reservation[]       @relation("VenueReservations")
+  availability VenueAvailability[]
+}
+
+model VenueAvailability {
+  id        Int                @id @default(autoincrement())
+  venueId   Int
+  date      DateTime
+  status    AvailabilityStatus
+  timeSlots TimeSlot[]
+  venue     Venue              @relation(fields: [venueId], references: [id])
+}
+
+model TimeSlot {
+  id                Int                @id @default(autoincrement())
+  availabilityId    Int
+  startTime         DateTime
+  endTime           DateTime
+  status            AvailabilityStatus
+  venueAvailability VenueAvailability  @relation(fields: [availabilityId], references: [id])
 }
 
 model Reservation {
-  reservationId        String         @id @default(uuid())
+  reservationId        String            @id @default(uuid())
   userId               String
   venueId              Int
   title                String
   purposeOfReservation String
-  timeDuration         Int
   extraServices        ExtraService[]
+  timeDuration         Int
+  eventType            String
+  specialPermits       Boolean
+  securityRequirements Boolean
+  mediaCoverage        Boolean
+  auditoriumRules      Boolean
   reservationDate      DateTime
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
-
-  user             User              @relation("UserReservations", fields: [userId], references: [userId])
-  venue            Venue             @relation("VenueReservations", fields: [venueId], references: [id])
-  reservationState ReservationState?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  user                 User              @relation("UserReservations", fields: [userId], references: [userId])
+  venue                Venue             @relation("VenueReservations", fields: [venueId], references: [id])
+  reservationState     ReservationState?
 }
 
 model ReservationState {
@@ -60,6 +94,19 @@ model ReservationState {
   status             Status
   adminComments      String?
   reservation        Reservation @relation(fields: [reservationId], references: [reservationId])
+}
+
+enum AvailabilityStatus {
+  FULLY_BOOKED
+  PARTIALLY_BOOKED
+  NOT_AVAILABLE
+  AVAILABLE
+}
+
+enum Schedule {
+  EntireDay
+  SessionTime
+  HourlyTime
 }
 
 enum ExtraService {

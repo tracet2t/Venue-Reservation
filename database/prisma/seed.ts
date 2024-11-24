@@ -1,4 +1,4 @@
-import { PrismaClient, ExtraService, Status, UserType } from './generated/client';
+import { PrismaClient, ExtraService, Status, UserType, AvailabilityStatus } from './generated/client';
 
 const prisma = new PrismaClient();
 
@@ -8,14 +8,15 @@ async function seed() {
     data: {
       firstName: "shan",
       lastName: "Jude",
-      contactNumber: +94763751121,
+      contactNumber: 94763751121,
       address: "123 Main St, Cityville",
       email: "shanjude1121Sgmail.com",
-      password: "password123",  
-      userType: UserType.Admin,
+      password: "password123",
+      userType: "Admin",
+      emailVerified: null, 
     },
   });
-
+  
   const user2 = await prisma.user.create({
     data: {
       firstName: "Ranjan",
@@ -24,9 +25,11 @@ async function seed() {
       address: "456 Oak St, Townsville",
       email: "jane0e@gmail.com.com",
       password: "password456",
-      userType: UserType.Regular,
+      userType: "Regular",
+      emailVerified: null,  // Or a valid DateTime if you want to set it
     },
   });
+  
 
   // Create venues
   const venue1 = await prisma.venue.create({
@@ -38,7 +41,7 @@ async function seed() {
       type: 'Auditorium',
       capacity: 500,
       size: 5000,
-      schedule: 'Entire Day',
+      schedule: 'EntireDay',
       features: [
         'State-of-the-art acoustics system',
         'Ergonomic seating for maximum comfort',
@@ -46,6 +49,36 @@ async function seed() {
         'High-definition projector and screen',
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-12T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-12T09:00:00.000Z"),
+                  endTime: new Date("2024-11-12T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-13T00:00:00.000Z"),
+            status: "AVAILABLE", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-13T09:00:00.000Z"),
+                  endTime: new Date("2024-11-13T12:00:00.000Z"),
+                  status: "AVAILABLE", // Added default status if applicable
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -58,7 +91,7 @@ async function seed() {
         type: 'Conference Hall',
         capacity: 1500,
         size: 10000,
-        schedule: 'Half Day, Entire Day',
+        schedule: 'HourlyTime',
         features: [
           'High-speed Wi-Fi',
           'Spacious lobby area',
@@ -66,8 +99,38 @@ async function seed() {
           'Large exhibition hall',
         ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+        availability: {
+          create: [
+            {
+              date: new Date("2024-11-12T00:00:00.000Z"),
+              status: "FULLY_BOOKED", // Added status
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-12T09:00:00.000Z"),
+                    endTime: new Date("2024-11-12T12:00:00.000Z"),
+                    status: "FULLY_BOOKED", // Added status
+                  },
+                ],
+              },
+            },
+            {
+              date: new Date("2024-11-13T00:00:00.000Z"),
+              status: "AVAILABLE", // Added default status if applicable
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-13T09:00:00.000Z"),
+                    endTime: new Date("2024-11-13T12:00:00.000Z"),
+                    status: "AVAILABLE", // Added default status if applicable
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
-  });
+    });
 
   const venue3 = await prisma.venue.create({
     data: {
@@ -75,10 +138,10 @@ async function seed() {
       street_name: ['Nelum Pokuna Mawatha'],
       district: 'Colombo',
       province: 'Western Province',
-      type: 'Theatre',
+      type: 'Outdoor',
       capacity: 1200,
       size: 8000,
-      schedule: 'Evening',
+      schedule: 'SessionTime',
       features: [
         'World-class sound system',
         'Tiered seating arrangement',
@@ -86,6 +149,36 @@ async function seed() {
         'VIP seating area',
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-12T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-12T09:00:00.000Z"),
+                  endTime: new Date("2024-11-12T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-13T00:00:00.000Z"),
+            status: "AVAILABLE", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-13T09:00:00.000Z"),
+                  endTime: new Date("2024-11-13T12:00:00.000Z"),
+                  status: "AVAILABLE", // Added default status if applicable
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -95,10 +188,10 @@ async function seed() {
         street_name: ['Lotus Tower'],
         district: 'Colombo',
         province: 'Western Province',
-        type: 'Banquet Hall',
+        type: 'Conference Hall',
         capacity: 700,
         size: 6000,
-        schedule: 'Entire Day',
+        schedule: 'EntireDay',
         features: [
           '360-degree panoramic city view',
           'Dedicated catering area',
@@ -106,8 +199,38 @@ async function seed() {
           'Private dining section',
         ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+        availability: {
+          create: [
+            {
+              date: new Date("2024-11-12T00:00:00.000Z"),
+              status: "FULLY_BOOKED", // Added status
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-12T09:00:00.000Z"),
+                    endTime: new Date("2024-11-12T12:00:00.000Z"),
+                    status: "FULLY_BOOKED", // Added status
+                  },
+                ],
+              },
+            },
+            {
+              date: new Date("2024-11-13T00:00:00.000Z"),
+              status: "AVAILABLE", // Added default status if applicable
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-13T09:00:00.000Z"),
+                    endTime: new Date("2024-11-13T12:00:00.000Z"),
+                    status: "AVAILABLE", // Added default status if applicable
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
-  });
+    });
 
   const venue5 = await prisma.venue.create({
     data: {
@@ -118,16 +241,45 @@ async function seed() {
         type: 'Conference Room',
         capacity: 300,
         size: 3000,
-        schedule: 'Half Day, Entire Day',
+        schedule: 'EntireDay',
         features: [
           'Sea view meeting space',
           'Projector and audio setup',
           'Event management assistance',
           'Exclusive breakout rooms',
         ],
-        images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+        availability: {
+          create: [
+            {
+              date: new Date("2024-11-18T00:00:00.000Z"),
+              status: "NOT_AVAILABLE", // Added status
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-18T09:00:00.000Z"),
+                    endTime: new Date("2024-11-18T12:00:00.000Z"),
+                    status: "NOT_AVAILABLE", // Added status
+                  },
+                ],
+              },
+            },
+            {
+              date: new Date("2024-11-19T00:00:00.000Z"),
+              status: "AVAILABLE", // Added default status if applicable
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-19T09:00:00.000Z"),
+                    endTime: new Date("2024-11-19T12:00:00.000Z"),
+                    status: "AVAILABLE", // Added default status if applicable
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
-  });
+    });
 
   const venue6 = await prisma.venue.create({
     data: {
@@ -135,10 +287,10 @@ async function seed() {
       street_name: ['P.B.A Weerakoon Mawatha'],
       district: 'Kandy',
       province: 'Central Province',
-      type: 'Outdoor Garden',
+      type: 'Auditorium',
       capacity: 400,
       size: 7000,
-      schedule: 'Evening',
+      schedule: 'HourlyTime',
       features: [
         'Scenic riverside view',
         'Lush garden ambiance',
@@ -146,6 +298,36 @@ async function seed() {
         'Seating arrangements for weddings',
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-25T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-25T09:00:00.000Z"),
+                  endTime: new Date("2024-11-25T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-16T00:00:00.000Z"),
+            status: "PARTIALLY_BOOKED", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-16T09:00:00.000Z"),
+                  endTime: new Date("2024-11-16T12:00:00.000Z"),
+                  status: "PARTIALLY_BOOKED", // Added default status if applicable
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -155,10 +337,10 @@ async function seed() {
       street_name: ['One Galle Face'],
       district: 'Colombo',
       province: 'Western Province',
-      type: 'Ballroom',
+      type: 'Co-Working Space',
       capacity: 800,
       size: 9500,
-      schedule: 'Half Day, Entire Day',
+      schedule: 'SessionTime',
       features: [
         'Elegant interiors with chandeliers',
         'Dedicated sound and lighting system',
@@ -166,6 +348,36 @@ async function seed() {
         'In-house catering services',
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-12T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-12T09:00:00.000Z"),
+                  endTime: new Date("2024-11-12T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-13T00:00:00.000Z"),
+            status: "AVAILABLE", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-13T09:00:00.000Z"),
+                  endTime: new Date("2024-11-13T12:00:00.000Z"),
+                  status: "AVAILABLE", // Added default status if applicable
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -175,10 +387,10 @@ async function seed() {
       street_name: ['Araliya Green City'],
       district: 'Nuwara Eliya',
       province: 'Central Province',
-      type: 'Rooftop Venue',
+      type: 'Auditorium',
       capacity: 200,
       size: 4000,
-      schedule: 'Evening',
+      schedule: 'SessionTime',
       features: [
         'Mountain view seating',
         'Outdoor fireplace',
@@ -186,6 +398,36 @@ async function seed() {
         'Bar setup with cocktail service',
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-12T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-12T09:00:00.000Z"),
+                  endTime: new Date("2024-11-12T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-13T00:00:00.000Z"),
+            status: "AVAILABLE", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-13T09:00:00.000Z"),
+                  endTime: new Date("2024-11-13T12:00:00.000Z"),
+                  status: "AVAILABLE", // Added default status if applicable
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -195,10 +437,10 @@ async function seed() {
         street_name: ['Dadella'],
         district: 'Galle',
         province: 'Southern Province',
-        type: 'Pavilion',
+        type: 'Co-Working Space',
         capacity: 250,
         size: 4500,
-        schedule: 'Entire Day',
+        schedule: 'EntireDay',
         features: [
           'Scenic ocean view',
           'Outdoor seating arrangements',
@@ -206,8 +448,38 @@ async function seed() {
           'Eco-friendly event space',
         ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+        availability: {
+          create: [
+            {
+              date: new Date("2024-11-12T00:00:00.000Z"),
+              status: "FULLY_BOOKED", // Added status
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-12T09:00:00.000Z"),
+                    endTime: new Date("2024-11-12T12:00:00.000Z"),
+                    status: "FULLY_BOOKED", // Added status
+                  },
+                ],
+              },
+            },
+            {
+              date: new Date("2024-11-13T00:00:00.000Z"),
+              status: "AVAILABLE", // Added default status if applicable
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-13T09:00:00.000Z"),
+                    endTime: new Date("2024-11-13T12:00:00.000Z"),
+                    status: "AVAILABLE", // Added default status if applicable
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
-  });
+    });
 
   const venue10 = await prisma.venue.create({
     data: {
@@ -215,10 +487,10 @@ async function seed() {
         street_name: ['100 Hotel Road,Mount Lavinia'],
         district: 'Colombo',
         province: 'Western Province',
-        type: 'Beach Venue',
+        type: 'Conference Hall',
         capacity: 500,
         size: 6000,
-        schedule: 'Evening',
+        schedule: 'SessionTime',
         features: [
           'Beachfront view',
           'Outdoor event decor',
@@ -226,8 +498,38 @@ async function seed() {
           'Tented seating available',
         ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+        availability: {
+          create: [
+            {
+              date: new Date("2024-11-12T00:00:00.000Z"),
+              status: "FULLY_BOOKED", // Added status
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-12T09:00:00.000Z"),
+                    endTime: new Date("2024-11-12T12:00:00.000Z"),
+                    status: "FULLY_BOOKED", // Added status
+                  },
+                ],
+              },
+            },
+            {
+              date: new Date("2024-11-13T00:00:00.000Z"),
+              status: "AVAILABLE", // Added default status if applicable
+              timeSlots: {
+                create: [
+                  {
+                    startTime: new Date("2024-11-13T09:00:00.000Z"),
+                    endTime: new Date("2024-11-13T12:00:00.000Z"),
+                    status: "AVAILABLE", // Added default status if applicable
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
-  });
+    });
 
   // Create reservations
   const reservation1 = await prisma.reservation.create({
@@ -236,11 +538,17 @@ async function seed() {
       venueId: venue1.id,
       title: "Tech Conference",
       purposeOfReservation: "Technology seminar",
-      timeDuration: 4,
       extraServices: [ExtraService.projectors, ExtraService.sound_system],
+      timeDuration: 4,
+      eventType: "Public",                
+      specialPermits: true,            
+      securityRequirements: false,     
+      mediaCoverage: true,            
+      auditoriumRules: false,          
       reservationDate: new Date("2024-11-15T09:00:00Z"),
     },
   });
+  
 
   const reservation2 = await prisma.reservation.create({
     data: {
@@ -248,8 +556,14 @@ async function seed() {
       venueId: venue2.id,
       title: "Wedding Reception",
       purposeOfReservation: "Wedding celebration",
-      timeDuration: 6,
       extraServices: [ExtraService.food, ExtraService.private_parking],
+      timeDuration: 6,
+      eventType : "Private",
+      specialPermits : false ,
+      securityRequirements : true,
+      mediaCoverage : false,
+      auditoriumRules : true,
+     
       reservationDate: new Date("2024-12-10T12:00:00Z"),
     },
   });
