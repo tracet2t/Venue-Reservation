@@ -46,31 +46,30 @@ const ReservationForm = () => {
   const onSubmit = async (data) => {
     const reservationData = {
       userId: "2000", 
-      venueId: 1,           
+      venueId: 1,     
       title: data.title,
       purposeOfReservation: data.purposeOfReservation,
       amenities: selectedAmenities,
-      timeDuration: parseInt(data.timeDuration),  
+      timeDuration: parseInt(data.timeDuration),
       eventType: data.eventType,
-      specialPermits: data.specialPermits || '',  
-      securityRequirements: data.securityRequirements || '',
-      mediaCoverage: data.mediaCoverage || '',
-      auditoriumRules: data.auditoriumRules || '',
-      reservationDate: new Date().toISOString(),  
+      specialPermits: data.specialPermits,
+      securityRequirements: data.securityRequirements,
+      mediaCoverage: data.mediaCoverage,
+      auditoriumRules: data.auditoriumRules,
+      reservationDate: new Date().toISOString(),
     };
   
     try {
       const response = await fetch('/api/reservation', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reservationData),
       });
   
       if (response.ok) {
         const result = await response.json();
         console.log('Reservation saved:', result);
+        // Add success handling (e.g., display a message or redirect)
       } else {
         const error = await response.json();
         console.error('Error saving reservation:', error);
@@ -79,6 +78,7 @@ const ReservationForm = () => {
       console.error('Unexpected error:', error);
     }
   };
+  
   
   
 
@@ -133,40 +133,49 @@ const ReservationForm = () => {
                   )}
                 />
 
-                {/* Amenities Dropdown */}
-                <FormItem>
-                  <FormLabel>Amenities</FormLabel>
-                  <div className="relative w-full z-20">
-                    <button
-                      onClick={(e) => toggleDropdown('amenities', e)}
-                      className="flex items-center justify-between px-4 py-4 border-[3px] border-[#584822] rounded-lg w-[600px] bg-white focus:outline-none"
-                    >
-                      <span className="text-[#584822]">Select Amenities</span>
-                    </button>
+               {/* Amenities Dropdown */}
+<FormItem>
+  <FormLabel>Amenities</FormLabel>
+  <div className="relative w-full z-20">
+    <button
+      onClick={(e) => toggleDropdown('amenities', e)}
+      className="flex items-center justify-between px-4 py-4 border-[3px] border-[#584822] rounded-lg w-[600px] bg-white focus:outline-none"
+    >
+      <span className="text-[#584822]">
+        {selectedAmenities.length > 0 ? selectedAmenities.join(', ') : 'Select Amenities'}
+      </span>
+    </button>
 
-                    {isAmenitiesDropdownOpen && (
-                      <div className="absolute mt-2 w-[600px] bg-white border-[3px] border-[#584822] rounded-lg shadow-lg p-2">
-                        {['Food', 'Private Parking', 'Sound System', 'Extend Hours'].map((amenities) => (
-                          <label key={amenities} className="block mb-2 font-light">
-                            <input
-                              type="checkbox"
-                              name = "selectedAmenities"
-                              value={amenities}
-                              onChange={(e) => {
-                                const selected = e.target.checked
-                                  ? [...selectedAmenities, amenities] 
-                                  : selectedAmenities.filter((item) => item !== amenities); 
-                                setSelectedAmenities(selected);
-                              }}
-                              checked={selectedAmenities.includes(amenities)} 
-                            />
-                            <span className="ml-2">{amenities}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </FormItem>
+    {isAmenitiesDropdownOpen && (
+      <div className="absolute mt-2 w-[600px] bg-white border-[3px] border-[#584822] rounded-lg shadow-lg p-2">
+        {[
+          { label: 'Food', value: 'food' },
+          { label: 'Sound System', value: 'sound_system' },
+          { label: 'Private Parking', value: 'private_parking' },
+          { label: 'Projectors', value: 'projectors' },
+          { label: 'Extend Hours', value: 'extend_hours' },
+        ].map((amenity) => (
+          <label key={amenity.value} className="block mb-2 font-light">
+            <input
+              type="checkbox"
+              name="selectedAmenities"
+              value={amenity.value}
+              onChange={(e) => {
+                const selected = e.target.checked
+                  ? [...selectedAmenities, amenity.value]
+                  : selectedAmenities.filter((item) => item !== amenity.value);
+                setSelectedAmenities(selected);
+              }}
+              checked={selectedAmenities.includes(amenity.value)}
+            />
+            <span className="ml-2">{amenity.label}</span>
+          </label>
+        ))}
+      </div>
+    )}
+  </div>
+</FormItem>
+
 
                 {/* Time Schedule Dropdown */}
                 <FormField
