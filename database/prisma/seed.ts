@@ -542,6 +542,11 @@ async function seed() {
       purposeOfReservation: "Technology seminar",
       timeDuration: 4,
       extraServices: [ExtraService.projectors, ExtraService.sound_system],
+      eventType: "Public",                
+      specialPermits: true,            
+      securityRequirements: false,     
+      mediaCoverage: true,            
+      auditoriumRules: false, 
       reservationDate: new Date("2024-11-15T09:00:00Z"),
     },
   });
@@ -554,6 +559,11 @@ async function seed() {
       purposeOfReservation: "Wedding celebration",
       timeDuration: 6,
       extraServices: [ExtraService.food, ExtraService.private_parking],
+      eventType : "Private",
+      specialPermits : false ,
+      securityRequirements : true,
+      mediaCoverage : false,
+      auditoriumRules : true,
       reservationDate: new Date("2024-12-10T12:00:00Z"),
     },
   });

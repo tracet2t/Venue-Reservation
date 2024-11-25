@@ -89,6 +89,11 @@ model Reservation {
   purposeOfReservation  String
   timeDuration          Int
   extraServices         ExtraService[]
+  eventType            String
+  specialPermits       Boolean
+  securityRequirements Boolean
+  mediaCoverage        Boolean
+  auditoriumRules      Boolean
   reservationDate       DateTime
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt

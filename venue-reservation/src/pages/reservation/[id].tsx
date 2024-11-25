@@ -9,7 +9,7 @@ import "/src/app/globals.css";
 import Question from "@/components/questions"
 import ReservationSummary from "@/components/ReservationSummary";
 import ReservationConfirmation from "@/components/ReservationConfirmation";
-import ReservationCarousel from "@/components/reservation-carousel"; 
+// import ReservationCarousel from "@/components/reservation-carousel"; 
 
 interface VenueInfo {
   id: number;
@@ -17,12 +17,12 @@ interface VenueInfo {
   type: string;
   schedule: string;
 }
-interface ReservationSummaryProps {
-  venueName: string;
-  selectedDate: Date | null;
-  capacity: number;
-  onConfirm: () => void;
-}
+// interface ReservationSummaryProps {
+//   venueName: string;
+//   selectedDate: Date | null;
+//   capacity: number;
+//   onConfirm: () => void;
+// }
 
 
 const Availability = () => {
@@ -44,6 +44,8 @@ const Availability = () => {
   const [venueInfo, setVenueInfo] = useState<VenueInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [carouselStep, setCarouselStep] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -111,15 +113,26 @@ const Availability = () => {
     setShowModal(false);
     setSelectedDate(null);
   };
-  const handleReserveNow = () => {
-    setShowConfirmation(true); // Show reservation summary
-  };
+//   const handleReserveNow = () => {
+//     setShowConfirmation(true); // Show reservation summary
+//   };
 
-  const handleReservationConfirm = () => {
-    console.log('Reservation confirmed!');
-    setShowConfirmation(false); // Hide confirmation after action
-  };
+//   const handleReservationConfirm = () => {
+//     console.log('Reservation confirmed!');
+//     setShowConfirmation(false); // Hide confirmation after action
+//   };
+//  // Handle carousel navigation
+//  const goToPreviousStep = () => {
+//   setCarouselStep((prev) => Math.max(prev - 1, 0)); // Go back to previous step
+// };
 
+// const goToNextStep = () => {
+//   setCarouselStep((prev) => Math.min(prev + 1, 2)); // Go to next step, max 2 steps (summary -> confirmation)
+// };
+
+const handleAnswersUpdate = (answers: Record<string, string>) => {
+  setUserAnswers(answers); // Capture Q&A responses
+};
   if (loading) {
     return (
       <div className="min-h-screen">
@@ -149,14 +162,7 @@ const Availability = () => {
       <div className="z-1">
         <Header />
       </div>
-      <div className="relative w-full h-[calc(100vh-100px)]">
-        {/* ReservationCarousel */}
-        <ReservationCarousel
-          images={[
-            (
-
       <div className="z-0 flex flex-wrap lg:flex-nowrap justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
-        
       {/* Calendar */}
         <div className="w-full z-0 lg:w-1/2 mb-6 lg:mb-0">
           <Calendar onSelectDate={handleSelectDate} id={Number(id)}/>
@@ -267,25 +273,18 @@ const Availability = () => {
           </div>
         )}
       </div>
-      ),
-      (
-        <ReservationSummary
-          venueName={venueInfo?.name || "Unknown"}
-          selectedDate={selectedDate}
-          capacity={50}
-          onConfirm={handleReservationConfirm}
-        />
-      ),
-      (
-        <ReservationConfirmation />
-      ),
-        ]}
-        width="100%"
-        height="100%"
-        dotColor="#ccc"
-        activeDotColor="#584822"
+      {/* Reservation Summary */}
+      <ReservationSummary
+        venueName={venueInfo?.name || "Unknown"}
+        venueType={venueInfo?.type || "Unknown"}
+        schedule={venueInfo?.schedule || "Unknown"}
+        date={selectedDate?.toLocaleDateString() || ""}
+        purpose="Venue Reservation"
+        amenities={["Food", "Sound System", "Projector", "Lighting System"]}
+        userAnswers={userAnswers} // Pass Q&A responses
       />
-    </div>
+
+        <ReservationConfirmation />
 
       <Footer />
     </div>

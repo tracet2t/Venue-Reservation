@@ -6536,6 +6536,11 @@ export namespace Prisma {
     title: string | null
     purposeOfReservation: string | null
     timeDuration: number | null
+    eventType: string | null
+    specialPermits: boolean | null
+    securityRequirements: boolean | null
+    mediaCoverage: boolean | null
+    auditoriumRules: boolean | null
     reservationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6548,6 +6553,11 @@ export namespace Prisma {
     title: string | null
     purposeOfReservation: string | null
     timeDuration: number | null
+    eventType: string | null
+    specialPermits: boolean | null
+    securityRequirements: boolean | null
+    mediaCoverage: boolean | null
+    auditoriumRules: boolean | null
     reservationDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6561,6 +6571,11 @@ export namespace Prisma {
     purposeOfReservation: number
     timeDuration: number
     extraServices: number
+    eventType: number
+    specialPermits: number
+    securityRequirements: number
+    mediaCoverage: number
+    auditoriumRules: number
     reservationDate: number
     createdAt: number
     updatedAt: number
@@ -6585,6 +6600,11 @@ export namespace Prisma {
     title?: true
     purposeOfReservation?: true
     timeDuration?: true
+    eventType?: true
+    specialPermits?: true
+    securityRequirements?: true
+    mediaCoverage?: true
+    auditoriumRules?: true
     reservationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -6597,6 +6617,11 @@ export namespace Prisma {
     title?: true
     purposeOfReservation?: true
     timeDuration?: true
+    eventType?: true
+    specialPermits?: true
+    securityRequirements?: true
+    mediaCoverage?: true
+    auditoriumRules?: true
     reservationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -6610,6 +6635,11 @@ export namespace Prisma {
     purposeOfReservation?: true
     timeDuration?: true
     extraServices?: true
+    eventType?: true
+    specialPermits?: true
+    securityRequirements?: true
+    mediaCoverage?: true
+    auditoriumRules?: true
     reservationDate?: true
     createdAt?: true
     updatedAt?: true
@@ -6710,6 +6740,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices: $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date
     createdAt: Date
     updatedAt: Date
@@ -6742,6 +6777,11 @@ export namespace Prisma {
     purposeOfReservation?: boolean
     timeDuration?: boolean
     extraServices?: boolean
+    eventType?: boolean
+    specialPermits?: boolean
+    securityRequirements?: boolean
+    mediaCoverage?: boolean
+    auditoriumRules?: boolean
     reservationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6758,6 +6798,11 @@ export namespace Prisma {
     purposeOfReservation?: boolean
     timeDuration?: boolean
     extraServices?: boolean
+    eventType?: boolean
+    specialPermits?: boolean
+    securityRequirements?: boolean
+    mediaCoverage?: boolean
+    auditoriumRules?: boolean
     reservationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6773,6 +6818,11 @@ export namespace Prisma {
     purposeOfReservation?: boolean
     timeDuration?: boolean
     extraServices?: boolean
+    eventType?: boolean
+    specialPermits?: boolean
+    securityRequirements?: boolean
+    mediaCoverage?: boolean
+    auditoriumRules?: boolean
     reservationDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6803,6 +6853,11 @@ export namespace Prisma {
       purposeOfReservation: string
       timeDuration: number
       extraServices: $Enums.ExtraService[]
+      eventType: string
+      specialPermits: boolean
+      securityRequirements: boolean
+      mediaCoverage: boolean
+      auditoriumRules: boolean
       reservationDate: Date
       createdAt: Date
       updatedAt: Date
@@ -7209,6 +7264,11 @@ export namespace Prisma {
     readonly purposeOfReservation: FieldRef<"Reservation", 'String'>
     readonly timeDuration: FieldRef<"Reservation", 'Int'>
     readonly extraServices: FieldRef<"Reservation", 'ExtraService[]'>
+    readonly eventType: FieldRef<"Reservation", 'String'>
+    readonly specialPermits: FieldRef<"Reservation", 'Boolean'>
+    readonly securityRequirements: FieldRef<"Reservation", 'Boolean'>
+    readonly mediaCoverage: FieldRef<"Reservation", 'Boolean'>
+    readonly auditoriumRules: FieldRef<"Reservation", 'Boolean'>
     readonly reservationDate: FieldRef<"Reservation", 'DateTime'>
     readonly createdAt: FieldRef<"Reservation", 'DateTime'>
     readonly updatedAt: FieldRef<"Reservation", 'DateTime'>
@@ -8569,6 +8629,11 @@ export namespace Prisma {
     purposeOfReservation: 'purposeOfReservation',
     timeDuration: 'timeDuration',
     extraServices: 'extraServices',
+    eventType: 'eventType',
+    specialPermits: 'specialPermits',
+    securityRequirements: 'securityRequirements',
+    mediaCoverage: 'mediaCoverage',
+    auditoriumRules: 'auditoriumRules',
     reservationDate: 'reservationDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -9124,6 +9189,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    eventType?: StringFilter<"Reservation"> | string
+    specialPermits?: BoolFilter<"Reservation"> | boolean
+    securityRequirements?: BoolFilter<"Reservation"> | boolean
+    mediaCoverage?: BoolFilter<"Reservation"> | boolean
+    auditoriumRules?: BoolFilter<"Reservation"> | boolean
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -9140,6 +9210,11 @@ export namespace Prisma {
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
     extraServices?: SortOrder
+    eventType?: SortOrder
+    specialPermits?: SortOrder
+    securityRequirements?: SortOrder
+    mediaCoverage?: SortOrder
+    auditoriumRules?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9159,6 +9234,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    eventType?: StringFilter<"Reservation"> | string
+    specialPermits?: BoolFilter<"Reservation"> | boolean
+    securityRequirements?: BoolFilter<"Reservation"> | boolean
+    mediaCoverage?: BoolFilter<"Reservation"> | boolean
+    auditoriumRules?: BoolFilter<"Reservation"> | boolean
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -9175,6 +9255,11 @@ export namespace Prisma {
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
     extraServices?: SortOrder
+    eventType?: SortOrder
+    specialPermits?: SortOrder
+    securityRequirements?: SortOrder
+    mediaCoverage?: SortOrder
+    auditoriumRules?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9196,6 +9281,11 @@ export namespace Prisma {
     purposeOfReservation?: StringWithAggregatesFilter<"Reservation"> | string
     timeDuration?: IntWithAggregatesFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    eventType?: StringWithAggregatesFilter<"Reservation"> | string
+    specialPermits?: BoolWithAggregatesFilter<"Reservation"> | boolean
+    securityRequirements?: BoolWithAggregatesFilter<"Reservation"> | boolean
+    mediaCoverage?: BoolWithAggregatesFilter<"Reservation"> | boolean
+    auditoriumRules?: BoolWithAggregatesFilter<"Reservation"> | boolean
     reservationDate?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
@@ -9626,6 +9716,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9642,6 +9737,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9654,6 +9754,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9670,6 +9775,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9684,6 +9794,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9695,6 +9810,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9708,6 +9828,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10244,6 +10369,11 @@ export namespace Prisma {
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
     extraServices?: SortOrder
+    eventType?: SortOrder
+    specialPermits?: SortOrder
+    securityRequirements?: SortOrder
+    mediaCoverage?: SortOrder
+    auditoriumRules?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10261,6 +10391,11 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    eventType?: SortOrder
+    specialPermits?: SortOrder
+    securityRequirements?: SortOrder
+    mediaCoverage?: SortOrder
+    auditoriumRules?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10273,6 +10408,11 @@ export namespace Prisma {
     title?: SortOrder
     purposeOfReservation?: SortOrder
     timeDuration?: SortOrder
+    eventType?: SortOrder
+    specialPermits?: SortOrder
+    securityRequirements?: SortOrder
+    mediaCoverage?: SortOrder
+    auditoriumRules?: SortOrder
     reservationDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10941,6 +11081,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10955,6 +11100,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10998,6 +11148,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
     extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    eventType?: StringFilter<"Reservation"> | string
+    specialPermits?: BoolFilter<"Reservation"> | boolean
+    securityRequirements?: BoolFilter<"Reservation"> | boolean
+    mediaCoverage?: BoolFilter<"Reservation"> | boolean
+    auditoriumRules?: BoolFilter<"Reservation"> | boolean
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
@@ -11032,6 +11187,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11046,6 +11206,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11474,6 +11639,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11489,6 +11659,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11516,6 +11691,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11531,6 +11711,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11543,6 +11728,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11554,6 +11744,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11568,6 +11763,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11581,6 +11781,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11599,6 +11804,11 @@ export namespace Prisma {
     purposeOfReservation: string
     timeDuration: number
     extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    eventType: string
+    specialPermits: boolean
+    securityRequirements: boolean
+    mediaCoverage: boolean
+    auditoriumRules: boolean
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -11629,6 +11839,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11643,6 +11858,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11656,6 +11876,11 @@ export namespace Prisma {
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
     extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    eventType?: StringFieldUpdateOperationsInput | string
+    specialPermits?: BoolFieldUpdateOperationsInput | boolean
+    securityRequirements?: BoolFieldUpdateOperationsInput | boolean
+    mediaCoverage?: BoolFieldUpdateOperationsInput | boolean
+    auditoriumRules?: BoolFieldUpdateOperationsInput | boolean
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

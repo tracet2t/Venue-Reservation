@@ -23,21 +23,25 @@ const Carousel: React.FC<CarouselProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+  // const nextSlide = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex === images.length - 1 ? 0 : prevIndex + 1
+  //   );
+  // };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex === 0 ? images.length - 1 : prevIndex - 1
+  //   );
+  // };
 
   return (
     <div className="relative overflow-hidden rounded-xl" style={{ width, height }}>
-      {images.map((image, index) => (
+      <div
+        className="overflow-y-auto h-full"
+        style={{ maxHeight: "100%" }} 
+      >
+        {images.map((image, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -46,7 +50,7 @@ const Carousel: React.FC<CarouselProps> = ({
         >
           {image}
         </div>
-      ))}
+      ))}</div>
       {/* <button
         className="absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105"
         style={{ backgroundColor: arrowBgColor, color: arrowFgColor }}

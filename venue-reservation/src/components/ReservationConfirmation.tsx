@@ -1,10 +1,12 @@
 import React from "react";
+import { useRouter } from "next/router"; 
 
 const ReservationConfirmation: React.FC = () => {
-  const reservationId = 123;
+  const router = useRouter();
+  const { reservationId } = router.query; // Access reservationId from query params
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center ">
       {/* Title (Outside Container) */}
       <h1 className="text-3xl font-bold text-[#584822] mb-4">
         Reservation Confirmation
@@ -30,13 +32,13 @@ const ReservationConfirmation: React.FC = () => {
         <div className="flex justify-between">
           <button
             className="border border-gray-400 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200"
-            onClick={() => console.log("Back clicked")}
+            onClick={() => router.back()}
           >
             Back
           </button>
           <button
             className="bg-[#584822] text-white px-6 py-2 rounded-lg hover:bg-[#4b3a1d]"
-            onClick={() => console.log("Done clicked")}
+            onClick={() => router.push("/")}
           >
             Done
           </button>
