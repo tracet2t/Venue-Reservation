@@ -27,7 +27,10 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = (
   };
 
   return (
-    <div className="max-w-6xl mx-auto my-8 p-4 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white shadow-lg rounded-lg">
+    <div className="flex flex-col items-center justify-center mb-4  p-8">
+    {/* Title (Outside Container) */}
+    <h1 className="text-3xl font-bold text-[#584822] mb-4">Reservation Summary</h1>
+    <div className="max-w-6xl mx-auto my-2 p-2 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-white shadow-lg rounded-lg">
       {/* Left Section - Venue Details */}
       <div className="flex flex-col items-center lg:items-start">
         <div className="w-full mb-6 p-4 bg-white border rounded-lg shadow-lg">
@@ -85,6 +88,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = (
           Reserve Now
         </button>
       </div>
+    </div>
     </div>
   );
 };

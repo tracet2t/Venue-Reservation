@@ -9,7 +9,8 @@ import "/src/app/globals.css";
 import Question from "@/components/questions"
 import ReservationSummary from "@/components/ReservationSummary";
 import ReservationConfirmation from "@/components/ReservationConfirmation";
-// import ReservationCarousel from "@/components/reservation-carousel"; 
+import VenueCard from '@/components/venue_card/user_venue_card';
+import ReservationCarousel from "@/components/reservation-carousel"; 
 
 interface VenueInfo {
   id: number;
@@ -162,6 +163,7 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
       <div className="z-1">
         <Header />
       </div>
+      <ReservationCarousel>
       <div className="z-0 flex flex-wrap lg:flex-nowrap justify-between mx-auto mt-10 w-full lg:w-3/4 px-4">
       {/* Calendar */}
         <div className="w-full z-0 lg:w-1/2 mb-6 lg:mb-0">
@@ -273,6 +275,10 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
           </div>
         )}
       </div>
+     
+       {/* Slide 2: Venue Card, Reservation Summary */}
+       <div className="z-0">
+      <VenueCard />
       {/* Reservation Summary */}
       <ReservationSummary
         venueName={venueInfo?.name || "Unknown"}
@@ -283,8 +289,12 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
         amenities={["Food", "Sound System", "Projector", "Lighting System"]}
         userAnswers={userAnswers} // Pass Q&A responses
       />
-
-        <ReservationConfirmation />
+  </div>
+      {/* Slide 3: Reservation Confirmation */}
+      <div className="z-0">
+          <ReservationConfirmation />
+        </div>
+      </ReservationCarousel>
 
       <Footer />
     </div>

@@ -6,7 +6,7 @@ const ReservationConfirmation: React.FC = () => {
   const { reservationId } = router.query; // Access reservationId from query params
 
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-center mb-4  p-8">
       {/* Title (Outside Container) */}
       <h1 className="text-3xl font-bold text-[#584822] mb-4">
         Reservation Confirmation
