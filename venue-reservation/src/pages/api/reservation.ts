@@ -1,25 +1,25 @@
-import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../dbclient';
+import { $Enums } from 'database/prisma/generated/client';
 
-const prisma = new PrismaClient();
+export default async function handler(req: { method: string; body: { userId: any; venueId: any; title: any; purposeOfReservation: any; extraServices: any; timeDuration: any; eventType: any; specialPermits: any; securityRequirements: any; mediaCoverage: any; auditoriumRules: any; reservationDate: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { success: boolean; reservation?: { reservationId: string; userId: string; venueId: number; title: string; purposeOfReservation: string; timeDuration: number; extraServices: $Enums.ExtraService[]; eventType: string; specialPermits: boolean; securityRequirements: boolean; mediaCoverage: boolean; auditoriumRules: boolean; reservationDate: Date; createdAt: Date; updatedAt: Date; }; error?: string; }): void; new(): any; }; }; }) {
+  if (req.method === "POST") {
+    const {
+      userId,
+      venueId,
+      title,
+      purposeOfReservation,
+      extraServices,
+      timeDuration,
+      eventType,
+      specialPermits,
+      securityRequirements,
+      mediaCoverage,
+      auditoriumRules,
+      reservationDate,
+    } = req.body;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
     try {
-      const {
-        userId,
-        venueId,
-        title,
-        purposeOfReservation,
-        timeDuration,
-        amenities,
-        eventType,
-        specialPermits,
-        securityRequirements,
-        mediaCoverage,
-        auditoriumRules,
-      } = req.body;
-
       const newReservation = await prisma.reservation.create({
         data: {
           userId,
@@ -27,22 +27,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           title,
           purposeOfReservation,
           timeDuration,
-          extraServices: amenities,
+          extraServices,
           eventType,
           specialPermits,
           securityRequirements,
           mediaCoverage,
           auditoriumRules,
-          reservationDate: new Date(),
+          reservationDate,
         },
       });
 
-      return res.status(201).json({ message: 'Reservation created successfully', reservation: newReservation });
+      res.status(201).json({ success: true, reservation: newReservation });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Something went wrong' });
+      console.error("Error creating reservation:", error);
+      res.status(500).json({ success: false, error: "Failed to create reservation." });
     }
   } else {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ success: false, error: "Method not allowed." });
   }
 }

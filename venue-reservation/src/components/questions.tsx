@@ -43,20 +43,20 @@ const ReservationForm = () => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     const reservationData = {
-      userId: "2000", 
-      venueId: 1,     
+      userId: "user-id-from-session", // Replace dynamically
+      venueId: 1, // Replace dynamically
       title: data.title,
       purposeOfReservation: data.purposeOfReservation,
-      amenities: selectedAmenities,
       timeDuration: parseInt(data.timeDuration),
+      extraServices: selectedAmenities, // Ensure it's in the required format
       eventType: data.eventType,
-      specialPermits: data.specialPermits,
-      securityRequirements: data.securityRequirements,
-      mediaCoverage: data.mediaCoverage,
-      auditoriumRules: data.auditoriumRules,
-      reservationDate: new Date().toISOString(),
+      specialPermits: data.specialPermits === 'yes',
+      securityRequirements: data.securityRequirements === 'yes',
+      mediaCoverage: data.mediaCoverage === 'yes',
+      auditoriumRules: data.auditoriumRules === 'yes',
+      reservationDate: new Date().toISOString(), // Current date/time
     };
   
     try {
@@ -69,15 +69,18 @@ const ReservationForm = () => {
       if (response.ok) {
         const result = await response.json();
         console.log('Reservation saved:', result);
-        // Add success handling (e.g., display a message or redirect)
+        alert('Reservation created successfully!');
       } else {
         const error = await response.json();
         console.error('Error saving reservation:', error);
+        alert('Failed to create reservation.');
       }
     } catch (error) {
       console.error('Unexpected error:', error);
+      alert('Unexpected error occurred.');
     }
   };
+  
   
   
   
