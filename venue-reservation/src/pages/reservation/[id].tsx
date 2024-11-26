@@ -33,7 +33,6 @@ const Availability = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
   const [availability, setAvailability] = useState({
     morning: false,
     evening: false,
@@ -45,7 +44,6 @@ const Availability = () => {
   const [venueInfo, setVenueInfo] = useState<VenueInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [carouselStep, setCarouselStep] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -122,14 +120,6 @@ const Availability = () => {
 //     console.log('Reservation confirmed!');
 //     setShowConfirmation(false); // Hide confirmation after action
 //   };
-//  // Handle carousel navigation
-//  const goToPreviousStep = () => {
-//   setCarouselStep((prev) => Math.max(prev - 1, 0)); // Go back to previous step
-// };
-
-// const goToNextStep = () => {
-//   setCarouselStep((prev) => Math.min(prev + 1, 2)); // Go to next step, max 2 steps (summary -> confirmation)
-// };
 
 const handleAnswersUpdate = (answers: Record<string, string>) => {
   setUserAnswers(answers); // Capture Q&A responses
@@ -276,24 +266,23 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
         )}
       </div>
      
-       {/* Slide 2: Venue Card, Reservation Summary */}
-       <div className="z-0">
-      <VenueCard />
-      {/* Reservation Summary */}
-      <ReservationSummary
-        venueName={venueInfo?.name || "Unknown"}
-        venueType={venueInfo?.type || "Unknown"}
-        schedule={venueInfo?.schedule || "Unknown"}
-        date={selectedDate?.toLocaleDateString() || ""}
-        purpose="Venue Reservation"
-        amenities={["Food", "Sound System", "Projector", "Lighting System"]}
-        userAnswers={userAnswers} // Pass Q&A responses
-      />
-  </div>
-      {/* Slide 3: Reservation Confirmation */}
       <div className="z-0">
-          <ReservationConfirmation />
-        </div>
+        <VenueCard />
+        {/* Reservation Summary */}
+        <ReservationSummary
+          venueName={venueInfo?.name || "Unknown"}
+          venueType={venueInfo?.type || "Unknown"}
+          schedule={venueInfo?.schedule || "Unknown"}
+          date={selectedDate?.toLocaleDateString() || ""}
+          purpose="Venue Reservation"
+          amenities={["Food", "Sound System", "Projector", "Lighting System"]}
+          userAnswers={userAnswers} // Pass Q&A responses
+        />
+      </div>
+      {/*Reservation Confirmation */}
+      <div className="z-0">
+        <ReservationConfirmation />
+      </div>
       </ReservationCarousel>
 
       <Footer />

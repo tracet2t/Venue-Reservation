@@ -20,6 +20,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = (
 }) => {
   const handleReserveNow = () => {
     const reservationId = "123"; // Replace with dynamically generated reservation ID
+    const email = "user@gmail.com";
     router.push({
       pathname: "/reservation-confirmation",
       query: { reservationId }, 

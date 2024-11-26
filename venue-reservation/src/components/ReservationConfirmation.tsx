@@ -3,19 +3,19 @@ import { useRouter } from "next/router";
 
 const ReservationConfirmation: React.FC = () => {
   const router = useRouter();
-  const { reservationId } = router.query; // Access reservationId from query params
+  const { reservationId, email} = router.query; // Access reservationId from query params
 
   return (
     <div className="flex flex-col items-center justify-center mb-4  p-8">
-      {/* Title (Outside Container) */}
       <h1 className="text-3xl font-bold text-[#584822] mb-4">
         Reservation Confirmation
       </h1>
-
-      {/* White Container for Other Content */}
       <div className="bg-white rounded-lg shadow-lg p-8 w-[140%] sm:w-[80%] lg:w-[70%] xl:w-[50%] text-center">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Reservation ID: {reservationId}
+        </h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          Email: {email}
         </h2>
         <p className="text-base text-gray-600 mb-2">
           Your reservation is now being processed and you will receive
