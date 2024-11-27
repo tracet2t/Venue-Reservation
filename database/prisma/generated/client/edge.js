@@ -228,7 +228,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\T2T Projects\\General\\Venue-Reservation\\database\\prisma\\generated\\client",
+      "value": "D:\\T2T\\new\\Venue-Reservation\\database\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -242,7 +242,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\T2T Projects\\General\\Venue-Reservation\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\T2T\\new\\Venue-Reservation\\database\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -256,6 +256,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

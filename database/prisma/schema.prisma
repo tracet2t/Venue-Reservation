@@ -34,16 +34,16 @@ model VerificationToken {
 model Venue {
   id            Int            @id @default(autoincrement())
   name          String
-  street_name   String[]       // If multiple street names are needed, else make it String
+  street_name   String[]       // Array of street names (consider using Json type if more complex data is needed)
   district      String
   province      String
   type          String
   capacity      Int
   size          Int
   schedule      Schedule
-  features      String[] 
+  features      String[]       // Array of features (consider using Json type if more complex data is needed)
   images        String[] 
-  availability    VenueAvailability[]
+  availability  VenueAvailability[] 
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   reservations  Reservation[]  @relation("VenueReservations")
@@ -54,7 +54,7 @@ model VenueAvailability {
   venueId          Int
   date             DateTime
   status           AvailabilityStatus
-  timeSlots        TimeSlot[]
+  timeSlots        TimeSlot[]       @relation("VenueTimeSlots")
   venue            Venue            @relation(fields: [venueId], references: [id])
 }
 
@@ -64,7 +64,7 @@ model TimeSlot {
   startTime        DateTime
   endTime          DateTime
   status           AvailabilityStatus
-  venueAvailability VenueAvailability @relation(fields: [availabilityId], references: [id])
+  venueAvailability VenueAvailability @relation("VenueTimeSlots", fields: [availabilityId], references: [id])
 }
 
 enum AvailabilityStatus {
@@ -87,14 +87,17 @@ model Reservation {
   title                 String
   purposeOfReservation  String
   timeDuration          Int
-  extraServices         ExtraService[]
+  extraServices         ExtraService[]   
   reservationDate       DateTime
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
-
+  reservationStateId    String?          // Optional field linking to ReservationState
+  
   user                  User             @relation("UserReservations", fields: [userId], references: [userId])
   venue                 Venue            @relation("VenueReservations", fields: [venueId], references: [id])
-  reservationState      ReservationState?
+
+  // Define the relation here: reservationState is optional, and it refers to the ReservationState model
+  reservationState      ReservationState? @relation("ReservationStateToReservation", fields: [reservationStateId], references: [reservationStateId])
 }
 
 model ReservationState {
@@ -102,7 +105,9 @@ model ReservationState {
   reservationId         String           @unique
   status                Status
   adminComments         String?
-  reservation           Reservation      @relation(fields: [reservationId], references: [reservationId])
+
+  // The reservation field does not need to define fields or references anymore, Prisma will infer them from the other side
+  reservation           Reservation      @relation("ReservationStateToReservation", fields: [reservationId], references: [reservationId])
 }
 
 enum ExtraService {
