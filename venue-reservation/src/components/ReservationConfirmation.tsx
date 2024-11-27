@@ -1,6 +1,6 @@
 import React from "react";
 import router from "next/router"; 
-
+import { GetServerSideProps } from "next";
 interface ReservationConfirmationProps {
   reservationId: string;
   email: string;
@@ -49,6 +49,45 @@ const ReservationConfirmation: React.FC<ReservationConfirmationProps> = ({ reser
       </div>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  const cookies = context.req.headers.cookie || "";
+  
+  try {
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/reservations_confirmation/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: cookies, 
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch reservation details");
+    }
+
+    const data = await response.json();
+
+    return {
+      props: {
+        reservationId: data.reservationId || "",
+        email: data.email || "",
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching reservation details:", error);
+
+    return {
+      props: {
+        reservationId: "",
+        email: "",
+      },
+    };
+  }
 };
 
 export default ReservationConfirmation;
