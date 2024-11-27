@@ -182,6 +182,7 @@ exports.Prisma.ReservationScalarFieldEnum = {
   purposeOfReservation: 'purposeOfReservation',
   timeDuration: 'timeDuration',
   extraServices: 'extraServices',
+  amenities: 'amenities',
   eventType: 'eventType',
   specialPermits: 'specialPermits',
   securityRequirements: 'securityRequirements',

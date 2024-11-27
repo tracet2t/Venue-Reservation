@@ -18,13 +18,6 @@ interface VenueInfo {
   type: string;
   schedule: string;
 }
-// interface ReservationSummaryProps {
-//   venueName: string;
-//   selectedDate: Date | null;
-//   capacity: number;
-//   onConfirm: () => void;
-// }
-
 
 const Availability = () => {
   const router = useRouter();
@@ -45,6 +38,10 @@ const Availability = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  const [reservationDetails, setReservationDetails] = useState({
+    reservationId: "",
+    email: "",
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -82,8 +79,27 @@ const Availability = () => {
         setLoading(false);
       }
     };
+    const fetchReservationDetails = async () => {
+      try {
+        const response = await fetch(`/api/reservations_confirmation/${id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setReservationDetails({
+            reservationId: data.reservationId,
+            email: data.email,
+          });
+        } else {
+          const errorData = await response.json();
+          setError(errorData.error || "Failed to fetch reservation details");
+        }
+      } catch (err) {
+        console.error("Error fetching reservation details:", err);
+        setError("An unexpected error occurred.");
+      }
+    };
 
     fetchVenueInfo();
+    fetchReservationDetails();
   }, [id]);
 
   const handleSelectDate = (date: Date) => {
@@ -112,14 +128,6 @@ const Availability = () => {
     setShowModal(false);
     setSelectedDate(null);
   };
-//   const handleReserveNow = () => {
-//     setShowConfirmation(true); // Show reservation summary
-//   };
-
-//   const handleReservationConfirm = () => {
-//     console.log('Reservation confirmed!');
-//     setShowConfirmation(false); // Hide confirmation after action
-//   };
 
 const handleAnswersUpdate = (answers: Record<string, string>) => {
   setUserAnswers(answers); // Capture Q&A responses
@@ -267,21 +275,23 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
       </div>
      
       <div className="z-0">
-        <VenueCard />
+        {/* <VenueCard provinces={[]} districts={[]} venueType={''} searchTerm={''} /> */}
         {/* Reservation Summary */}
         <ReservationSummary
-          venueName={venueInfo?.name || "Unknown"}
-          venueType={venueInfo?.type || "Unknown"}
-          schedule={venueInfo?.schedule || "Unknown"}
-          date={selectedDate?.toLocaleDateString() || ""}
-          purpose="Venue Reservation"
-          amenities={["Food", "Sound System", "Projector", "Lighting System"]}
-          userAnswers={userAnswers} // Pass Q&A responses
-        />
+            venueName={venueInfo?.name || "Unknown"}
+            venueType={venueInfo?.type || "Unknown"}
+            schedule={venueInfo?.schedule || "Unknown"}
+            date={selectedDate?.toLocaleDateString() || ""}
+            purpose="Venue Reservation"
+            amenities={["Food", "Sound System", "Projector", "Lighting System"]}
+            userAnswers={userAnswers} // Pass Q&A responses
+            selectedDate={null}        />
       </div>
       {/*Reservation Confirmation */}
       <div className="z-0">
-        <ReservationConfirmation />
+        <ReservationConfirmation 
+        reservationId={reservationDetails.reservationId}
+        email={reservationDetails.email}/>
       </div>
       </ReservationCarousel>
 
@@ -289,5 +299,6 @@ const handleAnswersUpdate = (answers: Record<string, string>) => {
     </div>
   );
 };
+
 
 export default Availability;

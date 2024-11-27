@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import BrandingSection from "@/components/design/branding-section";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 
 const AuthPage = () => {
   const [email, setEmail] = useState("");

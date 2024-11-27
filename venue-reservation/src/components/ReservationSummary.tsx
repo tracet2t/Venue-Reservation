@@ -1,5 +1,5 @@
-import React from "react";
-import router, { useRouter } from "next/router";
+import { useState } from "react";
+import { useRouter } from "next/router";
 interface ReservationSummaryProps {
   venueName: string;
   venueType: string;
@@ -7,6 +7,8 @@ interface ReservationSummaryProps {
   date: string;
   purpose: string;
   amenities: string[];
+  userAnswers: Record<string, string>;
+  selectedDate: Date | null; // Accept selectedDate as a prop
 }
 
 const ReservationSummary: React.FC<ReservationSummaryProps> = (
@@ -17,16 +19,66 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = (
   date,
   purpose,
   amenities,
+  userAnswers,
+  selectedDate, // Receive selectedDate as a prop
 }) => {
-  const handleReserveNow = () => {
-    const reservationId = "123"; // Replace with dynamically generated reservation ID
-    const email = "user@gmail.com";
-    router.push({
-      pathname: "/reservation-confirmation",
-      query: { reservationId }, 
-    });
-  };
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
+  const handleReserveNow = async () => {
+    console.log("Received selectedDate:", selectedDate);
+    
+    // Check if selectedDate is valid
+    if (!selectedDate || isNaN(new Date(selectedDate).getTime())) {
+      console.error("Selected date is invalid:", selectedDate);
+      return;
+    }
+  
+    const reservationDate = new Date(selectedDate);
+    console.log("Valid reservation date:", reservationDate);
+  
+    setLoading(true);
+  
+    try {
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: "c68df61d-ba87-423d-9cf8-2f17db345558",
+          venueId: "1",
+          title: "Venue-Reservation",
+          purposeOfReservation: purpose,
+          timeDuration: 4,
+          extraServices: ["projectors", "sound_system"],
+          amenities,
+          eventType: "Private",
+          specialPermits: false,
+          securityRequirements: true,
+          mediaCoverage: false,
+          auditoriumRules: true,
+          reservationDate: reservationDate.toISOString(),
+          email: "dviha7@gmail.com",
+        }),
+      });
+  
+      if (response.ok) {
+        const { reservationId, email } = await response.json();
+        router.push({
+          pathname: "/reservation-confirmation",
+          query: { reservationId, email },
+        });
+      } else {
+        console.error("Failed to create reservation");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center justify-center mb-4  p-8">
     {/* Title (Outside Container) */}
@@ -84,10 +136,13 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = (
             </span>
           </label>
         </div>
-        <button className="w-full bg-[#584822] text-white py-2 px-4 rounded-lg mt-4 hover:bg-[#4d3e20]"
-          onClick={handleReserveNow}>
-          Reserve Now
-        </button>
+        <button
+            className="w-full bg-[#584822] text-white py-2 px-4 rounded-lg mt-4 hover:bg-[#4d3e20]"
+            onClick={handleReserveNow}
+            disabled={loading}
+          >
+            {loading ? "Reserving..." : "Reserve Now"}
+          </button>
       </div>
     </div>
     </div>

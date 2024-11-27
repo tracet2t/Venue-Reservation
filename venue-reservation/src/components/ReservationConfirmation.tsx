@@ -1,9 +1,12 @@
 import React from "react";
-import { useRouter } from "next/router"; 
+import router from "next/router"; 
 
-const ReservationConfirmation: React.FC = () => {
-  const router = useRouter();
-  const { reservationId, email} = router.query; // Access reservationId from query params
+interface ReservationConfirmationProps {
+  reservationId: string;
+  email: string;
+}
+
+const ReservationConfirmation: React.FC<ReservationConfirmationProps> = ({ reservationId, email }) => {
 
   return (
     <div className="flex flex-col items-center justify-center mb-4  p-8">
