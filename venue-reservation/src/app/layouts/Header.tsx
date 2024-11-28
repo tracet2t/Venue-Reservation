@@ -37,15 +37,11 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // First clear custom auth token
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
-      
-      // Then sign out from NextAuth
       await signOut({ redirect: false });
-      
       setUser(null);
       router.push("/");
     } catch (error) {
@@ -61,17 +57,17 @@ const Header = () => {
     router.push("/login");
   };
 
-  const navigateToProfile = () => {
-    router.push("/user-profile");
-  };
-
   const navigateToHome = () => {
-    router.push("/card_view");
+    router.push("/card_view"); 
   };
 
   const navigateToReservations = () => {
     router.push("/card_view"); 
   };
+
+  const navigateToProfile = () => {
+    router.push("/user-profile");
+  }
 
   return (
     <header className="bg-white shadow-lg z-50">
@@ -82,58 +78,66 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-4">
-          {user ? (
+        <nav className="hidden lg:flex items-center w-full">
+          {user && (
             <>
-              <div className="flex space-x-8">
+              <div className="flex-1 flex justify-center space-x-8">
                 <button
                   onClick={navigateToHome}
-                  className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+                  className="text-[#6A5B3A] text-lg font-semibold hover:text-[#584822] transition duration-200 ease-in-out"
                 >
                   Home
                 </button>
                 <button
                   onClick={navigateToReservations}
-                  className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+                  className="text-[#6A5B3A] text-lg font-semibold hover:text-[#584822] transition duration-200 ease-in-out"
                 >
                   My Reservations
                 </button>
               </div>
-
-              <div className="ml-auto">
-                <span className="text-gray-700">Hi, {user.firstName}</span>
-              </div>
-
-              <button
-                onClick={handleLogout}
-                className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={navigateToLogin}
-                className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
-              >
-                Login
-              </button>
-              <button
-                onClick={handleSignupClick}
-                style={{ backgroundColor: "#584822" }}
-                className="text-white px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out"
-              >
-                Signup
-              </button>
             </>
           )}
+
+          {/* Right-aligned section */}
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <>
+                <button
+  onClick={navigateToProfile}
+  className="text-[#6A5B3A] text-lg font-semibold hover:underline transition duration-200 ease-in-out"
+>
+  Hi, {user.firstName}
+</button>
+                <button
+                  onClick={handleLogout}
+                  className="bg-gray-200 text-[#6A5B3A] px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={navigateToLogin}
+                  className="bg-gray-200 text-[#6A5B3A] px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={handleSignupClick}
+                  className="bg-[#6A5B3A] text-white px-4 py-2 rounded hover:bg-[#584822] transition duration-200 ease-in-out"
+                >
+                  Signup
+                </button>
+              </>
+            )}
+          </div>
         </nav>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden p-2 text-gray-700"
+          className="lg:hidden p-2 text-[#6A5B3A]"
         >
           <svg
             className="w-6 h-6"
@@ -162,7 +166,7 @@ const Header = () => {
           <Logo />
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 text-gray-700 focus:outline-none"
+            className="p-2 text-[#6A5B3A] focus:outline-none"
           >
             <svg
               className="w-6 h-6"
@@ -186,14 +190,20 @@ const Header = () => {
           {user ? (
             <>
               <button
-                onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
+                onClick={navigateToHome}
+                className="text-[#6A5B3A] hover:text-[#584822] transition duration-200 ease-in-out text-left"
               >
-                Welcome, {user.firstName}
+                Home
+              </button>
+              <button
+                onClick={navigateToReservations}
+                className="text-[#6A5B3A] hover:text-[#584822] transition duration-200 ease-in-out text-left"
+              >
+                My Reservations
               </button>
               <button
                 onClick={handleLogout}
-                className="bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm"
+                className="bg-gray-200 text-[#6A5B3A] w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm"
               >
                 Logout
               </button>
@@ -202,14 +212,13 @@ const Header = () => {
             <>
               <button
                 onClick={navigateToLogin}
-                className="bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm"
+                className="bg-gray-200 text-[#6A5B3A] w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm"
               >
                 Login
               </button>
               <button
                 onClick={handleSignupClick}
-                style={{ backgroundColor: "#584822" }}
-                className="text-white w-full text-left px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out text-sm"
+                className="bg-[#6A5B3A] text-white w-full text-left px-4 py-2 rounded hover:bg-[#584822] transition duration-200 ease-in-out text-sm"
               >
                 Signup
               </button>

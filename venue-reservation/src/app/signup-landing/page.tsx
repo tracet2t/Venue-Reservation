@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import Card from "@/components/ui/card";
+import {Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import BrandingSection from "@/components/design/branding-section";
 import { useRouter } from 'next/navigation';
