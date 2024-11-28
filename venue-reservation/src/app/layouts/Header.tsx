@@ -65,6 +65,14 @@ const Header = () => {
     router.push("/user-profile");
   };
 
+  const navigateToHome = () => {
+    router.push("/card_view");
+  };
+
+  const navigateToReservations = () => {
+    router.push("/card_view"); 
+  };
+
   return (
     <header className="bg-white shadow-lg z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -77,12 +85,25 @@ const Header = () => {
         <nav className="hidden lg:flex items-center space-x-4">
           {user ? (
             <>
-              <button
-                onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
-              >
-                Welcome, {user.firstName}
-              </button>
+              <div className="flex space-x-8">
+                <button
+                  onClick={navigateToHome}
+                  className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+                >
+                  Home
+                </button>
+                <button
+                  onClick={navigateToReservations}
+                  className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+                >
+                  My Reservations
+                </button>
+              </div>
+
+              <div className="ml-auto">
+                <span className="text-gray-700">Hi, {user.firstName}</span>
+              </div>
+
               <button
                 onClick={handleLogout}
                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
