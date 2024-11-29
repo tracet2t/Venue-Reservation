@@ -132,7 +132,9 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   password: 'password',
   userType: 'userType',
-  provider: 'provider'
+  provider: 'provider',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

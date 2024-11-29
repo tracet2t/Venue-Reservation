@@ -9,17 +9,19 @@ datasource db {
 }
 
 model User {
-  userId        String        @id @default(uuid())
-  firstName     String
-  lastName      String?
-  contactNumber BigInt?
-  address       String?
-  email         String        @unique
-  emailVerified Boolean       @default(false)
-  password      String?
-  userType      UserType
-  reservations  Reservation[] @relation("UserReservations")
-  provider      String?       @default("credentials")
+  userId           String        @id @default(uuid())
+  firstName        String
+  lastName         String?
+  contactNumber    BigInt?
+  address          String?
+  email            String        @unique
+  emailVerified    Boolean       @default(false)
+  password         String?
+  userType         UserType
+  reservations     Reservation[] @relation("UserReservations")
+  provider         String?       @default("credentials")
+  resetToken       String? // Optional field for reset token
+  resetTokenExpiry DateTime? // Optional field for token expiry
 }
 
 model VerificationToken {
