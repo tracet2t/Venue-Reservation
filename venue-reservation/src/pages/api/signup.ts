@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import prisma from "@/dbclient";// Adjust the path if needed
+import prisma from "../../dbclient"; // Adjust the path if needed
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -28,7 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         contactNumber: BigInt(phoneNumber), // Ensure valid phone_number
         password: hashedPassword,
         address: null, // Optional field
+        emailVerified: false, // Optional field
         userType: "Regular",
+        provider: "Email",
       },
     });
 
