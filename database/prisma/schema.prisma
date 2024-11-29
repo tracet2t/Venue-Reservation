@@ -15,26 +15,70 @@ model User {
   contactNumber BigInt?
   address       String?
   email         String         @unique
+  emailVerified Boolean     @default(false)
   password      String?
   userType      UserType
   reservations  Reservation[]  @relation("UserReservations")
+  provider    String?   @default("credentials")
+}
+
+model VerificationToken {
+  id            String        @id @default(uuid())
+  identifier    String
+  email         String
+  token         String        @unique
+  expires       DateTime
+
+  @@unique([identifier, token]) 
 }
 
 model Venue {
   id            Int            @id @default(autoincrement())
   name          String
-  street_name   String[]
+  street_name   String[]       // If multiple street names are needed, else make it String
   district      String
   province      String
   type          String
   capacity      Int
   size          Int
-  schedule      String
+  schedule      Schedule
   features      String[] 
   images        String[] 
+  availability    VenueAvailability[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   reservations  Reservation[]  @relation("VenueReservations")
+}
+
+model VenueAvailability {
+  id               Int              @id @default(autoincrement())
+  venueId          Int
+  date             DateTime
+  status           AvailabilityStatus
+  timeSlots        TimeSlot[]
+  venue            Venue            @relation(fields: [venueId], references: [id])
+}
+
+model TimeSlot {
+  id               Int              @id @default(autoincrement())
+  availabilityId   Int
+  startTime        DateTime
+  endTime          DateTime
+  status           AvailabilityStatus
+  venueAvailability VenueAvailability @relation(fields: [availabilityId], references: [id])
+}
+
+enum AvailabilityStatus {
+  FULLY_BOOKED     // Orange color
+  PARTIALLY_BOOKED // Green color
+  NOT_AVAILABLE    // Red color
+  AVAILABLE        // Blue color (for the selected date by user)
+}
+
+enum Schedule {
+  EntireDay
+  SessionTime 
+  HourlyTime 
 }
 
 model Reservation {
@@ -55,11 +99,11 @@ model Reservation {
 }
 
 model ReservationState {
-  reservationStateId String            @id @default(uuid()) 
-  reservationId      String            @unique
-  status             Status
-  adminComments      String?
-  reservation        Reservation       @relation(fields: [reservationId], references: [reservationId])
+  reservationStateId    String           @id @default(uuid()) 
+  reservationId         String           @unique
+  status                Status
+  adminComments         String?
+  reservation           Reservation      @relation(fields: [reservationId], references: [reservationId])
 }
 
 enum ExtraService {
@@ -78,6 +122,6 @@ enum Status {
 
 enum UserType {
   Admin
-  Regular
+  Regular  
   Guest
 }

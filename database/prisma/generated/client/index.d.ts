@@ -19,10 +19,25 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
  * Model Venue
  * 
  */
 export type Venue = $Result.DefaultSelection<Prisma.$VenuePayload>
+/**
+ * Model VenueAvailability
+ * 
+ */
+export type VenueAvailability = $Result.DefaultSelection<Prisma.$VenueAvailabilityPayload>
+/**
+ * Model TimeSlot
+ * 
+ */
+export type TimeSlot = $Result.DefaultSelection<Prisma.$TimeSlotPayload>
 /**
  * Model Reservation
  * 
@@ -45,6 +60,25 @@ export namespace $Enums {
 };
 
 export type UserType = (typeof UserType)[keyof typeof UserType]
+
+
+export const Schedule: {
+  EntireDay: 'EntireDay',
+  SessionTime: 'SessionTime',
+  HourlyTime: 'HourlyTime'
+};
+
+export type Schedule = (typeof Schedule)[keyof typeof Schedule]
+
+
+export const AvailabilityStatus: {
+  FULLY_BOOKED: 'FULLY_BOOKED',
+  PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
+  NOT_AVAILABLE: 'NOT_AVAILABLE',
+  AVAILABLE: 'AVAILABLE'
+};
+
+export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
 export const ExtraService: {
@@ -71,6 +105,14 @@ export type Status = (typeof Status)[keyof typeof Status]
 export type UserType = $Enums.UserType
 
 export const UserType: typeof $Enums.UserType
+
+export type Schedule = $Enums.Schedule
+
+export const Schedule: typeof $Enums.Schedule
+
+export type AvailabilityStatus = $Enums.AvailabilityStatus
+
+export const AvailabilityStatus: typeof $Enums.AvailabilityStatus
 
 export type ExtraService = $Enums.ExtraService
 
@@ -214,6 +256,16 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
+   * `prisma.verificationToken`: Exposes CRUD operations for the **VerificationToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VerificationTokens
+    * const verificationTokens = await prisma.verificationToken.findMany()
+    * ```
+    */
+  get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs>;
+
+  /**
    * `prisma.venue`: Exposes CRUD operations for the **Venue** model.
     * Example usage:
     * ```ts
@@ -222,6 +274,26 @@ export class PrismaClient<
     * ```
     */
   get venue(): Prisma.VenueDelegate<ExtArgs>;
+
+  /**
+   * `prisma.venueAvailability`: Exposes CRUD operations for the **VenueAvailability** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VenueAvailabilities
+    * const venueAvailabilities = await prisma.venueAvailability.findMany()
+    * ```
+    */
+  get venueAvailability(): Prisma.VenueAvailabilityDelegate<ExtArgs>;
+
+  /**
+   * `prisma.timeSlot`: Exposes CRUD operations for the **TimeSlot** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TimeSlots
+    * const timeSlots = await prisma.timeSlot.findMany()
+    * ```
+    */
+  get timeSlot(): Prisma.TimeSlotDelegate<ExtArgs>;
 
   /**
    * `prisma.reservation`: Exposes CRUD operations for the **Reservation** model.
@@ -684,7 +756,10 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    VerificationToken: 'VerificationToken',
     Venue: 'Venue',
+    VenueAvailability: 'VenueAvailability',
+    TimeSlot: 'TimeSlot',
     Reservation: 'Reservation',
     ReservationState: 'ReservationState'
   };
@@ -702,7 +777,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "venue" | "reservation" | "reservationState"
+      modelProps: "user" | "verificationToken" | "venue" | "venueAvailability" | "timeSlot" | "reservation" | "reservationState"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -776,6 +851,76 @@ export namespace Prisma {
           }
         }
       }
+      VerificationToken: {
+        payload: Prisma.$VerificationTokenPayload<ExtArgs>
+        fields: Prisma.VerificationTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VerificationTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VerificationTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.VerificationTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VerificationTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          findMany: {
+            args: Prisma.VerificationTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          create: {
+            args: Prisma.VerificationTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          createMany: {
+            args: Prisma.VerificationTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VerificationTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.VerificationTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          update: {
+            args: Prisma.VerificationTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.VerificationTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VerificationTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.VerificationTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VerificationTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.VerificationTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVerificationToken>
+          }
+          groupBy: {
+            args: Prisma.VerificationTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VerificationTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<VerificationTokenCountAggregateOutputType> | number
+          }
+        }
+      }
       Venue: {
         payload: Prisma.$VenuePayload<ExtArgs>
         fields: Prisma.VenueFieldRefs
@@ -843,6 +988,146 @@ export namespace Prisma {
           count: {
             args: Prisma.VenueCountArgs<ExtArgs>
             result: $Utils.Optional<VenueCountAggregateOutputType> | number
+          }
+        }
+      }
+      VenueAvailability: {
+        payload: Prisma.$VenueAvailabilityPayload<ExtArgs>
+        fields: Prisma.VenueAvailabilityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VenueAvailabilityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VenueAvailabilityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          findFirst: {
+            args: Prisma.VenueAvailabilityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VenueAvailabilityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          findMany: {
+            args: Prisma.VenueAvailabilityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>[]
+          }
+          create: {
+            args: Prisma.VenueAvailabilityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          createMany: {
+            args: Prisma.VenueAvailabilityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VenueAvailabilityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>[]
+          }
+          delete: {
+            args: Prisma.VenueAvailabilityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          update: {
+            args: Prisma.VenueAvailabilityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          deleteMany: {
+            args: Prisma.VenueAvailabilityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VenueAvailabilityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.VenueAvailabilityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueAvailabilityPayload>
+          }
+          aggregate: {
+            args: Prisma.VenueAvailabilityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVenueAvailability>
+          }
+          groupBy: {
+            args: Prisma.VenueAvailabilityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VenueAvailabilityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VenueAvailabilityCountArgs<ExtArgs>
+            result: $Utils.Optional<VenueAvailabilityCountAggregateOutputType> | number
+          }
+        }
+      }
+      TimeSlot: {
+        payload: Prisma.$TimeSlotPayload<ExtArgs>
+        fields: Prisma.TimeSlotFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TimeSlotFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TimeSlotFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          findFirst: {
+            args: Prisma.TimeSlotFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TimeSlotFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          findMany: {
+            args: Prisma.TimeSlotFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>[]
+          }
+          create: {
+            args: Prisma.TimeSlotCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          createMany: {
+            args: Prisma.TimeSlotCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TimeSlotCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>[]
+          }
+          delete: {
+            args: Prisma.TimeSlotDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          update: {
+            args: Prisma.TimeSlotUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          deleteMany: {
+            args: Prisma.TimeSlotDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TimeSlotUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TimeSlotUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          aggregate: {
+            args: Prisma.TimeSlotAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTimeSlot>
+          }
+          groupBy: {
+            args: Prisma.TimeSlotGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TimeSlotGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TimeSlotCountArgs<ExtArgs>
+            result: $Utils.Optional<TimeSlotCountAggregateOutputType> | number
           }
         }
       }
@@ -1178,10 +1463,12 @@ export namespace Prisma {
    */
 
   export type VenueCountOutputType = {
+    availability: number
     reservations: number
   }
 
   export type VenueCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    availability?: boolean | VenueCountOutputTypeCountAvailabilityArgs
     reservations?: boolean | VenueCountOutputTypeCountReservationsArgs
   }
 
@@ -1199,8 +1486,46 @@ export namespace Prisma {
   /**
    * VenueCountOutputType without action
    */
+  export type VenueCountOutputTypeCountAvailabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueAvailabilityWhereInput
+  }
+
+  /**
+   * VenueCountOutputType without action
+   */
   export type VenueCountOutputTypeCountReservationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReservationWhereInput
+  }
+
+
+  /**
+   * Count Type VenueAvailabilityCountOutputType
+   */
+
+  export type VenueAvailabilityCountOutputType = {
+    timeSlots: number
+  }
+
+  export type VenueAvailabilityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    timeSlots?: boolean | VenueAvailabilityCountOutputTypeCountTimeSlotsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VenueAvailabilityCountOutputType without action
+   */
+  export type VenueAvailabilityCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailabilityCountOutputType
+     */
+    select?: VenueAvailabilityCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VenueAvailabilityCountOutputType without action
+   */
+  export type VenueAvailabilityCountOutputTypeCountTimeSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeSlotWhereInput
   }
 
 
@@ -1235,8 +1560,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1246,8 +1573,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string | null
+    emailVerified: boolean | null
     password: string | null
     userType: $Enums.UserType | null
+    provider: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1257,8 +1586,10 @@ export namespace Prisma {
     contactNumber: number
     address: number
     email: number
+    emailVerified: number
     password: number
     userType: number
+    provider: number
     _all: number
   }
 
@@ -1278,8 +1609,10 @@ export namespace Prisma {
     contactNumber?: true
     address?: true
     email?: true
+    emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1289,8 +1622,10 @@ export namespace Prisma {
     contactNumber?: true
     address?: true
     email?: true
+    emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1300,8 +1635,10 @@ export namespace Prisma {
     contactNumber?: true
     address?: true
     email?: true
+    emailVerified?: true
     password?: true
     userType?: true
+    provider?: true
     _all?: true
   }
 
@@ -1398,8 +1735,10 @@ export namespace Prisma {
     contactNumber: bigint | null
     address: string | null
     email: string
+    emailVerified: boolean
     password: string | null
     userType: $Enums.UserType
+    provider: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1428,8 +1767,10 @@ export namespace Prisma {
     contactNumber?: boolean
     address?: boolean
     email?: boolean
+    emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
     reservations?: boolean | User$reservationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1441,8 +1782,10 @@ export namespace Prisma {
     contactNumber?: boolean
     address?: boolean
     email?: boolean
+    emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1452,8 +1795,10 @@ export namespace Prisma {
     contactNumber?: boolean
     address?: boolean
     email?: boolean
+    emailVerified?: boolean
     password?: boolean
     userType?: boolean
+    provider?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1474,8 +1819,10 @@ export namespace Prisma {
       contactNumber: bigint | null
       address: string | null
       email: string
+      emailVerified: boolean
       password: string | null
       userType: $Enums.UserType
+      provider: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1876,8 +2223,10 @@ export namespace Prisma {
     readonly contactNumber: FieldRef<"User", 'BigInt'>
     readonly address: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
+    readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly password: FieldRef<"User", 'String'>
     readonly userType: FieldRef<"User", 'UserType'>
+    readonly provider: FieldRef<"User", 'String'>
   }
     
 
@@ -2227,6 +2576,884 @@ export namespace Prisma {
 
 
   /**
+   * Model VerificationToken
+   */
+
+  export type AggregateVerificationToken = {
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  export type VerificationTokenMinAggregateOutputType = {
+    id: string | null
+    identifier: string | null
+    email: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenMaxAggregateOutputType = {
+    id: string | null
+    identifier: string | null
+    email: string | null
+    token: string | null
+    expires: Date | null
+  }
+
+  export type VerificationTokenCountAggregateOutputType = {
+    id: number
+    identifier: number
+    email: number
+    token: number
+    expires: number
+    _all: number
+  }
+
+
+  export type VerificationTokenMinAggregateInputType = {
+    id?: true
+    identifier?: true
+    email?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenMaxAggregateInputType = {
+    id?: true
+    identifier?: true
+    email?: true
+    token?: true
+    expires?: true
+  }
+
+  export type VerificationTokenCountAggregateInputType = {
+    id?: true
+    identifier?: true
+    email?: true
+    token?: true
+    expires?: true
+    _all?: true
+  }
+
+  export type VerificationTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationToken to aggregate.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VerificationTokens
+    **/
+    _count?: true | VerificationTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VerificationTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type GetVerificationTokenAggregateType<T extends VerificationTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateVerificationToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVerificationToken[P]>
+      : GetScalarType<T[P], AggregateVerificationToken[P]>
+  }
+
+
+
+
+  export type VerificationTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VerificationTokenWhereInput
+    orderBy?: VerificationTokenOrderByWithAggregationInput | VerificationTokenOrderByWithAggregationInput[]
+    by: VerificationTokenScalarFieldEnum[] | VerificationTokenScalarFieldEnum
+    having?: VerificationTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VerificationTokenCountAggregateInputType | true
+    _min?: VerificationTokenMinAggregateInputType
+    _max?: VerificationTokenMaxAggregateInputType
+  }
+
+  export type VerificationTokenGroupByOutputType = {
+    id: string
+    identifier: string
+    email: string
+    token: string
+    expires: Date
+    _count: VerificationTokenCountAggregateOutputType | null
+    _min: VerificationTokenMinAggregateOutputType | null
+    _max: VerificationTokenMaxAggregateOutputType | null
+  }
+
+  type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VerificationTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VerificationTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VerificationTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    identifier?: boolean
+    email?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    identifier?: boolean
+    email?: boolean
+    token?: boolean
+    expires?: boolean
+  }, ExtArgs["result"]["verificationToken"]>
+
+  export type VerificationTokenSelectScalar = {
+    id?: boolean
+    identifier?: boolean
+    email?: boolean
+    token?: boolean
+    expires?: boolean
+  }
+
+
+  export type $VerificationTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VerificationToken"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      identifier: string
+      email: string
+      token: string
+      expires: Date
+    }, ExtArgs["result"]["verificationToken"]>
+    composites: {}
+  }
+
+  type VerificationTokenGetPayload<S extends boolean | null | undefined | VerificationTokenDefaultArgs> = $Result.GetResult<Prisma.$VerificationTokenPayload, S>
+
+  type VerificationTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<VerificationTokenFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: VerificationTokenCountAggregateInputType | true
+    }
+
+  export interface VerificationTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VerificationToken'], meta: { name: 'VerificationToken' } }
+    /**
+     * Find zero or one VerificationToken that matches the filter.
+     * @param {VerificationTokenFindUniqueArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VerificationTokenFindUniqueArgs>(args: SelectSubset<T, VerificationTokenFindUniqueArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one VerificationToken that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {VerificationTokenFindUniqueOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VerificationTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, VerificationTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first VerificationToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VerificationTokenFindFirstArgs>(args?: SelectSubset<T, VerificationTokenFindFirstArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first VerificationToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindFirstOrThrowArgs} args - Arguments to find a VerificationToken
+     * @example
+     * // Get one VerificationToken
+     * const verificationToken = await prisma.verificationToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VerificationTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, VerificationTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more VerificationTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany()
+     * 
+     * // Get first 10 VerificationTokens
+     * const verificationTokens = await prisma.verificationToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const verificationTokenWithIdOnly = await prisma.verificationToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VerificationTokenFindManyArgs>(args?: SelectSubset<T, VerificationTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a VerificationToken.
+     * @param {VerificationTokenCreateArgs} args - Arguments to create a VerificationToken.
+     * @example
+     * // Create one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.create({
+     *   data: {
+     *     // ... data to create a VerificationToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends VerificationTokenCreateArgs>(args: SelectSubset<T, VerificationTokenCreateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many VerificationTokens.
+     * @param {VerificationTokenCreateManyArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VerificationTokenCreateManyArgs>(args?: SelectSubset<T, VerificationTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VerificationTokens and returns the data saved in the database.
+     * @param {VerificationTokenCreateManyAndReturnArgs} args - Arguments to create many VerificationTokens.
+     * @example
+     * // Create many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VerificationTokens and only return the `id`
+     * const verificationTokenWithIdOnly = await prisma.verificationToken.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VerificationTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, VerificationTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a VerificationToken.
+     * @param {VerificationTokenDeleteArgs} args - Arguments to delete one VerificationToken.
+     * @example
+     * // Delete one VerificationToken
+     * const VerificationToken = await prisma.verificationToken.delete({
+     *   where: {
+     *     // ... filter to delete one VerificationToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VerificationTokenDeleteArgs>(args: SelectSubset<T, VerificationTokenDeleteArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one VerificationToken.
+     * @param {VerificationTokenUpdateArgs} args - Arguments to update one VerificationToken.
+     * @example
+     * // Update one VerificationToken
+     * const verificationToken = await prisma.verificationToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VerificationTokenUpdateArgs>(args: SelectSubset<T, VerificationTokenUpdateArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more VerificationTokens.
+     * @param {VerificationTokenDeleteManyArgs} args - Arguments to filter VerificationTokens to delete.
+     * @example
+     * // Delete a few VerificationTokens
+     * const { count } = await prisma.verificationToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VerificationTokenDeleteManyArgs>(args?: SelectSubset<T, VerificationTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VerificationTokens
+     * const verificationToken = await prisma.verificationToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VerificationTokenUpdateManyArgs>(args: SelectSubset<T, VerificationTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one VerificationToken.
+     * @param {VerificationTokenUpsertArgs} args - Arguments to update or create a VerificationToken.
+     * @example
+     * // Update or create a VerificationToken
+     * const verificationToken = await prisma.verificationToken.upsert({
+     *   create: {
+     *     // ... data to create a VerificationToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VerificationToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VerificationTokenUpsertArgs>(args: SelectSubset<T, VerificationTokenUpsertArgs<ExtArgs>>): Prisma__VerificationTokenClient<$Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of VerificationTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenCountArgs} args - Arguments to filter VerificationTokens to count.
+     * @example
+     * // Count the number of VerificationTokens
+     * const count = await prisma.verificationToken.count({
+     *   where: {
+     *     // ... the filter for the VerificationTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends VerificationTokenCountArgs>(
+      args?: Subset<T, VerificationTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VerificationTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VerificationTokenAggregateArgs>(args: Subset<T, VerificationTokenAggregateArgs>): Prisma.PrismaPromise<GetVerificationTokenAggregateType<T>>
+
+    /**
+     * Group by VerificationToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VerificationTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VerificationTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VerificationTokenGroupByArgs['orderBy'] }
+        : { orderBy?: VerificationTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VerificationTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VerificationToken model
+   */
+  readonly fields: VerificationTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VerificationToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VerificationTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VerificationToken model
+   */ 
+  interface VerificationTokenFieldRefs {
+    readonly id: FieldRef<"VerificationToken", 'String'>
+    readonly identifier: FieldRef<"VerificationToken", 'String'>
+    readonly email: FieldRef<"VerificationToken", 'String'>
+    readonly token: FieldRef<"VerificationToken", 'String'>
+    readonly expires: FieldRef<"VerificationToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VerificationToken findUnique
+   */
+  export type VerificationTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findUniqueOrThrow
+   */
+  export type VerificationTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken findFirst
+   */
+  export type VerificationTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findFirstOrThrow
+   */
+  export type VerificationTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which VerificationToken to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VerificationTokens.
+     */
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken findMany
+   */
+  export type VerificationTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter, which VerificationTokens to fetch.
+     */
+    where?: VerificationTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VerificationTokens to fetch.
+     */
+    orderBy?: VerificationTokenOrderByWithRelationInput | VerificationTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VerificationTokens.
+     */
+    cursor?: VerificationTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VerificationTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VerificationTokens.
+     */
+    skip?: number
+    distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
+  }
+
+  /**
+   * VerificationToken create
+   */
+  export type VerificationTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to create a VerificationToken.
+     */
+    data: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+  }
+
+  /**
+   * VerificationToken createMany
+   */
+  export type VerificationTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VerificationToken createManyAndReturn
+   */
+  export type VerificationTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many VerificationTokens.
+     */
+    data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VerificationToken update
+   */
+  export type VerificationTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * The data needed to update a VerificationToken.
+     */
+    data: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+    /**
+     * Choose, which VerificationToken to update.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken updateMany
+   */
+  export type VerificationTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VerificationTokens.
+     */
+    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which VerificationTokens to update
+     */
+    where?: VerificationTokenWhereInput
+  }
+
+  /**
+   * VerificationToken upsert
+   */
+  export type VerificationTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * The filter to search for the VerificationToken to update in case it exists.
+     */
+    where: VerificationTokenWhereUniqueInput
+    /**
+     * In case the VerificationToken found by the `where` argument doesn't exist, create a new VerificationToken with this data.
+     */
+    create: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
+    /**
+     * In case the VerificationToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * VerificationToken delete
+   */
+  export type VerificationTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+    /**
+     * Filter which VerificationToken to delete.
+     */
+    where: VerificationTokenWhereUniqueInput
+  }
+
+  /**
+   * VerificationToken deleteMany
+   */
+  export type VerificationTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VerificationTokens to delete
+     */
+    where?: VerificationTokenWhereInput
+  }
+
+  /**
+   * VerificationToken without action
+   */
+  export type VerificationTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationToken
+     */
+    select?: VerificationTokenSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Model Venue
    */
 
@@ -2258,7 +3485,7 @@ export namespace Prisma {
     type: string | null
     capacity: number | null
     size: number | null
-    schedule: string | null
+    schedule: $Enums.Schedule | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2271,7 +3498,7 @@ export namespace Prisma {
     type: string | null
     capacity: number | null
     size: number | null
-    schedule: string | null
+    schedule: $Enums.Schedule | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2444,7 +3671,7 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features: string[]
     images: string[]
     createdAt: Date
@@ -2484,6 +3711,7 @@ export namespace Prisma {
     images?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    availability?: boolean | Venue$availabilityArgs<ExtArgs>
     reservations?: boolean | Venue$reservationsArgs<ExtArgs>
     _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["venue"]>
@@ -2521,6 +3749,7 @@ export namespace Prisma {
   }
 
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    availability?: boolean | Venue$availabilityArgs<ExtArgs>
     reservations?: boolean | Venue$reservationsArgs<ExtArgs>
     _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2529,6 +3758,7 @@ export namespace Prisma {
   export type $VenuePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Venue"
     objects: {
+      availability: Prisma.$VenueAvailabilityPayload<ExtArgs>[]
       reservations: Prisma.$ReservationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2540,7 +3770,7 @@ export namespace Prisma {
       type: string
       capacity: number
       size: number
-      schedule: string
+      schedule: $Enums.Schedule
       features: string[]
       images: string[]
       createdAt: Date
@@ -2909,6 +4139,7 @@ export namespace Prisma {
    */
   export interface Prisma__VenueClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    availability<T extends Venue$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, Venue$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findMany"> | Null>
     reservations<T extends Venue$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, Venue$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReservationPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2947,7 +4178,7 @@ export namespace Prisma {
     readonly type: FieldRef<"Venue", 'String'>
     readonly capacity: FieldRef<"Venue", 'Int'>
     readonly size: FieldRef<"Venue", 'Int'>
-    readonly schedule: FieldRef<"Venue", 'String'>
+    readonly schedule: FieldRef<"Venue", 'Schedule'>
     readonly features: FieldRef<"Venue", 'String[]'>
     readonly images: FieldRef<"Venue", 'String[]'>
     readonly createdAt: FieldRef<"Venue", 'DateTime'>
@@ -3266,6 +4497,26 @@ export namespace Prisma {
   }
 
   /**
+   * Venue.availability
+   */
+  export type Venue$availabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    where?: VenueAvailabilityWhereInput
+    orderBy?: VenueAvailabilityOrderByWithRelationInput | VenueAvailabilityOrderByWithRelationInput[]
+    cursor?: VenueAvailabilityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VenueAvailabilityScalarFieldEnum | VenueAvailabilityScalarFieldEnum[]
+  }
+
+  /**
    * Venue.reservations
    */
   export type Venue$reservationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3297,6 +4548,1962 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: VenueInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VenueAvailability
+   */
+
+  export type AggregateVenueAvailability = {
+    _count: VenueAvailabilityCountAggregateOutputType | null
+    _avg: VenueAvailabilityAvgAggregateOutputType | null
+    _sum: VenueAvailabilitySumAggregateOutputType | null
+    _min: VenueAvailabilityMinAggregateOutputType | null
+    _max: VenueAvailabilityMaxAggregateOutputType | null
+  }
+
+  export type VenueAvailabilityAvgAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+  }
+
+  export type VenueAvailabilitySumAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+  }
+
+  export type VenueAvailabilityMinAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    date: Date | null
+    status: $Enums.AvailabilityStatus | null
+  }
+
+  export type VenueAvailabilityMaxAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    date: Date | null
+    status: $Enums.AvailabilityStatus | null
+  }
+
+  export type VenueAvailabilityCountAggregateOutputType = {
+    id: number
+    venueId: number
+    date: number
+    status: number
+    _all: number
+  }
+
+
+  export type VenueAvailabilityAvgAggregateInputType = {
+    id?: true
+    venueId?: true
+  }
+
+  export type VenueAvailabilitySumAggregateInputType = {
+    id?: true
+    venueId?: true
+  }
+
+  export type VenueAvailabilityMinAggregateInputType = {
+    id?: true
+    venueId?: true
+    date?: true
+    status?: true
+  }
+
+  export type VenueAvailabilityMaxAggregateInputType = {
+    id?: true
+    venueId?: true
+    date?: true
+    status?: true
+  }
+
+  export type VenueAvailabilityCountAggregateInputType = {
+    id?: true
+    venueId?: true
+    date?: true
+    status?: true
+    _all?: true
+  }
+
+  export type VenueAvailabilityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VenueAvailability to aggregate.
+     */
+    where?: VenueAvailabilityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueAvailabilities to fetch.
+     */
+    orderBy?: VenueAvailabilityOrderByWithRelationInput | VenueAvailabilityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VenueAvailabilityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueAvailabilities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueAvailabilities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VenueAvailabilities
+    **/
+    _count?: true | VenueAvailabilityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VenueAvailabilityAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VenueAvailabilitySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VenueAvailabilityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VenueAvailabilityMaxAggregateInputType
+  }
+
+  export type GetVenueAvailabilityAggregateType<T extends VenueAvailabilityAggregateArgs> = {
+        [P in keyof T & keyof AggregateVenueAvailability]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVenueAvailability[P]>
+      : GetScalarType<T[P], AggregateVenueAvailability[P]>
+  }
+
+
+
+
+  export type VenueAvailabilityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueAvailabilityWhereInput
+    orderBy?: VenueAvailabilityOrderByWithAggregationInput | VenueAvailabilityOrderByWithAggregationInput[]
+    by: VenueAvailabilityScalarFieldEnum[] | VenueAvailabilityScalarFieldEnum
+    having?: VenueAvailabilityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VenueAvailabilityCountAggregateInputType | true
+    _avg?: VenueAvailabilityAvgAggregateInputType
+    _sum?: VenueAvailabilitySumAggregateInputType
+    _min?: VenueAvailabilityMinAggregateInputType
+    _max?: VenueAvailabilityMaxAggregateInputType
+  }
+
+  export type VenueAvailabilityGroupByOutputType = {
+    id: number
+    venueId: number
+    date: Date
+    status: $Enums.AvailabilityStatus
+    _count: VenueAvailabilityCountAggregateOutputType | null
+    _avg: VenueAvailabilityAvgAggregateOutputType | null
+    _sum: VenueAvailabilitySumAggregateOutputType | null
+    _min: VenueAvailabilityMinAggregateOutputType | null
+    _max: VenueAvailabilityMaxAggregateOutputType | null
+  }
+
+  type GetVenueAvailabilityGroupByPayload<T extends VenueAvailabilityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VenueAvailabilityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VenueAvailabilityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VenueAvailabilityGroupByOutputType[P]>
+            : GetScalarType<T[P], VenueAvailabilityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VenueAvailabilitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    venueId?: boolean
+    date?: boolean
+    status?: boolean
+    timeSlots?: boolean | VenueAvailability$timeSlotsArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+    _count?: boolean | VenueAvailabilityCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venueAvailability"]>
+
+  export type VenueAvailabilitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    venueId?: boolean
+    date?: boolean
+    status?: boolean
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venueAvailability"]>
+
+  export type VenueAvailabilitySelectScalar = {
+    id?: boolean
+    venueId?: boolean
+    date?: boolean
+    status?: boolean
+  }
+
+  export type VenueAvailabilityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    timeSlots?: boolean | VenueAvailability$timeSlotsArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+    _count?: boolean | VenueAvailabilityCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VenueAvailabilityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }
+
+  export type $VenueAvailabilityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VenueAvailability"
+    objects: {
+      timeSlots: Prisma.$TimeSlotPayload<ExtArgs>[]
+      venue: Prisma.$VenuePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      venueId: number
+      date: Date
+      status: $Enums.AvailabilityStatus
+    }, ExtArgs["result"]["venueAvailability"]>
+    composites: {}
+  }
+
+  type VenueAvailabilityGetPayload<S extends boolean | null | undefined | VenueAvailabilityDefaultArgs> = $Result.GetResult<Prisma.$VenueAvailabilityPayload, S>
+
+  type VenueAvailabilityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<VenueAvailabilityFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: VenueAvailabilityCountAggregateInputType | true
+    }
+
+  export interface VenueAvailabilityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VenueAvailability'], meta: { name: 'VenueAvailability' } }
+    /**
+     * Find zero or one VenueAvailability that matches the filter.
+     * @param {VenueAvailabilityFindUniqueArgs} args - Arguments to find a VenueAvailability
+     * @example
+     * // Get one VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VenueAvailabilityFindUniqueArgs>(args: SelectSubset<T, VenueAvailabilityFindUniqueArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one VenueAvailability that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {VenueAvailabilityFindUniqueOrThrowArgs} args - Arguments to find a VenueAvailability
+     * @example
+     * // Get one VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VenueAvailabilityFindUniqueOrThrowArgs>(args: SelectSubset<T, VenueAvailabilityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first VenueAvailability that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityFindFirstArgs} args - Arguments to find a VenueAvailability
+     * @example
+     * // Get one VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VenueAvailabilityFindFirstArgs>(args?: SelectSubset<T, VenueAvailabilityFindFirstArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first VenueAvailability that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityFindFirstOrThrowArgs} args - Arguments to find a VenueAvailability
+     * @example
+     * // Get one VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VenueAvailabilityFindFirstOrThrowArgs>(args?: SelectSubset<T, VenueAvailabilityFindFirstOrThrowArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more VenueAvailabilities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VenueAvailabilities
+     * const venueAvailabilities = await prisma.venueAvailability.findMany()
+     * 
+     * // Get first 10 VenueAvailabilities
+     * const venueAvailabilities = await prisma.venueAvailability.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const venueAvailabilityWithIdOnly = await prisma.venueAvailability.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VenueAvailabilityFindManyArgs>(args?: SelectSubset<T, VenueAvailabilityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a VenueAvailability.
+     * @param {VenueAvailabilityCreateArgs} args - Arguments to create a VenueAvailability.
+     * @example
+     * // Create one VenueAvailability
+     * const VenueAvailability = await prisma.venueAvailability.create({
+     *   data: {
+     *     // ... data to create a VenueAvailability
+     *   }
+     * })
+     * 
+     */
+    create<T extends VenueAvailabilityCreateArgs>(args: SelectSubset<T, VenueAvailabilityCreateArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many VenueAvailabilities.
+     * @param {VenueAvailabilityCreateManyArgs} args - Arguments to create many VenueAvailabilities.
+     * @example
+     * // Create many VenueAvailabilities
+     * const venueAvailability = await prisma.venueAvailability.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VenueAvailabilityCreateManyArgs>(args?: SelectSubset<T, VenueAvailabilityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VenueAvailabilities and returns the data saved in the database.
+     * @param {VenueAvailabilityCreateManyAndReturnArgs} args - Arguments to create many VenueAvailabilities.
+     * @example
+     * // Create many VenueAvailabilities
+     * const venueAvailability = await prisma.venueAvailability.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VenueAvailabilities and only return the `id`
+     * const venueAvailabilityWithIdOnly = await prisma.venueAvailability.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VenueAvailabilityCreateManyAndReturnArgs>(args?: SelectSubset<T, VenueAvailabilityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a VenueAvailability.
+     * @param {VenueAvailabilityDeleteArgs} args - Arguments to delete one VenueAvailability.
+     * @example
+     * // Delete one VenueAvailability
+     * const VenueAvailability = await prisma.venueAvailability.delete({
+     *   where: {
+     *     // ... filter to delete one VenueAvailability
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VenueAvailabilityDeleteArgs>(args: SelectSubset<T, VenueAvailabilityDeleteArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one VenueAvailability.
+     * @param {VenueAvailabilityUpdateArgs} args - Arguments to update one VenueAvailability.
+     * @example
+     * // Update one VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VenueAvailabilityUpdateArgs>(args: SelectSubset<T, VenueAvailabilityUpdateArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more VenueAvailabilities.
+     * @param {VenueAvailabilityDeleteManyArgs} args - Arguments to filter VenueAvailabilities to delete.
+     * @example
+     * // Delete a few VenueAvailabilities
+     * const { count } = await prisma.venueAvailability.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VenueAvailabilityDeleteManyArgs>(args?: SelectSubset<T, VenueAvailabilityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VenueAvailabilities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VenueAvailabilities
+     * const venueAvailability = await prisma.venueAvailability.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VenueAvailabilityUpdateManyArgs>(args: SelectSubset<T, VenueAvailabilityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one VenueAvailability.
+     * @param {VenueAvailabilityUpsertArgs} args - Arguments to update or create a VenueAvailability.
+     * @example
+     * // Update or create a VenueAvailability
+     * const venueAvailability = await prisma.venueAvailability.upsert({
+     *   create: {
+     *     // ... data to create a VenueAvailability
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VenueAvailability we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VenueAvailabilityUpsertArgs>(args: SelectSubset<T, VenueAvailabilityUpsertArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of VenueAvailabilities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityCountArgs} args - Arguments to filter VenueAvailabilities to count.
+     * @example
+     * // Count the number of VenueAvailabilities
+     * const count = await prisma.venueAvailability.count({
+     *   where: {
+     *     // ... the filter for the VenueAvailabilities we want to count
+     *   }
+     * })
+    **/
+    count<T extends VenueAvailabilityCountArgs>(
+      args?: Subset<T, VenueAvailabilityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VenueAvailabilityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VenueAvailability.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VenueAvailabilityAggregateArgs>(args: Subset<T, VenueAvailabilityAggregateArgs>): Prisma.PrismaPromise<GetVenueAvailabilityAggregateType<T>>
+
+    /**
+     * Group by VenueAvailability.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAvailabilityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VenueAvailabilityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VenueAvailabilityGroupByArgs['orderBy'] }
+        : { orderBy?: VenueAvailabilityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VenueAvailabilityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVenueAvailabilityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VenueAvailability model
+   */
+  readonly fields: VenueAvailabilityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VenueAvailability.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VenueAvailabilityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    timeSlots<T extends VenueAvailability$timeSlotsArgs<ExtArgs> = {}>(args?: Subset<T, VenueAvailability$timeSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findMany"> | Null>
+    venue<T extends VenueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueDefaultArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VenueAvailability model
+   */ 
+  interface VenueAvailabilityFieldRefs {
+    readonly id: FieldRef<"VenueAvailability", 'Int'>
+    readonly venueId: FieldRef<"VenueAvailability", 'Int'>
+    readonly date: FieldRef<"VenueAvailability", 'DateTime'>
+    readonly status: FieldRef<"VenueAvailability", 'AvailabilityStatus'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VenueAvailability findUnique
+   */
+  export type VenueAvailabilityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueAvailability to fetch.
+     */
+    where: VenueAvailabilityWhereUniqueInput
+  }
+
+  /**
+   * VenueAvailability findUniqueOrThrow
+   */
+  export type VenueAvailabilityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueAvailability to fetch.
+     */
+    where: VenueAvailabilityWhereUniqueInput
+  }
+
+  /**
+   * VenueAvailability findFirst
+   */
+  export type VenueAvailabilityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueAvailability to fetch.
+     */
+    where?: VenueAvailabilityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueAvailabilities to fetch.
+     */
+    orderBy?: VenueAvailabilityOrderByWithRelationInput | VenueAvailabilityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VenueAvailabilities.
+     */
+    cursor?: VenueAvailabilityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueAvailabilities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueAvailabilities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VenueAvailabilities.
+     */
+    distinct?: VenueAvailabilityScalarFieldEnum | VenueAvailabilityScalarFieldEnum[]
+  }
+
+  /**
+   * VenueAvailability findFirstOrThrow
+   */
+  export type VenueAvailabilityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueAvailability to fetch.
+     */
+    where?: VenueAvailabilityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueAvailabilities to fetch.
+     */
+    orderBy?: VenueAvailabilityOrderByWithRelationInput | VenueAvailabilityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VenueAvailabilities.
+     */
+    cursor?: VenueAvailabilityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueAvailabilities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueAvailabilities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VenueAvailabilities.
+     */
+    distinct?: VenueAvailabilityScalarFieldEnum | VenueAvailabilityScalarFieldEnum[]
+  }
+
+  /**
+   * VenueAvailability findMany
+   */
+  export type VenueAvailabilityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueAvailabilities to fetch.
+     */
+    where?: VenueAvailabilityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueAvailabilities to fetch.
+     */
+    orderBy?: VenueAvailabilityOrderByWithRelationInput | VenueAvailabilityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VenueAvailabilities.
+     */
+    cursor?: VenueAvailabilityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueAvailabilities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueAvailabilities.
+     */
+    skip?: number
+    distinct?: VenueAvailabilityScalarFieldEnum | VenueAvailabilityScalarFieldEnum[]
+  }
+
+  /**
+   * VenueAvailability create
+   */
+  export type VenueAvailabilityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VenueAvailability.
+     */
+    data: XOR<VenueAvailabilityCreateInput, VenueAvailabilityUncheckedCreateInput>
+  }
+
+  /**
+   * VenueAvailability createMany
+   */
+  export type VenueAvailabilityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VenueAvailabilities.
+     */
+    data: VenueAvailabilityCreateManyInput | VenueAvailabilityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VenueAvailability createManyAndReturn
+   */
+  export type VenueAvailabilityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many VenueAvailabilities.
+     */
+    data: VenueAvailabilityCreateManyInput | VenueAvailabilityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VenueAvailability update
+   */
+  export type VenueAvailabilityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VenueAvailability.
+     */
+    data: XOR<VenueAvailabilityUpdateInput, VenueAvailabilityUncheckedUpdateInput>
+    /**
+     * Choose, which VenueAvailability to update.
+     */
+    where: VenueAvailabilityWhereUniqueInput
+  }
+
+  /**
+   * VenueAvailability updateMany
+   */
+  export type VenueAvailabilityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VenueAvailabilities.
+     */
+    data: XOR<VenueAvailabilityUpdateManyMutationInput, VenueAvailabilityUncheckedUpdateManyInput>
+    /**
+     * Filter which VenueAvailabilities to update
+     */
+    where?: VenueAvailabilityWhereInput
+  }
+
+  /**
+   * VenueAvailability upsert
+   */
+  export type VenueAvailabilityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VenueAvailability to update in case it exists.
+     */
+    where: VenueAvailabilityWhereUniqueInput
+    /**
+     * In case the VenueAvailability found by the `where` argument doesn't exist, create a new VenueAvailability with this data.
+     */
+    create: XOR<VenueAvailabilityCreateInput, VenueAvailabilityUncheckedCreateInput>
+    /**
+     * In case the VenueAvailability was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VenueAvailabilityUpdateInput, VenueAvailabilityUncheckedUpdateInput>
+  }
+
+  /**
+   * VenueAvailability delete
+   */
+  export type VenueAvailabilityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+    /**
+     * Filter which VenueAvailability to delete.
+     */
+    where: VenueAvailabilityWhereUniqueInput
+  }
+
+  /**
+   * VenueAvailability deleteMany
+   */
+  export type VenueAvailabilityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VenueAvailabilities to delete
+     */
+    where?: VenueAvailabilityWhereInput
+  }
+
+  /**
+   * VenueAvailability.timeSlots
+   */
+  export type VenueAvailability$timeSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    where?: TimeSlotWhereInput
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    cursor?: TimeSlotWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * VenueAvailability without action
+   */
+  export type VenueAvailabilityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueAvailability
+     */
+    select?: VenueAvailabilitySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueAvailabilityInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TimeSlot
+   */
+
+  export type AggregateTimeSlot = {
+    _count: TimeSlotCountAggregateOutputType | null
+    _avg: TimeSlotAvgAggregateOutputType | null
+    _sum: TimeSlotSumAggregateOutputType | null
+    _min: TimeSlotMinAggregateOutputType | null
+    _max: TimeSlotMaxAggregateOutputType | null
+  }
+
+  export type TimeSlotAvgAggregateOutputType = {
+    id: number | null
+    availabilityId: number | null
+  }
+
+  export type TimeSlotSumAggregateOutputType = {
+    id: number | null
+    availabilityId: number | null
+  }
+
+  export type TimeSlotMinAggregateOutputType = {
+    id: number | null
+    availabilityId: number | null
+    startTime: Date | null
+    endTime: Date | null
+    status: $Enums.AvailabilityStatus | null
+  }
+
+  export type TimeSlotMaxAggregateOutputType = {
+    id: number | null
+    availabilityId: number | null
+    startTime: Date | null
+    endTime: Date | null
+    status: $Enums.AvailabilityStatus | null
+  }
+
+  export type TimeSlotCountAggregateOutputType = {
+    id: number
+    availabilityId: number
+    startTime: number
+    endTime: number
+    status: number
+    _all: number
+  }
+
+
+  export type TimeSlotAvgAggregateInputType = {
+    id?: true
+    availabilityId?: true
+  }
+
+  export type TimeSlotSumAggregateInputType = {
+    id?: true
+    availabilityId?: true
+  }
+
+  export type TimeSlotMinAggregateInputType = {
+    id?: true
+    availabilityId?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+  }
+
+  export type TimeSlotMaxAggregateInputType = {
+    id?: true
+    availabilityId?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+  }
+
+  export type TimeSlotCountAggregateInputType = {
+    id?: true
+    availabilityId?: true
+    startTime?: true
+    endTime?: true
+    status?: true
+    _all?: true
+  }
+
+  export type TimeSlotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeSlot to aggregate.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TimeSlots
+    **/
+    _count?: true | TimeSlotCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TimeSlotAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TimeSlotSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TimeSlotMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TimeSlotMaxAggregateInputType
+  }
+
+  export type GetTimeSlotAggregateType<T extends TimeSlotAggregateArgs> = {
+        [P in keyof T & keyof AggregateTimeSlot]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTimeSlot[P]>
+      : GetScalarType<T[P], AggregateTimeSlot[P]>
+  }
+
+
+
+
+  export type TimeSlotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeSlotWhereInput
+    orderBy?: TimeSlotOrderByWithAggregationInput | TimeSlotOrderByWithAggregationInput[]
+    by: TimeSlotScalarFieldEnum[] | TimeSlotScalarFieldEnum
+    having?: TimeSlotScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TimeSlotCountAggregateInputType | true
+    _avg?: TimeSlotAvgAggregateInputType
+    _sum?: TimeSlotSumAggregateInputType
+    _min?: TimeSlotMinAggregateInputType
+    _max?: TimeSlotMaxAggregateInputType
+  }
+
+  export type TimeSlotGroupByOutputType = {
+    id: number
+    availabilityId: number
+    startTime: Date
+    endTime: Date
+    status: $Enums.AvailabilityStatus
+    _count: TimeSlotCountAggregateOutputType | null
+    _avg: TimeSlotAvgAggregateOutputType | null
+    _sum: TimeSlotSumAggregateOutputType | null
+    _min: TimeSlotMinAggregateOutputType | null
+    _max: TimeSlotMaxAggregateOutputType | null
+  }
+
+  type GetTimeSlotGroupByPayload<T extends TimeSlotGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TimeSlotGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TimeSlotGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TimeSlotGroupByOutputType[P]>
+            : GetScalarType<T[P], TimeSlotGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TimeSlotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    availabilityId?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    venueAvailability?: boolean | VenueAvailabilityDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timeSlot"]>
+
+  export type TimeSlotSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    availabilityId?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+    venueAvailability?: boolean | VenueAvailabilityDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timeSlot"]>
+
+  export type TimeSlotSelectScalar = {
+    id?: boolean
+    availabilityId?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    status?: boolean
+  }
+
+  export type TimeSlotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    venueAvailability?: boolean | VenueAvailabilityDefaultArgs<ExtArgs>
+  }
+  export type TimeSlotIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    venueAvailability?: boolean | VenueAvailabilityDefaultArgs<ExtArgs>
+  }
+
+  export type $TimeSlotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TimeSlot"
+    objects: {
+      venueAvailability: Prisma.$VenueAvailabilityPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      availabilityId: number
+      startTime: Date
+      endTime: Date
+      status: $Enums.AvailabilityStatus
+    }, ExtArgs["result"]["timeSlot"]>
+    composites: {}
+  }
+
+  type TimeSlotGetPayload<S extends boolean | null | undefined | TimeSlotDefaultArgs> = $Result.GetResult<Prisma.$TimeSlotPayload, S>
+
+  type TimeSlotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<TimeSlotFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: TimeSlotCountAggregateInputType | true
+    }
+
+  export interface TimeSlotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TimeSlot'], meta: { name: 'TimeSlot' } }
+    /**
+     * Find zero or one TimeSlot that matches the filter.
+     * @param {TimeSlotFindUniqueArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TimeSlotFindUniqueArgs>(args: SelectSubset<T, TimeSlotFindUniqueArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one TimeSlot that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {TimeSlotFindUniqueOrThrowArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TimeSlotFindUniqueOrThrowArgs>(args: SelectSubset<T, TimeSlotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first TimeSlot that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindFirstArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TimeSlotFindFirstArgs>(args?: SelectSubset<T, TimeSlotFindFirstArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first TimeSlot that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindFirstOrThrowArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TimeSlotFindFirstOrThrowArgs>(args?: SelectSubset<T, TimeSlotFindFirstOrThrowArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more TimeSlots that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TimeSlots
+     * const timeSlots = await prisma.timeSlot.findMany()
+     * 
+     * // Get first 10 TimeSlots
+     * const timeSlots = await prisma.timeSlot.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const timeSlotWithIdOnly = await prisma.timeSlot.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TimeSlotFindManyArgs>(args?: SelectSubset<T, TimeSlotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a TimeSlot.
+     * @param {TimeSlotCreateArgs} args - Arguments to create a TimeSlot.
+     * @example
+     * // Create one TimeSlot
+     * const TimeSlot = await prisma.timeSlot.create({
+     *   data: {
+     *     // ... data to create a TimeSlot
+     *   }
+     * })
+     * 
+     */
+    create<T extends TimeSlotCreateArgs>(args: SelectSubset<T, TimeSlotCreateArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many TimeSlots.
+     * @param {TimeSlotCreateManyArgs} args - Arguments to create many TimeSlots.
+     * @example
+     * // Create many TimeSlots
+     * const timeSlot = await prisma.timeSlot.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TimeSlotCreateManyArgs>(args?: SelectSubset<T, TimeSlotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TimeSlots and returns the data saved in the database.
+     * @param {TimeSlotCreateManyAndReturnArgs} args - Arguments to create many TimeSlots.
+     * @example
+     * // Create many TimeSlots
+     * const timeSlot = await prisma.timeSlot.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TimeSlots and only return the `id`
+     * const timeSlotWithIdOnly = await prisma.timeSlot.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TimeSlotCreateManyAndReturnArgs>(args?: SelectSubset<T, TimeSlotCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a TimeSlot.
+     * @param {TimeSlotDeleteArgs} args - Arguments to delete one TimeSlot.
+     * @example
+     * // Delete one TimeSlot
+     * const TimeSlot = await prisma.timeSlot.delete({
+     *   where: {
+     *     // ... filter to delete one TimeSlot
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TimeSlotDeleteArgs>(args: SelectSubset<T, TimeSlotDeleteArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one TimeSlot.
+     * @param {TimeSlotUpdateArgs} args - Arguments to update one TimeSlot.
+     * @example
+     * // Update one TimeSlot
+     * const timeSlot = await prisma.timeSlot.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TimeSlotUpdateArgs>(args: SelectSubset<T, TimeSlotUpdateArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more TimeSlots.
+     * @param {TimeSlotDeleteManyArgs} args - Arguments to filter TimeSlots to delete.
+     * @example
+     * // Delete a few TimeSlots
+     * const { count } = await prisma.timeSlot.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TimeSlotDeleteManyArgs>(args?: SelectSubset<T, TimeSlotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimeSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TimeSlots
+     * const timeSlot = await prisma.timeSlot.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TimeSlotUpdateManyArgs>(args: SelectSubset<T, TimeSlotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one TimeSlot.
+     * @param {TimeSlotUpsertArgs} args - Arguments to update or create a TimeSlot.
+     * @example
+     * // Update or create a TimeSlot
+     * const timeSlot = await prisma.timeSlot.upsert({
+     *   create: {
+     *     // ... data to create a TimeSlot
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TimeSlot we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TimeSlotUpsertArgs>(args: SelectSubset<T, TimeSlotUpsertArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of TimeSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotCountArgs} args - Arguments to filter TimeSlots to count.
+     * @example
+     * // Count the number of TimeSlots
+     * const count = await prisma.timeSlot.count({
+     *   where: {
+     *     // ... the filter for the TimeSlots we want to count
+     *   }
+     * })
+    **/
+    count<T extends TimeSlotCountArgs>(
+      args?: Subset<T, TimeSlotCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TimeSlotCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TimeSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TimeSlotAggregateArgs>(args: Subset<T, TimeSlotAggregateArgs>): Prisma.PrismaPromise<GetTimeSlotAggregateType<T>>
+
+    /**
+     * Group by TimeSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TimeSlotGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TimeSlotGroupByArgs['orderBy'] }
+        : { orderBy?: TimeSlotGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TimeSlotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTimeSlotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TimeSlot model
+   */
+  readonly fields: TimeSlotFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TimeSlot.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TimeSlotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    venueAvailability<T extends VenueAvailabilityDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueAvailabilityDefaultArgs<ExtArgs>>): Prisma__VenueAvailabilityClient<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TimeSlot model
+   */ 
+  interface TimeSlotFieldRefs {
+    readonly id: FieldRef<"TimeSlot", 'Int'>
+    readonly availabilityId: FieldRef<"TimeSlot", 'Int'>
+    readonly startTime: FieldRef<"TimeSlot", 'DateTime'>
+    readonly endTime: FieldRef<"TimeSlot", 'DateTime'>
+    readonly status: FieldRef<"TimeSlot", 'AvailabilityStatus'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TimeSlot findUnique
+   */
+  export type TimeSlotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot findUniqueOrThrow
+   */
+  export type TimeSlotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot findFirst
+   */
+  export type TimeSlotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeSlots.
+     */
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot findFirstOrThrow
+   */
+  export type TimeSlotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeSlots.
+     */
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot findMany
+   */
+  export type TimeSlotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlots to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot create
+   */
+  export type TimeSlotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TimeSlot.
+     */
+    data: XOR<TimeSlotCreateInput, TimeSlotUncheckedCreateInput>
+  }
+
+  /**
+   * TimeSlot createMany
+   */
+  export type TimeSlotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TimeSlots.
+     */
+    data: TimeSlotCreateManyInput | TimeSlotCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TimeSlot createManyAndReturn
+   */
+  export type TimeSlotCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many TimeSlots.
+     */
+    data: TimeSlotCreateManyInput | TimeSlotCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimeSlot update
+   */
+  export type TimeSlotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TimeSlot.
+     */
+    data: XOR<TimeSlotUpdateInput, TimeSlotUncheckedUpdateInput>
+    /**
+     * Choose, which TimeSlot to update.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot updateMany
+   */
+  export type TimeSlotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TimeSlots.
+     */
+    data: XOR<TimeSlotUpdateManyMutationInput, TimeSlotUncheckedUpdateManyInput>
+    /**
+     * Filter which TimeSlots to update
+     */
+    where?: TimeSlotWhereInput
+  }
+
+  /**
+   * TimeSlot upsert
+   */
+  export type TimeSlotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TimeSlot to update in case it exists.
+     */
+    where: TimeSlotWhereUniqueInput
+    /**
+     * In case the TimeSlot found by the `where` argument doesn't exist, create a new TimeSlot with this data.
+     */
+    create: XOR<TimeSlotCreateInput, TimeSlotUncheckedCreateInput>
+    /**
+     * In case the TimeSlot was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TimeSlotUpdateInput, TimeSlotUncheckedUpdateInput>
+  }
+
+  /**
+   * TimeSlot delete
+   */
+  export type TimeSlotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter which TimeSlot to delete.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot deleteMany
+   */
+  export type TimeSlotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeSlots to delete
+     */
+    where?: TimeSlotWhereInput
+  }
+
+  /**
+   * TimeSlot without action
+   */
+  export type TimeSlotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
   }
 
 
@@ -5294,11 +8501,24 @@ export namespace Prisma {
     contactNumber: 'contactNumber',
     address: 'address',
     email: 'email',
+    emailVerified: 'emailVerified',
     password: 'password',
-    userType: 'userType'
+    userType: 'userType',
+    provider: 'provider'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const VerificationTokenScalarFieldEnum: {
+    id: 'id',
+    identifier: 'identifier',
+    email: 'email',
+    token: 'token',
+    expires: 'expires'
+  };
+
+  export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
   export const VenueScalarFieldEnum: {
@@ -5318,6 +8538,27 @@ export namespace Prisma {
   };
 
   export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum]
+
+
+  export const VenueAvailabilityScalarFieldEnum: {
+    id: 'id',
+    venueId: 'venueId',
+    date: 'date',
+    status: 'status'
+  };
+
+  export type VenueAvailabilityScalarFieldEnum = (typeof VenueAvailabilityScalarFieldEnum)[keyof typeof VenueAvailabilityScalarFieldEnum]
+
+
+  export const TimeSlotScalarFieldEnum: {
+    id: 'id',
+    availabilityId: 'availabilityId',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    status: 'status'
+  };
+
+  export type TimeSlotScalarFieldEnum = (typeof TimeSlotScalarFieldEnum)[keyof typeof TimeSlotScalarFieldEnum]
 
 
   export const ReservationScalarFieldEnum: {
@@ -5404,6 +8645,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'UserType'
    */
   export type EnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType'>
@@ -5414,6 +8662,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserType[]'
    */
   export type ListEnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -5432,16 +8694,30 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Schedule'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type EnumScheduleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Schedule'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime[]'
+   * Reference to a field of type 'Schedule[]'
    */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type ListEnumScheduleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Schedule[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AvailabilityStatus'
+   */
+  export type EnumAvailabilityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AvailabilityStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AvailabilityStatus[]'
+   */
+  export type ListEnumAvailabilityStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AvailabilityStatus[]'>
     
 
 
@@ -5500,8 +8776,10 @@ export namespace Prisma {
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }
 
@@ -5512,8 +8790,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     reservations?: ReservationOrderByRelationAggregateInput
   }
 
@@ -5527,8 +8807,10 @@ export namespace Prisma {
     lastName?: StringNullableFilter<"User"> | string | null
     contactNumber?: BigIntNullableFilter<"User"> | bigint | number | null
     address?: StringNullableFilter<"User"> | string | null
+    emailVerified?: BoolFilter<"User"> | boolean
     password?: StringNullableFilter<"User"> | string | null
     userType?: EnumUserTypeFilter<"User"> | $Enums.UserType
+    provider?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
   }, "userId" | "email">
 
@@ -5539,8 +8821,10 @@ export namespace Prisma {
     contactNumber?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
+    provider?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -5558,8 +8842,63 @@ export namespace Prisma {
     contactNumber?: BigIntNullableWithAggregatesFilter<"User"> | bigint | number | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
+    emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     userType?: EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
+    provider?: StringNullableWithAggregatesFilter<"User"> | string | null
+  }
+
+  export type VerificationTokenWhereInput = {
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    id?: StringFilter<"VerificationToken"> | string
+    identifier?: StringFilter<"VerificationToken"> | string
+    email?: StringFilter<"VerificationToken"> | string
+    token?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }
+
+  export type VerificationTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    identifier?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    identifier_token?: VerificationTokenIdentifierTokenCompoundUniqueInput
+    AND?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    OR?: VerificationTokenWhereInput[]
+    NOT?: VerificationTokenWhereInput | VerificationTokenWhereInput[]
+    identifier?: StringFilter<"VerificationToken"> | string
+    email?: StringFilter<"VerificationToken"> | string
+    expires?: DateTimeFilter<"VerificationToken"> | Date | string
+  }, "id" | "token" | "identifier_token">
+
+  export type VerificationTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    identifier?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+    _count?: VerificationTokenCountOrderByAggregateInput
+    _max?: VerificationTokenMaxOrderByAggregateInput
+    _min?: VerificationTokenMinOrderByAggregateInput
+  }
+
+  export type VerificationTokenScalarWhereWithAggregatesInput = {
+    AND?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    OR?: VerificationTokenScalarWhereWithAggregatesInput[]
+    NOT?: VerificationTokenScalarWhereWithAggregatesInput | VerificationTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VerificationToken"> | string
+    identifier?: StringWithAggregatesFilter<"VerificationToken"> | string
+    email?: StringWithAggregatesFilter<"VerificationToken"> | string
+    token?: StringWithAggregatesFilter<"VerificationToken"> | string
+    expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
   export type VenueWhereInput = {
@@ -5574,11 +8913,12 @@ export namespace Prisma {
     type?: StringFilter<"Venue"> | string
     capacity?: IntFilter<"Venue"> | number
     size?: IntFilter<"Venue"> | number
-    schedule?: StringFilter<"Venue"> | string
+    schedule?: EnumScheduleFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeFilter<"Venue"> | Date | string
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
+    availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
   }
 
@@ -5596,6 +8936,7 @@ export namespace Prisma {
     images?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    availability?: VenueAvailabilityOrderByRelationAggregateInput
     reservations?: ReservationOrderByRelationAggregateInput
   }
 
@@ -5611,11 +8952,12 @@ export namespace Prisma {
     type?: StringFilter<"Venue"> | string
     capacity?: IntFilter<"Venue"> | number
     size?: IntFilter<"Venue"> | number
-    schedule?: StringFilter<"Venue"> | string
+    schedule?: EnumScheduleFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeFilter<"Venue"> | Date | string
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
+    availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
   }, "id">
 
@@ -5652,11 +8994,123 @@ export namespace Prisma {
     type?: StringWithAggregatesFilter<"Venue"> | string
     capacity?: IntWithAggregatesFilter<"Venue"> | number
     size?: IntWithAggregatesFilter<"Venue"> | number
-    schedule?: StringWithAggregatesFilter<"Venue"> | string
+    schedule?: EnumScheduleWithAggregatesFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
+  }
+
+  export type VenueAvailabilityWhereInput = {
+    AND?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
+    OR?: VenueAvailabilityWhereInput[]
+    NOT?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
+    id?: IntFilter<"VenueAvailability"> | number
+    venueId?: IntFilter<"VenueAvailability"> | number
+    date?: DateTimeFilter<"VenueAvailability"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotListRelationFilter
+    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+  }
+
+  export type VenueAvailabilityOrderByWithRelationInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    timeSlots?: TimeSlotOrderByRelationAggregateInput
+    venue?: VenueOrderByWithRelationInput
+  }
+
+  export type VenueAvailabilityWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
+    OR?: VenueAvailabilityWhereInput[]
+    NOT?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
+    venueId?: IntFilter<"VenueAvailability"> | number
+    date?: DateTimeFilter<"VenueAvailability"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotListRelationFilter
+    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+  }, "id">
+
+  export type VenueAvailabilityOrderByWithAggregationInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    _count?: VenueAvailabilityCountOrderByAggregateInput
+    _avg?: VenueAvailabilityAvgOrderByAggregateInput
+    _max?: VenueAvailabilityMaxOrderByAggregateInput
+    _min?: VenueAvailabilityMinOrderByAggregateInput
+    _sum?: VenueAvailabilitySumOrderByAggregateInput
+  }
+
+  export type VenueAvailabilityScalarWhereWithAggregatesInput = {
+    AND?: VenueAvailabilityScalarWhereWithAggregatesInput | VenueAvailabilityScalarWhereWithAggregatesInput[]
+    OR?: VenueAvailabilityScalarWhereWithAggregatesInput[]
+    NOT?: VenueAvailabilityScalarWhereWithAggregatesInput | VenueAvailabilityScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"VenueAvailability"> | number
+    venueId?: IntWithAggregatesFilter<"VenueAvailability"> | number
+    date?: DateTimeWithAggregatesFilter<"VenueAvailability"> | Date | string
+    status?: EnumAvailabilityStatusWithAggregatesFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotWhereInput = {
+    AND?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    OR?: TimeSlotWhereInput[]
+    NOT?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    id?: IntFilter<"TimeSlot"> | number
+    availabilityId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
+    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+  }
+
+  export type TimeSlotOrderByWithRelationInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    venueAvailability?: VenueAvailabilityOrderByWithRelationInput
+  }
+
+  export type TimeSlotWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    OR?: TimeSlotWhereInput[]
+    NOT?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    availabilityId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
+    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+  }, "id">
+
+  export type TimeSlotOrderByWithAggregationInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+    _count?: TimeSlotCountOrderByAggregateInput
+    _avg?: TimeSlotAvgOrderByAggregateInput
+    _max?: TimeSlotMaxOrderByAggregateInput
+    _min?: TimeSlotMinOrderByAggregateInput
+    _sum?: TimeSlotSumOrderByAggregateInput
+  }
+
+  export type TimeSlotScalarWhereWithAggregatesInput = {
+    AND?: TimeSlotScalarWhereWithAggregatesInput | TimeSlotScalarWhereWithAggregatesInput[]
+    OR?: TimeSlotScalarWhereWithAggregatesInput[]
+    NOT?: TimeSlotScalarWhereWithAggregatesInput | TimeSlotScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TimeSlot"> | number
+    availabilityId?: IntWithAggregatesFilter<"TimeSlot"> | number
+    startTime?: DateTimeWithAggregatesFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeWithAggregatesFilter<"TimeSlot"> | Date | string
+    status?: EnumAvailabilityStatusWithAggregatesFilter<"TimeSlot"> | $Enums.AvailabilityStatus
   }
 
   export type ReservationWhereInput = {
@@ -5804,8 +9258,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
   }
 
@@ -5816,8 +9272,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -5828,8 +9286,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
   }
 
@@ -5840,8 +9300,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -5852,8 +9314,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -5863,8 +9327,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -5874,8 +9340,66 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type VerificationTokenCreateInput = {
+    id?: string
+    identifier: string
+    email: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUncheckedCreateInput = {
+    id?: string
+    identifier: string
+    email: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenCreateManyInput = {
+    id?: string
+    identifier: string
+    email: string
+    token: string
+    expires: Date | string
+  }
+
+  export type VerificationTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VerificationTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    identifier?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VenueCreateInput = {
@@ -5886,11 +9410,12 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    availability?: VenueAvailabilityCreateNestedManyWithoutVenueInput
     reservations?: ReservationCreateNestedManyWithoutVenueInput
   }
 
@@ -5903,11 +9428,12 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    availability?: VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput
     reservations?: ReservationUncheckedCreateNestedManyWithoutVenueInput
   }
 
@@ -5919,11 +9445,12 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUpdateManyWithoutVenueNestedInput
     reservations?: ReservationUpdateManyWithoutVenueNestedInput
   }
 
@@ -5936,11 +9463,12 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput
     reservations?: ReservationUncheckedUpdateManyWithoutVenueNestedInput
   }
 
@@ -5953,7 +9481,7 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
@@ -5968,7 +9496,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5984,11 +9512,112 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueAvailabilityCreateInput = {
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotCreateNestedManyWithoutVenueAvailabilityInput
+    venue: VenueCreateNestedOneWithoutAvailabilityInput
+  }
+
+  export type VenueAvailabilityUncheckedCreateInput = {
+    id?: number
+    venueId: number
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUncheckedCreateNestedManyWithoutVenueAvailabilityInput
+  }
+
+  export type VenueAvailabilityUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUpdateManyWithoutVenueAvailabilityNestedInput
+    venue?: VenueUpdateOneRequiredWithoutAvailabilityNestedInput
+  }
+
+  export type VenueAvailabilityUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    venueId?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUncheckedUpdateManyWithoutVenueAvailabilityNestedInput
+  }
+
+  export type VenueAvailabilityCreateManyInput = {
+    id?: number
+    venueId: number
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type VenueAvailabilityUpdateManyMutationInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type VenueAvailabilityUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    venueId?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotCreateInput = {
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+    venueAvailability: VenueAvailabilityCreateNestedOneWithoutTimeSlotsInput
+  }
+
+  export type TimeSlotUncheckedCreateInput = {
+    id?: number
+    availabilityId: number
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUpdateInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    venueAvailability?: VenueAvailabilityUpdateOneRequiredWithoutTimeSlotsNestedInput
+  }
+
+  export type TimeSlotUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    availabilityId?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotCreateManyInput = {
+    id?: number
+    availabilityId: number
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUpdateManyMutationInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    availabilityId?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
   }
 
   export type ReservationCreateInput = {
@@ -6173,6 +9802,11 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type EnumUserTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
     in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
@@ -6202,8 +9836,10 @@ export namespace Prisma {
     contactNumber?: SortOrder
     address?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -6217,8 +9853,10 @@ export namespace Prisma {
     contactNumber?: SortOrder
     address?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -6228,8 +9866,10 @@ export namespace Prisma {
     contactNumber?: SortOrder
     address?: SortOrder
     email?: SortOrder
+    emailVerified?: SortOrder
     password?: SortOrder
     userType?: SortOrder
+    provider?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -6288,6 +9928,14 @@ export namespace Prisma {
     _max?: NestedBigIntNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type EnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
     in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
@@ -6296,6 +9944,60 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserTypeFilter<$PrismaModel>
     _max?: NestedEnumUserTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
+    identifier: string
+    token: string
+  }
+
+  export type VerificationTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    identifier?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    identifier?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type VerificationTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    identifier?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires?: SortOrder
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6317,15 +10019,21 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  export type EnumScheduleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel>
+    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleFilter<$PrismaModel> | $Enums.Schedule
+  }
+
+  export type VenueAvailabilityListRelationFilter = {
+    every?: VenueAvailabilityWhereInput
+    some?: VenueAvailabilityWhereInput
+    none?: VenueAvailabilityWhereInput
+  }
+
+  export type VenueAvailabilityOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type VenueCountOrderByAggregateInput = {
@@ -6398,18 +10106,116 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+  export type EnumScheduleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel>
+    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleWithAggregatesFilter<$PrismaModel> | $Enums.Schedule
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    _min?: NestedEnumScheduleFilter<$PrismaModel>
+    _max?: NestedEnumScheduleFilter<$PrismaModel>
+  }
+
+  export type EnumAvailabilityStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AvailabilityStatus | EnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAvailabilityStatusFilter<$PrismaModel> | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotListRelationFilter = {
+    every?: TimeSlotWhereInput
+    some?: TimeSlotWhereInput
+    none?: TimeSlotWhereInput
+  }
+
+  export type VenueRelationFilter = {
+    is?: VenueWhereInput
+    isNot?: VenueWhereInput
+  }
+
+  export type TimeSlotOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VenueAvailabilityCountOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+  }
+
+  export type VenueAvailabilityAvgOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+  }
+
+  export type VenueAvailabilityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+  }
+
+  export type VenueAvailabilityMinOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+  }
+
+  export type VenueAvailabilitySumOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+  }
+
+  export type EnumAvailabilityStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AvailabilityStatus | EnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAvailabilityStatusWithAggregatesFilter<$PrismaModel> | $Enums.AvailabilityStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
+    _max?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
+  }
+
+  export type VenueAvailabilityRelationFilter = {
+    is?: VenueAvailabilityWhereInput
+    isNot?: VenueAvailabilityWhereInput
+  }
+
+  export type TimeSlotCountOrderByAggregateInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+  }
+
+  export type TimeSlotAvgOrderByAggregateInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+  }
+
+  export type TimeSlotMaxOrderByAggregateInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+  }
+
+  export type TimeSlotMinOrderByAggregateInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    status?: SortOrder
+  }
+
+  export type TimeSlotSumOrderByAggregateInput = {
+    id?: SortOrder
+    availabilityId?: SortOrder
   }
 
   export type EnumExtraServiceNullableListFilter<$PrismaModel = never> = {
@@ -6423,11 +10229,6 @@ export namespace Prisma {
   export type UserRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type VenueRelationFilter = {
-    is?: VenueWhereInput
-    isNot?: VenueWhereInput
   }
 
   export type ReservationStateNullableRelationFilter = {
@@ -6555,6 +10356,10 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type EnumUserTypeFieldUpdateOperationsInput = {
     set?: $Enums.UserType
   }
@@ -6587,6 +10392,10 @@ export namespace Prisma {
     deleteMany?: ReservationScalarWhereInput | ReservationScalarWhereInput[]
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type VenueCreatestreet_nameInput = {
     set: string[]
   }
@@ -6599,11 +10408,25 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type VenueAvailabilityCreateNestedManyWithoutVenueInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
+    createMany?: VenueAvailabilityCreateManyVenueInputEnvelope
+    connect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+  }
+
   export type ReservationCreateNestedManyWithoutVenueInput = {
     create?: XOR<ReservationCreateWithoutVenueInput, ReservationUncheckedCreateWithoutVenueInput> | ReservationCreateWithoutVenueInput[] | ReservationUncheckedCreateWithoutVenueInput[]
     connectOrCreate?: ReservationCreateOrConnectWithoutVenueInput | ReservationCreateOrConnectWithoutVenueInput[]
     createMany?: ReservationCreateManyVenueInputEnvelope
     connect?: ReservationWhereUniqueInput | ReservationWhereUniqueInput[]
+  }
+
+  export type VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
+    createMany?: VenueAvailabilityCreateManyVenueInputEnvelope
+    connect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
   }
 
   export type ReservationUncheckedCreateNestedManyWithoutVenueInput = {
@@ -6626,6 +10449,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type EnumScheduleFieldUpdateOperationsInput = {
+    set?: $Enums.Schedule
+  }
+
   export type VenueUpdatefeaturesInput = {
     set?: string[]
     push?: string | string[]
@@ -6636,8 +10463,18 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type VenueAvailabilityUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
+    upsert?: VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput | VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: VenueAvailabilityCreateManyVenueInputEnvelope
+    set?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    disconnect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    delete?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    connect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    update?: VenueAvailabilityUpdateWithWhereUniqueWithoutVenueInput | VenueAvailabilityUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: VenueAvailabilityUpdateManyWithWhereWithoutVenueInput | VenueAvailabilityUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: VenueAvailabilityScalarWhereInput | VenueAvailabilityScalarWhereInput[]
   }
 
   export type ReservationUpdateManyWithoutVenueNestedInput = {
@@ -6654,6 +10491,20 @@ export namespace Prisma {
     deleteMany?: ReservationScalarWhereInput | ReservationScalarWhereInput[]
   }
 
+  export type VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
+    upsert?: VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput | VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: VenueAvailabilityCreateManyVenueInputEnvelope
+    set?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    disconnect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    delete?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    connect?: VenueAvailabilityWhereUniqueInput | VenueAvailabilityWhereUniqueInput[]
+    update?: VenueAvailabilityUpdateWithWhereUniqueWithoutVenueInput | VenueAvailabilityUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: VenueAvailabilityUpdateManyWithWhereWithoutVenueInput | VenueAvailabilityUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: VenueAvailabilityScalarWhereInput | VenueAvailabilityScalarWhereInput[]
+  }
+
   export type ReservationUncheckedUpdateManyWithoutVenueNestedInput = {
     create?: XOR<ReservationCreateWithoutVenueInput, ReservationUncheckedCreateWithoutVenueInput> | ReservationCreateWithoutVenueInput[] | ReservationUncheckedCreateWithoutVenueInput[]
     connectOrCreate?: ReservationCreateOrConnectWithoutVenueInput | ReservationCreateOrConnectWithoutVenueInput[]
@@ -6666,6 +10517,80 @@ export namespace Prisma {
     update?: ReservationUpdateWithWhereUniqueWithoutVenueInput | ReservationUpdateWithWhereUniqueWithoutVenueInput[]
     updateMany?: ReservationUpdateManyWithWhereWithoutVenueInput | ReservationUpdateManyWithWhereWithoutVenueInput[]
     deleteMany?: ReservationScalarWhereInput | ReservationScalarWhereInput[]
+  }
+
+  export type TimeSlotCreateNestedManyWithoutVenueAvailabilityInput = {
+    create?: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput> | TimeSlotCreateWithoutVenueAvailabilityInput[] | TimeSlotUncheckedCreateWithoutVenueAvailabilityInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutVenueAvailabilityInput | TimeSlotCreateOrConnectWithoutVenueAvailabilityInput[]
+    createMany?: TimeSlotCreateManyVenueAvailabilityInputEnvelope
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+  }
+
+  export type VenueCreateNestedOneWithoutAvailabilityInput = {
+    create?: XOR<VenueCreateWithoutAvailabilityInput, VenueUncheckedCreateWithoutAvailabilityInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutAvailabilityInput
+    connect?: VenueWhereUniqueInput
+  }
+
+  export type TimeSlotUncheckedCreateNestedManyWithoutVenueAvailabilityInput = {
+    create?: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput> | TimeSlotCreateWithoutVenueAvailabilityInput[] | TimeSlotUncheckedCreateWithoutVenueAvailabilityInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutVenueAvailabilityInput | TimeSlotCreateOrConnectWithoutVenueAvailabilityInput[]
+    createMany?: TimeSlotCreateManyVenueAvailabilityInputEnvelope
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+  }
+
+  export type EnumAvailabilityStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUpdateManyWithoutVenueAvailabilityNestedInput = {
+    create?: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput> | TimeSlotCreateWithoutVenueAvailabilityInput[] | TimeSlotUncheckedCreateWithoutVenueAvailabilityInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutVenueAvailabilityInput | TimeSlotCreateOrConnectWithoutVenueAvailabilityInput[]
+    upsert?: TimeSlotUpsertWithWhereUniqueWithoutVenueAvailabilityInput | TimeSlotUpsertWithWhereUniqueWithoutVenueAvailabilityInput[]
+    createMany?: TimeSlotCreateManyVenueAvailabilityInputEnvelope
+    set?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    disconnect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    delete?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    update?: TimeSlotUpdateWithWhereUniqueWithoutVenueAvailabilityInput | TimeSlotUpdateWithWhereUniqueWithoutVenueAvailabilityInput[]
+    updateMany?: TimeSlotUpdateManyWithWhereWithoutVenueAvailabilityInput | TimeSlotUpdateManyWithWhereWithoutVenueAvailabilityInput[]
+    deleteMany?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+  }
+
+  export type VenueUpdateOneRequiredWithoutAvailabilityNestedInput = {
+    create?: XOR<VenueCreateWithoutAvailabilityInput, VenueUncheckedCreateWithoutAvailabilityInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutAvailabilityInput
+    upsert?: VenueUpsertWithoutAvailabilityInput
+    connect?: VenueWhereUniqueInput
+    update?: XOR<XOR<VenueUpdateToOneWithWhereWithoutAvailabilityInput, VenueUpdateWithoutAvailabilityInput>, VenueUncheckedUpdateWithoutAvailabilityInput>
+  }
+
+  export type TimeSlotUncheckedUpdateManyWithoutVenueAvailabilityNestedInput = {
+    create?: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput> | TimeSlotCreateWithoutVenueAvailabilityInput[] | TimeSlotUncheckedCreateWithoutVenueAvailabilityInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutVenueAvailabilityInput | TimeSlotCreateOrConnectWithoutVenueAvailabilityInput[]
+    upsert?: TimeSlotUpsertWithWhereUniqueWithoutVenueAvailabilityInput | TimeSlotUpsertWithWhereUniqueWithoutVenueAvailabilityInput[]
+    createMany?: TimeSlotCreateManyVenueAvailabilityInputEnvelope
+    set?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    disconnect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    delete?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    update?: TimeSlotUpdateWithWhereUniqueWithoutVenueAvailabilityInput | TimeSlotUpdateWithWhereUniqueWithoutVenueAvailabilityInput[]
+    updateMany?: TimeSlotUpdateManyWithWhereWithoutVenueAvailabilityInput | TimeSlotUpdateManyWithWhereWithoutVenueAvailabilityInput[]
+    deleteMany?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+  }
+
+  export type VenueAvailabilityCreateNestedOneWithoutTimeSlotsInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutTimeSlotsInput, VenueAvailabilityUncheckedCreateWithoutTimeSlotsInput>
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutTimeSlotsInput
+    connect?: VenueAvailabilityWhereUniqueInput
+  }
+
+  export type VenueAvailabilityUpdateOneRequiredWithoutTimeSlotsNestedInput = {
+    create?: XOR<VenueAvailabilityCreateWithoutTimeSlotsInput, VenueAvailabilityUncheckedCreateWithoutTimeSlotsInput>
+    connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutTimeSlotsInput
+    upsert?: VenueAvailabilityUpsertWithoutTimeSlotsInput
+    connect?: VenueAvailabilityWhereUniqueInput
+    update?: XOR<XOR<VenueAvailabilityUpdateToOneWithWhereWithoutTimeSlotsInput, VenueAvailabilityUpdateWithoutTimeSlotsInput>, VenueAvailabilityUncheckedUpdateWithoutTimeSlotsInput>
   }
 
   export type ReservationCreateextraServicesInput = {
@@ -6794,6 +10719,11 @@ export namespace Prisma {
     not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedEnumUserTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
     in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
@@ -6884,6 +10814,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
     in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
@@ -6903,6 +10841,27 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumScheduleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel>
+    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleFilter<$PrismaModel> | $Enums.Schedule
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -6932,18 +10891,31 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+  export type NestedEnumScheduleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Schedule | EnumScheduleFieldRefInput<$PrismaModel>
+    in?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Schedule[] | ListEnumScheduleFieldRefInput<$PrismaModel>
+    not?: NestedEnumScheduleWithAggregatesFilter<$PrismaModel> | $Enums.Schedule
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    _min?: NestedEnumScheduleFilter<$PrismaModel>
+    _max?: NestedEnumScheduleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAvailabilityStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AvailabilityStatus | EnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAvailabilityStatusFilter<$PrismaModel> | $Enums.AvailabilityStatus
+  }
+
+  export type NestedEnumAvailabilityStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AvailabilityStatus | EnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AvailabilityStatus[] | ListEnumAvailabilityStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAvailabilityStatusWithAggregatesFilter<$PrismaModel> | $Enums.AvailabilityStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
+    _max?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumStatusFilter<$PrismaModel = never> = {
@@ -7031,6 +11003,29 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
   }
 
+  export type VenueAvailabilityCreateWithoutVenueInput = {
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotCreateNestedManyWithoutVenueAvailabilityInput
+  }
+
+  export type VenueAvailabilityUncheckedCreateWithoutVenueInput = {
+    id?: number
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUncheckedCreateNestedManyWithoutVenueAvailabilityInput
+  }
+
+  export type VenueAvailabilityCreateOrConnectWithoutVenueInput = {
+    where: VenueAvailabilityWhereUniqueInput
+    create: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput>
+  }
+
+  export type VenueAvailabilityCreateManyVenueInputEnvelope = {
+    data: VenueAvailabilityCreateManyVenueInput | VenueAvailabilityCreateManyVenueInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ReservationCreateWithoutVenueInput = {
     reservationId?: string
     title: string
@@ -7067,6 +11062,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput = {
+    where: VenueAvailabilityWhereUniqueInput
+    update: XOR<VenueAvailabilityUpdateWithoutVenueInput, VenueAvailabilityUncheckedUpdateWithoutVenueInput>
+    create: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput>
+  }
+
+  export type VenueAvailabilityUpdateWithWhereUniqueWithoutVenueInput = {
+    where: VenueAvailabilityWhereUniqueInput
+    data: XOR<VenueAvailabilityUpdateWithoutVenueInput, VenueAvailabilityUncheckedUpdateWithoutVenueInput>
+  }
+
+  export type VenueAvailabilityUpdateManyWithWhereWithoutVenueInput = {
+    where: VenueAvailabilityScalarWhereInput
+    data: XOR<VenueAvailabilityUpdateManyMutationInput, VenueAvailabilityUncheckedUpdateManyWithoutVenueInput>
+  }
+
+  export type VenueAvailabilityScalarWhereInput = {
+    AND?: VenueAvailabilityScalarWhereInput | VenueAvailabilityScalarWhereInput[]
+    OR?: VenueAvailabilityScalarWhereInput[]
+    NOT?: VenueAvailabilityScalarWhereInput | VenueAvailabilityScalarWhereInput[]
+    id?: IntFilter<"VenueAvailability"> | number
+    venueId?: IntFilter<"VenueAvailability"> | number
+    date?: DateTimeFilter<"VenueAvailability"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
+  }
+
   export type ReservationUpsertWithWhereUniqueWithoutVenueInput = {
     where: ReservationWhereUniqueInput
     update: XOR<ReservationUpdateWithoutVenueInput, ReservationUncheckedUpdateWithoutVenueInput>
@@ -7083,6 +11104,180 @@ export namespace Prisma {
     data: XOR<ReservationUpdateManyMutationInput, ReservationUncheckedUpdateManyWithoutVenueInput>
   }
 
+  export type TimeSlotCreateWithoutVenueAvailabilityInput = {
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUncheckedCreateWithoutVenueAvailabilityInput = {
+    id?: number
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotCreateOrConnectWithoutVenueAvailabilityInput = {
+    where: TimeSlotWhereUniqueInput
+    create: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput>
+  }
+
+  export type TimeSlotCreateManyVenueAvailabilityInputEnvelope = {
+    data: TimeSlotCreateManyVenueAvailabilityInput | TimeSlotCreateManyVenueAvailabilityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VenueCreateWithoutAvailabilityInput = {
+    name: string
+    street_name?: VenueCreatestreet_nameInput | string[]
+    district: string
+    province: string
+    type: string
+    capacity: number
+    size: number
+    schedule: $Enums.Schedule
+    features?: VenueCreatefeaturesInput | string[]
+    images?: VenueCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reservations?: ReservationCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueUncheckedCreateWithoutAvailabilityInput = {
+    id?: number
+    name: string
+    street_name?: VenueCreatestreet_nameInput | string[]
+    district: string
+    province: string
+    type: string
+    capacity: number
+    size: number
+    schedule: $Enums.Schedule
+    features?: VenueCreatefeaturesInput | string[]
+    images?: VenueCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reservations?: ReservationUncheckedCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueCreateOrConnectWithoutAvailabilityInput = {
+    where: VenueWhereUniqueInput
+    create: XOR<VenueCreateWithoutAvailabilityInput, VenueUncheckedCreateWithoutAvailabilityInput>
+  }
+
+  export type TimeSlotUpsertWithWhereUniqueWithoutVenueAvailabilityInput = {
+    where: TimeSlotWhereUniqueInput
+    update: XOR<TimeSlotUpdateWithoutVenueAvailabilityInput, TimeSlotUncheckedUpdateWithoutVenueAvailabilityInput>
+    create: XOR<TimeSlotCreateWithoutVenueAvailabilityInput, TimeSlotUncheckedCreateWithoutVenueAvailabilityInput>
+  }
+
+  export type TimeSlotUpdateWithWhereUniqueWithoutVenueAvailabilityInput = {
+    where: TimeSlotWhereUniqueInput
+    data: XOR<TimeSlotUpdateWithoutVenueAvailabilityInput, TimeSlotUncheckedUpdateWithoutVenueAvailabilityInput>
+  }
+
+  export type TimeSlotUpdateManyWithWhereWithoutVenueAvailabilityInput = {
+    where: TimeSlotScalarWhereInput
+    data: XOR<TimeSlotUpdateManyMutationInput, TimeSlotUncheckedUpdateManyWithoutVenueAvailabilityInput>
+  }
+
+  export type TimeSlotScalarWhereInput = {
+    AND?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+    OR?: TimeSlotScalarWhereInput[]
+    NOT?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+    id?: IntFilter<"TimeSlot"> | number
+    availabilityId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
+  }
+
+  export type VenueUpsertWithoutAvailabilityInput = {
+    update: XOR<VenueUpdateWithoutAvailabilityInput, VenueUncheckedUpdateWithoutAvailabilityInput>
+    create: XOR<VenueCreateWithoutAvailabilityInput, VenueUncheckedCreateWithoutAvailabilityInput>
+    where?: VenueWhereInput
+  }
+
+  export type VenueUpdateToOneWithWhereWithoutAvailabilityInput = {
+    where?: VenueWhereInput
+    data: XOR<VenueUpdateWithoutAvailabilityInput, VenueUncheckedUpdateWithoutAvailabilityInput>
+  }
+
+  export type VenueUpdateWithoutAvailabilityInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    street_name?: VenueUpdatestreet_nameInput | string[]
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    size?: IntFieldUpdateOperationsInput | number
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    features?: VenueUpdatefeaturesInput | string[]
+    images?: VenueUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reservations?: ReservationUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueUncheckedUpdateWithoutAvailabilityInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    street_name?: VenueUpdatestreet_nameInput | string[]
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    size?: IntFieldUpdateOperationsInput | number
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    features?: VenueUpdatefeaturesInput | string[]
+    images?: VenueUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reservations?: ReservationUncheckedUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueAvailabilityCreateWithoutTimeSlotsInput = {
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+    venue: VenueCreateNestedOneWithoutAvailabilityInput
+  }
+
+  export type VenueAvailabilityUncheckedCreateWithoutTimeSlotsInput = {
+    id?: number
+    venueId: number
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type VenueAvailabilityCreateOrConnectWithoutTimeSlotsInput = {
+    where: VenueAvailabilityWhereUniqueInput
+    create: XOR<VenueAvailabilityCreateWithoutTimeSlotsInput, VenueAvailabilityUncheckedCreateWithoutTimeSlotsInput>
+  }
+
+  export type VenueAvailabilityUpsertWithoutTimeSlotsInput = {
+    update: XOR<VenueAvailabilityUpdateWithoutTimeSlotsInput, VenueAvailabilityUncheckedUpdateWithoutTimeSlotsInput>
+    create: XOR<VenueAvailabilityCreateWithoutTimeSlotsInput, VenueAvailabilityUncheckedCreateWithoutTimeSlotsInput>
+    where?: VenueAvailabilityWhereInput
+  }
+
+  export type VenueAvailabilityUpdateToOneWithWhereWithoutTimeSlotsInput = {
+    where?: VenueAvailabilityWhereInput
+    data: XOR<VenueAvailabilityUpdateWithoutTimeSlotsInput, VenueAvailabilityUncheckedUpdateWithoutTimeSlotsInput>
+  }
+
+  export type VenueAvailabilityUpdateWithoutTimeSlotsInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    venue?: VenueUpdateOneRequiredWithoutAvailabilityNestedInput
+  }
+
+  export type VenueAvailabilityUncheckedUpdateWithoutTimeSlotsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    venueId?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
   export type UserCreateWithoutReservationsInput = {
     userId?: string
     firstName: string
@@ -7090,8 +11285,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserUncheckedCreateWithoutReservationsInput = {
@@ -7101,8 +11298,10 @@ export namespace Prisma {
     contactNumber?: bigint | number | null
     address?: string | null
     email: string
+    emailVerified?: boolean
     password?: string | null
     userType: $Enums.UserType
+    provider?: string | null
   }
 
   export type UserCreateOrConnectWithoutReservationsInput = {
@@ -7118,11 +11317,12 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    availability?: VenueAvailabilityCreateNestedManyWithoutVenueInput
   }
 
   export type VenueUncheckedCreateWithoutReservationsInput = {
@@ -7134,11 +11334,12 @@ export namespace Prisma {
     type: string
     capacity: number
     size: number
-    schedule: string
+    schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    availability?: VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput
   }
 
   export type VenueCreateOrConnectWithoutReservationsInput = {
@@ -7181,8 +11382,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateWithoutReservationsInput = {
@@ -7192,8 +11395,10 @@ export namespace Prisma {
     contactNumber?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    provider?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueUpsertWithoutReservationsInput = {
@@ -7215,11 +11420,12 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueUncheckedUpdateWithoutReservationsInput = {
@@ -7231,11 +11437,12 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     capacity?: IntFieldUpdateOperationsInput | number
     size?: IntFieldUpdateOperationsInput | number
-    schedule?: StringFieldUpdateOperationsInput | string
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput
   }
 
   export type ReservationStateUpsertWithoutReservationInput = {
@@ -7379,6 +11586,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VenueAvailabilityCreateManyVenueInput = {
+    id?: number
+    date: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
   export type ReservationCreateManyVenueInput = {
     reservationId?: string
     userId: string
@@ -7389,6 +11602,25 @@ export namespace Prisma {
     reservationDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type VenueAvailabilityUpdateWithoutVenueInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUpdateManyWithoutVenueAvailabilityNestedInput
+  }
+
+  export type VenueAvailabilityUncheckedUpdateWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+    timeSlots?: TimeSlotUncheckedUpdateManyWithoutVenueAvailabilityNestedInput
+  }
+
+  export type VenueAvailabilityUncheckedUpdateManyWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
   }
 
   export type ReservationUpdateWithoutVenueInput = {
@@ -7429,6 +11661,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TimeSlotCreateManyVenueAvailabilityInput = {
+    id?: number
+    startTime: Date | string
+    endTime: Date | string
+    status: $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUpdateWithoutVenueAvailabilityInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUncheckedUpdateWithoutVenueAvailabilityInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
+  export type TimeSlotUncheckedUpdateManyWithoutVenueAvailabilityInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
+  }
+
 
 
   /**
@@ -7443,13 +11702,29 @@ export namespace Prisma {
      */
     export type VenueCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueCountOutputTypeDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use VenueAvailabilityCountOutputTypeDefaultArgs instead
+     */
+    export type VenueAvailabilityCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueAvailabilityCountOutputTypeDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use UserDefaultArgs instead
      */
     export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use VerificationTokenDefaultArgs instead
+     */
+    export type VerificationTokenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VerificationTokenDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use VenueDefaultArgs instead
      */
     export type VenueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use VenueAvailabilityDefaultArgs instead
+     */
+    export type VenueAvailabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueAvailabilityDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use TimeSlotDefaultArgs instead
+     */
+    export type TimeSlotArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TimeSlotDefaultArgs<ExtArgs>
     /**
      * @deprecated Use ReservationDefaultArgs instead
      */

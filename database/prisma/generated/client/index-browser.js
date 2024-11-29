@@ -129,8 +129,18 @@ exports.Prisma.UserScalarFieldEnum = {
   contactNumber: 'contactNumber',
   address: 'address',
   email: 'email',
+  emailVerified: 'emailVerified',
   password: 'password',
-  userType: 'userType'
+  userType: 'userType',
+  provider: 'provider'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  email: 'email',
+  token: 'token',
+  expires: 'expires'
 };
 
 exports.Prisma.VenueScalarFieldEnum = {
@@ -147,6 +157,21 @@ exports.Prisma.VenueScalarFieldEnum = {
   images: 'images',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VenueAvailabilityScalarFieldEnum = {
+  id: 'id',
+  venueId: 'venueId',
+  date: 'date',
+  status: 'status'
+};
+
+exports.Prisma.TimeSlotScalarFieldEnum = {
+  id: 'id',
+  availabilityId: 'availabilityId',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  status: 'status'
 };
 
 exports.Prisma.ReservationScalarFieldEnum = {
@@ -189,6 +214,19 @@ exports.UserType = exports.$Enums.UserType = {
   Guest: 'Guest'
 };
 
+exports.Schedule = exports.$Enums.Schedule = {
+  EntireDay: 'EntireDay',
+  SessionTime: 'SessionTime',
+  HourlyTime: 'HourlyTime'
+};
+
+exports.AvailabilityStatus = exports.$Enums.AvailabilityStatus = {
+  FULLY_BOOKED: 'FULLY_BOOKED',
+  PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
+  NOT_AVAILABLE: 'NOT_AVAILABLE',
+  AVAILABLE: 'AVAILABLE'
+};
+
 exports.ExtraService = exports.$Enums.ExtraService = {
   food: 'food',
   sound_system: 'sound_system',
@@ -205,7 +243,10 @@ exports.Status = exports.$Enums.Status = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  VerificationToken: 'VerificationToken',
   Venue: 'Venue',
+  VenueAvailability: 'VenueAvailability',
+  TimeSlot: 'TimeSlot',
   Reservation: 'Reservation',
   ReservationState: 'ReservationState'
 };
