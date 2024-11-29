@@ -1,4 +1,10 @@
 -- CreateEnum
+CREATE TYPE "AvailabilityStatus" AS ENUM ('FULLY_BOOKED', 'PARTIALLY_BOOKED', 'NOT_AVAILABLE', 'AVAILABLE');
+
+-- CreateEnum
+CREATE TYPE "Schedule" AS ENUM ('EntireDay', 'SessionTime', 'HourlyTime');
+
+-- CreateEnum
 CREATE TYPE "ExtraService" AS ENUM ('food', 'sound_system', 'private_parking', 'projectors', 'extend_hours');
 
 -- CreateEnum
@@ -11,14 +17,29 @@ CREATE TYPE "UserType" AS ENUM ('Admin', 'Regular', 'Guest');
 CREATE TABLE "User" (
     "userId" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
-    "contactNumber" BIGINT NOT NULL,
-    "address" TEXT NOT NULL,
+    "lastName" TEXT,
+    "contactNumber" BIGINT,
+    "address" TEXT,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "password" TEXT,
     "userType" "UserType" NOT NULL,
+    "provider" TEXT DEFAULT 'credentials',
+    "resetToken" TEXT,
+    "resetTokenExpiry" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "id" TEXT NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -31,13 +52,34 @@ CREATE TABLE "Venue" (
     "type" TEXT NOT NULL,
     "capacity" INTEGER NOT NULL,
     "size" INTEGER NOT NULL,
-    "schedule" TEXT NOT NULL,
+    "schedule" "Schedule" NOT NULL,
     "features" TEXT[],
     "images" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Venue_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "VenueAvailability" (
+    "id" SERIAL NOT NULL,
+    "venueId" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "status" "AvailabilityStatus" NOT NULL,
+
+    CONSTRAINT "VenueAvailability_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TimeSlot" (
+    "id" SERIAL NOT NULL,
+    "availabilityId" INTEGER NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
+    "status" "AvailabilityStatus" NOT NULL,
+
+    CONSTRAINT "TimeSlot_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -70,7 +112,19 @@ CREATE TABLE "ReservationState" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ReservationState_reservationId_key" ON "ReservationState"("reservationId");
+
+-- AddForeignKey
+ALTER TABLE "VenueAvailability" ADD CONSTRAINT "VenueAvailability_venueId_fkey" FOREIGN KEY ("venueId") REFERENCES "Venue"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TimeSlot" ADD CONSTRAINT "TimeSlot_availabilityId_fkey" FOREIGN KEY ("availabilityId") REFERENCES "VenueAvailability"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Reservation" ADD CONSTRAINT "Reservation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
