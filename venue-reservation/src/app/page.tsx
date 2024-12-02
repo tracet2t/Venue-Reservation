@@ -206,4 +206,3 @@ const FontsPage = (): JSX.Element => {
 };
 
 export default FontsPage;
-export default FontsPage;
