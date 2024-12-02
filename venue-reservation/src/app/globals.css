@@ -55,6 +55,22 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%
   }
+    .date-box {
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
+      gap: 0.5rem; /* spacing between boxes */
+    }
+
+    .date-box:hover {
+      opacity: 0.8;
+    }
+
 }
 @layer base {
   * {

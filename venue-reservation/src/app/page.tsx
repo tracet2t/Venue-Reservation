@@ -200,8 +200,10 @@ const FontsPage = (): JSX.Element => {
         
       </main>
     <Footer/>
+    <Footer/>
     </div>
   );
 };
 
+export default FontsPage;
 export default FontsPage;

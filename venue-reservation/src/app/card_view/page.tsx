@@ -1,5 +1,6 @@
 // Reservation.tsx
 'use client'
+"use cache"
 import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
@@ -73,14 +74,14 @@ const Reservation = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Header */}
-      <div className='z-1'>
+      <div className='z-50'>
       <Header />
       </div>
 
       {/*- Hero Section --*/}
 
       {/* Main Content */}
-      <main className="flex-grow p-8">
+      <main className="flex-grow p-8 mt-16">
         <div className="text-center mt-12">
           <h1 className="text-4xl gab-4 p-4 font-bold text-olive text-5xl">Tailored Spaces, <br/>Reserved For You</h1>
           <p className="mt-4 text-2xl text-olive">Instantly discover the best venues for events, meetings, and celebrations.<br/>Start planning your perfect event today</p>
@@ -89,7 +90,7 @@ const Reservation = () => {
         <div className="flex flex-wrap py-2 items-center justify-center mt-5  gap-2 p-4 bg-olive border rounded-lg shadow-lg max-w-[1470px] mx-auto space-y-0 space-x-0 md:space-x-8">
         
           {/* Location Filter */}
-          <div className="relative z-10 w-full sm:w-auto md:w-auto ml-0 md:ml-12">
+          <div className="relative w-full z-30 sm:w-auto md:w-auto ml-0 md:ml-12">
             <button onClick={toggleLocationDropdown} 
                 className="flex items-center justify-between gap-6 px-7 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/marker--v1.png" 
@@ -135,7 +136,7 @@ const Reservation = () => {
           </div>
 
           {/* Venue Type Filter */}
-          <div className="relative z-10 w-full sm:w-full md:w-auto ml-0 md:ml-12">
+          <div className="relative w-full z-20 sm:w-full md:w-auto ml-0 md:ml-12">
             <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
@@ -210,7 +211,7 @@ const Reservation = () => {
         </div>
 
         {/* Venue Card */}
-        <div className="max-h-[1000px] overflow-y-auto">
+        <div className="max-h-[1000px] z-0 overflow-y-auto">
           <VenueCard
             provinces={selectedProvince ? [selectedProvince] : []}
             districts={selectedDistricts}
