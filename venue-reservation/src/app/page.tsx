@@ -200,7 +200,7 @@ const FontsPage = (): JSX.Element => {
         
       </main>
     <Footer/>
-    <Footer/>
+    
     </div>
   );
 };
