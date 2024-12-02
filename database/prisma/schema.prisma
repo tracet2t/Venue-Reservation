@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId        String         @id @default(uuid()) 
+  firstName     String
+  lastName      String?
+  contactNumber BigInt?
+  address       String?
+  email         String         @unique
+  emailVerified Boolean     @default(false)
+  password      String?
+  userType      UserType
+  reservations  Reservation[]  @relation("UserReservations")
+  provider    String?   @default("credentials")
+  resetToken       String?  // Optional field for reset token
+  resetTokenExpiry DateTime? // Optional field for token expiry
+}
+
+model VerificationToken {
+  id            String        @id @default(uuid())
+  identifier    String
+  email         String
+  token         String        @unique
+  expires       DateTime
+
+  @@unique([identifier, token]) 
+}
+
+model Venue {
+  id            Int            @id @default(autoincrement())
+  name          String
+  street_name   String[]       // If multiple street names are needed, else make it String
+  district      String
+  province      String
+  type          String
+  capacity      Int
+  size          Int
+  schedule      Schedule
+  features      String[] 
+  images        String[] 
+  availability    VenueAvailability[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  reservations  Reservation[]  @relation("VenueReservations")
+}
+
+model VenueAvailability {
+  id               Int              @id @default(autoincrement())
+  venueId          Int
+  date             DateTime
+  status           AvailabilityStatus
+  timeSlots        TimeSlot[]
+  venue            Venue            @relation(fields: [venueId], references: [id])
+}
+
+model TimeSlot {
+  id               Int              @id @default(autoincrement())
+  availabilityId   Int
+  startTime        DateTime
+  endTime          DateTime
+  status           AvailabilityStatus
+  venueAvailability VenueAvailability @relation(fields: [availabilityId], references: [id])
+}
+
+enum AvailabilityStatus {
+  FULLY_BOOKED     // Orange color
+  PARTIALLY_BOOKED // Green color
+  NOT_AVAILABLE    // Red color
+  AVAILABLE        // Blue color (for the selected date by user)
+}
+
+enum Schedule {
+  EntireDay
+  SessionTime 
+  HourlyTime 
+}
+
+model Reservation {
+  reservationId         String           @id @default(uuid()) 
+  userId                String
+  venueId               Int
+  title                 String
+  purposeOfReservation  String
+  timeDuration          Int
+  extraServices         ExtraService[]
+  reservationDate       DateTime
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  user                  User             @relation("UserReservations", fields: [userId], references: [userId])
+  venue                 Venue            @relation("VenueReservations", fields: [venueId], references: [id])
+  reservationState      ReservationState?
+}
+
+model ReservationState {
+  reservationStateId    String           @id @default(uuid()) 
+  reservationId         String           @unique
+  status                Status
+  adminComments         String?
+  reservation           Reservation      @relation(fields: [reservationId], references: [reservationId])
+}
+
+enum ExtraService {
+  food
+  sound_system
+  private_parking
+  projectors
+  extend_hours
+}
+
+enum Status {
+  Pending
+  Rejected
+  Accepted
+}
+
+enum UserType {
+  Admin
+  Regular  
+  Guest
+}
