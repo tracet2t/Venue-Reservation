@@ -18,11 +18,11 @@ exports.$Enums = {}
 
 /**
  * Prisma Client JS version: 5.22.0
- * Query Engine version: bf0e5e8a04cada8225617067eaa03d041e2bba36
+ * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
  */
 Prisma.prismaVersion = {
   client: "5.22.0",
-  engine: "bf0e5e8a04cada8225617067eaa03d041e2bba36"
+  engine: "605197351a3c8bdd595af2d2a9bc3025bca48ea2"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -132,7 +132,9 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   password: 'password',
   userType: 'userType',
-  provider: 'provider'
+  provider: 'provider',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
@@ -156,7 +158,8 @@ exports.Prisma.VenueScalarFieldEnum = {
   features: 'features',
   images: 'images',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  adminId: 'adminId'
 };
 
 exports.Prisma.VenueAvailabilityScalarFieldEnum = {
@@ -182,9 +185,16 @@ exports.Prisma.ReservationScalarFieldEnum = {
   purposeOfReservation: 'purposeOfReservation',
   timeDuration: 'timeDuration',
   extraServices: 'extraServices',
-  reservationDate: 'reservationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReservationTimeSlotScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  reservationId: 'reservationId'
 };
 
 exports.Prisma.ReservationStateScalarFieldEnum = {
@@ -192,6 +202,14 @@ exports.Prisma.ReservationStateScalarFieldEnum = {
   reservationId: 'reservationId',
   status: 'status',
   adminComments: 'adminComments'
+};
+
+exports.Prisma.QuestionScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  venueId: 'venueId',
+  reservationId: 'reservationId',
+  answer: 'answer'
 };
 
 exports.Prisma.SortOrder = {
@@ -238,7 +256,9 @@ exports.ExtraService = exports.$Enums.ExtraService = {
 exports.Status = exports.$Enums.Status = {
   Pending: 'Pending',
   Rejected: 'Rejected',
-  Accepted: 'Accepted'
+  Accepted: 'Accepted',
+  Canceled: 'Canceled',
+  Done: 'Done'
 };
 
 exports.Prisma.ModelName = {
@@ -248,7 +268,9 @@ exports.Prisma.ModelName = {
   VenueAvailability: 'VenueAvailability',
   TimeSlot: 'TimeSlot',
   Reservation: 'Reservation',
-  ReservationState: 'ReservationState'
+  ReservationTimeSlot: 'ReservationTimeSlot',
+  ReservationState: 'ReservationState',
+  Question: 'Question'
 };
 
 /**
