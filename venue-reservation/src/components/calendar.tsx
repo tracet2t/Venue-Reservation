@@ -16,6 +16,7 @@ interface Event {
 interface CalendarComponentProps {
   onSelectDate: (date: Date) => void;
   id: number;
+  selectedDates?: Date[];
 }
 
 interface Availability {
@@ -23,7 +24,7 @@ interface Availability {
   status: string;
 }
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id }) => {
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id, selectedDates = [] }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -142,6 +143,23 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
     };
   };
 
+  const dayPropGetter = (date: Date) => {
+    const isSelected = selectedDates.some(
+      selectedDate => moment(selectedDate).isSame(date, 'day')
+    );
+
+    if (isSelected) {
+      return {
+        style: {
+          backgroundColor: '#1f89b7',
+          height: '100%',
+          width: '100%',
+        },
+      };
+    }
+    return {};
+  };
+
   if (loading) return <p>Loading calendar data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -195,7 +213,27 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id 
         style={{ height: 650 }}
         className="text-gray-1000"
         eventPropGetter={eventStyleGetter}
+        dayPropGetter={dayPropGetter}
       />
+
+      <div className="mt-4 flex flex-wrap gap-4 justify-center items-center p-4 bg-gray-50 rounded-lg">
+        <div className="flex items-center">
+          <div className="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
+          <span className="text-sm">Available</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 rounded-full bg-orange-500 mr-2"></div>
+          <span className="text-sm">Fully Booked</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+          <span className="text-sm">Partially Available</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
+          <span className="text-sm"> Not Available</span>
+        </div>
+      </div>
     </div>
   );
 };

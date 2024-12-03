@@ -1,6 +1,5 @@
 // Reservation.tsx
 'use client'
-"use cache"
 import React, { useState } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';

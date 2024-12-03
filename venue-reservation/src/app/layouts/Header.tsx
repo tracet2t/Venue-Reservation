@@ -65,6 +65,14 @@ const Header = () => {
     router.push("/user-profile");
   };
 
+  const navigateToHome = () => {
+    router.push("/card_view");
+  };
+
+  const navigateToReservations = () => {
+    router.push("/my-reservations");
+  };
+
   return (
     <header className="bg-white shadow-lg z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -75,6 +83,20 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-4">
+          <button
+            onClick={navigateToHome}
+            className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+          >
+            Home
+          </button>
+          {user && (
+            <button
+              onClick={navigateToReservations}
+              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+            >
+              My Reservations
+            </button>
+          )}
           {user ? (
             <>
               <button
@@ -132,11 +154,9 @@ const Header = () => {
       </div>
 
       {/* Mobile Sliding Menu */}
-      <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${
+      <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out z-50`}
-      >
+        } transition-transform duration-300 ease-in-out z-50`}>
         <div className="flex justify-between items-center p-4 border-b">
           <Logo />
           <button
@@ -162,20 +182,22 @@ const Header = () => {
 
         {/* Mobile Navigation Links */}
         <nav className="flex flex-col p-4 space-y-4">
+          {/* User info and logout at the top */}
           {user ? (
             <>
               <button
                 onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
+                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left font-semibold"
               >
                 Welcome, {user.firstName}
               </button>
               <button
                 onClick={handleLogout}
-                className="bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm"
+                className="bg-gray-200 text-gray-700 w-full text-left px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out text-sm mb-4"
               >
                 Logout
               </button>
+              <div className="border-b border-gray-200 mb-4"></div>
             </>
           ) : (
             <>
@@ -188,11 +210,28 @@ const Header = () => {
               <button
                 onClick={handleSignupClick}
                 style={{ backgroundColor: "#584822" }}
-                className="text-white w-full text-left px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out text-sm"
+                className="text-white w-full text-left px-4 py-2 rounded hover:bg-[#6A5B3A] transition duration-200 ease-in-out text-sm mb-4"
               >
                 Signup
               </button>
+              <div className="border-b border-gray-200 mb-4"></div>
             </>
+          )}
+          
+          {/* Navigation links below */}
+          <button
+            onClick={navigateToHome}
+            className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
+          >
+            Home
+          </button>
+          {user && (
+            <button
+              onClick={navigateToReservations}
+              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
+            >
+              My Reservations
+            </button>
           )}
         </nav>
       </div>
