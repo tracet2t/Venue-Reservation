@@ -2,16 +2,44 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../dbclient';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { verify } from 'jsonwebtoken';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
+    let userEmail: string | undefined;
+
+    // Check NextAuth session
     const session = await getServerSession(req, res, authOptions);
-    if (!session?.user?.email) {
-      return res.status(401).json({ error: "Unauthorized" });
+    if (session?.user?.email) {
+      userEmail = session.user.email;
+    }
+
+    // Check magic link token
+    if (!userEmail && req.cookies.token) {
+      try {
+        const decoded = verify(req.cookies.token, process.env.JWT_SECRET!) as { email: string };
+        userEmail = decoded.email;
+      } catch (error) {
+        console.error('Magic link verification failed:', error);
+      }
+    }
+
+    // Check email/password auth token
+    if (!userEmail && req.cookies.auth_token) {
+      try {
+        const decoded = verify(req.cookies.auth_token, process.env.JWT_SECRET!) as { email: string };
+        userEmail = decoded.email;
+      } catch (error) {
+        console.error('Auth token verification failed:', error);
+      }
+    }
+
+    if (!userEmail) {
+      return res.status(401).json({ error: "Authentication required" });
     }
 
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email }
+      where: { email: userEmail }
     });
 
     if (!user) {

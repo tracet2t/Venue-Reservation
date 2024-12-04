@@ -45,7 +45,7 @@ const MyReservationPage: React.FC = () => {
       try {
         const response = await fetch('/api/myreservation');
         if (!response.ok) throw new Error('Failed to fetch reservations');
-        const data = await response.json();
+        const { data } = await response.json();
         setReservations(data);
       } catch (err) {
         console.error('Error fetching reservations:', err);

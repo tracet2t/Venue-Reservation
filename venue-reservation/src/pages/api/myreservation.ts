@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "@/dbclient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { verify } from 'jsonwebtoken';
 
 // First, let's define a proper type for the formatted reservation
 interface FormattedReservation {
@@ -46,17 +47,59 @@ export default async function handler(
   }
 
   try {
-    const session = await getServerSession(req, res, authOptions);
-    
-    if (!session?.user?.email) {
-      return res.status(401).json({ error: "Unauthorized" });
+    let userEmail: string | undefined;
+
+    // Check for auth_token (email/password login)
+    const authToken = req.cookies.auth_token;
+    if (authToken) {
+      try {
+        const decoded = verify(authToken, process.env.JWT_SECRET!) as { email: string };
+        userEmail = decoded.email;
+        console.log("Auth token user:", userEmail);
+      } catch (error) {
+        console.error('JWT verification failed:', error);
+      }
+    }
+
+    // Check for magic link token
+    const magicToken = req.cookies.token;
+    if (!userEmail && magicToken) {
+      try {
+        const decoded = verify(magicToken, process.env.JWT_SECRET!) as { email: string };
+        userEmail = decoded.email;
+        console.log("Magic link user:", userEmail);
+      } catch (error) {
+        console.error('Magic link verification failed:', error);
+      }
+    }
+
+    // If no other tokens, try NextAuth session (Google login)
+    if (!userEmail) {
+      const session = await getServerSession(req, res, authOptions);
+      userEmail = session?.user?.email || undefined;
+      console.log("NextAuth session user:", userEmail);
+    }
+
+    if (!userEmail) {
+      console.log("No authenticated user found");
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail },
+      select: {
+        userId: true,
+        email: true
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
     const reservations = await prisma.reservation.findMany({
       where: {
-        user: {
-          email: session.user.email
-        }
+        userId: user.userId
       },
       include: {
         timeSlots: true,
