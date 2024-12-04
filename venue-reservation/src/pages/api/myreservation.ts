@@ -55,7 +55,6 @@ export default async function handler(
       try {
         const decoded = verify(authToken, process.env.JWT_SECRET!) as { email: string };
         userEmail = decoded.email;
-        console.log("Auth token user:", userEmail);
       } catch (error) {
         console.error('JWT verification failed:', error);
       }
@@ -67,7 +66,6 @@ export default async function handler(
       try {
         const decoded = verify(magicToken, process.env.JWT_SECRET!) as { email: string };
         userEmail = decoded.email;
-        console.log("Magic link user:", userEmail);
       } catch (error) {
         console.error('Magic link verification failed:', error);
       }
@@ -77,7 +75,6 @@ export default async function handler(
     if (!userEmail) {
       const session = await getServerSession(req, res, authOptions);
       userEmail = session?.user?.email || undefined;
-      console.log("NextAuth session user:", userEmail);
     }
 
     if (!userEmail) {
