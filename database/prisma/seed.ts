@@ -93,7 +93,7 @@ async function seed() {
   const venue2 = await prisma.venue.create({
     data: {
       name: 'Papa\'s Restaurant',
-      adminId: user2.userId, 
+      adminId: user1.userId, 
       street_name: ['123 Main St', 'Colombo'],
       district: 'Colombo',
       province: 'Western Province',
