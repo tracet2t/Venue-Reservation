@@ -145,7 +145,12 @@ export default function UserProfilePage() {
               <h2 className="text-2xl font-bold text-[#584822] mb-2">
                 {userProfile.firstName} {userProfile.lastName}
               </h2>
-              <p className="text-gray-600 mb-8">{userProfile.email}</p>
+              <p className="text-gray-600 mb-2">{userProfile.email}</p>
+              {userProfile.userType === 'Admin' && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                  Administrator
+                </span>
+              )}
             </div>
           </div>
 

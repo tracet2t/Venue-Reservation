@@ -20,15 +20,30 @@ const Header = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/auth/check", {
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
+        // First check NextAuth session
+        const session = await fetch('/api/auth/session');
+        const sessionData = await session.json();
+
+        if (sessionData?.user) {
+          // Then check custom auth
+          const response = await fetch("/api/auth/check", {
+            credentials: "include",
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data.user);
+          } else {
+            // If custom auth fails, sign out from NextAuth
+            await signOut({ redirect: false });
+            setUser(null);
+          }
+        } else {
+          setUser(null);
         }
       } catch (error) {
         console.error("Auth check failed:", error);
+        setUser(null);
       }
     };
 
@@ -43,11 +58,15 @@ const Header = () => {
         credentials: "include",
       });
       
-      // Then sign out from NextAuth
-      await signOut({ redirect: false });
+      // Then sign out from NextAuth with redirect
+      await signOut({ 
+        callbackUrl: '/',  // Redirect to home page after logout
+        redirect: true     // Enable redirect
+      });
       
-      setUser(null);
-      router.push("/");
+      // The following lines are not needed anymore since we're using redirect
+      // setUser(null);
+      // router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -95,6 +114,14 @@ const Header = () => {
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
             >
               My Reservations
+            </button>
+          )}
+          {user && user.userType === 'Admin' && (
+            <button
+              onClick={() => router.push('/admin/dashboard')}
+              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+            >
+              Manage
             </button>
           )}
           {user ? (
@@ -231,6 +258,14 @@ const Header = () => {
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
             >
               My Reservations
+            </button>
+          )}
+          {user && user.userType === 'Admin' && (
+            <button
+              onClick={() => router.push('/admin/dashboard')}
+              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
+            >
+              Manage
             </button>
           )}
         </nav>
