@@ -25,12 +25,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         firstName,
         lastName,
         email,
-        contactNumber: BigInt(phoneNumber), // Ensure valid phone_number
+        contactNumber: phoneNumber, // Ensure valid phone_number
         password: hashedPassword,
         address: null, // Optional field
         emailVerified: false, // Optional field
         userType: "Regular",
         provider: "Email",
+        resetToken: null,
+        resetTokenExpiry: null,
       },
     });
 

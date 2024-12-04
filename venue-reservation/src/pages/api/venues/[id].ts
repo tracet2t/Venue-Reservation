@@ -26,6 +26,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             include: {
               timeSlots: true,
             }
+          },
+          admin: {
+            select: {
+              email: true,
+              firstName: true,
+              lastName: true,
+              contactNumber: true
+            }
           }
         }
       });

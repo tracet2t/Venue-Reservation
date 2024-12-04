@@ -38,7 +38,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         SECRET_KEY,
         { expiresIn: "1h" } // Token expiration time
       );
-      console.log("Token:", token);
 
       // Set token as a secure cookie
       res.setHeader(

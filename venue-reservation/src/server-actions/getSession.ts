@@ -1,6 +1,8 @@
 import { cookies as serverCookies } from "next/headers";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { Role } from "@/type";
+import { getToken } from "next-auth/jwt";
+import { NextApiRequest } from "next";
 
 // Define the interface for JWT payload
 interface JwtPayload {
@@ -35,16 +37,34 @@ class JwtPayloadSession {
 }
 
 export async function getSession(reqCookies: RequestCookies | null = null): Promise<JwtPayloadSession> {
-    let payload: string | null = null;
-
+    const cookieObj: { [key: string]: string } = {};
     if (reqCookies) {
-        const sessionCookie = reqCookies.get('token');
-        payload = sessionCookie ? sessionCookie.value.split('.')[1] : null;
+        reqCookies.getAll().forEach(cookie => {
+            cookieObj[cookie.name] = cookie.value;
+        });
     } else {
-        const sessionCookie = serverCookies().get('token');
-        payload = sessionCookie ? sessionCookie.value.split('.')[1] : null;
+        serverCookies().getAll().forEach(cookie => {
+            cookieObj[cookie.name] = cookie.value;
+        });
     }
 
-    const decodedPayload = payload ? JSON.parse(Buffer.from(payload, 'base64').toString()) : null;
-    return new JwtPayloadSession(decodedPayload);
+    const session = await getToken({ 
+        req: {
+            cookies: cookieObj,
+            headers: {},
+            method: 'GET',
+            query: {}
+        } as NextApiRequest,
+        secret: process.env.NEXTAUTH_SECRET 
+    });
+
+    if (session) {
+        const payload: JwtPayload = {
+            email: session.email as string,
+            role: (session.role as Role) || 'regular',
+            id: session.sub as string
+        };
+        return new JwtPayloadSession(payload);
+    }
+    return new JwtPayloadSession(null);
 }

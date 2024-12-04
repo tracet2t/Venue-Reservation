@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input"; 
 import { Button } from "@/components/ui/button";
 import BrandingSection from "@/components/design/branding-section"; 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const MagicLinkSignupPage = () => {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const router = useRouter();
+
+  const handleLogin = () => {
+    router.push('/login');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,9 +113,9 @@ const MagicLinkSignupPage = () => {
             <div className="mt-6 text-center text-sm text-gray-500">
               <p>
                 If you have an account, you can{" "}
-                <Link href="/auth/login" className="text-blue-600 hover:underline">
+                <div  onClick={handleLogin} className="text-blue-600 hover:underline">
                   login here
-                </Link>.
+                </div>.
               </p>
             </div>
           </div>

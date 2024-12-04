@@ -8,13 +8,15 @@ async function seed() {
     data: {
       firstName: "shan",
       lastName: "Jude",
-      contactNumber: 94763751121,
+      contactNumber: "94763751121",
       address: "123 Main St, Cityville",
       email: "shanjude1121Sgmail.com",
       password: "password123",
       userType: "Admin",
       emailVerified: false, 
       provider: null,
+      resetToken: null,
+      resetTokenExpiry: null,
     },
   });
   
@@ -22,13 +24,15 @@ async function seed() {
     data: {
       firstName: "Ranjan",
       lastName: "Ramanayake",
-      contactNumber: 9876543280,
+      contactNumber: "9876543280",
       address: "456 Oak St, Townsville",
       email: "jane0e@gmail.com.com",
       password: "password456",
       userType: "Regular",
       emailVerified: false,  // Or a valid DateTime if you want to set it
       provider: null,
+      resetToken: null,
+      resetTokenExpiry: null,
     },
   });
   
@@ -37,6 +41,7 @@ async function seed() {
   const venue1 = await prisma.venue.create({
     data: {
       name: 'Trace Auditorium',
+      adminId: user1.userId, 
       street_name: ['Bay 6', 'Trace Expert City'],
       district: 'Colombo',
       province: 'Western Province',
@@ -84,59 +89,63 @@ async function seed() {
     },
   });
 
+  // Create venues
   const venue2 = await prisma.venue.create({
     data: {
-      name: 'Bandaranaike Memorial International Conference Hall',
-        street_name: ['BMICH', 'Bauddhaloka Mawatha'],
-        district: 'Colombo',
-        province: 'Western Province',
-        type: 'Conference Hall',
-        capacity: 1500,
-        size: 10000,
-        schedule: 'HourlyTime',
-        features: [
-          'High-speed Wi-Fi',
-          'Spacious lobby area',
-          'Simultaneous translation system',
-          'Large exhibition hall',
+      name: 'Papa\'s Restaurant',
+      adminId: user2.userId, 
+      street_name: ['123 Main St', 'Colombo'],
+      district: 'Colombo',
+      province: 'Western Province',
+      type: 'Restaurant',
+      capacity: 20,
+      size: 5000,
+      schedule: 'EntireDay',
+      features: [
+        'State-of-the-art acoustics system',
+        'Ergonomic seating for maximum comfort',
+        'Advanced lighting system',
+        'High-definition projector and screen',
+      ],
+      images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
+      availability: {
+        create: [
+          {
+            date: new Date("2024-11-12T00:00:00.000Z"),
+            status: "FULLY_BOOKED", // Added status
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-12T09:00:00.000Z"),
+                  endTime: new Date("2024-11-12T12:00:00.000Z"),
+                  status: "FULLY_BOOKED", // Added status
+                },
+              ],
+            },
+          },
+          {
+            date: new Date("2024-11-13T00:00:00.000Z"),
+            status: "AVAILABLE", // Added default status if applicable
+            timeSlots: {
+              create: [
+                {
+                  startTime: new Date("2024-11-13T09:00:00.000Z"),
+                  endTime: new Date("2024-11-13T12:00:00.000Z"),
+                  status: "AVAILABLE", // Added default status if applicable
+                },
+              ],
+            },
+          },
         ],
-        images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
-        availability: {
-          create: [
-            {
-              date: new Date("2024-11-12T00:00:00.000Z"),
-              status: "FULLY_BOOKED", // Added status
-              timeSlots: {
-                create: [
-                  {
-                    startTime: new Date("2024-11-12T09:00:00.000Z"),
-                    endTime: new Date("2024-11-12T12:00:00.000Z"),
-                    status: "FULLY_BOOKED", // Added status
-                  },
-                ],
-              },
-            },
-            {
-              date: new Date("2024-11-13T00:00:00.000Z"),
-              status: "AVAILABLE", // Added default status if applicable
-              timeSlots: {
-                create: [
-                  {
-                    startTime: new Date("2024-11-13T09:00:00.000Z"),
-                    endTime: new Date("2024-11-13T12:00:00.000Z"),
-                    status: "AVAILABLE", // Added default status if applicable
-                  },
-                ],
-              },
-            },
-          ],
-        },
       },
-    });
+    },
+  });
+ 
 
   const venue3 = await prisma.venue.create({
     data: {
       name: 'Nelum Pokuna Mahinda Rajapaksa Theatre',
+      adminId: user1.userId, 
       street_name: ['Nelum Pokuna Mawatha'],
       district: 'Colombo',
       province: 'Western Province',
@@ -187,6 +196,7 @@ async function seed() {
   const venue4 = await prisma.venue.create({
     data: {
       name: 'Lotus Tower Banquet Hall',
+      adminId: user1.userId, 
         street_name: ['Lotus Tower'],
         district: 'Colombo',
         province: 'Western Province',
@@ -237,6 +247,7 @@ async function seed() {
   const venue5 = await prisma.venue.create({
     data: {
       name: 'Galle Face Hotel Conference Room',
+      adminId: user1.userId, 
         street_name: ['Galle Road'],
         district: 'Colombo',
         province: 'Western Province',
@@ -286,6 +297,7 @@ async function seed() {
   const venue6 = await prisma.venue.create({
     data: {
       name: 'Mahaweli Reach Hotel Garden',
+      adminId: user1.userId, 
       street_name: ['P.B.A Weerakoon Mawatha'],
       district: 'Kandy',
       province: 'Central Province',
@@ -336,6 +348,7 @@ async function seed() {
   const venue7 = await prisma.venue.create({
     data: {
       name: 'Shangri-La Ballroom',
+      adminId: user1.userId, 
       street_name: ['One Galle Face'],
       district: 'Colombo',
       province: 'Western Province',
@@ -386,6 +399,7 @@ async function seed() {
   const venue8 = await prisma.venue.create({
     data: {
       name: 'Araliya Green City Rooftop',
+      adminId: user1.userId, 
       street_name: ['Araliya Green City'],
       district: 'Nuwara Eliya',
       province: 'Central Province',
@@ -436,6 +450,7 @@ async function seed() {
   const venue9 = await prisma.venue.create({
     data: {
       name: 'Jetwing Lighthouse Pavilion',
+      adminId: user1.userId, 
         street_name: ['Dadella'],
         district: 'Galle',
         province: 'Southern Province',
@@ -486,6 +501,7 @@ async function seed() {
   const venue10 = await prisma.venue.create({
     data: {
         name: 'Mount Lavinia Hotel Beach Venue',
+        adminId: user1.userId, 
         street_name: ['100 Hotel Road,Mount Lavinia'],
         district: 'Colombo',
         province: 'Western Province',
@@ -533,6 +549,48 @@ async function seed() {
       },
     });
 
+  
+
+  // Create standard questions for each venue type
+  const auditoriumQuestions = [
+    {
+      text: "Is your event open to the public or private/invitation-only?",
+      venueId: venue1.id // Trace Auditorium
+    },
+    {
+      text: "Are you aware of any special permits or approvals required for your event?",
+      venueId: venue1.id
+    },
+    {
+      text: "Are there any special security or safety requirements for your event?",
+      venueId: venue1.id
+    }
+  ];
+
+  const conferenceHallQuestions = [
+    {
+      text: "Do you anticipate any media coverage or external guests?",
+      venueId: venue2.id // BMICH
+    },
+    {
+      text: "Are you aware of the rules and regulations regarding the use of the conference hall?",
+      venueId: venue2.id
+    }
+  ];
+
+  // Create questions for each venue type
+  for (const question of auditoriumQuestions) {
+    await prisma.question.create({
+      data: question
+    });
+  }
+
+  for (const question of conferenceHallQuestions) {
+    await prisma.question.create({
+      data: question
+    });
+  }
+
   // Create reservations
   const reservation1 = await prisma.reservation.create({
     data: {
@@ -542,7 +600,12 @@ async function seed() {
       purposeOfReservation: "Technology seminar",
       timeDuration: 4,
       extraServices: [ExtraService.projectors, ExtraService.sound_system],
-      reservationDate: new Date("2024-11-15T09:00:00Z"),
+      timeSlots: {
+        create: [
+          { date: new Date("2024-11-15"), startTime: "00:00", endTime: "11:59" },
+          { date: new Date("2024-11-16"), startTime: "00:00", endTime: "11:59" }
+        ]
+      }
     },
   });
 
@@ -554,7 +617,12 @@ async function seed() {
       purposeOfReservation: "Wedding celebration",
       timeDuration: 6,
       extraServices: [ExtraService.food, ExtraService.private_parking],
-      reservationDate: new Date("2024-12-10T12:00:00Z"),
+      timeSlots: {
+        create: [
+          { date: new Date("2024-12-10"), startTime: "12:00", endTime: "01:00" },
+          { date: new Date("2024-12-11"), startTime: "12:00", endTime: "01:00" }
+        ]
+      }
     },
   });
 

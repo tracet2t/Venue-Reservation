@@ -1,4 +1,3 @@
-"use cache"
 "use client";
 import Carousel from '@/components/carousel';
 import React from 'react';
