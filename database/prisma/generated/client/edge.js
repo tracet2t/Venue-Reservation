@@ -251,7 +251,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\Nagarro\\Reservation Project\\Reservation Status-admin\\Venue-Reservation\\database\\prisma\\generated\\client",
+      "value": "E:\\Nagarro\\Reservation Project\\Admin Reservation Status\\Venue-Reservation\\database\\prisma\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -265,7 +265,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "E:\\Nagarro\\Reservation Project\\Reservation Status-admin\\Venue-Reservation\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "E:\\Nagarro\\Reservation Project\\Admin Reservation Status\\Venue-Reservation\\database\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

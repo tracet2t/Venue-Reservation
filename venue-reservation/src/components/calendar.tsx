@@ -18,6 +18,7 @@ interface CalendarComponentProps {
   onSelectDate: (date: Date) => void;
   id: number;
   selectedDates?: Date[];
+  events?: Event[];
 }
 
 interface Availability {
@@ -114,7 +115,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onSelectDate, id,
     let backgroundColor;
     switch (event.status) {
       case 'FULLY_BOOKED':
-        backgroundColor = 'red';
+        backgroundColor = 'orange';
         break;
       case 'PARTIALLY_BOOKED':
         backgroundColor = 'green';
