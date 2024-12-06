@@ -12,7 +12,13 @@ export default async function handler(
   }
 
   try {
-    const questions = await prisma.question.findMany();
+    const questions = await prisma.question.findMany({
+      select: {
+        id: true,
+        text: true,
+        answerOptions: true,
+      }
+    });
     res.status(200).json(questions);
   } catch (error) {
     console.error('Error fetching questions:', error);

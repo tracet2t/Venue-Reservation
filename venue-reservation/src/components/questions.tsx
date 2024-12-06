@@ -25,7 +25,7 @@ interface ReservationFormProps {
 interface Question {
   id: string;
   text: string;
-  answer: string | null;
+  answerOptions: string[];
 }
 
 const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelections, onRemoveSelection, onNext }) => {
@@ -310,8 +310,11 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
                   disabled={!isLoggedIn}
                 >
                   <option value="" disabled>Select an answer</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
+                  {question.answerOptions?.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
                 </select>
                 {errors.questions[question.id] && (
                   <p className="text-red-500 text-sm mt-1">{errors.questions[question.id]}</p>

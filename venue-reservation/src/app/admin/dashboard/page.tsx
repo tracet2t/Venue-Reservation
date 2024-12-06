@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import RegisteredHeader from '../../layouts/Header';
-import Footer from '../../layouts/Footer';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -38,7 +36,6 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <RegisteredHeader />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-[#584822] mb-8">Admin Dashboard</h1>
         
@@ -75,7 +72,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 } 

@@ -125,7 +125,7 @@ CREATE TABLE "Question" (
     "text" TEXT NOT NULL,
     "venueId" INTEGER,
     "reservationId" TEXT,
-    "answer" TEXT,
+    "answerOptions" TEXT[],
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );

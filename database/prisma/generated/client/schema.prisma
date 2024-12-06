@@ -150,6 +150,6 @@ model Question {
   venueId       Int? // Add this field
   venue         Venue?       @relation("VenueQuestions", fields: [venueId], references: [id]) // Add this relation
   reservationId String?
-  answer        String?
+  answerOptions String[]
   reservation   Reservation? @relation(fields: [reservationId], references: [reservationId])
 }
