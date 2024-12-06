@@ -21,7 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           id: true,
           name: true,
           type: true,
-          schedule: true,
+          schedule: true, 
+          size: true, 
           availability: {
             include: {
               timeSlots: true,

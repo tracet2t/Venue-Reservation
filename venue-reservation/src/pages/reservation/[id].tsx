@@ -195,33 +195,31 @@ const Availability = () => {
 
     if (venueInfo?.schedule === 'HourlyTime') {
       selectedSlots = Object.entries(hourlySlots)
-        .filter(([selected]) => selected)
+        .filter(([_, selected]) => selected)
         .map(([slot]) => slot);
     } else if (venueInfo?.schedule === 'SessionTime') {
-      selectedSlots = Object.entries(availability)
-        .filter(([ selected]) => selected)
-        .map(([slot]) => {
-          switch(slot) {
-            case 'morning': return 'Morning Session (08:00 - 12:00)';
-            case 'evening': return 'Afternoon Session (12:00 - 20:00)';
-            case 'lateEvening': return 'Late Evening Session (20:00 - 00:00)';
-            case 'earlyMorning': return 'Early Morning Session (00:00 - 08:00)';
-            default: return '';
-          }
-        })
-        .filter(Boolean);
+      if (availability.morning) {
+        selectedSlots.push('Morning Session (08:00 - 12:00)');
+      }
+      if (availability.evening) {
+        selectedSlots.push('Afternoon Session (12:00 - 20:00)');
+      }
+      if (availability.lateEvening) {
+        selectedSlots.push('Late Evening Session (20:00 - 00:00)');
+      }
+      if (availability.earlyMorning) {
+        selectedSlots.push('Early Morning Session (00:00 - 08:00)');
+      }
     } else if (venueInfo?.schedule === 'EntireDay' && availability.fullDay) {
       selectedSlots = ['Full Day (00:00 - 23:59)'];
     }
 
     // If no slots are selected, remove the date entirely
     if (selectedSlots.length === 0) {
-      // Remove from selectedDates
       setSelectedDates(prev => 
         prev.filter(d => !moment(d).isSame(selectedDate, 'day'))
       );
 
-      // Remove from dateTimeSelections
       setDateTimeSelections(prev => 
         prev.filter(selection => !moment(selection.date).isSame(selectedDate, 'day'))
       );
@@ -266,22 +264,15 @@ const Availability = () => {
       }
     });
 
-    // Save to localStorage in the correct format
-    const formattedSelections = dateTimeSelections.map(selection => ({
-      date: moment(selection.date).format('YYYY-MM-DD'),
-      timeSlots: selection.timeSlots
-    }));
-
-    // Add the current selection if it's new
-    if (!dateTimeSelections.some(selection => moment(selection.date).isSame(selectedDate, 'day'))) {
-      formattedSelections.push({
-        date: moment(selectedDate).format('YYYY-MM-DD'),
-        timeSlots: selectedSlots
-      });
-    }
+    // Save to localStorage
+    const formattedSelections = {
+      dates: selectedDates.map(d => d.toISOString()),
+      timeSlots: {
+        [selectedDate.toISOString()]: selectedSlots
+      }
+    };
 
     localStorage.setItem(`venue-${id}-selections`, JSON.stringify(formattedSelections));
-
     setShowModal(false);
   };
 

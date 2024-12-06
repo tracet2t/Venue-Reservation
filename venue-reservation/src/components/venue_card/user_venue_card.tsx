@@ -40,19 +40,18 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         const response = await fetch(`/api/venues?${queryParams.toString()}`);
         const data = await response.json();
 
-        // Log data to verify its structure
-        console.log('Fetched data:', data);
+        if (Array.isArray(data)) {
+          data.forEach((venue, index) => {
+          });
+        }
 
-        // Ensure data is an array before setting it to venues
         if (Array.isArray(data)) {
           setVenues(data);
         } else {
-          console.error("Expected an array, but received:", data);
-          setVenues([]);  // Set to an empty array if data is not an array
+          setVenues([]);
         }
       } catch (error) {
-        console.error("Error fetching venues:", error);
-        setVenues([]);  // Set to an empty array in case of an error
+        setVenues([]);
       }
     };
 
@@ -87,14 +86,14 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
           </div>
 
           {/* Details Section */}
-          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between  text-olive">
+          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between text-olive">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">{venue.name}</h1>
               <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>
-              <p><strong>Type: {venue.type}</strong></p>
+              <p><strong>Type: {venue.type} </strong></p>
               <p><strong>Capacity: {venue.capacity} seated</strong></p>
               <p><strong>Size: {venue.size} sqft</strong></p>
-              <p><strong>Time Schedule: {venue.schedule} </strong></p>
+              <p><strong>Time Schedule: {venue.schedule}</strong></p>
             </div>
 
             <div>
