@@ -6,7 +6,7 @@ const LandingVenueCard = () => {
 
   // Handle navigation to signup page
   const handleReserveNowClick = () => {
-    router.push('/signup');
+    router.push('/admin/venue_details');
   };
 
   const images = [
