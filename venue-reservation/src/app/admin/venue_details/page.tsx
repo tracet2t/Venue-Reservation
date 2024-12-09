@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import VenueDetailCard from '@/components/venue_card/venue_details_card';
+import Sidebar from '@/components/side-bar';
 
 
 interface Location {
@@ -82,25 +83,29 @@ const VenueDetailsPage = () => {
   });
 
   return (
-    
-      
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
-      {/* Header */}
-      <div className="z-50">
-        {/* Include your header component */}
-      </div>
-
-      {/* Main Content */}
-      <main className="flex-grow p-8">
-        {/* Venue Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {filteredVenues.map((venue, index) => (
-            <VenueDetailCard key={index} {...venue} onClick={() => console.log(venue.name)} />
-          ))}
+  <div className="flex h-screen">
+      {/* Left Side */}
+      <div className="flex flex-col w-1/2 h-full bg-white items-center justify-center">
+        <Sidebar />
+      </div>  
+        
+      <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
+        {/* Header */}
+        <div className="z-50">
+          {/* Include your header component */}
         </div>
-      </main>
+
+        {/* Main Content */}
+        <main className="flex-grow p-8">
+          {/* Venue Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            {filteredVenues.map((venue, index) => (
+              <VenueDetailCard key={index} {...venue} onClick={() => console.log(venue.name)} />
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
-    
   );
 };
 
