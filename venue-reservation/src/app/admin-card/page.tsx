@@ -1,15 +1,9 @@
-'use client';
-
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 
 interface Reservation {
   reservationId: string;
   title: string;
-  timeMode: string;
-  duration: string;
-  extraServices: string[];
   purposeOfReservation: string;
   status: string;
   customerName: string;
@@ -45,23 +39,6 @@ const ReservationDetail = () => {
     fetchReservation();
   }, [reservationId]);
 
-
-  const [formData, setFormData] = useState({
-    eventType: 'public',
-    permits: 'no',
-    security: 'no',
-    media: 'no',
-    rules: 'no',
-  });
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   if (!reservationId) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -94,45 +71,13 @@ const ReservationDetail = () => {
         <p><strong>Venue:</strong> {reservation.venue}</p>
         <p><strong>Status:</strong> {reservation.status}</p>
         <p><strong>Customer Name:</strong> {reservation.customerName}</p>
+        <p><strong>Email:</strong> {reservation.customerEmail}</p>
         <p><strong>Contact:</strong> {reservation.customerContactNumber}</p>
-
-        <div className="mt-6 space-y-4">
-          <div>
-            <label htmlFor="eventType" className="block text-gray-700">
-              Is your event open to the public or private/invitation-only?
-            </label>
-            <select
-              id="eventType"
-              name="eventType"
-              value={formData.eventType}
-              onChange={handleSelectChange}
-              className="w-full mt-2 border border-gray-300 rounded px-4 py-2"
-            >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value="invitation-only">Invitation-only</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="permits" className="block text-gray-700">
-              Are you aware of any special permits or approvals required for your event?
-            </label>
-            <select
-              id="permits"
-              name="permits"
-              value={formData.permits}
-              onChange={handleSelectChange}
-              className="w-full mt-2 border border-gray-300 rounded px-4 py-2"
-            >
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
+        <p><strong>Purpose:</strong> {reservation.purposeOfReservation}</p>
       </div>
     </div>
   );
 };
 
-
 export default ReservationDetail;
+

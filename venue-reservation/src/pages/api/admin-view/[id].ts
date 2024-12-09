@@ -1,68 +1,57 @@
-
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 
-interface Reservation {
-  reservationId: string;
-  title: string;
-  timeMode: string;
-  duration: string;
-  extraServices: string[];
-  purposeOfReservation: string;
-  status: string;
-  customerName: string;
-  customerEmail: string;
-  customerContactNumber: string;
-  date: string;
-  venue: string;
-}
-
-const reservations: Reservation[] = [
-  {
-    reservationId: 'ABC123',
-    title: 'Event Booking',
-    timeMode: 'Full Day',
-    duration: '8 Hours',
-    extraServices: ['Food', 'Private Parking'],
-    purposeOfReservation: 'Conference',
-    status: 'Confirmed',
-    customerName: 'John Doe',
-    customerEmail: 'john@example.com',
-    customerContactNumber: '123-456-7890',
-    date: '2024-05-16',
-    venue: 'Auditorium 1',
-  },
-  {
-    reservationId: 'XYZ456',
-    title: 'Wedding Party',
-    timeMode: 'Half Day',
-    duration: '4 Hours',
-    extraServices: ['Decoration', 'Music'],
-    purposeOfReservation: 'Wedding',
-    status: 'Pending',
-    customerName: 'Jane Smith',
-    customerEmail: 'jane@example.com',
-    customerContactNumber: '987-654-3210',
-    date: '2024-06-20',
-    venue: 'Banquet Hall 3',
-  },
-];
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
-  
-  if (typeof id !== 'string') {
+  if (!id || typeof id !== 'string') {
     res.status(400).json({ message: 'Invalid reservation ID' });
     return;
   }
 
+  try {
+    const reservation = await prisma.reservation.findUnique({
+      where: { reservationId: id },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            contactNumber: true,
+            email: true,
+          },
+        },
+        venue: {
+          select: {
+            name: true,
+            street_name: true,
+            district: true,
+            province: true,
+          },
+        },
+        timeSlots: true,
+      },
+    });
 
-  const reservation = reservations.find((res) => res.reservationId === id);
+    if (!reservation) {
+      res.status(404).json({ message: 'Reservation not found' });
+      return;
+    }
 
-  if (reservation) {
-    res.status(200).json(reservation);
-  } else {
-    res.status(404).json({ message: 'Reservation not found' });
+    res.status(200).json({
+      reservationId: reservation.reservationId,
+      title: reservation.title,
+      purposeOfReservation: reservation.purposeOfReservation,
+      status: reservation.reservationState?.status || 'Unknown',
+      customerName: `${reservation.user?.firstName} ${reservation.user?.lastName}`,
+      customerEmail: reservation.user?.email,
+      customerContactNumber: reservation.user?.contactNumber,
+      date: reservation.timeSlots?.[0]?.date.toISOString().split('T')[0] || 'Not Specified',
+      venue: reservation.venue?.name || 'Unknown Venue',
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while fetching the reservation details' });
   }
 }
