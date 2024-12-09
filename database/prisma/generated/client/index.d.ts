@@ -48,6 +48,11 @@ export type Reservation = $Result.DefaultSelection<Prisma.$ReservationPayload>
  * 
  */
 export type ReservationState = $Result.DefaultSelection<Prisma.$ReservationStatePayload>
+/**
+ * Model VenueDailyReservationCount
+ * 
+ */
+export type VenueDailyReservationCount = $Result.DefaultSelection<Prisma.$VenueDailyReservationCountPayload>
 
 /**
  * Enums
@@ -314,6 +319,16 @@ export class PrismaClient<
     * ```
     */
   get reservationState(): Prisma.ReservationStateDelegate<ExtArgs>;
+
+  /**
+   * `prisma.venueDailyReservationCount`: Exposes CRUD operations for the **VenueDailyReservationCount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VenueDailyReservationCounts
+    * const venueDailyReservationCounts = await prisma.venueDailyReservationCount.findMany()
+    * ```
+    */
+  get venueDailyReservationCount(): Prisma.VenueDailyReservationCountDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -761,7 +776,8 @@ export namespace Prisma {
     VenueAvailability: 'VenueAvailability',
     TimeSlot: 'TimeSlot',
     Reservation: 'Reservation',
-    ReservationState: 'ReservationState'
+    ReservationState: 'ReservationState',
+    VenueDailyReservationCount: 'VenueDailyReservationCount'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -777,7 +793,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "verificationToken" | "venue" | "venueAvailability" | "timeSlot" | "reservation" | "reservationState"
+      modelProps: "user" | "verificationToken" | "venue" | "venueAvailability" | "timeSlot" | "reservation" | "reservationState" | "venueDailyReservationCount"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1271,6 +1287,76 @@ export namespace Prisma {
           }
         }
       }
+      VenueDailyReservationCount: {
+        payload: Prisma.$VenueDailyReservationCountPayload<ExtArgs>
+        fields: Prisma.VenueDailyReservationCountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VenueDailyReservationCountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VenueDailyReservationCountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          findFirst: {
+            args: Prisma.VenueDailyReservationCountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VenueDailyReservationCountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          findMany: {
+            args: Prisma.VenueDailyReservationCountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>[]
+          }
+          create: {
+            args: Prisma.VenueDailyReservationCountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          createMany: {
+            args: Prisma.VenueDailyReservationCountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VenueDailyReservationCountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>[]
+          }
+          delete: {
+            args: Prisma.VenueDailyReservationCountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          update: {
+            args: Prisma.VenueDailyReservationCountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          deleteMany: {
+            args: Prisma.VenueDailyReservationCountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VenueDailyReservationCountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.VenueDailyReservationCountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenueDailyReservationCountPayload>
+          }
+          aggregate: {
+            args: Prisma.VenueDailyReservationCountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVenueDailyReservationCount>
+          }
+          groupBy: {
+            args: Prisma.VenueDailyReservationCountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VenueDailyReservationCountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VenueDailyReservationCountCountArgs<ExtArgs>
+            result: $Utils.Optional<VenueDailyReservationCountCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1465,11 +1551,13 @@ export namespace Prisma {
   export type VenueCountOutputType = {
     availability: number
     reservations: number
+    dailyReservationCounts: number
   }
 
   export type VenueCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     availability?: boolean | VenueCountOutputTypeCountAvailabilityArgs
     reservations?: boolean | VenueCountOutputTypeCountReservationsArgs
+    dailyReservationCounts?: boolean | VenueCountOutputTypeCountDailyReservationCountsArgs
   }
 
   // Custom InputTypes
@@ -1495,6 +1583,13 @@ export namespace Prisma {
    */
   export type VenueCountOutputTypeCountReservationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReservationWhereInput
+  }
+
+  /**
+   * VenueCountOutputType without action
+   */
+  export type VenueCountOutputTypeCountDailyReservationCountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueDailyReservationCountWhereInput
   }
 
 
@@ -3713,6 +3808,7 @@ export namespace Prisma {
     updatedAt?: boolean
     availability?: boolean | Venue$availabilityArgs<ExtArgs>
     reservations?: boolean | Venue$reservationsArgs<ExtArgs>
+    dailyReservationCounts?: boolean | Venue$dailyReservationCountsArgs<ExtArgs>
     _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["venue"]>
 
@@ -3751,6 +3847,7 @@ export namespace Prisma {
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     availability?: boolean | Venue$availabilityArgs<ExtArgs>
     reservations?: boolean | Venue$reservationsArgs<ExtArgs>
+    dailyReservationCounts?: boolean | Venue$dailyReservationCountsArgs<ExtArgs>
     _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VenueIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3760,6 +3857,7 @@ export namespace Prisma {
     objects: {
       availability: Prisma.$VenueAvailabilityPayload<ExtArgs>[]
       reservations: Prisma.$ReservationPayload<ExtArgs>[]
+      dailyReservationCounts: Prisma.$VenueDailyReservationCountPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4141,6 +4239,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     availability<T extends Venue$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, Venue$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueAvailabilityPayload<ExtArgs>, T, "findMany"> | Null>
     reservations<T extends Venue$reservationsArgs<ExtArgs> = {}>(args?: Subset<T, Venue$reservationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReservationPayload<ExtArgs>, T, "findMany"> | Null>
+    dailyReservationCounts<T extends Venue$dailyReservationCountsArgs<ExtArgs> = {}>(args?: Subset<T, Venue$dailyReservationCountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4534,6 +4633,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ReservationScalarFieldEnum | ReservationScalarFieldEnum[]
+  }
+
+  /**
+   * Venue.dailyReservationCounts
+   */
+  export type Venue$dailyReservationCountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    where?: VenueDailyReservationCountWhereInput
+    orderBy?: VenueDailyReservationCountOrderByWithRelationInput | VenueDailyReservationCountOrderByWithRelationInput[]
+    cursor?: VenueDailyReservationCountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VenueDailyReservationCountScalarFieldEnum | VenueDailyReservationCountScalarFieldEnum[]
   }
 
   /**
@@ -8481,6 +8600,969 @@ export namespace Prisma {
 
 
   /**
+   * Model VenueDailyReservationCount
+   */
+
+  export type AggregateVenueDailyReservationCount = {
+    _count: VenueDailyReservationCountCountAggregateOutputType | null
+    _avg: VenueDailyReservationCountAvgAggregateOutputType | null
+    _sum: VenueDailyReservationCountSumAggregateOutputType | null
+    _min: VenueDailyReservationCountMinAggregateOutputType | null
+    _max: VenueDailyReservationCountMaxAggregateOutputType | null
+  }
+
+  export type VenueDailyReservationCountAvgAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    reservationCount: number | null
+  }
+
+  export type VenueDailyReservationCountSumAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    reservationCount: number | null
+  }
+
+  export type VenueDailyReservationCountMinAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    reservationCount: number | null
+    date: Date | null
+  }
+
+  export type VenueDailyReservationCountMaxAggregateOutputType = {
+    id: number | null
+    venueId: number | null
+    reservationCount: number | null
+    date: Date | null
+  }
+
+  export type VenueDailyReservationCountCountAggregateOutputType = {
+    id: number
+    venueId: number
+    reservationCount: number
+    date: number
+    _all: number
+  }
+
+
+  export type VenueDailyReservationCountAvgAggregateInputType = {
+    id?: true
+    venueId?: true
+    reservationCount?: true
+  }
+
+  export type VenueDailyReservationCountSumAggregateInputType = {
+    id?: true
+    venueId?: true
+    reservationCount?: true
+  }
+
+  export type VenueDailyReservationCountMinAggregateInputType = {
+    id?: true
+    venueId?: true
+    reservationCount?: true
+    date?: true
+  }
+
+  export type VenueDailyReservationCountMaxAggregateInputType = {
+    id?: true
+    venueId?: true
+    reservationCount?: true
+    date?: true
+  }
+
+  export type VenueDailyReservationCountCountAggregateInputType = {
+    id?: true
+    venueId?: true
+    reservationCount?: true
+    date?: true
+    _all?: true
+  }
+
+  export type VenueDailyReservationCountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VenueDailyReservationCount to aggregate.
+     */
+    where?: VenueDailyReservationCountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueDailyReservationCounts to fetch.
+     */
+    orderBy?: VenueDailyReservationCountOrderByWithRelationInput | VenueDailyReservationCountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VenueDailyReservationCountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueDailyReservationCounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueDailyReservationCounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VenueDailyReservationCounts
+    **/
+    _count?: true | VenueDailyReservationCountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VenueDailyReservationCountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VenueDailyReservationCountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VenueDailyReservationCountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VenueDailyReservationCountMaxAggregateInputType
+  }
+
+  export type GetVenueDailyReservationCountAggregateType<T extends VenueDailyReservationCountAggregateArgs> = {
+        [P in keyof T & keyof AggregateVenueDailyReservationCount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVenueDailyReservationCount[P]>
+      : GetScalarType<T[P], AggregateVenueDailyReservationCount[P]>
+  }
+
+
+
+
+  export type VenueDailyReservationCountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueDailyReservationCountWhereInput
+    orderBy?: VenueDailyReservationCountOrderByWithAggregationInput | VenueDailyReservationCountOrderByWithAggregationInput[]
+    by: VenueDailyReservationCountScalarFieldEnum[] | VenueDailyReservationCountScalarFieldEnum
+    having?: VenueDailyReservationCountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VenueDailyReservationCountCountAggregateInputType | true
+    _avg?: VenueDailyReservationCountAvgAggregateInputType
+    _sum?: VenueDailyReservationCountSumAggregateInputType
+    _min?: VenueDailyReservationCountMinAggregateInputType
+    _max?: VenueDailyReservationCountMaxAggregateInputType
+  }
+
+  export type VenueDailyReservationCountGroupByOutputType = {
+    id: number
+    venueId: number
+    reservationCount: number
+    date: Date
+    _count: VenueDailyReservationCountCountAggregateOutputType | null
+    _avg: VenueDailyReservationCountAvgAggregateOutputType | null
+    _sum: VenueDailyReservationCountSumAggregateOutputType | null
+    _min: VenueDailyReservationCountMinAggregateOutputType | null
+    _max: VenueDailyReservationCountMaxAggregateOutputType | null
+  }
+
+  type GetVenueDailyReservationCountGroupByPayload<T extends VenueDailyReservationCountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VenueDailyReservationCountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VenueDailyReservationCountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VenueDailyReservationCountGroupByOutputType[P]>
+            : GetScalarType<T[P], VenueDailyReservationCountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VenueDailyReservationCountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    venueId?: boolean
+    reservationCount?: boolean
+    date?: boolean
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venueDailyReservationCount"]>
+
+  export type VenueDailyReservationCountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    venueId?: boolean
+    reservationCount?: boolean
+    date?: boolean
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venueDailyReservationCount"]>
+
+  export type VenueDailyReservationCountSelectScalar = {
+    id?: boolean
+    venueId?: boolean
+    reservationCount?: boolean
+    date?: boolean
+  }
+
+  export type VenueDailyReservationCountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }
+  export type VenueDailyReservationCountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
+  }
+
+  export type $VenueDailyReservationCountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VenueDailyReservationCount"
+    objects: {
+      venue: Prisma.$VenuePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      venueId: number
+      reservationCount: number
+      date: Date
+    }, ExtArgs["result"]["venueDailyReservationCount"]>
+    composites: {}
+  }
+
+  type VenueDailyReservationCountGetPayload<S extends boolean | null | undefined | VenueDailyReservationCountDefaultArgs> = $Result.GetResult<Prisma.$VenueDailyReservationCountPayload, S>
+
+  type VenueDailyReservationCountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<VenueDailyReservationCountFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: VenueDailyReservationCountCountAggregateInputType | true
+    }
+
+  export interface VenueDailyReservationCountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VenueDailyReservationCount'], meta: { name: 'VenueDailyReservationCount' } }
+    /**
+     * Find zero or one VenueDailyReservationCount that matches the filter.
+     * @param {VenueDailyReservationCountFindUniqueArgs} args - Arguments to find a VenueDailyReservationCount
+     * @example
+     * // Get one VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VenueDailyReservationCountFindUniqueArgs>(args: SelectSubset<T, VenueDailyReservationCountFindUniqueArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one VenueDailyReservationCount that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {VenueDailyReservationCountFindUniqueOrThrowArgs} args - Arguments to find a VenueDailyReservationCount
+     * @example
+     * // Get one VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VenueDailyReservationCountFindUniqueOrThrowArgs>(args: SelectSubset<T, VenueDailyReservationCountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first VenueDailyReservationCount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountFindFirstArgs} args - Arguments to find a VenueDailyReservationCount
+     * @example
+     * // Get one VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VenueDailyReservationCountFindFirstArgs>(args?: SelectSubset<T, VenueDailyReservationCountFindFirstArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first VenueDailyReservationCount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountFindFirstOrThrowArgs} args - Arguments to find a VenueDailyReservationCount
+     * @example
+     * // Get one VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VenueDailyReservationCountFindFirstOrThrowArgs>(args?: SelectSubset<T, VenueDailyReservationCountFindFirstOrThrowArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more VenueDailyReservationCounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VenueDailyReservationCounts
+     * const venueDailyReservationCounts = await prisma.venueDailyReservationCount.findMany()
+     * 
+     * // Get first 10 VenueDailyReservationCounts
+     * const venueDailyReservationCounts = await prisma.venueDailyReservationCount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const venueDailyReservationCountWithIdOnly = await prisma.venueDailyReservationCount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VenueDailyReservationCountFindManyArgs>(args?: SelectSubset<T, VenueDailyReservationCountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a VenueDailyReservationCount.
+     * @param {VenueDailyReservationCountCreateArgs} args - Arguments to create a VenueDailyReservationCount.
+     * @example
+     * // Create one VenueDailyReservationCount
+     * const VenueDailyReservationCount = await prisma.venueDailyReservationCount.create({
+     *   data: {
+     *     // ... data to create a VenueDailyReservationCount
+     *   }
+     * })
+     * 
+     */
+    create<T extends VenueDailyReservationCountCreateArgs>(args: SelectSubset<T, VenueDailyReservationCountCreateArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many VenueDailyReservationCounts.
+     * @param {VenueDailyReservationCountCreateManyArgs} args - Arguments to create many VenueDailyReservationCounts.
+     * @example
+     * // Create many VenueDailyReservationCounts
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VenueDailyReservationCountCreateManyArgs>(args?: SelectSubset<T, VenueDailyReservationCountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VenueDailyReservationCounts and returns the data saved in the database.
+     * @param {VenueDailyReservationCountCreateManyAndReturnArgs} args - Arguments to create many VenueDailyReservationCounts.
+     * @example
+     * // Create many VenueDailyReservationCounts
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VenueDailyReservationCounts and only return the `id`
+     * const venueDailyReservationCountWithIdOnly = await prisma.venueDailyReservationCount.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VenueDailyReservationCountCreateManyAndReturnArgs>(args?: SelectSubset<T, VenueDailyReservationCountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a VenueDailyReservationCount.
+     * @param {VenueDailyReservationCountDeleteArgs} args - Arguments to delete one VenueDailyReservationCount.
+     * @example
+     * // Delete one VenueDailyReservationCount
+     * const VenueDailyReservationCount = await prisma.venueDailyReservationCount.delete({
+     *   where: {
+     *     // ... filter to delete one VenueDailyReservationCount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VenueDailyReservationCountDeleteArgs>(args: SelectSubset<T, VenueDailyReservationCountDeleteArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one VenueDailyReservationCount.
+     * @param {VenueDailyReservationCountUpdateArgs} args - Arguments to update one VenueDailyReservationCount.
+     * @example
+     * // Update one VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VenueDailyReservationCountUpdateArgs>(args: SelectSubset<T, VenueDailyReservationCountUpdateArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more VenueDailyReservationCounts.
+     * @param {VenueDailyReservationCountDeleteManyArgs} args - Arguments to filter VenueDailyReservationCounts to delete.
+     * @example
+     * // Delete a few VenueDailyReservationCounts
+     * const { count } = await prisma.venueDailyReservationCount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VenueDailyReservationCountDeleteManyArgs>(args?: SelectSubset<T, VenueDailyReservationCountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VenueDailyReservationCounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VenueDailyReservationCounts
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VenueDailyReservationCountUpdateManyArgs>(args: SelectSubset<T, VenueDailyReservationCountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one VenueDailyReservationCount.
+     * @param {VenueDailyReservationCountUpsertArgs} args - Arguments to update or create a VenueDailyReservationCount.
+     * @example
+     * // Update or create a VenueDailyReservationCount
+     * const venueDailyReservationCount = await prisma.venueDailyReservationCount.upsert({
+     *   create: {
+     *     // ... data to create a VenueDailyReservationCount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VenueDailyReservationCount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VenueDailyReservationCountUpsertArgs>(args: SelectSubset<T, VenueDailyReservationCountUpsertArgs<ExtArgs>>): Prisma__VenueDailyReservationCountClient<$Result.GetResult<Prisma.$VenueDailyReservationCountPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of VenueDailyReservationCounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountCountArgs} args - Arguments to filter VenueDailyReservationCounts to count.
+     * @example
+     * // Count the number of VenueDailyReservationCounts
+     * const count = await prisma.venueDailyReservationCount.count({
+     *   where: {
+     *     // ... the filter for the VenueDailyReservationCounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends VenueDailyReservationCountCountArgs>(
+      args?: Subset<T, VenueDailyReservationCountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VenueDailyReservationCountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VenueDailyReservationCount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VenueDailyReservationCountAggregateArgs>(args: Subset<T, VenueDailyReservationCountAggregateArgs>): Prisma.PrismaPromise<GetVenueDailyReservationCountAggregateType<T>>
+
+    /**
+     * Group by VenueDailyReservationCount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueDailyReservationCountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VenueDailyReservationCountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VenueDailyReservationCountGroupByArgs['orderBy'] }
+        : { orderBy?: VenueDailyReservationCountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VenueDailyReservationCountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVenueDailyReservationCountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VenueDailyReservationCount model
+   */
+  readonly fields: VenueDailyReservationCountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VenueDailyReservationCount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VenueDailyReservationCountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    venue<T extends VenueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueDefaultArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VenueDailyReservationCount model
+   */ 
+  interface VenueDailyReservationCountFieldRefs {
+    readonly id: FieldRef<"VenueDailyReservationCount", 'Int'>
+    readonly venueId: FieldRef<"VenueDailyReservationCount", 'Int'>
+    readonly reservationCount: FieldRef<"VenueDailyReservationCount", 'Int'>
+    readonly date: FieldRef<"VenueDailyReservationCount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VenueDailyReservationCount findUnique
+   */
+  export type VenueDailyReservationCountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueDailyReservationCount to fetch.
+     */
+    where: VenueDailyReservationCountWhereUniqueInput
+  }
+
+  /**
+   * VenueDailyReservationCount findUniqueOrThrow
+   */
+  export type VenueDailyReservationCountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueDailyReservationCount to fetch.
+     */
+    where: VenueDailyReservationCountWhereUniqueInput
+  }
+
+  /**
+   * VenueDailyReservationCount findFirst
+   */
+  export type VenueDailyReservationCountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueDailyReservationCount to fetch.
+     */
+    where?: VenueDailyReservationCountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueDailyReservationCounts to fetch.
+     */
+    orderBy?: VenueDailyReservationCountOrderByWithRelationInput | VenueDailyReservationCountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VenueDailyReservationCounts.
+     */
+    cursor?: VenueDailyReservationCountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueDailyReservationCounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueDailyReservationCounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VenueDailyReservationCounts.
+     */
+    distinct?: VenueDailyReservationCountScalarFieldEnum | VenueDailyReservationCountScalarFieldEnum[]
+  }
+
+  /**
+   * VenueDailyReservationCount findFirstOrThrow
+   */
+  export type VenueDailyReservationCountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueDailyReservationCount to fetch.
+     */
+    where?: VenueDailyReservationCountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueDailyReservationCounts to fetch.
+     */
+    orderBy?: VenueDailyReservationCountOrderByWithRelationInput | VenueDailyReservationCountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VenueDailyReservationCounts.
+     */
+    cursor?: VenueDailyReservationCountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueDailyReservationCounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueDailyReservationCounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VenueDailyReservationCounts.
+     */
+    distinct?: VenueDailyReservationCountScalarFieldEnum | VenueDailyReservationCountScalarFieldEnum[]
+  }
+
+  /**
+   * VenueDailyReservationCount findMany
+   */
+  export type VenueDailyReservationCountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter, which VenueDailyReservationCounts to fetch.
+     */
+    where?: VenueDailyReservationCountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VenueDailyReservationCounts to fetch.
+     */
+    orderBy?: VenueDailyReservationCountOrderByWithRelationInput | VenueDailyReservationCountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VenueDailyReservationCounts.
+     */
+    cursor?: VenueDailyReservationCountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VenueDailyReservationCounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VenueDailyReservationCounts.
+     */
+    skip?: number
+    distinct?: VenueDailyReservationCountScalarFieldEnum | VenueDailyReservationCountScalarFieldEnum[]
+  }
+
+  /**
+   * VenueDailyReservationCount create
+   */
+  export type VenueDailyReservationCountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VenueDailyReservationCount.
+     */
+    data: XOR<VenueDailyReservationCountCreateInput, VenueDailyReservationCountUncheckedCreateInput>
+  }
+
+  /**
+   * VenueDailyReservationCount createMany
+   */
+  export type VenueDailyReservationCountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VenueDailyReservationCounts.
+     */
+    data: VenueDailyReservationCountCreateManyInput | VenueDailyReservationCountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VenueDailyReservationCount createManyAndReturn
+   */
+  export type VenueDailyReservationCountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many VenueDailyReservationCounts.
+     */
+    data: VenueDailyReservationCountCreateManyInput | VenueDailyReservationCountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VenueDailyReservationCount update
+   */
+  export type VenueDailyReservationCountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VenueDailyReservationCount.
+     */
+    data: XOR<VenueDailyReservationCountUpdateInput, VenueDailyReservationCountUncheckedUpdateInput>
+    /**
+     * Choose, which VenueDailyReservationCount to update.
+     */
+    where: VenueDailyReservationCountWhereUniqueInput
+  }
+
+  /**
+   * VenueDailyReservationCount updateMany
+   */
+  export type VenueDailyReservationCountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VenueDailyReservationCounts.
+     */
+    data: XOR<VenueDailyReservationCountUpdateManyMutationInput, VenueDailyReservationCountUncheckedUpdateManyInput>
+    /**
+     * Filter which VenueDailyReservationCounts to update
+     */
+    where?: VenueDailyReservationCountWhereInput
+  }
+
+  /**
+   * VenueDailyReservationCount upsert
+   */
+  export type VenueDailyReservationCountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VenueDailyReservationCount to update in case it exists.
+     */
+    where: VenueDailyReservationCountWhereUniqueInput
+    /**
+     * In case the VenueDailyReservationCount found by the `where` argument doesn't exist, create a new VenueDailyReservationCount with this data.
+     */
+    create: XOR<VenueDailyReservationCountCreateInput, VenueDailyReservationCountUncheckedCreateInput>
+    /**
+     * In case the VenueDailyReservationCount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VenueDailyReservationCountUpdateInput, VenueDailyReservationCountUncheckedUpdateInput>
+  }
+
+  /**
+   * VenueDailyReservationCount delete
+   */
+  export type VenueDailyReservationCountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+    /**
+     * Filter which VenueDailyReservationCount to delete.
+     */
+    where: VenueDailyReservationCountWhereUniqueInput
+  }
+
+  /**
+   * VenueDailyReservationCount deleteMany
+   */
+  export type VenueDailyReservationCountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VenueDailyReservationCounts to delete
+     */
+    where?: VenueDailyReservationCountWhereInput
+  }
+
+  /**
+   * VenueDailyReservationCount without action
+   */
+  export type VenueDailyReservationCountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueDailyReservationCount
+     */
+    select?: VenueDailyReservationCountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueDailyReservationCountInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8585,6 +9667,16 @@ export namespace Prisma {
   };
 
   export type ReservationStateScalarFieldEnum = (typeof ReservationStateScalarFieldEnum)[keyof typeof ReservationStateScalarFieldEnum]
+
+
+  export const VenueDailyReservationCountScalarFieldEnum: {
+    id: 'id',
+    venueId: 'venueId',
+    reservationCount: 'reservationCount',
+    date: 'date'
+  };
+
+  export type VenueDailyReservationCountScalarFieldEnum = (typeof VenueDailyReservationCountScalarFieldEnum)[keyof typeof VenueDailyReservationCountScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8920,6 +10012,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
     availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
+    dailyReservationCounts?: VenueDailyReservationCountListRelationFilter
   }
 
   export type VenueOrderByWithRelationInput = {
@@ -8938,6 +10031,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     availability?: VenueAvailabilityOrderByRelationAggregateInput
     reservations?: ReservationOrderByRelationAggregateInput
+    dailyReservationCounts?: VenueDailyReservationCountOrderByRelationAggregateInput
   }
 
   export type VenueWhereUniqueInput = Prisma.AtLeast<{
@@ -8959,6 +10053,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
     availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
+    dailyReservationCounts?: VenueDailyReservationCountListRelationFilter
   }, "id">
 
   export type VenueOrderByWithAggregationInput = {
@@ -9251,6 +10346,59 @@ export namespace Prisma {
     adminComments?: StringNullableWithAggregatesFilter<"ReservationState"> | string | null
   }
 
+  export type VenueDailyReservationCountWhereInput = {
+    AND?: VenueDailyReservationCountWhereInput | VenueDailyReservationCountWhereInput[]
+    OR?: VenueDailyReservationCountWhereInput[]
+    NOT?: VenueDailyReservationCountWhereInput | VenueDailyReservationCountWhereInput[]
+    id?: IntFilter<"VenueDailyReservationCount"> | number
+    venueId?: IntFilter<"VenueDailyReservationCount"> | number
+    reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
+    date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
+    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+  }
+
+  export type VenueDailyReservationCountOrderByWithRelationInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+    date?: SortOrder
+    venue?: VenueOrderByWithRelationInput
+  }
+
+  export type VenueDailyReservationCountWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    venueId_date?: VenueDailyReservationCountVenueIdDateCompoundUniqueInput
+    AND?: VenueDailyReservationCountWhereInput | VenueDailyReservationCountWhereInput[]
+    OR?: VenueDailyReservationCountWhereInput[]
+    NOT?: VenueDailyReservationCountWhereInput | VenueDailyReservationCountWhereInput[]
+    venueId?: IntFilter<"VenueDailyReservationCount"> | number
+    reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
+    date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
+    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+  }, "id" | "venueId_date">
+
+  export type VenueDailyReservationCountOrderByWithAggregationInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+    date?: SortOrder
+    _count?: VenueDailyReservationCountCountOrderByAggregateInput
+    _avg?: VenueDailyReservationCountAvgOrderByAggregateInput
+    _max?: VenueDailyReservationCountMaxOrderByAggregateInput
+    _min?: VenueDailyReservationCountMinOrderByAggregateInput
+    _sum?: VenueDailyReservationCountSumOrderByAggregateInput
+  }
+
+  export type VenueDailyReservationCountScalarWhereWithAggregatesInput = {
+    AND?: VenueDailyReservationCountScalarWhereWithAggregatesInput | VenueDailyReservationCountScalarWhereWithAggregatesInput[]
+    OR?: VenueDailyReservationCountScalarWhereWithAggregatesInput[]
+    NOT?: VenueDailyReservationCountScalarWhereWithAggregatesInput | VenueDailyReservationCountScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"VenueDailyReservationCount"> | number
+    venueId?: IntWithAggregatesFilter<"VenueDailyReservationCount"> | number
+    reservationCount?: IntWithAggregatesFilter<"VenueDailyReservationCount"> | number
+    date?: DateTimeWithAggregatesFilter<"VenueDailyReservationCount"> | Date | string
+  }
+
   export type UserCreateInput = {
     userId?: string
     firstName: string
@@ -9417,6 +10565,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     availability?: VenueAvailabilityCreateNestedManyWithoutVenueInput
     reservations?: ReservationCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountCreateNestedManyWithoutVenueInput
   }
 
   export type VenueUncheckedCreateInput = {
@@ -9435,6 +10584,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     availability?: VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput
     reservations?: ReservationUncheckedCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedCreateNestedManyWithoutVenueInput
   }
 
   export type VenueUpdateInput = {
@@ -9452,6 +10602,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     availability?: VenueAvailabilityUpdateManyWithoutVenueNestedInput
     reservations?: ReservationUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueUncheckedUpdateInput = {
@@ -9470,6 +10621,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     availability?: VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput
     reservations?: ReservationUncheckedUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueCreateManyInput = {
@@ -9761,6 +10913,51 @@ export namespace Prisma {
     adminComments?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type VenueDailyReservationCountCreateInput = {
+    reservationCount: number
+    date: Date | string
+    venue: VenueCreateNestedOneWithoutDailyReservationCountsInput
+  }
+
+  export type VenueDailyReservationCountUncheckedCreateInput = {
+    id?: number
+    venueId: number
+    reservationCount: number
+    date: Date | string
+  }
+
+  export type VenueDailyReservationCountUpdateInput = {
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    venue?: VenueUpdateOneRequiredWithoutDailyReservationCountsNestedInput
+  }
+
+  export type VenueDailyReservationCountUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    venueId?: IntFieldUpdateOperationsInput | number
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueDailyReservationCountCreateManyInput = {
+    id?: number
+    venueId: number
+    reservationCount: number
+    date: Date | string
+  }
+
+  export type VenueDailyReservationCountUpdateManyMutationInput = {
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueDailyReservationCountUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    venueId?: IntFieldUpdateOperationsInput | number
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -10032,7 +11229,17 @@ export namespace Prisma {
     none?: VenueAvailabilityWhereInput
   }
 
+  export type VenueDailyReservationCountListRelationFilter = {
+    every?: VenueDailyReservationCountWhereInput
+    some?: VenueDailyReservationCountWhereInput
+    none?: VenueDailyReservationCountWhereInput
+  }
+
   export type VenueAvailabilityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VenueDailyReservationCountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10326,6 +11533,44 @@ export namespace Prisma {
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
+  export type VenueDailyReservationCountVenueIdDateCompoundUniqueInput = {
+    venueId: number
+    date: Date | string
+  }
+
+  export type VenueDailyReservationCountCountOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+    date?: SortOrder
+  }
+
+  export type VenueDailyReservationCountAvgOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+  }
+
+  export type VenueDailyReservationCountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+    date?: SortOrder
+  }
+
+  export type VenueDailyReservationCountMinOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+    date?: SortOrder
+  }
+
+  export type VenueDailyReservationCountSumOrderByAggregateInput = {
+    id?: SortOrder
+    venueId?: SortOrder
+    reservationCount?: SortOrder
+  }
+
   export type ReservationCreateNestedManyWithoutUserInput = {
     create?: XOR<ReservationCreateWithoutUserInput, ReservationUncheckedCreateWithoutUserInput> | ReservationCreateWithoutUserInput[] | ReservationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ReservationCreateOrConnectWithoutUserInput | ReservationCreateOrConnectWithoutUserInput[]
@@ -10422,6 +11667,13 @@ export namespace Prisma {
     connect?: ReservationWhereUniqueInput | ReservationWhereUniqueInput[]
   }
 
+  export type VenueDailyReservationCountCreateNestedManyWithoutVenueInput = {
+    create?: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput> | VenueDailyReservationCountCreateWithoutVenueInput[] | VenueDailyReservationCountUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueDailyReservationCountCreateOrConnectWithoutVenueInput | VenueDailyReservationCountCreateOrConnectWithoutVenueInput[]
+    createMany?: VenueDailyReservationCountCreateManyVenueInputEnvelope
+    connect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+  }
+
   export type VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput = {
     create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
     connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
@@ -10434,6 +11686,13 @@ export namespace Prisma {
     connectOrCreate?: ReservationCreateOrConnectWithoutVenueInput | ReservationCreateOrConnectWithoutVenueInput[]
     createMany?: ReservationCreateManyVenueInputEnvelope
     connect?: ReservationWhereUniqueInput | ReservationWhereUniqueInput[]
+  }
+
+  export type VenueDailyReservationCountUncheckedCreateNestedManyWithoutVenueInput = {
+    create?: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput> | VenueDailyReservationCountCreateWithoutVenueInput[] | VenueDailyReservationCountUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueDailyReservationCountCreateOrConnectWithoutVenueInput | VenueDailyReservationCountCreateOrConnectWithoutVenueInput[]
+    createMany?: VenueDailyReservationCountCreateManyVenueInputEnvelope
+    connect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
   }
 
   export type VenueUpdatestreet_nameInput = {
@@ -10491,6 +11750,20 @@ export namespace Prisma {
     deleteMany?: ReservationScalarWhereInput | ReservationScalarWhereInput[]
   }
 
+  export type VenueDailyReservationCountUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput> | VenueDailyReservationCountCreateWithoutVenueInput[] | VenueDailyReservationCountUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueDailyReservationCountCreateOrConnectWithoutVenueInput | VenueDailyReservationCountCreateOrConnectWithoutVenueInput[]
+    upsert?: VenueDailyReservationCountUpsertWithWhereUniqueWithoutVenueInput | VenueDailyReservationCountUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: VenueDailyReservationCountCreateManyVenueInputEnvelope
+    set?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    disconnect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    delete?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    connect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    update?: VenueDailyReservationCountUpdateWithWhereUniqueWithoutVenueInput | VenueDailyReservationCountUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: VenueDailyReservationCountUpdateManyWithWhereWithoutVenueInput | VenueDailyReservationCountUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: VenueDailyReservationCountScalarWhereInput | VenueDailyReservationCountScalarWhereInput[]
+  }
+
   export type VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput = {
     create?: XOR<VenueAvailabilityCreateWithoutVenueInput, VenueAvailabilityUncheckedCreateWithoutVenueInput> | VenueAvailabilityCreateWithoutVenueInput[] | VenueAvailabilityUncheckedCreateWithoutVenueInput[]
     connectOrCreate?: VenueAvailabilityCreateOrConnectWithoutVenueInput | VenueAvailabilityCreateOrConnectWithoutVenueInput[]
@@ -10517,6 +11790,20 @@ export namespace Prisma {
     update?: ReservationUpdateWithWhereUniqueWithoutVenueInput | ReservationUpdateWithWhereUniqueWithoutVenueInput[]
     updateMany?: ReservationUpdateManyWithWhereWithoutVenueInput | ReservationUpdateManyWithWhereWithoutVenueInput[]
     deleteMany?: ReservationScalarWhereInput | ReservationScalarWhereInput[]
+  }
+
+  export type VenueDailyReservationCountUncheckedUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput> | VenueDailyReservationCountCreateWithoutVenueInput[] | VenueDailyReservationCountUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: VenueDailyReservationCountCreateOrConnectWithoutVenueInput | VenueDailyReservationCountCreateOrConnectWithoutVenueInput[]
+    upsert?: VenueDailyReservationCountUpsertWithWhereUniqueWithoutVenueInput | VenueDailyReservationCountUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: VenueDailyReservationCountCreateManyVenueInputEnvelope
+    set?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    disconnect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    delete?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    connect?: VenueDailyReservationCountWhereUniqueInput | VenueDailyReservationCountWhereUniqueInput[]
+    update?: VenueDailyReservationCountUpdateWithWhereUniqueWithoutVenueInput | VenueDailyReservationCountUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: VenueDailyReservationCountUpdateManyWithWhereWithoutVenueInput | VenueDailyReservationCountUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: VenueDailyReservationCountScalarWhereInput | VenueDailyReservationCountScalarWhereInput[]
   }
 
   export type TimeSlotCreateNestedManyWithoutVenueAvailabilityInput = {
@@ -10678,6 +11965,20 @@ export namespace Prisma {
     upsert?: ReservationUpsertWithoutReservationStateInput
     connect?: ReservationWhereUniqueInput
     update?: XOR<XOR<ReservationUpdateToOneWithWhereWithoutReservationStateInput, ReservationUpdateWithoutReservationStateInput>, ReservationUncheckedUpdateWithoutReservationStateInput>
+  }
+
+  export type VenueCreateNestedOneWithoutDailyReservationCountsInput = {
+    create?: XOR<VenueCreateWithoutDailyReservationCountsInput, VenueUncheckedCreateWithoutDailyReservationCountsInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutDailyReservationCountsInput
+    connect?: VenueWhereUniqueInput
+  }
+
+  export type VenueUpdateOneRequiredWithoutDailyReservationCountsNestedInput = {
+    create?: XOR<VenueCreateWithoutDailyReservationCountsInput, VenueUncheckedCreateWithoutDailyReservationCountsInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutDailyReservationCountsInput
+    upsert?: VenueUpsertWithoutDailyReservationCountsInput
+    connect?: VenueWhereUniqueInput
+    update?: XOR<XOR<VenueUpdateToOneWithWhereWithoutDailyReservationCountsInput, VenueUpdateWithoutDailyReservationCountsInput>, VenueUncheckedUpdateWithoutDailyReservationCountsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -11062,6 +12363,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VenueDailyReservationCountCreateWithoutVenueInput = {
+    reservationCount: number
+    date: Date | string
+  }
+
+  export type VenueDailyReservationCountUncheckedCreateWithoutVenueInput = {
+    id?: number
+    reservationCount: number
+    date: Date | string
+  }
+
+  export type VenueDailyReservationCountCreateOrConnectWithoutVenueInput = {
+    where: VenueDailyReservationCountWhereUniqueInput
+    create: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput>
+  }
+
+  export type VenueDailyReservationCountCreateManyVenueInputEnvelope = {
+    data: VenueDailyReservationCountCreateManyVenueInput | VenueDailyReservationCountCreateManyVenueInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VenueAvailabilityUpsertWithWhereUniqueWithoutVenueInput = {
     where: VenueAvailabilityWhereUniqueInput
     update: XOR<VenueAvailabilityUpdateWithoutVenueInput, VenueAvailabilityUncheckedUpdateWithoutVenueInput>
@@ -11104,6 +12426,32 @@ export namespace Prisma {
     data: XOR<ReservationUpdateManyMutationInput, ReservationUncheckedUpdateManyWithoutVenueInput>
   }
 
+  export type VenueDailyReservationCountUpsertWithWhereUniqueWithoutVenueInput = {
+    where: VenueDailyReservationCountWhereUniqueInput
+    update: XOR<VenueDailyReservationCountUpdateWithoutVenueInput, VenueDailyReservationCountUncheckedUpdateWithoutVenueInput>
+    create: XOR<VenueDailyReservationCountCreateWithoutVenueInput, VenueDailyReservationCountUncheckedCreateWithoutVenueInput>
+  }
+
+  export type VenueDailyReservationCountUpdateWithWhereUniqueWithoutVenueInput = {
+    where: VenueDailyReservationCountWhereUniqueInput
+    data: XOR<VenueDailyReservationCountUpdateWithoutVenueInput, VenueDailyReservationCountUncheckedUpdateWithoutVenueInput>
+  }
+
+  export type VenueDailyReservationCountUpdateManyWithWhereWithoutVenueInput = {
+    where: VenueDailyReservationCountScalarWhereInput
+    data: XOR<VenueDailyReservationCountUpdateManyMutationInput, VenueDailyReservationCountUncheckedUpdateManyWithoutVenueInput>
+  }
+
+  export type VenueDailyReservationCountScalarWhereInput = {
+    AND?: VenueDailyReservationCountScalarWhereInput | VenueDailyReservationCountScalarWhereInput[]
+    OR?: VenueDailyReservationCountScalarWhereInput[]
+    NOT?: VenueDailyReservationCountScalarWhereInput | VenueDailyReservationCountScalarWhereInput[]
+    id?: IntFilter<"VenueDailyReservationCount"> | number
+    venueId?: IntFilter<"VenueDailyReservationCount"> | number
+    reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
+    date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
+  }
+
   export type TimeSlotCreateWithoutVenueAvailabilityInput = {
     startTime: Date | string
     endTime: Date | string
@@ -11141,6 +12489,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: ReservationCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountCreateNestedManyWithoutVenueInput
   }
 
   export type VenueUncheckedCreateWithoutAvailabilityInput = {
@@ -11158,6 +12507,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reservations?: ReservationUncheckedCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedCreateNestedManyWithoutVenueInput
   }
 
   export type VenueCreateOrConnectWithoutAvailabilityInput = {
@@ -11217,6 +12567,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: ReservationUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueUncheckedUpdateWithoutAvailabilityInput = {
@@ -11234,6 +12585,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reservations?: ReservationUncheckedUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueAvailabilityCreateWithoutTimeSlotsInput = {
@@ -11323,6 +12675,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     availability?: VenueAvailabilityCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountCreateNestedManyWithoutVenueInput
   }
 
   export type VenueUncheckedCreateWithoutReservationsInput = {
@@ -11340,6 +12693,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     availability?: VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedCreateNestedManyWithoutVenueInput
   }
 
   export type VenueCreateOrConnectWithoutReservationsInput = {
@@ -11426,6 +12780,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     availability?: VenueAvailabilityUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUpdateManyWithoutVenueNestedInput
   }
 
   export type VenueUncheckedUpdateWithoutReservationsInput = {
@@ -11443,6 +12798,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     availability?: VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput
+    dailyReservationCounts?: VenueDailyReservationCountUncheckedUpdateManyWithoutVenueNestedInput
   }
 
   export type ReservationStateUpsertWithoutReservationInput = {
@@ -11536,6 +12892,92 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VenueCreateWithoutDailyReservationCountsInput = {
+    name: string
+    street_name?: VenueCreatestreet_nameInput | string[]
+    district: string
+    province: string
+    type: string
+    capacity: number
+    size: number
+    schedule: $Enums.Schedule
+    features?: VenueCreatefeaturesInput | string[]
+    images?: VenueCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    availability?: VenueAvailabilityCreateNestedManyWithoutVenueInput
+    reservations?: ReservationCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueUncheckedCreateWithoutDailyReservationCountsInput = {
+    id?: number
+    name: string
+    street_name?: VenueCreatestreet_nameInput | string[]
+    district: string
+    province: string
+    type: string
+    capacity: number
+    size: number
+    schedule: $Enums.Schedule
+    features?: VenueCreatefeaturesInput | string[]
+    images?: VenueCreateimagesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    availability?: VenueAvailabilityUncheckedCreateNestedManyWithoutVenueInput
+    reservations?: ReservationUncheckedCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueCreateOrConnectWithoutDailyReservationCountsInput = {
+    where: VenueWhereUniqueInput
+    create: XOR<VenueCreateWithoutDailyReservationCountsInput, VenueUncheckedCreateWithoutDailyReservationCountsInput>
+  }
+
+  export type VenueUpsertWithoutDailyReservationCountsInput = {
+    update: XOR<VenueUpdateWithoutDailyReservationCountsInput, VenueUncheckedUpdateWithoutDailyReservationCountsInput>
+    create: XOR<VenueCreateWithoutDailyReservationCountsInput, VenueUncheckedCreateWithoutDailyReservationCountsInput>
+    where?: VenueWhereInput
+  }
+
+  export type VenueUpdateToOneWithWhereWithoutDailyReservationCountsInput = {
+    where?: VenueWhereInput
+    data: XOR<VenueUpdateWithoutDailyReservationCountsInput, VenueUncheckedUpdateWithoutDailyReservationCountsInput>
+  }
+
+  export type VenueUpdateWithoutDailyReservationCountsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    street_name?: VenueUpdatestreet_nameInput | string[]
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    size?: IntFieldUpdateOperationsInput | number
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    features?: VenueUpdatefeaturesInput | string[]
+    images?: VenueUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUpdateManyWithoutVenueNestedInput
+    reservations?: ReservationUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueUncheckedUpdateWithoutDailyReservationCountsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    street_name?: VenueUpdatestreet_nameInput | string[]
+    district?: StringFieldUpdateOperationsInput | string
+    province?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    size?: IntFieldUpdateOperationsInput | number
+    schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
+    features?: VenueUpdatefeaturesInput | string[]
+    images?: VenueUpdateimagesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    availability?: VenueAvailabilityUncheckedUpdateManyWithoutVenueNestedInput
+    reservations?: ReservationUncheckedUpdateManyWithoutVenueNestedInput
+  }
+
   export type ReservationCreateManyUserInput = {
     reservationId?: string
     venueId: number
@@ -11604,6 +13046,12 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type VenueDailyReservationCountCreateManyVenueInput = {
+    id?: number
+    reservationCount: number
+    date: Date | string
+  }
+
   export type VenueAvailabilityUpdateWithoutVenueInput = {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAvailabilityStatusFieldUpdateOperationsInput | $Enums.AvailabilityStatus
@@ -11659,6 +13107,23 @@ export namespace Prisma {
     reservationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueDailyReservationCountUpdateWithoutVenueInput = {
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueDailyReservationCountUncheckedUpdateWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueDailyReservationCountUncheckedUpdateManyWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    reservationCount?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TimeSlotCreateManyVenueAvailabilityInput = {
@@ -11733,6 +13198,10 @@ export namespace Prisma {
      * @deprecated Use ReservationStateDefaultArgs instead
      */
     export type ReservationStateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ReservationStateDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use VenueDailyReservationCountDefaultArgs instead
+     */
+    export type VenueDailyReservationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueDailyReservationCountDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

@@ -194,6 +194,13 @@ exports.Prisma.ReservationStateScalarFieldEnum = {
   adminComments: 'adminComments'
 };
 
+exports.Prisma.VenueDailyReservationCountScalarFieldEnum = {
+  id: 'id',
+  venueId: 'venueId',
+  reservationCount: 'reservationCount',
+  date: 'date'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -248,7 +255,8 @@ exports.Prisma.ModelName = {
   VenueAvailability: 'VenueAvailability',
   TimeSlot: 'TimeSlot',
   Reservation: 'Reservation',
-  ReservationState: 'ReservationState'
+  ReservationState: 'ReservationState',
+  VenueDailyReservationCount: 'VenueDailyReservationCount'
 };
 
 /**
