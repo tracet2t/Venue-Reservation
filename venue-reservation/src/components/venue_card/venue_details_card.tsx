@@ -31,7 +31,7 @@ const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
       {/* Image Section */}
       <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg md:w-2/5">
         <Carousel
-          images={images}
+          images={images}  // Pass the array of images to the Carousel
           width="100%"
           height="100%"
           arrowBgColor="rgba(0, 0, 0, 0.7)"
