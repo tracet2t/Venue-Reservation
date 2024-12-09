@@ -44,6 +44,7 @@ const venues = [
     timeSchedule: '8:00 AM - 6:00 PM',
     features: ['Projector', 'Whiteboard', 'Wi-Fi'],
   },
+  // Add more venues here...
 ];
 
 const VenueDetailsPage = () => {
@@ -98,9 +99,9 @@ const VenueDetailsPage = () => {
         {/* Main Content */}
         <main className="p-8">
           {/* White Card for Venue Cards */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="bg-white p-6 rounded-lg shadow-lg h-[600px] overflow-y-auto">
             {/* Venue Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredVenues.map((venue, index) => (
                 <VenueDetailCard key={index} {...venue} onClick={() => console.log(venue.name)} />
               ))}
