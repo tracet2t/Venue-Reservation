@@ -4,7 +4,7 @@ import { FaHome, FaCalendarAlt, FaRegMoneyBillAlt, FaClipboardList } from 'react
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="h-full w-64 bg-gray-800 text-white">
+    <div className="h-full w-64 bg-white-800 text-Black">
       <div className="p-4 text-2xl font-bold">
         <span className="text-blue-500">RMS.</span>
         <p className="text-sm text-gray-400">Reservation Management System</p>
