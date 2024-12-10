@@ -1,21 +1,22 @@
 'use client';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+
 
 const ReservationPage = () => {
   const reservations = [
     {
-      reservationId: 'ABC123',
+      reservationId: '016',
       title: 'Event Booking',
       timeMode: 'Full Day',
       duration: '8 Hours',
       extraServices: ['Food', 'Private Parking'],
       purposeOfReservation: 'Conference',
       status: 'Confirmed',
-      customerName: 'John Doe',
-      customerEmail: 'john@example.com',
-      customerContactNumber: '123-456-7890',
-      date: '2024-05-16',
+      customerName: 'Uthpala devaki',
+      customerEmail: 'udevaki@gmail.com',
+      customerContactNumber: '0771234567',
+      date: '2024-03-16',
       venue: 'Auditorium 1',
     },
     {
@@ -26,33 +27,32 @@ const ReservationPage = () => {
       extraServices: ['Catering'], 
       purposeOfReservation: 'Wedding',
       status: 'Pending',
-      customerName: 'John Doe',
-      customerEmail: 'john@example.com',
-      customerContactNumber: '123-456-7890',
-      date: '2024-05-16',
+      customerName: 'Saduni fernando',
+      customerEmail: 'sfernando@gmail.com',
+      customerContactNumber: '0771234567',
+      date: '2024-04-10',
       venue: 'Auditorium 1',
     },
     {
-      reservationId: 'XYZ456',
+      reservationId: '056',
       title: 'Business Meeting',
       timeMode: 'Full Day',
       duration: '6 Hours',
       extraServices: ['Food', 'AV Equipment'], 
       purposeOfReservation: 'Meeting',
       status: 'Confirmed',
-      customerName: 'John Doe',
-      customerEmail: 'john@example.com',
-      customerContactNumber: '123-456-7890',
+      customerName: 'Kavindya perera',
+      customerEmail: 'kavindya@gmail.com',
+      customerContactNumber: '0771234567',
       date: '2024-05-16',
       venue: 'Auditorium 1',
     },
   ];
-
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('');
 
   const handleSeeMore = (reservationId: string) => {
-    const router = useRouter();
     router.push(`/admin-view/${reservationId}`);
   };
 
@@ -175,11 +175,11 @@ const ReservationPage = () => {
                   </div>
                   
                   <button
-      onClick={() => handleSeeMore(reservation.reservationId)}
-      className="mt-4 bg-[#584822] text-white px-4 py-2 rounded-lg self-end"
-    >
-      See More
-    </button>
+                    onClick={() => handleSeeMore(reservation.reservationId)}
+                    className="mt-4 bg-[#584822] text-white px-4 py-2 rounded-lg self-end"
+                  >
+                    See More
+                  </button>
                 </div>
               </div>
             ))}
