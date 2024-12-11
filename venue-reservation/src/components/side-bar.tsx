@@ -26,8 +26,8 @@ const SidebarItem: React.FC<{ icon: React.ReactNode; label: string; active?: boo
     <div
       className={`flex items-center space-x-2 p-2 pl-4 text-lg cursor-pointer rounded-lg transition-colors duration-300 ${
         active
-          ? 'bg-[rgba(248,241,224,0.5)] text-black'
-          : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+          ? 'bg-[rgba(248,241,224,0.5)] text-gray-500'
+          : 'text-black hover:bg-[rgba(248,241,224,0.5)] hover:text-black'
       }`}
     >
       {icon}
