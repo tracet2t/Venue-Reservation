@@ -35,7 +35,27 @@ const venues = [
     features: ['Air Conditioning', 'Parking', 'Wi-Fi'],
   },
   {
-    images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'], // Multiple images for carousel
+    images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'], 
+    name: 'Cozy Conference Room',
+    address: '456 Elm Street, Kandy',
+    type: 'Conference Room',
+    capacity: '50 people',
+    size: '1000 sq ft',
+    timeSchedule: '8:00 AM - 6:00 PM',
+    features: ['Projector', 'Whiteboard', 'Wi-Fi'],
+  },
+  {
+    images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'], 
+    name: 'Cozy Conference Room',
+    address: '456 Elm Street, Kandy',
+    type: 'Conference Room',
+    capacity: '50 people',
+    size: '1000 sq ft',
+    timeSchedule: '8:00 AM - 6:00 PM',
+    features: ['Projector', 'Whiteboard', 'Wi-Fi'],
+  },
+  {
+    images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'], 
     name: 'Cozy Conference Room',
     address: '456 Elm Street, Kandy',
     type: 'Conference Room',
@@ -83,7 +103,7 @@ const VenueDetailsPage = () => {
   });
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       {/* Left Side (Sidebar) */}
       <div className="w-1/4 bg-white">
         <Sidebar />
@@ -97,15 +117,21 @@ const VenueDetailsPage = () => {
         </div>
 
         {/* Main Content */}
-        <main className="p-8">
+        <main className="p-8 h-full flex flex-col">
           {/* White Card for Venue Cards */}
-          <div className="bg-white p-6 rounded-lg shadow-lg h-[600px] overflow-y-auto">
-            {/* Venue Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg overflow-y-auto"
+            style={{
+              height: `calc(100vh - 2rem)`, // Reduced the gap by using smaller padding (e.g., 2rem)
+              marginBottom: '0.25rem', // Add a small margin at the bottom
+            }}
+           >
+            {/* Venue Cards in Single Column */}
+            <div className="space-y-4">
               {filteredVenues.map((venue, index) => (
                 <VenueDetailCard key={index} {...venue} onClick={() => console.log(venue.name)} />
               ))}
-            </div>
+          </div>
           </div>
         </main>
       </div>
