@@ -87,10 +87,10 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         const savedSelectionsStr = localStorage.getItem(`venue-${id}-selections`);
         if (savedSelectionsStr) {
           const saved = JSON.parse(savedSelectionsStr);
-          const selections = Array.isArray(saved) ? saved.map(selection => ({
-            date: selection.date,
-            timeSlots: selection.timeSlots
-          })) : [];
+          const selections = saved.timeSlots.map((slot: any) => ({
+            date: new Date(slot.date),
+            timeSlots: slot.slots
+          }));
           setDateTimeSelections(selections);
         }
 
@@ -106,10 +106,10 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
 
     if (id) {
       getReservationDetails();
+      fetchVenueDetails();
     }
 
-    Promise.all([fetchVenueDetails(), getReservationDetails()])
-      .finally(() => setLoading(false));
+    setLoading(false);
   }, [id]);
 
   useEffect(() => {

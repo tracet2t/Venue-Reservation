@@ -28,7 +28,7 @@ interface Question {
   answerOptions: string[];
 }
 
-const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelections, onRemoveSelection, onNext }) => {
+const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelections, onRemoveSelection, onNext, id }) => {
   const [isAmenitiesDropdownOpen, setIsAmenitiesDropdownOpen] = useState(false);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
@@ -162,18 +162,31 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
   // Update handleNext to use validation
   const handleNext = () => {
     if (!isFormValid()) {
-      return; // Stop if validation fails
+      return;
     }
 
-    const venueId = window.location.pathname.split('/')[2];
     const formData = {
       title: (document.getElementById('title') as HTMLInputElement).value,
       purpose: (document.getElementById('purpose') as HTMLInputElement).value,
       selectedAmenities,
-      answers
+      answers,
+      // Add date and time selections
+      dateTimeSelections: dateTimeSelections.map(selection => ({
+        date: selection.date.toISOString(),
+        timeSlots: selection.timeSlots
+      }))
     };
     
-    localStorage.setItem(`venue-${venueId}-form-data`, JSON.stringify(formData));
+    // Save to localStorage
+    localStorage.setItem(`venue-${id}-selections`, JSON.stringify({
+      dates: selectedDates.map(date => date.toISOString()),
+      timeSlots: dateTimeSelections.map(selection => ({
+        date: selection.date.toISOString(),
+        slots: selection.timeSlots
+      }))
+    }));
+    
+    localStorage.setItem(`venue-${id}-form-data`, JSON.stringify(formData));
     onNext();
   };
 

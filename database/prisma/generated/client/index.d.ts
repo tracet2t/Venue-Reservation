@@ -11347,6 +11347,7 @@ export namespace Prisma {
 
   export type VenueAvailabilityWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    venueId_date?: VenueAvailabilityVenueIdDateCompoundUniqueInput
     AND?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
     OR?: VenueAvailabilityWhereInput[]
     NOT?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
@@ -11355,7 +11356,7 @@ export namespace Prisma {
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
     venue?: XOR<VenueRelationFilter, VenueWhereInput>
-  }, "id">
+  }, "id" | "venueId_date">
 
   export type VenueAvailabilityOrderByWithAggregationInput = {
     id?: SortOrder
@@ -12749,6 +12750,11 @@ export namespace Prisma {
 
   export type TimeSlotOrderByRelationAggregateInput = {
     _count?: SortOrder
+  }
+
+  export type VenueAvailabilityVenueIdDateCompoundUniqueInput = {
+    venueId: number
+    date: Date | string
   }
 
   export type VenueAvailabilityCountOrderByAggregateInput = {

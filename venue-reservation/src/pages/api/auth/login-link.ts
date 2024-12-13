@@ -3,6 +3,8 @@ import prisma from "../../../dbclient";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 
+const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -31,8 +33,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    // Generate login token
-    const token = uuidv4();
+    // Generate magic link token
+    const magicToken = uuidv4();
     const expires = new Date(Date.now() + 15 * 60 * 1000); // Token expires in 15 minutes
 
     // Save token to database
@@ -40,10 +42,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         identifier: user.userId,
         email: user.email,
-        token,
+        token: magicToken,
         expires,
       },
     });
+
+    // Generate JWT token for authentication
+    const authToken = jwt.sign(
+      { 
+        userId: user.userId,
+        email: user.email,
+        userType: user.userType 
+      },
+      SECRET_KEY,
+      { expiresIn: '7d' }
+    );
+
+    // Set both tokens as cookies
+    res.setHeader('Set-Cookie', [
+      `auth_token=${authToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`,
+      `magic_token=${magicToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=900` // 15 minutes
+    ]);
 
     // Send email using the send-email endpoint
     const emailResponse = await fetch(`${process.env.NEXTAUTH_URL}/api/send-email`, {
@@ -51,22 +70,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email: user.email }),
+      body: JSON.stringify({ 
+        email: user.email,
+        magicToken: magicToken // Include the token in the email
+      }),
     });
 
     if (!emailResponse.ok) {
       throw new Error('Failed to send email');
     }
-
-    // Generate JWT token after verification
-    const jwtToken = jwt.sign(
-      { userId: user.userId },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '7d' }
-    );
-
-    // Set the cookie
-    res.setHeader('Set-Cookie', `auth_token=${jwtToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`);
 
     // Update the provider field
     await prisma.user.update({

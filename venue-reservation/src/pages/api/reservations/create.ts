@@ -56,6 +56,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       questions
     } = req.body;
 
+    // Check availability for each date and time slot
+    for (const dt of dateTimeSelections) {
+      const date = new Date(dt.date);
+      
+      for (const timeSlot of dt.timeSlots) {
+        const availabilityCheck = await prisma.venueAvailability.findFirst({
+          where: {
+            venueId: Number(venueId),
+            date: date,
+            timeSlots: {
+              some: {
+                status: 'NOT_AVAILABLE'
+              }
+            }
+          },
+          include: {
+            timeSlots: true
+          }
+        });
+
+        if (availabilityCheck) {
+          return res.status(400).json({ 
+            error: 'Selected time slots are not available',
+            date: dt.date,
+            timeSlot: timeSlot
+          });
+        }
+      }
+    }
+
     // Transform dateTimeSelections into the format we need
     const selectedDates = dateTimeSelections.map((dt: { date: string }) => dt.date);
     const selectedTimeSlots = dateTimeSelections.reduce((acc: { [key: string]: string[] }, dt: { date: string; timeSlots: string[] }) => {

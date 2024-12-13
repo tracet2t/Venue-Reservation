@@ -21,6 +21,22 @@ interface DateTimeSelection {
   timeSlots: string[];
 }
 
+interface BlockedTimeSlot {
+  date: string;
+  timeSlots: string[];
+  status: string []
+}
+
+interface VenueAvailability {
+  date: string;
+  status: 'AVAILABLE' | 'NOT_AVAILABLE' | 'FULLY_BOOKED' | 'PARTIALLY_BOOKED';
+  timeSlots: Array<{
+    startTime: Date;
+    endTime: Date;
+    status: 'AVAILABLE' | 'NOT_AVAILABLE' | 'FULLY_BOOKED' | 'PARTIALLY_BOOKED';
+  }>;
+}
+
 const Availability = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -41,6 +57,8 @@ const Availability = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [blockedTimeSlots, setBlockedTimeSlots] = useState<BlockedTimeSlot[]>([]);
+  const [venueAvailability, setVenueAvailability] = useState<VenueAvailability[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -58,21 +76,33 @@ const Availability = () => {
 
     const fetchVenueInfo = async () => {
       try {
-        const response = await fetch(`/api/venues/${id}`);
-        if (response.ok) {
-          const data = await response.json();
+        const [venueResponse, blockedSlotsResponse, availabilityResponse] = await Promise.all([
+          fetch(`/api/venues/${id}`),
+          fetch(`/api/venues/${id}/blocked-slots`),
+          fetch(`/api/venues/${id}/availability`)
+        ]);
+
+        if (venueResponse.ok) {
+          const data: VenueInfo = await venueResponse.json();
           setVenueInfo({
             id: data.id,
             name: data.name,
             type: data.type,
             schedule: data.schedule
           });
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || 'Failed to fetch venue details');
+        }
+
+        if (blockedSlotsResponse.ok) {
+          const blockedData: BlockedTimeSlot[] = await blockedSlotsResponse.json();
+          setBlockedTimeSlots(blockedData);
+        }
+
+        if (availabilityResponse.ok) {
+          const availabilityData: VenueAvailability[] = await availabilityResponse.json();
+          setVenueAvailability(availabilityData);
         }
       } catch (err) {
-        console.error("Error fetching venue info:", err);
+        console.error("Error fetching data:", err);
         setError('An unexpected error occurred.');
       } finally {
         setLoading(false);
@@ -99,16 +129,45 @@ const Availability = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const fetchBlockedSlots = async () => {
+      try {
+        const response = await fetch(`/api/venues/${id}/blocked-slots`);
+        if (response.ok) {
+          const data = await response.json();
+          setBlockedTimeSlots(data);
+        }
+      } catch (error) {
+        console.error('Error fetching blocked slots:', error);
+      }
+    };
+
+    if (id) {
+      fetchBlockedSlots();
+    }
+  }, [id]);
+
   const handleSelectDate = (date: Date) => {
     if (!isLoggedIn) {
       alert("Please log in to select a date.");
       router.push('/login');
       return;
     }
+
+    // Format date for consistent comparison
+    const dateStr = moment(date).format('YYYY-MM-DD');
+    const dayAvailability = venueAvailability.find(a => 
+      moment(a.date).format('YYYY-MM-DD') === dateStr
+    );
     
-    // Check if date is already selected
+    if (dayAvailability?.status === 'NOT_AVAILABLE') {
+      alert("This date is not available for booking.");
+      return;
+    }
+    
+    // Check if date is already selected using exact date comparison
     const isDateSelected = selectedDates.some(
-      selectedDate => moment(selectedDate).isSame(date, 'day')
+      selectedDate => moment(selectedDate).format('YYYY-MM-DD') === dateStr
     );
 
     if (isDateSelected) {
@@ -330,6 +389,50 @@ const Availability = () => {
     }
   };
 
+  const isTimeSlotBlocked = (date: Date, timeSlot: string) => {
+    const dateStr = date.toISOString().split('T')[0];
+    const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
+    
+    if (!blockedDay) return false;
+
+    // For hourly slots
+    if (timeSlot.includes('-')) {
+      const [start] = timeSlot.split('-');
+      return blockedDay.timeSlots.some(blocked => {
+        const [blockedStart] = blocked.split('-');
+        return start === blockedStart;
+      });
+    }
+
+    // For session slots
+    return blockedDay.timeSlots.includes(timeSlot);
+  };
+
+  const fetchVenueAvailability = async () => {
+    try {
+      const response = await fetch(`/api/venues/availability/${id}`);
+      if (response.ok) {
+        const data: VenueAvailability[] = await response.json();
+        // Transform the data to include all status types
+        const formattedAvailability = data.map((item) => ({
+          date: moment(item.date).format('YYYY-MM-DD'),
+          status: item.status,
+          timeSlots: item.timeSlots || []
+        }));
+        setVenueAvailability(formattedAvailability);
+      }
+    } catch (error) {
+      console.error('Error fetching venue availability:', error);
+    }
+  };
+
+  // Add this function to check if the selected date is fully booked
+  const isDateFullyBooked = (date: Date) => {
+    const dateStr = moment(date).format('YYYY-MM-DD');
+    const dayAvailability = venueAvailability.find(a => a.date === dateStr);
+    return dayAvailability?.status === 'FULLY_BOOKED';
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen">
@@ -380,9 +483,29 @@ const Availability = () => {
               {/* Calendar */}
               <div className="w-full z-0 lg:w-4/5 mb-4 lg:mb-0">
                 <Calendar 
-                  onSelectDate={handleSelectDate} 
+                  onSelectDate={handleSelectDate}
                   id={Number(id)}
                   selectedDates={selectedDates}
+                  isDateBlocked={(date: Date) => {
+                    const dateStr = moment(date).format('YYYY-MM-DD');
+                    const dayAvailability = venueAvailability.find(a => a.date === dateStr);
+                    
+                    if (!dayAvailability) return false;
+
+                    switch (dayAvailability.status) {
+                      case 'FULLY_BOOKED':
+                        return 'reserved';
+                      case 'PARTIALLY_BOOKED':
+                        return 'partial';
+                      case 'NOT_AVAILABLE':
+                        return 'blocked';
+                      case 'AVAILABLE':
+                        return false;
+                      default:
+                        return false;
+                    }
+                  }}
+                  availability={venueAvailability}
                 />
               </div>
 
@@ -409,9 +532,13 @@ const Availability = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-xl font-semibold mb-4">Select Availability</h2>
-            <p className="text-gray-700 mb-6">Select availability for {selectedDate?.toLocaleDateString()}</p>
+            {isDateFullyBooked(selectedDate!) ? (
+              <p className="text-red-500 mb-6">This date is fully booked and no time slots are available.</p>
+            ) : (
+              <p className="text-gray-700 mb-6">Select availability for {selectedDate?.toLocaleDateString()}</p>
+            )}
 
-            {/* Render different forms based on schedule type */}
+            {/* Hourly Time Slots */}
             {venueInfo?.schedule === 'HourlyTime' && (
               <div className="max-h-96 overflow-y-auto mb-4">
                 {[...Array(24)].map((_, i) => {
@@ -420,85 +547,98 @@ const Availability = () => {
                   const formattedCurrentHour = currentHour.toString().padStart(2, '0');
                   const formattedNextHour = nextHour.toString().padStart(2, '0');
                   const timeSlot = `${formattedCurrentHour}:00-${formattedNextHour}:00`;
+                  const isBlocked = selectedDate && (isTimeSlotBlocked(selectedDate, timeSlot) || isDateFullyBooked(selectedDate));
                   
                   return (
-                    <label key={timeSlot} className="flex items-center mb-2">
+                    <label key={timeSlot} className={`flex items-center mb-2 ${isBlocked ? 'opacity-50' : ''}`}>
                       <input
                         type="checkbox"
                         checked={hourlySlots[timeSlot] || false}
                         onChange={() => {
-                          setHourlySlots(prev => ({
-                            ...prev,
-                            [timeSlot]: !prev[timeSlot]
-                          }));
+                          if (!isBlocked) {
+                            setHourlySlots(prev => ({
+                              ...prev,
+                              [timeSlot]: !prev[timeSlot]
+                            }));
+                          }
                         }}
+                        disabled={!!isBlocked}
                         className="form-checkbox text-blue-500 mr-2"
                       />
                       {`${formattedCurrentHour}:00 - ${formattedNextHour}:00`}
+                      {isBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
                     </label>
                   );
                 })}
               </div>
             )}
 
+            {/* Session Time Slots */}
             {venueInfo?.schedule === 'SessionTime' && (
               <div className="mb-4">
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.morning}
-                    onChange={() => handleCheckboxChange('morning')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Morning Session (08:00 - 12:00)
-                </label>
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.evening}
-                    onChange={() => handleCheckboxChange('evening')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Afternoon Session (12:00 - 20:00)
-                </label>
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.lateEvening}
-                    onChange={() => handleCheckboxChange('lateEvening')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Late Evening Session (20:00 - 00:00)
-                </label>
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.earlyMorning}
-                    onChange={() => handleCheckboxChange('earlyMorning')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Early Morning Session (00:00 - 08:00)
-                </label>
+                {[
+                  { key: 'morning', label: 'Morning Session (08:00 - 12:00)' },
+                  { key: 'evening', label: 'Afternoon Session (12:00 - 20:00)' },
+                  { key: 'lateEvening', label: 'Late Evening Session (20:00 - 00:00)' },
+                  { key: 'earlyMorning', label: 'Early Morning Session (00:00 - 08:00)' }
+                ].map(({ key, label }) => {
+                  const isBlocked = selectedDate && (
+                    isTimeSlotBlocked(selectedDate, label) || 
+                    isDateFullyBooked(selectedDate)
+                  );
+                  
+                  return (
+                    <label key={key} className={`flex items-center mb-2 ${isBlocked ? 'opacity-50' : ''}`}>
+                      <input
+                        type="checkbox"
+                        checked={availability[key as keyof typeof availability] || false}
+                        onChange={() => !isBlocked && handleCheckboxChange(key as keyof typeof availability)}
+                        disabled={!!isBlocked}
+                        className="form-checkbox text-blue-500 mr-2"
+                      />
+                      {label}
+                      {isBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
+                    </label>
+                  );
+                })}
               </div>
             )}
 
+            {/* Entire Day */}
             {venueInfo?.schedule === 'EntireDay' && (
               <div className="mb-4">
-                <label className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={availability.fullDay}
-                    onChange={() => handleCheckboxChange('fullDay')}
-                    className="form-checkbox text-blue-500 mr-2"
-                  />
-                  Full Day (00:00 - 11:59)
-                </label>
+                {(() => {
+                  const isBlocked = selectedDate && (
+                    isTimeSlotBlocked(selectedDate, 'Full Day (00:00 - 11:59)') || 
+                    isDateFullyBooked(selectedDate)
+                  );
+                  
+                  return (
+                    <label className={`flex items-center mb-2 ${isBlocked ? 'opacity-50' : ''}`}>
+                      <input
+                        type="checkbox"
+                        checked={availability.fullDay || false}
+                        onChange={() => !isBlocked && handleCheckboxChange('fullDay')}
+                        disabled={!!isBlocked}
+                        className="form-checkbox text-blue-500 mr-2"
+                      />
+                      Full Day (00:00 - 11:59)
+                      {isBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
+                    </label>
+                  );
+                })()}
               </div>
             )}
 
             <div className="flex justify-between">
               <button onClick={closeModal} className="bg-gray-500 text-white py-2 px-4 rounded-lg">Cancel</button>
-              <button onClick={handleSave} className="bg-blue-500 text-white py-2 px-4 rounded-lg">Save</button>
+              <button 
+                onClick={handleSave} 
+                className={`${isDateFullyBooked(selectedDate!) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'} text-white py-2 px-4 rounded-lg`}
+                disabled={isDateFullyBooked(selectedDate!)}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
