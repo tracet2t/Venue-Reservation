@@ -31,7 +31,7 @@ export default function Sidebar() {
         </Link>
 
         <Link 
-          href="/admin/reservation-requests"
+          href="/admin/admin-reservation-requests"
           className={`flex items-center px-6 py-3 text-[#584822] hover:bg-[#FDF8F3] ${isActive('/admin/reservation-requests')}`}
         >
           <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ export default function Sidebar() {
         </Link>
 
         <Link 
-          href="/admin/calendar"
+          href="/admin/admin-reservation-status"
           className={`flex items-center px-6 py-3 text-[#584822] hover:bg-[#FDF8F3] ${isActive('/admin/calendar')}`}
         >
           <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

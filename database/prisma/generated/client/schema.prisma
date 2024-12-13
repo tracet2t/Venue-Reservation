@@ -63,6 +63,8 @@ model VenueAvailability {
   status    AvailabilityStatus
   timeSlots TimeSlot[]
   venue     Venue              @relation(fields: [venueId], references: [id])
+
+  @@unique([venueId, date])
 }
 
 model TimeSlot {
@@ -147,9 +149,10 @@ enum UserType {
 model Question {
   id            String       @id @default(uuid())
   text          String
-  venueId       Int? // Add this field
-  venue         Venue?       @relation("VenueQuestions", fields: [venueId], references: [id]) // Add this relation
+  venueId       Int?
+  venue         Venue?       @relation("VenueQuestions", fields: [venueId], references: [id])
   reservationId String?
   answerOptions String[]
+  answer        String? // Add this field
   reservation   Reservation? @relation(fields: [reservationId], references: [reservationId])
 }

@@ -18,24 +18,32 @@ interface Location {
   districts: string[];
 }
 
+interface VenueQuestion {
+  id: string;
+  text: string;
+  answerOptions: string[];
+}
+
 const locations: Location[] = [
-  { id: 1, province: "Western Province", districts: ["Colombo", "Gampaha", "Kalutara"] },
-  { id: 2, province: "Central Province", districts: ["Kandy", "Matale", "Nuwara Eliya"] },
-  { id: 3, province: "Southern Province", districts: ["Galle", "Matara", "Hambantota"] },
-  { id: 4, province: "Sabaragamuwa Province", districts: ["Kegalle", "Rathnapura"] },
-  { id: 5, province: "Eastern Province", districts: ["Ampara", "Batticaloa", "Trincomalee"] },
-  { id: 6, province: "Uva Province", districts: ["Badulla", "Monaragala"] },
-  { id: 7, province: "North Western Province", districts: ["Kurunegala", "Puttalam"] },
-  { id: 8, province: "North Central Province", districts: ["Anuradhapura", "Polonnaruwa"] },
-  { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi", "Mullaitivu", "Vavuniya", "Mannar"] },
+    { id: 1, province: "Western Province", districts: ["Colombo", "Gampaha", "Kalutara"] },
+    { id: 2, province: "Central Province", districts: ["Kandy", "Matale", "Nuwara Eliya"] },
+    { id: 3, province: "Southern Province", districts: ["Galle", "Matara", "Hambantota"] },
+    { id: 4, province: "Sabaragamuwa Province", districts: ["Kegalle", "Rathnapura"] },
+    { id: 5, province: "Eastern Province", districts: ["Ampara", "Batticaloa","Trincomalee"] },
+    { id: 6, province: "Uva Province", districts: ["Badulla", "Monaragala"] },
+    { id: 7, province: "North Western Province", districts: ["Kurunegala", "Puttalam"] },
+    { id: 8, province: "North Central Province", districts: ["Anuradhapura", "Polonnaruwa"] },
+    { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
-export default function AddNewVenue() {
-  const { data: session, status } = useSession();
+export default function EditVenue({ params }: { params: { id: string } }) {
+  //const { data: session, status } = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
 
   const [activeTab, setActiveTab] = useState('general');
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -44,43 +52,14 @@ export default function AddNewVenue() {
     venueType: '',
     maximumCapacity: '',
     timeMode: '',
-    features: ['', '', '', ''],
+    features: ['', '', '', '']
   });
-  const [questions, setQuestions] = useState<Question[]>([
-    {
-      id: '1',
-      text: '',
-      options: [''],
-    },
-  ]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (!session) {
-    return null;
-  }
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setImages(Array.from(files));
-    }
-  };
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
-
     if (activeTab === 'general') {
       if (!formData.name || !formData.location || !selectedProvince || !selectedDistrict) {
         toast.error('Please fill all required fields');
@@ -88,7 +67,6 @@ export default function AddNewVenue() {
       }
       setActiveTab('setting');
     }
-
     if (activeTab === 'setting') {
       if (!formData.venueType || !formData.maximumCapacity || !formData.timeMode) {
         toast.error('Please fill all required fields');
@@ -98,73 +76,13 @@ export default function AddNewVenue() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (activeTab !== 'questions') {
-      return;
-    }
-
-    try {
-      const validQuestions = questions
-        .filter((q) => q.text.trim() !== '')
-        .map((q) => ({
-          text: q.text,
-          options: q.options.filter((opt) => opt.trim() !== ''),
-        }));
-
-      const venueData = {
-        name: formData.name,
-        streetName: formData.location,
-        district: selectedDistrict,
-        province: selectedProvince,
-        type: formData.venueType,
-        capacity: formData.maximumCapacity,
-        size: formData.venueSize,
-        schedule: formData.timeMode,
-        features: formData.features,
-        images: images,
-        questions: validQuestions,
-      };
-
-      const response = await fetch('/api/new-venue', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(venueData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (response.status === 401) {
-          router.push('/auth/signin');
-          throw new Error('Please sign in to continue');
-        }
-        throw new Error(errorData.error || 'Failed to create venue');
-      }
-
-      toast.success('Venue created successfully!');
-      router.push('/admin/venue-details');
-    } catch (error) {
-      console.error('Error creating venue:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to create venue');
-    }
-  };
-
   const handleAddOption = (questionId: string) => {
-    setQuestions(
-      questions.map((q) => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            options: [...q.options, ''],
-          };
-        }
-        return q;
-      })
-    );
+    setQuestions(questions.map(q => {
+      if (q.id === questionId) {
+        return { ...q, options: [...q.options, ''] };
+      }
+      return q;
+    }));
   };
 
   const handleAddQuestion = () => {
@@ -173,32 +91,26 @@ export default function AddNewVenue() {
       {
         id: String(questions.length + 1),
         text: '',
-        options: [''],
-      },
+        options: ['']
+      }
     ]);
   };
 
   const handleQuestionChange = (questionId: string, text: string) => {
-    setQuestions(
-      questions.map((q) => (q.id === questionId ? { ...q, text } : q))
-    );
+    setQuestions(questions.map(q => 
+      q.id === questionId ? { ...q, text } : q
+    ));
   };
 
-  const handleOptionChange = (
-    questionId: string,
-    optionIndex: number,
-    text: string
-  ) => {
-    setQuestions(
-      questions.map((q) => {
-        if (q.id === questionId) {
-          const newOptions = [...q.options];
-          newOptions[optionIndex] = text;
-          return { ...q, options: newOptions };
-        }
-        return q;
-      })
-    );
+  const handleOptionChange = (questionId: string, optionIndex: number, text: string) => {
+    setQuestions(questions.map(q => {
+      if (q.id === questionId) {
+        const newOptions = [...q.options];
+        newOptions[optionIndex] = text;
+        return { ...q, options: newOptions };
+      }
+      return q;
+    }));
   };
 
   const handleProvinceCheckboxChange = (province: string) => {
@@ -215,10 +127,96 @@ export default function AddNewVenue() {
     setSelectedDistrict(district === selectedDistrict ? null : district);
   };
 
+  useEffect(() => {
+    const fetchVenueData = async () => {
+      try {
+        const response = await fetch(`/api/admin-venue/${params.id}`);
+        if (!response.ok) throw new Error('Failed to fetch venue data');
+        
+        const venueData = await response.json();
+        
+        setFormData({
+          name: venueData.name,
+          location: venueData.street_name[0] || '',
+          provinceAndDistrict: '',
+          venueSize: venueData.size.toString(),
+          venueType: venueData.type,
+          maximumCapacity: venueData.capacity.toString(),
+          timeMode: venueData.schedule,
+          features: venueData.features.length ? venueData.features : ['', '', '', '']
+        });
+
+        setImages(venueData.images);
+        setSelectedProvince(venueData.province);
+        setSelectedDistrict(venueData.district);
+        
+        const transformedQuestions = venueData.questions.map((q: VenueQuestion) => ({
+          id: q.id,
+          text: q.text,
+          options: q.answerOptions
+        }));
+        setQuestions(transformedQuestions);
+      } catch (error) {
+        console.error('Error fetching venue data:', error);
+        toast.error('Failed to load venue data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchVenueData();
+    }
+  }, [params.id]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (activeTab !== 'questions') return;
+
+    try {
+      const validQuestions = questions
+        .filter(q => q.text.trim() !== '')
+        .map(q => ({
+          text: q.text,
+          options: q.options.filter(opt => opt.trim() !== '')
+        }));
+
+      const venueData = {
+        name: formData.name,
+        streetName: formData.location,
+        district: selectedDistrict,
+        province: selectedProvince,
+        type: formData.venueType,
+        capacity: parseInt(formData.maximumCapacity),
+        size: parseInt(formData.venueSize),
+        schedule: formData.timeMode,
+        features: formData.features.filter(f => f.trim() !== ''),
+        images: images,
+        questions: validQuestions
+      };
+
+      const response = await fetch(`/api/admin-venue/${params.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(venueData),
+      });
+
+      if (!response.ok) throw new Error('Failed to update venue');
+
+      toast.success('Venue updated successfully!');
+      router.push('/admin/venue-details');
+    } catch (error) {
+      console.error('Error updating venue:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to update venue');
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow container mx-auto px-4 py-8 md:max-w-4xl lg:max-w-5xl">
-        <h1 className="text-2xl md:text-3xl font-bold text-[#584822] mb-6">Add New Venue</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-[#584822] mb-6">Edit Venue</h1>
         
         {/* Tabs */}
         <div className="flex border-b mb-6 space-x-4 gap-64">
@@ -456,7 +454,7 @@ export default function AddNewVenue() {
 
           {activeTab === 'questions' && (
             <div className="space-y-8">
-              {questions.map((question, questionIndex) => (
+              {questions.map((question) => (
                 <div 
                   key={question.id} 
                   className="space-y-4 p-6 border-2 border-gray-200 rounded-lg bg-white shadow-sm"
@@ -563,4 +561,4 @@ export default function AddNewVenue() {
       </div>
     </div>
   );
-}
+} 
