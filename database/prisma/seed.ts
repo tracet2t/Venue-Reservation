@@ -10,7 +10,7 @@ async function seed() {
       lastName: "Jude",
       contactNumber: 94763751121,
       address: "123 Main St, Cityville",
-      email: "shanjude1121Sgmail.com",
+      email: "shanjude1121@gmail.com",
       password: "password123",
       userType: "Admin",
       emailVerified: false, 
@@ -542,7 +542,7 @@ async function seed() {
       purposeOfReservation: "Technology seminar",
       timeDuration: 4,
       extraServices: [ExtraService.projectors, ExtraService.sound_system],
-      reservationDate: new Date("2024-11-15T09:00:00Z"),
+      reservationDate: new Date("2024-12-09T09:00:00Z"),
     },
   });
 
@@ -554,10 +554,78 @@ async function seed() {
       purposeOfReservation: "Wedding celebration",
       timeDuration: 6,
       extraServices: [ExtraService.food, ExtraService.private_parking],
-      reservationDate: new Date("2024-12-10T12:00:00Z"),
+      reservationDate: new Date("2024-12-09T12:00:00Z"),
+    },
+  });
+  const reservation3 = await prisma.reservation.create({
+    data: {
+      userId: user1.userId,
+      venueId: venue1.id,
+      title: "Tech Conference",
+      purposeOfReservation: "Technology seminar",
+      timeDuration: 4,
+      extraServices: [ExtraService.projectors, ExtraService.sound_system],
+      reservationDate: new Date("2024-12-10T09:00:00Z"),
     },
   });
 
+  const reservation4 = await prisma.reservation.create({
+    data: {
+      userId: user2.userId,
+      venueId: venue2.id,
+      title: "Wedding Reception",
+      purposeOfReservation: "Wedding celebration",
+      timeDuration: 6,
+      extraServices: [ExtraService.food, ExtraService.private_parking],
+      reservationDate: new Date("2024-12-10T12:00:00Z"),
+    },
+  });
+  const reservation5 = await prisma.reservation.create({
+    data: {
+      userId: user1.userId,
+      venueId: venue1.id,
+      title: "Tech Conference",
+      purposeOfReservation: "Technology seminar",
+      timeDuration: 4,
+      extraServices: [ExtraService.projectors, ExtraService.sound_system],
+      reservationDate: new Date("2024-12-11T09:00:00Z"),
+    },
+  });
+
+  const reservation6 = await prisma.reservation.create({
+    data: {
+      userId: user2.userId,
+      venueId: venue2.id,
+      title: "Wedding Reception",
+      purposeOfReservation: "Wedding celebration",
+      timeDuration: 6,
+      extraServices: [ExtraService.food, ExtraService.private_parking],
+      reservationDate: new Date("2024-12-11T12:00:00Z"),
+    },
+  });
+  const reservation7 = await prisma.reservation.create({
+    data: {
+      userId: user1.userId,
+      venueId: venue1.id,
+      title: "Tech Conference",
+      purposeOfReservation: "Technology seminar",
+      timeDuration: 4,
+      extraServices: [ExtraService.projectors, ExtraService.sound_system],
+      reservationDate: new Date("2024-12-12T09:00:00Z"),
+    },
+  });
+
+  const reservation8 = await prisma.reservation.create({
+    data: {
+      userId: user2.userId,
+      venueId: venue2.id,
+      title: "Wedding Reception",
+      purposeOfReservation: "Wedding celebration",
+      timeDuration: 6,
+      extraServices: [ExtraService.food, ExtraService.private_parking],
+      reservationDate: new Date("2024-12-12T12:00:00Z"),
+    },
+  });
   // Create reservation states
   await prisma.reservationState.create({
     data: {
@@ -574,7 +642,51 @@ async function seed() {
       adminComments: "Awaiting approval from admin",
     },
   });
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation3.reservationId,
+      status: Status.Accepted,
+      adminComments: "Approved for the tech conference",
+    },
+  });
 
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation4.reservationId,
+      status: Status.Pending,
+      adminComments: "Awaiting approval from admin",
+    },
+  });
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation5.reservationId,
+      status: Status.Accepted,
+      adminComments: "Approved for the tech conference",
+    },
+  });
+
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation6.reservationId,
+      status: Status.Pending,
+      adminComments: "Awaiting approval from admin",
+    },
+  });
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation7.reservationId,
+      status: Status.Accepted,
+      adminComments: "Approved for the tech conference",
+    },
+  });
+
+  await prisma.reservationState.create({
+    data: {
+      reservationId: reservation8.reservationId,
+      status: Status.Pending,
+      adminComments: "Awaiting approval from admin",
+    },
+  });
   console.log("Seed data created!");
 }
 

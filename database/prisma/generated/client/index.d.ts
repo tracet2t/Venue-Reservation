@@ -58,13 +58,14 @@ export type VenueDailyReservationCount = $Result.DefaultSelection<Prisma.$VenueD
  * Enums
  */
 export namespace $Enums {
-  export const UserType: {
-  Admin: 'Admin',
-  Regular: 'Regular',
-  Guest: 'Guest'
+  export const AvailabilityStatus: {
+  FULLY_BOOKED: 'FULLY_BOOKED',
+  PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
+  NOT_AVAILABLE: 'NOT_AVAILABLE',
+  AVAILABLE: 'AVAILABLE'
 };
 
-export type UserType = (typeof UserType)[keyof typeof UserType]
+export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
 export const Schedule: {
@@ -74,16 +75,6 @@ export const Schedule: {
 };
 
 export type Schedule = (typeof Schedule)[keyof typeof Schedule]
-
-
-export const AvailabilityStatus: {
-  FULLY_BOOKED: 'FULLY_BOOKED',
-  PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
-  NOT_AVAILABLE: 'NOT_AVAILABLE',
-  AVAILABLE: 'AVAILABLE'
-};
-
-export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
 export const ExtraService: {
@@ -105,19 +96,24 @@ export const Status: {
 
 export type Status = (typeof Status)[keyof typeof Status]
 
+
+export const UserType: {
+  Admin: 'Admin',
+  Regular: 'Regular',
+  Guest: 'Guest'
+};
+
+export type UserType = (typeof UserType)[keyof typeof UserType]
+
 }
-
-export type UserType = $Enums.UserType
-
-export const UserType: typeof $Enums.UserType
-
-export type Schedule = $Enums.Schedule
-
-export const Schedule: typeof $Enums.Schedule
 
 export type AvailabilityStatus = $Enums.AvailabilityStatus
 
 export const AvailabilityStatus: typeof $Enums.AvailabilityStatus
+
+export type Schedule = $Enums.Schedule
+
+export const Schedule: typeof $Enums.Schedule
 
 export type ExtraService = $Enums.ExtraService
 
@@ -126,6 +122,10 @@ export const ExtraService: typeof $Enums.ExtraService
 export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
+
+export type UserType = $Enums.UserType
+
+export const UserType: typeof $Enums.UserType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -349,7 +349,6 @@ export namespace Prisma {
   export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
   export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
   export import PrismaClientValidationError = runtime.PrismaClientValidationError
-  export import NotFoundError = runtime.NotFoundError
 
   /**
    * Re-export of sql-template-tag
@@ -388,8 +387,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.22.0
-   * Query Engine version: bf0e5e8a04cada8225617067eaa03d041e2bba36
+   * Prisma Client JS version: 6.0.1
+   * Query Engine version: 5dbef10bdbfb579e07d35cc85fb1518d357cb99e
    */
   export type PrismaVersion = {
     client: string
@@ -10105,7 +10104,7 @@ export namespace Prisma {
     date?: DateTimeFilter<"VenueAvailability"> | Date | string
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }
 
   export type VenueAvailabilityOrderByWithRelationInput = {
@@ -10126,7 +10125,7 @@ export namespace Prisma {
     date?: DateTimeFilter<"VenueAvailability"> | Date | string
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }, "id">
 
   export type VenueAvailabilityOrderByWithAggregationInput = {
@@ -10160,7 +10159,7 @@ export namespace Prisma {
     startTime?: DateTimeFilter<"TimeSlot"> | Date | string
     endTime?: DateTimeFilter<"TimeSlot"> | Date | string
     status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
-    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+    venueAvailability?: XOR<VenueAvailabilityScalarRelationFilter, VenueAvailabilityWhereInput>
   }
 
   export type TimeSlotOrderByWithRelationInput = {
@@ -10181,7 +10180,7 @@ export namespace Prisma {
     startTime?: DateTimeFilter<"TimeSlot"> | Date | string
     endTime?: DateTimeFilter<"TimeSlot"> | Date | string
     status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
-    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+    venueAvailability?: XOR<VenueAvailabilityScalarRelationFilter, VenueAvailabilityWhereInput>
   }, "id">
 
   export type TimeSlotOrderByWithAggregationInput = {
@@ -10222,9 +10221,9 @@ export namespace Prisma {
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
-    reservationState?: XOR<ReservationStateNullableRelationFilter, ReservationStateWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
+    reservationState?: XOR<ReservationStateNullableScalarRelationFilter, ReservationStateWhereInput> | null
   }
 
   export type ReservationOrderByWithRelationInput = {
@@ -10257,9 +10256,9 @@ export namespace Prisma {
     reservationDate?: DateTimeFilter<"Reservation"> | Date | string
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
-    reservationState?: XOR<ReservationStateNullableRelationFilter, ReservationStateWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
+    reservationState?: XOR<ReservationStateNullableScalarRelationFilter, ReservationStateWhereInput> | null
   }, "reservationId">
 
   export type ReservationOrderByWithAggregationInput = {
@@ -10304,7 +10303,7 @@ export namespace Prisma {
     reservationId?: StringFilter<"ReservationState"> | string
     status?: EnumStatusFilter<"ReservationState"> | $Enums.Status
     adminComments?: StringNullableFilter<"ReservationState"> | string | null
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }
 
   export type ReservationStateOrderByWithRelationInput = {
@@ -10323,7 +10322,7 @@ export namespace Prisma {
     NOT?: ReservationStateWhereInput | ReservationStateWhereInput[]
     status?: EnumStatusFilter<"ReservationState"> | $Enums.Status
     adminComments?: StringNullableFilter<"ReservationState"> | string | null
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }, "reservationStateId" | "reservationId">
 
   export type ReservationStateOrderByWithAggregationInput = {
@@ -10354,7 +10353,7 @@ export namespace Prisma {
     venueId?: IntFilter<"VenueDailyReservationCount"> | number
     reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
     date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }
 
   export type VenueDailyReservationCountOrderByWithRelationInput = {
@@ -10374,7 +10373,7 @@ export namespace Prisma {
     venueId?: IntFilter<"VenueDailyReservationCount"> | number
     reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
     date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }, "id" | "venueId_date">
 
   export type VenueDailyReservationCountOrderByWithAggregationInput = {
@@ -11336,7 +11335,7 @@ export namespace Prisma {
     none?: TimeSlotWhereInput
   }
 
-  export type VenueRelationFilter = {
+  export type VenueScalarRelationFilter = {
     is?: VenueWhereInput
     isNot?: VenueWhereInput
   }
@@ -11386,7 +11385,7 @@ export namespace Prisma {
     _max?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
   }
 
-  export type VenueAvailabilityRelationFilter = {
+  export type VenueAvailabilityScalarRelationFilter = {
     is?: VenueAvailabilityWhereInput
     isNot?: VenueAvailabilityWhereInput
   }
@@ -11433,12 +11432,12 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type UserRelationFilter = {
+  export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
 
-  export type ReservationStateNullableRelationFilter = {
+  export type ReservationStateNullableScalarRelationFilter = {
     is?: ReservationStateWhereInput | null
     isNot?: ReservationStateWhereInput | null
   }
@@ -11497,7 +11496,7 @@ export namespace Prisma {
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
-  export type ReservationRelationFilter = {
+  export type ReservationScalarRelationFilter = {
     is?: ReservationWhereInput
     isNot?: ReservationWhereInput
   }
@@ -13154,54 +13153,6 @@ export namespace Prisma {
   }
 
 
-
-  /**
-   * Aliases for legacy arg types
-   */
-    /**
-     * @deprecated Use UserCountOutputTypeDefaultArgs instead
-     */
-    export type UserCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserCountOutputTypeDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VenueCountOutputTypeDefaultArgs instead
-     */
-    export type VenueCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueCountOutputTypeDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VenueAvailabilityCountOutputTypeDefaultArgs instead
-     */
-    export type VenueAvailabilityCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueAvailabilityCountOutputTypeDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use UserDefaultArgs instead
-     */
-    export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VerificationTokenDefaultArgs instead
-     */
-    export type VerificationTokenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VerificationTokenDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VenueDefaultArgs instead
-     */
-    export type VenueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VenueAvailabilityDefaultArgs instead
-     */
-    export type VenueAvailabilityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueAvailabilityDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use TimeSlotDefaultArgs instead
-     */
-    export type TimeSlotArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = TimeSlotDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use ReservationDefaultArgs instead
-     */
-    export type ReservationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ReservationDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use ReservationStateDefaultArgs instead
-     */
-    export type ReservationStateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ReservationStateDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use VenueDailyReservationCountDefaultArgs instead
-     */
-    export type VenueDailyReservationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = VenueDailyReservationCountDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
