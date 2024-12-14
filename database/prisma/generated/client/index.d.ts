@@ -9800,6 +9800,7 @@ export namespace Prisma {
     text: number
     venueId: number
     reservationId: number
+    answerOptions: number
     answer: number
     _all: number
   }
@@ -9834,6 +9835,7 @@ export namespace Prisma {
     text?: true
     venueId?: true
     reservationId?: true
+    answerOptions?: true
     answer?: true
     _all?: true
   }
@@ -9929,6 +9931,7 @@ export namespace Prisma {
     text: string
     venueId: number | null
     reservationId: string | null
+    answerOptions: string[]
     answer: string | null
     _count: QuestionCountAggregateOutputType | null
     _avg: QuestionAvgAggregateOutputType | null
@@ -9956,6 +9959,7 @@ export namespace Prisma {
     text?: boolean
     venueId?: boolean
     reservationId?: boolean
+    answerOptions?: boolean
     answer?: boolean
     venue?: boolean | Question$venueArgs<ExtArgs>
     reservation?: boolean | Question$reservationArgs<ExtArgs>
@@ -9966,6 +9970,7 @@ export namespace Prisma {
     text?: boolean
     venueId?: boolean
     reservationId?: boolean
+    answerOptions?: boolean
     answer?: boolean
     venue?: boolean | Question$venueArgs<ExtArgs>
     reservation?: boolean | Question$reservationArgs<ExtArgs>
@@ -9976,6 +9981,7 @@ export namespace Prisma {
     text?: boolean
     venueId?: boolean
     reservationId?: boolean
+    answerOptions?: boolean
     answer?: boolean
   }
 
@@ -9999,6 +10005,7 @@ export namespace Prisma {
       text: string
       venueId: number | null
       reservationId: string | null
+      answerOptions: string[]
       answer: string | null
     }, ExtArgs["result"]["question"]>
     composites: {}
@@ -10399,6 +10406,7 @@ export namespace Prisma {
     readonly text: FieldRef<"Question", 'String'>
     readonly venueId: FieldRef<"Question", 'Int'>
     readonly reservationId: FieldRef<"Question", 'String'>
+    readonly answerOptions: FieldRef<"Question", 'String[]'>
     readonly answer: FieldRef<"Question", 'String'>
   }
     
@@ -10887,6 +10895,7 @@ export namespace Prisma {
     text: 'text',
     venueId: 'venueId',
     reservationId: 'reservationId',
+    answerOptions: 'answerOptions',
     answer: 'answer'
   };
 
@@ -11338,6 +11347,7 @@ export namespace Prisma {
 
   export type VenueAvailabilityWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    venueId_date?: VenueAvailabilityVenueIdDateCompoundUniqueInput
     AND?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
     OR?: VenueAvailabilityWhereInput[]
     NOT?: VenueAvailabilityWhereInput | VenueAvailabilityWhereInput[]
@@ -11346,7 +11356,7 @@ export namespace Prisma {
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
     venue?: XOR<VenueRelationFilter, VenueWhereInput>
-  }, "id">
+  }, "id" | "venueId_date">
 
   export type VenueAvailabilityOrderByWithAggregationInput = {
     id?: SortOrder
@@ -11629,6 +11639,7 @@ export namespace Prisma {
     text?: StringFilter<"Question"> | string
     venueId?: IntNullableFilter<"Question"> | number | null
     reservationId?: StringNullableFilter<"Question"> | string | null
+    answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableFilter<"Question"> | string | null
     venue?: XOR<VenueNullableRelationFilter, VenueWhereInput> | null
     reservation?: XOR<ReservationNullableRelationFilter, ReservationWhereInput> | null
@@ -11639,6 +11650,7 @@ export namespace Prisma {
     text?: SortOrder
     venueId?: SortOrderInput | SortOrder
     reservationId?: SortOrderInput | SortOrder
+    answerOptions?: SortOrder
     answer?: SortOrderInput | SortOrder
     venue?: VenueOrderByWithRelationInput
     reservation?: ReservationOrderByWithRelationInput
@@ -11652,6 +11664,7 @@ export namespace Prisma {
     text?: StringFilter<"Question"> | string
     venueId?: IntNullableFilter<"Question"> | number | null
     reservationId?: StringNullableFilter<"Question"> | string | null
+    answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableFilter<"Question"> | string | null
     venue?: XOR<VenueNullableRelationFilter, VenueWhereInput> | null
     reservation?: XOR<ReservationNullableRelationFilter, ReservationWhereInput> | null
@@ -11662,6 +11675,7 @@ export namespace Prisma {
     text?: SortOrder
     venueId?: SortOrderInput | SortOrder
     reservationId?: SortOrderInput | SortOrder
+    answerOptions?: SortOrder
     answer?: SortOrderInput | SortOrder
     _count?: QuestionCountOrderByAggregateInput
     _avg?: QuestionAvgOrderByAggregateInput
@@ -11678,6 +11692,7 @@ export namespace Prisma {
     text?: StringWithAggregatesFilter<"Question"> | string
     venueId?: IntNullableWithAggregatesFilter<"Question"> | number | null
     reservationId?: StringNullableWithAggregatesFilter<"Question"> | string | null
+    answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableWithAggregatesFilter<"Question"> | string | null
   }
 
@@ -12278,6 +12293,7 @@ export namespace Prisma {
   export type QuestionCreateInput = {
     id?: string
     text: string
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
     venue?: VenueCreateNestedOneWithoutQuestionsInput
     reservation?: ReservationCreateNestedOneWithoutQuestionsInput
@@ -12288,12 +12304,14 @@ export namespace Prisma {
     text: string
     venueId?: number | null
     reservationId?: string | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
   export type QuestionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
     venue?: VenueUpdateOneWithoutQuestionsNestedInput
     reservation?: ReservationUpdateOneWithoutQuestionsNestedInput
@@ -12304,6 +12322,7 @@ export namespace Prisma {
     text?: StringFieldUpdateOperationsInput | string
     venueId?: NullableIntFieldUpdateOperationsInput | number | null
     reservationId?: NullableStringFieldUpdateOperationsInput | string | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -12312,12 +12331,14 @@ export namespace Prisma {
     text: string
     venueId?: number | null
     reservationId?: string | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
   export type QuestionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -12326,6 +12347,7 @@ export namespace Prisma {
     text?: StringFieldUpdateOperationsInput | string
     venueId?: NullableIntFieldUpdateOperationsInput | number | null
     reservationId?: NullableStringFieldUpdateOperationsInput | string | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -12730,6 +12752,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type VenueAvailabilityVenueIdDateCompoundUniqueInput = {
+    venueId: number
+    date: Date | string
+  }
+
   export type VenueAvailabilityCountOrderByAggregateInput = {
     id?: SortOrder
     venueId?: SortOrder
@@ -12975,6 +13002,7 @@ export namespace Prisma {
     text?: SortOrder
     venueId?: SortOrder
     reservationId?: SortOrder
+    answerOptions?: SortOrder
     answer?: SortOrder
   }
 
@@ -13566,6 +13594,10 @@ export namespace Prisma {
     update?: XOR<XOR<ReservationUpdateToOneWithWhereWithoutReservationStateInput, ReservationUpdateWithoutReservationStateInput>, ReservationUncheckedUpdateWithoutReservationStateInput>
   }
 
+  export type QuestionCreateanswerOptionsInput = {
+    set: string[]
+  }
+
   export type VenueCreateNestedOneWithoutQuestionsInput = {
     create?: XOR<VenueCreateWithoutQuestionsInput, VenueUncheckedCreateWithoutQuestionsInput>
     connectOrCreate?: VenueCreateOrConnectWithoutQuestionsInput
@@ -13576,6 +13608,11 @@ export namespace Prisma {
     create?: XOR<ReservationCreateWithoutQuestionsInput, ReservationUncheckedCreateWithoutQuestionsInput>
     connectOrCreate?: ReservationCreateOrConnectWithoutQuestionsInput
     connect?: ReservationWhereUniqueInput
+  }
+
+  export type QuestionUpdateanswerOptionsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type VenueUpdateOneWithoutQuestionsNestedInput = {
@@ -14091,6 +14128,7 @@ export namespace Prisma {
   export type QuestionCreateWithoutVenueInput = {
     id?: string
     text: string
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
     reservation?: ReservationCreateNestedOneWithoutQuestionsInput
   }
@@ -14099,6 +14137,7 @@ export namespace Prisma {
     id?: string
     text: string
     reservationId?: string | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
@@ -14215,6 +14254,7 @@ export namespace Prisma {
     text?: StringFilter<"Question"> | string
     venueId?: IntNullableFilter<"Question"> | number | null
     reservationId?: StringNullableFilter<"Question"> | string | null
+    answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableFilter<"Question"> | string | null
   }
 
@@ -14446,6 +14486,7 @@ export namespace Prisma {
   export type QuestionCreateWithoutReservationInput = {
     id?: string
     text: string
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
     venue?: VenueCreateNestedOneWithoutQuestionsInput
   }
@@ -14454,6 +14495,7 @@ export namespace Prisma {
     id?: string
     text: string
     venueId?: number | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
@@ -15190,6 +15232,7 @@ export namespace Prisma {
     id?: string
     text: string
     reservationId?: string | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
@@ -15254,6 +15297,7 @@ export namespace Prisma {
   export type QuestionUpdateWithoutVenueInput = {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
     reservation?: ReservationUpdateOneWithoutQuestionsNestedInput
   }
@@ -15262,6 +15306,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
     reservationId?: NullableStringFieldUpdateOperationsInput | string | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -15269,6 +15314,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
     reservationId?: NullableStringFieldUpdateOperationsInput | string | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -15303,6 +15349,7 @@ export namespace Prisma {
     id?: string
     text: string
     venueId?: number | null
+    answerOptions?: QuestionCreateanswerOptionsInput | string[]
     answer?: string | null
   }
 
@@ -15316,6 +15363,7 @@ export namespace Prisma {
   export type QuestionUpdateWithoutReservationInput = {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
     venue?: VenueUpdateOneWithoutQuestionsNestedInput
   }
@@ -15324,6 +15372,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
     venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -15331,6 +15380,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     text?: StringFieldUpdateOperationsInput | string
     venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    answerOptions?: QuestionUpdateanswerOptionsInput | string[]
     answer?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

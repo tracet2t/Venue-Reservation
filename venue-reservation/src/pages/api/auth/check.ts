@@ -25,11 +25,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Check for tokens in cookies
     const authToken = req.cookies.auth_token;
-    const magicToken = req.cookies.token;
+    const magicToken = req.cookies.magic_token;
     let decodedEmail: string | undefined;
 
-    // Try auth_token
-    if (authToken) {
+    // Try magic token first (prioritize magic link login)
+    if (magicToken) {
+      try {
+        const decoded = jwt.verify(magicToken, SECRET_KEY) as { email: string };
+        decodedEmail = decoded.email;
+        // If magic token is valid, set it as auth_token
+        const newToken = jwt.sign(
+          { email: decoded.email },
+          SECRET_KEY,
+          { expiresIn: '1h' }
+        );
+
+        res.setHeader(
+          'Set-Cookie',
+          `auth_token=${newToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60}`
+        );
+      } catch (error) {
+        console.error('Magic token verification failed:', error);
+      }
+    }
+
+    // Try auth_token if magic token failed
+    if (!decodedEmail && authToken) {
       try {
         const decoded = jwt.verify(authToken, SECRET_KEY) as { email: string };
         decodedEmail = decoded.email;
@@ -38,20 +59,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
 
-    // Try magic token
-    if (!decodedEmail && magicToken) {
-      try {
-        const decoded = jwt.verify(magicToken, SECRET_KEY) as { email: string };
-        decodedEmail = decoded.email;
-      } catch (error) {
-        console.error('Magic token verification failed:', error);
-      }
-    }
-
     if (!decodedEmail) {
+      console.error('No valid token found, returning 401');
       return res.status(401).json({ message: "Not authenticated" });
     }
 
+    // Get user data if token verification succeeded
     const user = await prisma.user.findUnique({
       where: { email: decodedEmail },
       select: {
@@ -67,6 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     return res.status(200).json({ user });
+
   } catch (error) {
     console.error("Auth check error:", error);
     return res.status(401).json({ message: "Authentication failed" });

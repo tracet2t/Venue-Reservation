@@ -209,6 +209,7 @@ exports.Prisma.QuestionScalarFieldEnum = {
   text: 'text',
   venueId: 'venueId',
   reservationId: 'reservationId',
+  answerOptions: 'answerOptions',
   answer: 'answer'
 };
 

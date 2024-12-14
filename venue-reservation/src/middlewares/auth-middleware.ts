@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verify, JwtPayload } from "jsonwebtoken";
+import { getToken } from "next-auth/jwt";
 
 export function withAuthMiddleware() {
   return async (req: NextRequest) => {
-    const token = req.cookies.get("token");
-    const publicRoutes = ["/card_view", "/reservations", "/"];
+    const publicRoutes = ["/card_view", "/reservations", "/", "/login", "/api/auth"];
     const { pathname } = req.nextUrl;
 
     // Allow access to public routes
@@ -12,36 +12,45 @@ export function withAuthMiddleware() {
       return NextResponse.next();
     }
 
-    if (!token) {
-      return NextResponse.redirect(`${process.env.BASE_URL}/login`);
-    }
-
     try {
-      const payload = verify(token.value, process.env.JWT_SECRET!) as JwtPayload;
-      console.log("Token Verified:", payload);
-      return NextResponse.next();
+      // Check NextAuth session
+      const session = await getToken({
+        req: req as any,
+        secret: process.env.NEXTAUTH_SECRET
+      });
+
+      if (session) {
+        return NextResponse.next();
+      }
+
+      // Check JWT token
+      const token = req.cookies.get("auth_token");
+      if (token) {
+        const payload = verify(token.value, process.env.JWT_SECRET!) as JwtPayload;
+        if (payload) {
+          return NextResponse.next();
+        }
+      }
+
+      // No valid authentication found
+      throw new Error("Not authenticated");
+
     } catch (error: unknown) {
       const err = error as Error;
-      const errorMessage =
-        err.name === "TokenExpiredError"
-          ? "Session expired. Please log in again."
-          : "Authentication error. Please log in.";
+      const errorMessage = err.name === "TokenExpiredError" 
+        ? "Session expired. Please log in again."
+        : "Authentication error. Please log in.";
 
+      // Clear all auth cookies
       const headers = new Headers(req.headers);
+      headers.set("Set-Cookie", [
+        `auth_token=; Path=/; HttpOnly; Max-Age=0`,
+        `next-auth.session-token=; Path=/; HttpOnly; Max-Age=0`,
+        `token=; Path=/; HttpOnly; Max-Age=0`
+      ].join(", "));
 
-      headers.set(
-        "Set-Cookie",
-        `redirect_error=${errorMessage}; Path=/login; HttpOnly`
-      );
-      headers.append(
-        "Set-Cookie",
-        `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; Path=/; HttpOnly`
-      );
-
-      console.error("Authentication Error:", err.message);
-      return NextResponse.redirect(`${process.env.BASE_URL}/login`, {
-        status: 303,
-        headers,
+      return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`, {
+        headers
       });
     }
   };

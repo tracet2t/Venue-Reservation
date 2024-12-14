@@ -1,46 +1,59 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../dbclient';
 
-const getVenues = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { provinces, districts, venueType, searchTerm } = req.query;
-
-    // Fetching venues with dynamic filtering
-    const venues = await prisma.venue.findMany({
-      where: {
-        province: provinces ? { in: (provinces as string).split(',') } : undefined,
-        district: districts ? { in: (districts as string).split(',') } : undefined,
-        type: venueType ? { equals: venueType as string } : undefined,
-        name: searchTerm ? { contains: searchTerm as string, mode: 'insensitive' } : undefined,
-      },
-    });
-
-    // Mapping to the expected structure
-    const venueData = venues.map(venue => ({
-      id: venue.id,
-      name: venue.name,
-      street_name: venue.street_name,
-      district: venue.district,
-      province: venue.province,
-      type: venue.type,
-      capacity: venue.capacity,
-      features: venue.features,
-      images: venue.images,
-      schedule: venue.schedule,
-    }));
-
-    return res.status(200).json(venueData);
-  } catch (error) {
-    console.error("Error fetching venues:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
-    return await getVenues(req, res);
+    try {
+      const { provinces, districts, venueType, searchTerm } = req.query;
+
+      const venues = await prisma.venue.findMany({
+        where: {
+          AND: [
+            {
+              province: {
+                in: provinces ? (provinces as string).split(',') : undefined,
+              },
+            },
+            {
+              district: {
+                in: districts ? (districts as string).split(',') : undefined,
+              },
+            },
+            {
+              type: venueType ? (venueType as string) : undefined,
+            },
+            {
+              OR: searchTerm
+                ? [
+                    { name: { contains: searchTerm as string, mode: 'insensitive' } },
+                    { district: { contains: searchTerm as string, mode: 'insensitive' } },
+                    { province: { contains: searchTerm as string, mode: 'insensitive' } },
+                  ]
+                : undefined,
+            },
+          ],
+        },
+        select: {
+          id: true,
+          name: true,
+          street_name: true,
+          district: true,
+          province: true,
+          type: true,
+          capacity: true,
+          size: true,
+          schedule: true,
+          features: true,
+          images: true,
+        },
+      });
+
+      return res.status(200).json(venues);
+    } catch (error) {
+      console.error('Error fetching venues:', error);
+      return res.status(500).json({ error: 'Failed to fetch venues' });
+    }
   }
 
-  res.setHeader('Allow', ['GET']);
-  res.status(405).end(`Method ${req.method} Not Allowed`);
+  return res.status(405).json({ error: 'Method not allowed' });
 }
