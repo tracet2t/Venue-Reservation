@@ -51,9 +51,8 @@ const reservations = [
 
 const ReservationPage = () => {
   const router = useRouter();
-  const { id } = router.query; // Retrieve the dynamic parameter from the URL
+  const { id } = router.query; 
 
-  // Find the reservation by ID
   const reservation = reservations.find((res) => res.reservationId === id);
 
   if (!reservation) {
@@ -65,54 +64,116 @@ const ReservationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      <main className="flex flex-col items-center space-y-8 p-8 w-full">
-        <div className="bg-white shadow-lg rounded-lg p-6 w-[600px]">
-          <h2 className="font-bold text-black text-2xl mb-4 text-center">{reservation.title}</h2>
-          <div className="space-y-4">
-            <p className="text-gray-600">
-              <strong>Time Mode:</strong> {reservation.timeMode}
-            </p>
-            <p className="text-gray-600">
-              <strong>Duration:</strong> {reservation.duration}
-            </p>
-            <p className="text-gray-600">
-              <strong>Extra Services:</strong> {reservation.extraServices.join(', ')}
-            </p>
-            <p className="text-gray-600">
-              <strong>Purpose of Reservation:</strong> {reservation.purposeOfReservation}
-            </p>
-            <p className="text-orange-500 font-semibold">
-              <strong>Status:</strong> {reservation.status}
-            </p>
-            <p className="text-gray-600">
-              <strong>Venue:</strong> {reservation.venue}
-            </p>
-            <p className="text-gray-600">
-              <strong>Customer Name:</strong> {reservation.customerName}
-            </p>
-            <p className="text-gray-600">
-              <strong>Email:</strong> {reservation.customerEmail}
-            </p>
-            <p className="text-gray-600">
-              <strong>Contact Number:</strong> {reservation.customerContactNumber}
-            </p>
-            <p className="text-gray-600">
-              <strong>Reservation ID:</strong> {reservation.reservationId}
-            </p>
-            <p className="text-gray-600">
-              <strong>Date:</strong> {reservation.date}
-            </p>
-          </div>
-          <button
-            onClick={() => router.push('/admin-view')}
-            className="mt-4 text-white bg-[#584822] px-4 py-2 rounded"
-          >
-            Back
-          </button>
+<div className="min-h-screen bg-gray-100 flex flex-col items-center">
+  <main className="flex flex-col items-center space-y-8 p-8 w-full">
+    <div className="bg-white shadow-lg rounded-lg p-6 w-[1200px]">
+      <h2 className="font-bold text-black text-2xl mb-4 text-left">{reservation.title}</h2>
+      
+      {/* Details Section */}
+      <div className="grid grid-cols-2 gap-2 pr-28">
+        <p className="text-gray-600 font-semibold">Time Mode:</p>
+        <p className="text-gray-600">{reservation.timeMode}</p>
+
+        <p className="text-gray-600 font-semibold">Duration:</p>
+        <p className="text-gray-600">{reservation.duration}</p>
+
+        <p className="text-gray-600 font-semibold">Extra Services:</p>
+        <p className="text-gray-600">{reservation.extraServices.join(', ')}</p>
+
+        <p className="text-gray-600 font-semibold">Purpose of Reservation:</p>
+        <p className="text-gray-600">{reservation.purposeOfReservation}</p>
+
+        <p className="text-orange-500 font-semibold">Status:</p>
+        <p className="text-orange-500 font-semibold">{reservation.status}</p>
+
+        <p className="text-gray-600 font-semibold">Venue:</p>
+        <p className="text-gray-600">{reservation.venue}</p>
+
+        <p className="text-gray-600 font-semibold">Customer Name:</p>
+        <p className="text-gray-600">{reservation.customerName}</p>
+
+        <p className="text-gray-600 font-semibold">Email:</p>
+        <p className="text-gray-600">{reservation.customerEmail}</p>
+
+        <p className="text-gray-600 font-semibold">Contact Number:</p>
+        <p className="text-gray-600">{reservation.customerContactNumber}</p>
+
+        <p className="text-gray-600 font-semibold">Reservation ID:</p>
+        <p className="text-gray-600">{reservation.reservationId}</p>
+
+        <p className="text-gray-600 font-semibold">Date:</p>
+        <p className="text-gray-600">{reservation.date}</p>
+      </div>
+
+      {/* Questions Section */}
+      <div className="mt-8 space-y-6">
+        <div className="flex items-center justify-between">
+          <label className="text-gray-600 font-semibold">Is your event open to the public or private/invitation-only?</label>
+          <select className="border-gray-300 rounded px-3 py-2">
+          <option value="private"> Select</option>
+            <option value="private">Private</option>
+            <option value="public">Public</option>
+            <option value="invitation-only">Invitation-only</option>
+          </select>
         </div>
-      </main>
+
+        <div className="flex items-center justify-between">
+          <label className="text-gray-600 font-semibold">Are you aware of any special permits or approvals required for your event?</label>
+          <select className="border-gray-300 rounded px-3 py-2">
+          <option value="private"> Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <label className="text-gray-600 font-semibold">Are there any special security or safety requirements for your event?</label>
+          <select className="border-gray-300 rounded px-3 py-2">
+          <option value="private"> Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <label className="text-gray-600 font-semibold">Do you anticipate any media coverage or external guests?</label>
+          <select className="border-gray-300 rounded px-3 py-2">
+          <option value="private"> Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <label className="text-gray-600 font-semibold">Are you aware of the rules and regulations regarding the use of the auditorium?</label>
+          <select className="border-gray-300 rounded px-3 py-2">
+          <option value="private"> Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Comments Section */}
+      <div className="mt-6">
+        <label className="block text-gray-600 font-semibold mb-2">Additional Comments:</label>
+        <textarea
+          className="w-full border-gray-300 rounded px-3 py-2"
+          rows="4"
+          placeholder="Add any additional information here..."
+        ></textarea>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end space-x-4 mt-6">
+        <button className="bg-green-700 text-white px-4 py-2 rounded">Approve</button>
+        <button className="bg-orange-500 text-white px-4 py-2 rounded">Reject</button>
+      </div>
+
     </div>
+  </main>
+</div>
+
   );
 };
 
