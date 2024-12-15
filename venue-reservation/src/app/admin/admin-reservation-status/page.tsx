@@ -273,7 +273,7 @@ const AdminReservationStatus = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedStatus(null);
-       // setPartiallyAvailableSlots([]);
+        setPartiallyAvailableSlots([]);
     };
 
     const handleSaveStatus = async () => {
@@ -402,12 +402,12 @@ const AdminReservationStatus = () => {
         setTemporarySlots(selectedSlots);
         setShowTimeSlotPopup(false);
     };
-/*
+
     const handleCancelTimeSlots = () => {
         setTemporarySlots([]);
         setShowTimeSlotPopup(false);
     };
-*/
+
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             if (timeSlotPopupRef.current && !timeSlotPopupRef.current.contains(event.target as Node)) {
@@ -684,3 +684,7 @@ const AdminReservationStatus = () => {
 };
 
 export default AdminReservationStatus;
+
+function setPartiallyAvailableSlots(arg0: never[]) {
+    throw new Error("Function not implemented.");
+}

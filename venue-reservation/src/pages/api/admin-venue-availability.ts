@@ -1,3 +1,4 @@
+/*
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/dbclient';
 import moment from 'moment';
@@ -218,6 +219,114 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       console.error('Error saving venue availability:', error);
       return res.status(500).json({ error: 'Failed to save venue availability' });
+    }
+  }
+
+  return res.status(405).json({ error: 'Method not allowed' });
+}
+*/
+
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '@/dbclient';
+import moment from 'moment';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    try {
+      const { venueId, date, status, timeSlots } = req.body;
+      const baseDate = moment(date).startOf('day').toDate();
+
+      // Delete existing availability and time slots
+      await prisma.$transaction([
+        prisma.timeSlot.deleteMany({
+          where: {
+            venueAvailability: {
+              venueId: Number(venueId),
+              date: baseDate
+            }
+          }
+        }),
+        prisma.venueAvailability.deleteMany({
+          where: {
+            venueId: Number(venueId),
+            date: baseDate
+          }
+        })
+      ]);
+
+      // Create new availability with time slots
+      const availability = await prisma.venueAvailability.create({
+        data: {
+          venueId: Number(venueId),
+          date: baseDate,
+          status: status,
+          timeSlots: {
+            create: timeSlots.map((slot: string) => {
+              let startTime, endTime;
+
+              if (slot.includes('Full Day')) {
+                startTime = moment(baseDate).startOf('day');
+                endTime = moment(baseDate).endOf('day');
+              } else if (slot.includes('Session')) {
+                const times = slot.match(/\d{2}:\d{2}/g);
+                startTime = moment(baseDate).set('hour', parseInt(times![0].split(':')[0]));
+                endTime = moment(baseDate).set('hour', parseInt(times![1].split(':')[0]));
+              } else {
+                const [start, end] = slot.split('-');
+                startTime = moment(baseDate).set('hour', parseInt(start.split(':')[0]));
+                endTime = moment(baseDate).set('hour', parseInt(end.split(':')[0]));
+              }
+
+              return {
+                startTime: startTime.toDate(),
+                endTime: endTime.toDate(),
+                status: status
+              };
+            })
+          }
+        },
+        include: {
+          timeSlots: true
+        }
+      });
+
+      return res.status(200).json(availability);
+    } catch (error) {
+      console.error('Error updating availability:', error);
+      return res.status(500).json({ error: 'Failed to update availability' });
+    }
+  }  else if (req.method === 'DELETE') {
+    try {
+      const { venueId, date } = req.query;
+      
+      if (!venueId || !date) {
+        return res.status(400).json({ error: 'Venue ID and date are required' });
+      }
+
+      const baseDate = moment(date as string).startOf('day').toDate();
+
+      // Delete time slots and availability for the specific date
+      await prisma.$transaction([
+        prisma.timeSlot.deleteMany({
+          where: {
+            venueAvailability: {
+              venueId: Number(venueId),
+              date: baseDate
+            }
+          }
+        }),
+        prisma.venueAvailability.deleteMany({
+          where: {
+            venueId: Number(venueId),
+            date: baseDate
+          }
+        })
+      ]);
+
+      return res.status(200).json({ message: 'Time slots deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting time slots:', error);
+      return res.status(500).json({ error: 'Failed to delete time slots' });
     }
   }
 
