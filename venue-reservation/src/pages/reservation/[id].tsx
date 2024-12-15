@@ -76,10 +76,10 @@ const Availability = () => {
 
     const fetchVenueInfo = async () => {
       try {
-        const [venueResponse, blockedSlotsResponse, availabilityResponse] = await Promise.all([
+        const [venueResponse, blockedSlotsResponse] = await Promise.all([
           fetch(`/api/venues/${id}`),
           fetch(`/api/venues/${id}/blocked-slots`),
-          fetch(`/api/venues/${id}/availability`)
+          //fetch(`/api/venues/${id}/availability`)
         ]);
 
         if (venueResponse.ok) {
@@ -96,11 +96,11 @@ const Availability = () => {
           const blockedData: BlockedTimeSlot[] = await blockedSlotsResponse.json();
           setBlockedTimeSlots(blockedData);
         }
-
+/*
         if (availabilityResponse.ok) {
           const availabilityData: VenueAvailability[] = await availabilityResponse.json();
           setVenueAvailability(availabilityData);
-        }
+        }*/
       } catch (err) {
         console.error("Error fetching data:", err);
         setError('An unexpected error occurred.');
@@ -566,7 +566,7 @@ const Availability = () => {
                         className="form-checkbox text-blue-500 mr-2"
                       />
                       {`${formattedCurrentHour}:00 - ${formattedNextHour}:00`}
-                      {isBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
+                      {isBlocked && <span className="ml-2 text- red-500 text-sm">(Not Available)</span>}
                     </label>
                   );
                 })}
