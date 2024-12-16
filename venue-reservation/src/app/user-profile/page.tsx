@@ -20,6 +20,7 @@ export default function UserProfilePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [originalUserData, setOriginalUserData] = useState<UserProfile | null>(null);
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +63,7 @@ export default function UserProfilePage() {
         if (data.user) {
           console.log('Setting user profile:', data.user);
           setUserProfile(data.user);
+          setOriginalUserData(data.user);
         } else {
           console.error('No user data in response');
         }
@@ -107,6 +109,13 @@ export default function UserProfilePage() {
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile. Please try again.');
+    }
+  };
+
+  const handleCancel = () => {
+    if (originalUserData) {
+      setUserProfile(originalUserData); // Restore original data
+      setIsEditing(false);
     }
   };
 
@@ -235,7 +244,7 @@ export default function UserProfilePage() {
               <>
                 <button
                   className="border border-[#584822] text-[#584822] px-8 py-2 rounded mr-8"
-                  onClick={() => setIsEditing(false)}
+                  onClick={handleCancel}
                 >
                   Cancel
                 </button>
