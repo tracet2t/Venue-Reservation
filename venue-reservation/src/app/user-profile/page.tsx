@@ -23,6 +23,22 @@ export default function UserProfilePage() {
   const [originalUserData, setOriginalUserData] = useState<UserProfile | null>(null);
   const router = useRouter();
 
+  const validatePhoneNumber = (phone: string): boolean => {
+    if (!phone) return true; // Allow empty phone number
+    const phoneRegex = /^\+94\s\d{2}\s\d{7}$/;
+    
+    // Check format and length
+    if (!phoneRegex.test(phone)) {
+      return false;
+    }
+    
+    if (phone.length !== 14) {
+      return false;
+    }
+    
+    return true;
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Handle file upload logic here
     const file = e.target.files?.[0];
@@ -34,11 +50,48 @@ export default function UserProfilePage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (userProfile) {
-      setUserProfile({
-        ...userProfile,
-        [name]: value
-      });
+    
+    if (name === 'contactNumber') {
+      // Remove all spaces and non-digit characters except '+'
+      let cleaned = value.replace(/[^\d+]/g, '');
+      
+      // Format the number as +94 XX ZZZZZZZ
+      if (cleaned.startsWith('+94')) {
+        cleaned = cleaned.substring(3); 
+      } else if (cleaned.startsWith('94')) {
+        cleaned = cleaned.substring(2); 
+      }
+      
+      // Add spaces to format the number
+      let formatted = '';
+      if (cleaned.length > 0) {
+        formatted = '+94 ';
+        if (cleaned.length > 0) {
+          formatted += cleaned.slice(0, 2); 
+        }
+        if (cleaned.length > 2) {
+          formatted += ' ' + cleaned.slice(2, 9); 
+        }
+      }
+
+      if (value && !validatePhoneNumber(formatted) && formatted.length === 14) {
+        alert('Please enter a valid phone number');
+        return;
+      }
+      
+      if (userProfile) {
+        setUserProfile({
+          ...userProfile,
+          [name]: formatted
+        });
+      }
+    } else {
+      if (userProfile) {
+        setUserProfile({
+          ...userProfile,
+          [name]: value
+        });
+      }
     }
   };
 
@@ -81,6 +134,20 @@ export default function UserProfilePage() {
   const handleSave = async () => {
     if (!userProfile) return;
 
+    // Validate phone number before saving
+    if (userProfile.contactNumber) {
+      if (!validatePhoneNumber(userProfile.contactNumber)) {
+        alert('Please enter a complete and valid phone number');
+        return;
+      }
+    }
+
+    // Validate name fields
+    if (!userProfile.firstName.trim() || !userProfile.lastName.trim()) {
+      alert('First name and last name are required');
+      return;
+    }
+
     try {
       const response = await fetch('/api/user/profile', {
         method: 'PUT',
@@ -89,10 +156,10 @@ export default function UserProfilePage() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          firstName: userProfile.firstName,
-          lastName: userProfile.lastName,
-          address: userProfile.address,
-          contactNumber: userProfile.contactNumber
+          firstName: userProfile.firstName.trim(),
+          lastName: userProfile.lastName.trim(),
+          address: userProfile.address?.trim() || null,
+          contactNumber: userProfile.contactNumber || null
         }),
       });
 
@@ -103,6 +170,7 @@ export default function UserProfilePage() {
       const data = await response.json();
       if (data.user) {
         setUserProfile(data.user);
+        setOriginalUserData(data.user);
         setIsEditing(false);
         alert('Profile updated successfully!');
       }
@@ -114,7 +182,7 @@ export default function UserProfilePage() {
 
   const handleCancel = () => {
     if (originalUserData) {
-      setUserProfile(originalUserData); // Restore original data
+      setUserProfile(originalUserData); // Restore data
       setIsEditing(false);
     }
   };
@@ -220,13 +288,16 @@ export default function UserProfilePage() {
             <div className="flex items-center">
               <label className="mr-2 font-bold">Phone Number:</label>
               {isEditing ? (
-                <input
-                  type="text"
-                  name="contactNumber"
-                  value={userProfile.contactNumber || ''}
-                  onChange={handleChange}
-                  className="border rounded px-2 py-1"
-                />
+                <div>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    value={userProfile.contactNumber || ''}
+                    onChange={handleChange}
+                    placeholder="+94 XX ZZZZZZZ"
+                    className="border rounded px-2 py-1"
+                  />
+                </div>
               ) : (
                 <p>{userProfile.contactNumber || 'Not set'}</p>
               )}
