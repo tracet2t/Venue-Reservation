@@ -51,18 +51,22 @@ export default function UserProfilePage() {
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch profile');
-        }
-
+        console.log('Response status:', response.status);
         const data = await response.json();
-        console.log('Profile data:', data);
+        console.log('Raw API response:', data);
 
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status}`);
+        }
+    
         if (data.user) {
+          console.log('Setting user profile:', data.user);
           setUserProfile(data.user);
+        } else {
+          console.error('No user data in response');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching profile:', error);
         router.push('/login');
       } finally {
         setLoading(false);
@@ -94,11 +98,15 @@ export default function UserProfilePage() {
         throw new Error('Failed to update profile');
       }
 
-      const updatedData = await response.json();
-      setUserProfile(updatedData.user);
-      setIsEditing(false);
+      const data = await response.json();
+      if (data.user) {
+        setUserProfile(data.user);
+        setIsEditing(false);
+        alert('Profile updated successfully!');
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
     }
   };
 
@@ -156,7 +164,7 @@ export default function UserProfilePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between">
             <div className="flex items-center">
-              <label className="mr-2 font-bold">First Name</label>
+              <label className="mr-2 font-bold">First Name:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -171,7 +179,7 @@ export default function UserProfilePage() {
             </div>
 
             <div className="flex items-center">
-              <label className="mr-2 font-bold">Last Name</label>
+              <label className="mr-2 font-bold">Last Name:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -186,7 +194,7 @@ export default function UserProfilePage() {
             </div>
 
             <div className="flex items-center">
-              <label className="mr-2 font-bold">Address</label>
+              <label className="mr-2 font-bold">Address:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -201,7 +209,7 @@ export default function UserProfilePage() {
             </div>
 
             <div className="flex items-center">
-              <label className="mr-2 font-bold">Phone Number</label>
+              <label className="mr-2 font-bold">Phone Number:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -217,7 +225,7 @@ export default function UserProfilePage() {
 
             <div>
               <p>
-                <strong>My Email Address</strong> {userProfile.email}
+                <strong>My Email Address:</strong> {userProfile.email}
               </p>
             </div>
           </div>
