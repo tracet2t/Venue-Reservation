@@ -6,7 +6,7 @@ const UserAvatar = () => {
 
   // Handle click event
   const goToProfile = () => {
-    router.push('/user-profile'); // Navigate to the User Profile Page
+    router.push('/userprofile'); // Navigate to the User Profile Page
   };
 
   return (

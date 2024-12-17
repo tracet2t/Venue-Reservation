@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import VenueDetailCard from "@/components/venue_card/venue_details_card";
 import Sidebar from "@/components/side-bar";
 import { FaBell } from "react-icons/fa";
+import UserAvatar from "@/components/avatar";
 
 interface Location {
   id: number;
@@ -129,13 +130,15 @@ const VenueDetailsPage = () => {
               className="w-1/4 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {/* Notification Icon */}
-            <div className="ml-12 relative" style={{ marginLeft: "0.5in" }}>
+            <div className="flex items-center gap-6">
               <div className="relative flex items-center justify-center bg-blue-200 p-2 rounded-full shadow-lg">
                 <FaBell className="text-2xl text-blue-600 cursor-pointer" />
                 <span className="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
                   3
                 </span>
               </div>
+
+              < UserAvatar/>
             </div>
           </div>
 
