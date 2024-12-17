@@ -79,6 +79,11 @@ const AuthPage = () => {
       });
       const data = await response.json();
       if (response.ok) {
+        // Check if the user is an admin
+        if (data.userType === 'Admin') {
+          // Store user type in session or state
+          sessionStorage.setItem('userType', 'Admin');
+        }
         router.push("/card_view");
       } else {
         setMessage(data.message || "Invalid email or password.");
@@ -192,7 +197,7 @@ const AuthPage = () => {
                   <p>
                     Forgot your password?{" "}
                     <Link
-                      href="/auth/forgot-password"
+                      href="/forgot-password"
                       className="text-blue-600 hover:underline"
                     >
                       Reset it here

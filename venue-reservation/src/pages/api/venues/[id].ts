@@ -21,10 +21,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           id: true,
           name: true,
           type: true,
-          schedule: true,
+          schedule: true, 
+          size: true, 
           availability: {
             include: {
               timeSlots: true,
+            }
+          },
+          admin: {
+            select: {
+              email: true,
+              firstName: true,
+              lastName: true,
+              contactNumber: true
             }
           }
         }

@@ -12,16 +12,17 @@ model User {
   userId        String         @id @default(uuid()) 
   firstName     String
   lastName      String?
-  contactNumber BigInt?
+  contactNumber String?
   address       String?
   email         String         @unique
   emailVerified Boolean     @default(false)
   password      String?
   userType      UserType
   reservations  Reservation[]  @relation("UserReservations")
-  provider    String?   @default("credentials")
-  resetToken       String?  // Optional field for reset token
-  resetTokenExpiry DateTime? // Optional field for token expiry
+  venues        Venue[]        @relation("AdminVenues")
+  provider      String?   @default("credentials")
+  resetToken      String?
+  resetTokenExpiry DateTime?
 }
 
 model VerificationToken {
@@ -50,6 +51,9 @@ model Venue {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   reservations  Reservation[]  @relation("VenueReservations")
+  questions     Question[]     @relation("VenueQuestions")
+  adminId       String?        // Make it optional first
+  admin         User?          @relation("AdminVenues", fields: [adminId], references: [userId])
 }
 
 model VenueAvailability {
@@ -59,6 +63,8 @@ model VenueAvailability {
   status           AvailabilityStatus
   timeSlots        TimeSlot[]
   venue            Venue            @relation(fields: [venueId], references: [id])
+
+  @@unique([venueId, date]) 
 }
 
 model TimeSlot {
@@ -91,13 +97,23 @@ model Reservation {
   purposeOfReservation  String
   timeDuration          Int
   extraServices         ExtraService[]
-  reservationDate       DateTime
+  questions             Question[]
+  timeSlots             ReservationTimeSlot[]
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
   user                  User             @relation("UserReservations", fields: [userId], references: [userId])
   venue                 Venue            @relation("VenueReservations", fields: [venueId], references: [id])
   reservationState      ReservationState?
+}
+
+model ReservationTimeSlot {
+  id            String     @id @default(uuid())
+  date          DateTime
+  startTime     String
+  endTime       String
+  reservation   Reservation      @relation(fields: [reservationId], references: [reservationId], onDelete: Cascade)
+  reservationId String
 }
 
 model ReservationState {
@@ -120,10 +136,23 @@ enum Status {
   Pending
   Rejected
   Accepted
+  Canceled
+  Done
 }
 
 enum UserType {
   Admin
   Regular  
   Guest
+}
+
+model Question {
+  id            String         @id @default(uuid())
+  text          String
+  venueId       Int?          
+  venue         Venue?         @relation("VenueQuestions", fields: [venueId], references: [id])
+  reservationId String?
+  answerOptions String[]
+  answer        String?        // Add this field
+  reservation   Reservation?   @relation(fields: [reservationId], references: [reservationId])
 }

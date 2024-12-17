@@ -1,9 +1,8 @@
-
 //venue-reservation\src\app\forgot-password\page.tsx
 "use client";
 
 import React, { useState } from "react";
-import BrandingSection from "@/components/branding-section";
+import BrandingSection from "@/components/design/branding-section";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -69,7 +68,7 @@ const ForgotPasswordPage = () => {
 
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
             {successMessage && (
-              <p className="text-green-500 text-sm mt-1">{successMessage}</p>
+              <p className="text-olive text-sm mt-1">{successMessage}</p>
             )}
 
             <button

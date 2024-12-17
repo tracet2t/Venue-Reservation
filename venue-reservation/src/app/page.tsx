@@ -117,7 +117,9 @@ const FontsPage = (): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
-      < Header />
+      <div>
+        <Header />
+      </div>
       <main className="container mx-auto px-4 py-8 text-left">
 
         {/* Call-to-Action Section */}
