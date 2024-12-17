@@ -1,0 +1,168 @@
+"use client";
+"use cache";
+
+import React, { useState } from "react";
+import VenueDetailCard from "@/components/venue_card/venue_details_card";
+import Sidebar from "@/components/side-bar";
+import { FaBell } from "react-icons/fa";
+
+interface Location {
+  id: number;
+  province: string;
+  districts: string[];
+}
+
+const locations: Location[] = [
+  { id: 1, province: "Western Province", districts: ["Colombo", "Gampaha", "Kalutara"] },
+  { id: 2, province: "Central Province", districts: ["Kandy", "Matale", "Nuwara Eliya"] },
+  { id: 3, province: "Southern Province", districts: ["Galle", "Matara", "Hambantota"] },
+  { id: 4, province: "Sabaragamuwa Province", districts: ["Kegalle", "Rathnapura"] },
+  { id: 5, province: "Eastern Province", districts: ["Ampara", "Batticaloa", "Trincomalee"] },
+  { id: 6, province: "Uva Province", districts: ["Badulla", "Monaragala"] },
+  { id: 7, province: "North Western Province", districts: ["Kurunegala", "Puttalam"] },
+  { id: 8, province: "North Central Province", districts: ["Anuradhapura", "Polonnaruwa"] },
+  { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi", "Mullaitivu", "Vavuniya", "Mannar"] },
+];
+
+const venues = [
+  {
+    images: ["/images/image1.jpg", "/images/image2.jpg", "/images/image3.jpg"],
+    name: "Elegant Banquet Hall",
+    address: "123 Main Street, Colombo",
+    type: "Banquet Hall",
+    capacity: "200 people",
+    size: "3000 sq ft",
+    timeSchedule: "9:00 AM - 11:00 PM",
+    features: ["Air Conditioning", "Parking", "Wi-Fi"],
+  },
+  {
+    images: ["/images/image1.jpg", "/images/image2.jpg", "/images/image3.jpg"],
+    name: "Cozy Conference Room",
+    address: "456 Elm Street, Kandy",
+    type: "Conference Room",
+    capacity: "50 people",
+    size: "1000 sq ft",
+    timeSchedule: "8:00 AM - 6:00 PM",
+    features: ["Projector", "Whiteboard", "Wi-Fi"],
+  },
+  {
+    images: ["/images/image1.jpg", "/images/image2.jpg", "/images/image3.jpg"],
+    name: "Cozy Conference Room",
+    address: "456 Elm Street, Kandy",
+    type: "Conference Room",
+    capacity: "50 people",
+    size: "1000 sq ft",
+    timeSchedule: "8:00 AM - 6:00 PM",
+    features: ["Projector", "Whiteboard", "Wi-Fi"],
+  },
+  {
+    images: ["/images/image1.jpg", "/images/image2.jpg", "/images/image3.jpg"],
+    name: "Cozy Conference Room",
+    address: "456 Elm Street, Kandy",
+    type: "Conference Room",
+    capacity: "50 people",
+    size: "1000 sq ft",
+    timeSchedule: "8:00 AM - 6:00 PM",
+    features: ["Projector", "Whiteboard", "Wi-Fi"],
+  },
+  // Add more venues here...
+];
+
+const VenueDetailsPage = () => {
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
+  const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [selectedVenueType, setSelectedVenueType] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const toggleLocationDropdown = () => setIsLocationDropdownOpen(!isLocationDropdownOpen);
+
+  const handleProvinceCheckboxChange = (province: string) => {
+    if (selectedProvince === province) {
+      setSelectedProvince(null);
+      setSelectedDistricts([]);
+    } else {
+      setSelectedProvince(province);
+      setSelectedDistricts([]);
+    }
+  };
+
+  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredVenues = venues.filter((venue) => {
+    const matchesSearchTerm = venue.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLocation = selectedProvince
+      ? venue.address.toLowerCase().includes(selectedProvince.toLowerCase())
+      : true;
+    const matchesType = selectedVenueType
+      ? venue.type.toLowerCase() === selectedVenueType.toLowerCase()
+      : true;
+
+    return matchesSearchTerm && matchesLocation && matchesType;
+  });
+
+  return (
+    <div className="flex h-screen overflow-hidden">
+      {/* Left Side (Sidebar) */}
+      <div className="w-1/4 bg-white">
+        <Sidebar />
+      </div>
+
+      {/* Right Side (Content Area for Venue Cards) */}
+      <div className="flex-grow bg-gray-100">
+        {/* Header */}
+        <div className="z-50">
+          {/* Include your header component */}
+        </div>
+
+        {/* Main Content */}
+        <main className="p-8 h-full flex flex-col">
+          {/* Search Bar */}
+          <div className="mb-4 flex items-center">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              placeholder="Search venues..."
+              className="w-1/4 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {/* Notification Icon */}
+            <div className="ml-12 relative" style={{ marginLeft: "0.5in" }}>
+              <div className="relative flex items-center justify-center bg-blue-200 p-2 rounded-full shadow-lg">
+                <FaBell className="text-2xl text-blue-600 cursor-pointer" />
+                <span className="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">
+                  3
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Venue Details Heading */}
+          <h2 className="text-2xl font-bold mb-4" style={{ color: "#584822" }}>
+            Venue Details
+          </h2>
+
+          {/* White Card for Venue Cards */}
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg overflow-y-auto"
+            style={{
+              height: `calc(100vh - 2rem)`, // Reduced the gap by using smaller padding (e.g., 2rem)
+              marginBottom: "0.25rem", // Add a small margin at the bottom
+            }}
+          >
+            {/* Venue Cards in Single Column */}
+            <div className="space-y-4">
+              {filteredVenues.map((venue, index) => (
+                <VenueDetailCard key={index} {...venue} onClick={() => console.log(venue.name)} />
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default VenueDetailsPage;
