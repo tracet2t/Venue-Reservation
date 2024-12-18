@@ -1,4 +1,5 @@
 "use client";
+"use cache"
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from "@/app/layouts/Header";
@@ -40,7 +41,7 @@ interface VenueAvailability {
 const Availability = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
@@ -50,9 +51,7 @@ const Availability = () => {
     evening: false,
     lateEvening: false,
     earlyMorning: false,
-    fullDay: false,
   });
-  const [hourlySlots, setHourlySlots] = useState<{ [key: string]: boolean }>({});
   const [venueInfo, setVenueInfo] = useState<VenueInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,17 +60,6 @@ const Availability = () => {
   const [venueAvailability, setVenueAvailability] = useState<VenueAvailability[]>([]);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/check');
-        const data = await response.json();
-        setIsLoggedIn(!!data.user);
-      } catch {
-        setIsLoggedIn(false);
-      }
-    };
-    checkAuth();
-
     if (!id) return;
 
     const fetchVenueInfo = async () => {
@@ -88,7 +76,7 @@ const Availability = () => {
             id: data.id,
             name: data.name,
             type: data.type,
-            schedule: data.schedule
+            schedule: data.schedule,
           });
         }
 
