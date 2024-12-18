@@ -135,6 +135,9 @@ exports.Prisma.UserScalarFieldEnum = {
   provider: 'provider',
   resetToken: 'resetToken',
   resetTokenExpiry: 'resetTokenExpiry'
+  provider: 'provider',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

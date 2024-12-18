@@ -1,6 +1,14 @@
 import Carousel from '../carousel';
+import { useRouter } from 'next/navigation';
 
 const LandingVenueCard = () => {
+  const router = useRouter();
+
+  // Handle navigation to signup page
+  const handleReserveNowClick = () => {
+    router.push('/admin/venue_details');
+  };
+
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
@@ -8,7 +16,7 @@ const LandingVenueCard = () => {
   ];
 
   return (
-    <div className="container mx-auto mt-6 px-4 py-8 shadow-lg rounded-xl flex flex-col md:flex-row text-[#584822]">
+    <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row text-[#584822]">
       {/* Image Section */}
       <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg md:w-2/5">
         <Carousel
@@ -45,7 +53,9 @@ const LandingVenueCard = () => {
 
         {/* Reserve Now Button */}
         <div className="flex justify-end mt-4">
-          <button className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold">
+          <button className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold"
+          onClick={handleReserveNowClick} // Navigate to signup page
+          >
             Reserve Now
           </button>
         </div>

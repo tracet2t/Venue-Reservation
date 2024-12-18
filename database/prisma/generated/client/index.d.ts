@@ -1788,6 +1788,8 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1803,6 +1805,8 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1816,6 +1820,8 @@ export namespace Prisma {
     password: number
     userType: number
     provider: number
+    resetToken: number
+    resetTokenExpiry: number
     resetToken: number
     resetTokenExpiry: number
     _all: number
@@ -1835,6 +1841,8 @@ export namespace Prisma {
     provider?: true
     resetToken?: true
     resetTokenExpiry?: true
+    resetToken?: true
+    resetTokenExpiry?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1850,6 +1858,8 @@ export namespace Prisma {
     provider?: true
     resetToken?: true
     resetTokenExpiry?: true
+    resetToken?: true
+    resetTokenExpiry?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1863,6 +1873,8 @@ export namespace Prisma {
     password?: true
     userType?: true
     provider?: true
+    resetToken?: true
+    resetTokenExpiry?: true
     resetToken?: true
     resetTokenExpiry?: true
     _all?: true
@@ -1953,6 +1965,8 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1985,6 +1999,8 @@ export namespace Prisma {
     provider?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     reservations?: boolean | User$reservationsArgs<ExtArgs>
     venues?: boolean | User$venuesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2003,6 +2019,8 @@ export namespace Prisma {
     provider?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2016,6 +2034,8 @@ export namespace Prisma {
     password?: boolean
     userType?: boolean
     provider?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
   }
@@ -2044,6 +2064,8 @@ export namespace Prisma {
       password: string | null
       userType: $Enums.UserType
       provider: string | null
+      resetToken: string | null
+      resetTokenExpiry: Date | null
       resetToken: string | null
       resetTokenExpiry: Date | null
     }, ExtArgs["result"]["user"]>
@@ -2451,6 +2473,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly userType: FieldRef<"User", 'UserType'>
     readonly provider: FieldRef<"User", 'String'>
+    readonly resetToken: FieldRef<"User", 'String'>
+    readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
     readonly resetToken: FieldRef<"User", 'String'>
     readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
   }
@@ -10797,6 +10821,9 @@ export namespace Prisma {
     provider: 'provider',
     resetToken: 'resetToken',
     resetTokenExpiry: 'resetTokenExpiry'
+    provider: 'provider',
+    resetToken: 'resetToken',
+    resetTokenExpiry: 'resetTokenExpiry'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -11083,6 +11110,8 @@ export namespace Prisma {
     provider?: StringNullableFilter<"User"> | string | null
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     reservations?: ReservationListRelationFilter
     venues?: VenueListRelationFilter
   }
@@ -11098,6 +11127,8 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
     provider?: SortOrderInput | SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
     reservations?: ReservationOrderByRelationAggregateInput
@@ -11120,6 +11151,8 @@ export namespace Prisma {
     provider?: StringNullableFilter<"User"> | string | null
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     reservations?: ReservationListRelationFilter
     venues?: VenueListRelationFilter
   }, "userId" | "email">
@@ -11135,6 +11168,8 @@ export namespace Prisma {
     password?: SortOrderInput | SortOrder
     userType?: SortOrder
     provider?: SortOrderInput | SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -11156,6 +11191,8 @@ export namespace Prisma {
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     userType?: EnumUserTypeWithAggregatesFilter<"User"> | $Enums.UserType
     provider?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
@@ -11709,6 +11746,8 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
     venues?: VenueCreateNestedManyWithoutAdminInput
   }
@@ -11724,6 +11763,8 @@ export namespace Prisma {
     password?: string | null
     userType: $Enums.UserType
     provider?: string | null
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
@@ -11743,6 +11784,8 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
     venues?: VenueUpdateManyWithoutAdminNestedInput
   }
@@ -11758,6 +11801,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
@@ -11777,6 +11822,8 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11792,6 +11839,8 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11805,6 +11854,8 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -12404,6 +12455,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type ReservationListRelationFilter = {
     every?: ReservationWhereInput
     some?: ReservationWhereInput
@@ -12455,6 +12517,8 @@ export namespace Prisma {
     password?: SortOrder
     userType?: SortOrder
     provider?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
   }
@@ -12526,6 +12590,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserTypeFilter<$PrismaModel>
     _max?: NestedEnumUserTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13088,6 +13166,10 @@ export namespace Prisma {
 
   export type EnumUserTypeFieldUpdateOperationsInput = {
     set?: $Enums.UserType
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -13694,6 +13776,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13766,6 +13859,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserTypeFilter<$PrismaModel>
     _max?: NestedEnumUserTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
