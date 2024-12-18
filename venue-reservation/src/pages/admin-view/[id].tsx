@@ -9,10 +9,11 @@ const reservations = [
     reservationId: '016',
     title: 'Event Booking',
     timeMode: 'Full Day',
-    duration: '8 Hours',
+    
     extraServices: ['Food', 'Private Parking'],
     purposeOfReservation: 'Conference',
     status: 'Confirmed',
+
     customerName: 'Uthpala Devaki',
     customerEmail: 'udevaki@gmail.com',
     customerContactNumber: '0771234567',
