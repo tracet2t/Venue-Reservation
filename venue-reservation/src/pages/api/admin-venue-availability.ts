@@ -1,4 +1,3 @@
-/*
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/dbclient';
 import moment from 'moment';
@@ -37,6 +36,33 @@ function getSlotTime(slot: TimeSlotInput | string, baseDate: Date, type: 'start'
   const time = type === 'start' ? slot.startTime : slot.endTime;
   const [hours, minutes] = time.split(':');
   return moment(baseDate).set({ hours: parseInt(hours), minutes: parseInt(minutes) }).toDate();
+}
+
+async function checkTimeSlotOverlap(
+  prisma: any,
+  venueId: number,
+  date: Date,
+  startTime: Date,
+  endTime: Date
+): Promise<boolean> {
+  const existingSlots = await prisma.timeSlot.findMany({
+    where: {
+      venueAvailability: {
+        venueId: venueId,
+        date: date
+      }
+    }
+  });
+
+  return existingSlots.some((slot: any) => {
+    const slotStart = new Date(slot.startTime);
+    const slotEnd = new Date(slot.endTime);
+    return (
+      (startTime >= slotStart && startTime < slotEnd) ||
+      (endTime > slotStart && endTime <= slotEnd) ||
+      (startTime <= slotStart && endTime >= slotEnd)
+    );
+  });
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -186,6 +212,59 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status: 'PARTIALLY_BOOKED'
         }));
 
+        // Check for overlapping time slots
+        for (const slot of formattedTimeSlots) {
+          const hasOverlap = await checkTimeSlotOverlap(
+            prisma,
+            Number(venueId),
+            baseDate,
+            slot.startTime,
+            slot.endTime
+          );
+
+          if (hasOverlap) {
+            // Merge overlapping slots or update existing ones
+            // This is a simplified version - you might want to implement more complex merging logic
+            const availability = await prisma.venueAvailability.upsert({
+              where: {
+                venueId_date: {
+                  venueId: Number(venueId),
+                  date: baseDate
+                }
+              },
+              update: {
+                status: 'FULLY_BOOKED',
+                timeSlots: {
+                  updateMany: {
+                    where: {
+                      startTime: {
+                        gte: slot.startTime
+                      },
+                      endTime: {
+                        lte: slot.endTime
+                      }
+                    },
+                    data: {
+                      status: 'FULLY_BOOKED'
+                    }
+                  }
+                }
+              },
+              create: {
+                venueId: Number(venueId),
+                date: baseDate,
+                status: 'PARTIALLY_BOOKED',
+                timeSlots: {
+                  create: formattedTimeSlots
+                }
+              }
+            });
+
+            return res.status(200).json(availability);
+          }
+        }
+
+        // If no overlaps, create new time slots
         const availability = await prisma.venueAvailability.upsert({
           where: {
             venueId_date: {
@@ -196,7 +275,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           update: {
             status: 'PARTIALLY_BOOKED',
             timeSlots: {
-              deleteMany: {},
               create: formattedTimeSlots
             }
           },
@@ -210,8 +288,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         });
 
-        // Log saved result
-        console.log('Saved partial availability:', availability);
         return res.status(200).json(availability);
       }
 
@@ -224,113 +300,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(405).json({ error: 'Method not allowed' });
 }
-*/
-
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/dbclient';
-import moment from 'moment';
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    try {
-      const { venueId, date, status, timeSlots } = req.body;
-      const baseDate = moment(date).startOf('day').toDate();
-
-      // Delete existing availability and time slots
-      await prisma.$transaction([
-        prisma.timeSlot.deleteMany({
-          where: {
-            venueAvailability: {
-              venueId: Number(venueId),
-              date: baseDate
-            }
-          }
-        }),
-        prisma.venueAvailability.deleteMany({
-          where: {
-            venueId: Number(venueId),
-            date: baseDate
-          }
-        })
-      ]);
-
-      // Create new availability with time slots
-      const availability = await prisma.venueAvailability.create({
-        data: {
-          venueId: Number(venueId),
-          date: baseDate,
-          status: status,
-          timeSlots: {
-            create: timeSlots.map((slot: string) => {
-              let startTime, endTime;
-
-              if (slot.includes('Full Day')) {
-                startTime = moment(baseDate).startOf('day');
-                endTime = moment(baseDate).endOf('day');
-              } else if (slot.includes('Session')) {
-                const times = slot.match(/\d{2}:\d{2}/g);
-                startTime = moment(baseDate).set('hour', parseInt(times![0].split(':')[0]));
-                endTime = moment(baseDate).set('hour', parseInt(times![1].split(':')[0]));
-              } else {
-                const [start, end] = slot.split('-');
-                startTime = moment(baseDate).set('hour', parseInt(start.split(':')[0]));
-                endTime = moment(baseDate).set('hour', parseInt(end.split(':')[0]));
-              }
-
-              return {
-                startTime: startTime.toDate(),
-                endTime: endTime.toDate(),
-                status: status
-              };
-            })
-          }
-        },
-        include: {
-          timeSlots: true
-        }
-      });
-
-      return res.status(200).json(availability);
-    } catch (error) {
-      console.error('Error updating availability:', error);
-      return res.status(500).json({ error: 'Failed to update availability' });
-    }
-  }  else if (req.method === 'DELETE') {
-    try {
-      const { venueId, date } = req.query;
-      
-      if (!venueId || !date) {
-        return res.status(400).json({ error: 'Venue ID and date are required' });
-      }
-
-      const baseDate = moment(date as string).startOf('day').toDate();
-
-      // Delete time slots and availability for the specific date
-      await prisma.$transaction([
-        prisma.timeSlot.deleteMany({
-          where: {
-            venueAvailability: {
-              venueId: Number(venueId),
-              date: baseDate
-            }
-          }
-        }),
-        prisma.venueAvailability.deleteMany({
-          where: {
-            venueId: Number(venueId),
-            date: baseDate
-          }
-        })
-      ]);
-
-      return res.status(200).json({ message: 'Time slots deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting time slots:', error);
-      return res.status(500).json({ error: 'Failed to delete time slots' });
-    }
-  }
-
-  return res.status(405).json({ error: 'Method not allowed' });
-}
-
-

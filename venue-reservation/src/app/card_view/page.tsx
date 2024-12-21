@@ -1,9 +1,10 @@
 // Reservation.tsx
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
+import useDebounce from '@/hooks/useDebounce';
 
 interface Location {
   id: number;
@@ -11,8 +12,8 @@ interface Location {
   districts: string[];
 }
 
-//data for provinces and districts
-const locations: Location[] = [
+// Define locations data outside the component
+const locationsData: Location[] = [
   { id: 1, province: "Western Province", districts: ["Colombo", "Gampaha", "Kalutara"] },
   { id: 2, province: "Central Province", districts: ["Kandy", "Matale", "Nuwara Eliya"] },
   { id: 3, province: "Southern Province", districts: ["Galle", "Matara", "Hambantota"] },
@@ -24,7 +25,6 @@ const locations: Location[] = [
   { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
-
 const Reservation = () => {
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
@@ -32,6 +32,9 @@ const Reservation = () => {
   const [selectedVenueType, setSelectedVenueType] = useState("");
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
   const [isSearchTerm, setSearchTerm] = useState<string>("");
+
+  // Use useMemo inside the component
+  const locations = useMemo(() => locationsData, []);
 
   const toggleLocationDropdown = () => {
     setIsLocationDropdownOpen(!isLocationDropdownOpen);
@@ -70,6 +73,10 @@ const Reservation = () => {
     setSearchTerm(e.target.value);
   };
   
+  const debouncedSearchTerm = useDebounce(isSearchTerm, 300);
+
+  const MemoizedVenueCard = memo(VenueCard);
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Header */}
@@ -211,11 +218,11 @@ const Reservation = () => {
 
         {/* Venue Card */}
         <div className="max-h-[1000px] z-0 overflow-y-auto">
-          <VenueCard
+          <MemoizedVenueCard
             provinces={selectedProvince ? [selectedProvince] : []}
             districts={selectedDistricts}
             venueType={selectedVenueType}
-            searchTerm={isSearchTerm}
+            searchTerm={debouncedSearchTerm}
           />
         </div>
 

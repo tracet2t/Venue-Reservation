@@ -11,7 +11,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Get the session
     const session = await getServerSession(req, res, authOptions);
-    console.log('Session:', session); // Debug log
 
     // Check if user is authenticated
     if (!session) {
@@ -29,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: { email: session.user.email },
     });
 
-    console.log('Found user:', user); // Debug log
+   
 
     if (!user) {
       console.log('User not found in database');
@@ -40,8 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('User is not an admin');
       return res.status(403).json({ error: 'Only admins can create venues' });
     }
-
-    console.log('Received request body:', req.body);
 
     const {
       name,
@@ -78,7 +75,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const processedQuestions = questions
       .filter((q: { text: string }) => q.text.trim() !== '')
       .map((q: { text: string; options: string[] }) => {
-        console.log('Processing question:', q); // Debug log
         return {
           text: q.text,
           answerOptions: Array.isArray(q.options) && q.options.length > 0
@@ -87,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         };
       });
 
-    console.log('Processed questions:', processedQuestions); // Debug log
+    
 
     // Create venue with questions
     const venue = await prisma.venue.create({
@@ -120,14 +116,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-    // Log the created venue with expanded question details
-    console.log('Created venue with questions:', {
-      ...venue,
-      questions: venue.questions.map(q => ({
-        ...q,
-        answerOptions: q.answerOptions // Show full array
-      }))
-    });
 
     return res.status(201).json(venue);
 

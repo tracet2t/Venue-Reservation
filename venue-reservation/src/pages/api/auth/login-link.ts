@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../dbclient";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
@@ -33,21 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    // Generate magic link token
+    // Generate tokens
     const magicToken = uuidv4();
-    const expires = new Date(Date.now() + 15 * 60 * 1000); // Token expires in 15 minutes
-
-    // Save token to database
-    await prisma.verificationToken.create({
-      data: {
-        identifier: user.userId,
-        email: user.email,
-        token: magicToken,
-        expires,
-      },
-    });
-
-    // Generate JWT token for authentication
     const authToken = jwt.sign(
       { 
         userId: user.userId,
@@ -58,11 +47,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { expiresIn: '7d' }
     );
 
-    // Set both tokens as cookies
+    // Set both tokens as cookies with proper settings
     res.setHeader('Set-Cookie', [
-      `auth_token=${authToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${7 * 24 * 60 * 60}`,
-      `magic_token=${magicToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=900` // 15 minutes
+      `auth_token=${authToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}`,
+      `magic_token=${magicToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=900`
     ]);
+
+    // Create NextAuth session
+    const session = {
+      user: {
+        id: user.userId,
+        email: user.email,
+        name: user.firstName,
+        userType: user.userType
+      },
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    };
+
+    // Store session in database
+    await prisma.session.create({
+      data: {
+        sessionToken: authToken,
+        userId: user.userId,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      }
+    });
 
     // Send email using the send-email endpoint
     const emailResponse = await fetch(`${process.env.NEXTAUTH_URL}/api/send-email`, {
@@ -90,12 +99,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json({
       success: true,
-      message: "Magic link sent to your email address. Please check your inbox.",
-      user: {
-        firstName: user.firstName,
-        email: user.email,
-        userType: user.userType
-      }
+      message: "Magic link sent to your email address",
+      session
     });
 
   } catch (error) {

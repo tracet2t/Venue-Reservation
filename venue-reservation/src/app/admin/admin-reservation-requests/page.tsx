@@ -10,6 +10,7 @@ interface ReservationTimeSlot {
 
 interface Reservation {
   reservationId: string;
+  venueId: number;
   title: string;
   purposeOfReservation: string;
   createdAt: string;
@@ -29,7 +30,17 @@ interface Reservation {
     status: 'Pending' | 'Accepted' | 'Rejected' | 'Canceled' | 'Done';
   };
   venue: {
+    id: number;
+    venueId: number;
     name: string;
+    type: string;
+    capacity: number;
+    size: number;
+    district: string;
+    province: string;
+    schedule: string;
+    features: string[];
+    entireDayTest?: string;
   };
 }
 
@@ -65,7 +76,8 @@ export default function AdminReservationRequests() {
 
   const handleStatusUpdate = async (reservationId: string, status: string, adminComments?: string) => {
     try {
-      const response = await fetch('/api/admin-reservation-requests', {
+      // First update the reservation status
+      const statusResponse = await fetch('/api/admin-reservation-requests', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,15 +89,94 @@ export default function AdminReservationRequests() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update status');
+      if (!statusResponse.ok) {
+        const errorData = await statusResponse.json();
+        console.error('Status update failed:', errorData);
+        throw new Error(`Failed to update status: ${errorData.error || statusResponse.statusText}`);
+      }
+
+      // If the reservation is accepted, update venue availability
+      if (status === 'Accepted') {
+        const reservation = reservations.find(r => r.reservationId === reservationId);
+        
+        if (!reservation) {
+          throw new Error('Reservation not found');
+        }
+
+        // Debug log the entire reservation object
+        console.log('Full reservation data:', JSON.stringify(reservation, null, 2));
+
+        // Get venue ID - try all possible paths
+        const venueId = reservation.venue?.id || 
+                        reservation.venue?.venueId || 
+                        reservation.venueId;
+
+        if (!venueId) {
+          console.error('Venue data:', reservation.venue);
+          throw new Error('No valid venue ID found in reservation data');
+        }
+
+        for (const slot of reservation.timeSlots) {
+          try {
+            const date = new Date(slot.date);
+            let bookingStatus = 'PARTIALLY_BOOKED';
+            let timeSlots = [{
+              startTime: slot.startTime,
+              endTime: slot.endTime
+            }];
+
+            if (slot.startTime.includes('Full Day')) {
+              bookingStatus = 'FULLY_BOOKED';
+              timeSlots = [{ startTime: '00:00', endTime: '00:00' }];
+            } else if (slot.startTime.includes('Session')) {
+              const startTime = slot.startTime.match(/\((\d{2}:\d{2})/)?.[1] || '';
+              const endTime = slot.endTime.match(/(\d{2}:\d{2})/)?.[1] || '';
+              
+              timeSlots = [{
+                startTime,
+                endTime
+              }];
+            }
+            
+            const availabilityData = {
+              venueId: parseInt(String(venueId), 10), // Ensure it's a valid number
+              date: date.toISOString(),
+              status: bookingStatus,
+              timeSlots
+            };
+
+            // Debug log the data being sent
+            console.log('Sending availability data:', availabilityData);
+
+            const availabilityResponse = await fetch('/api/admin-venue-availability', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(availabilityData),
+            });
+
+            if (!availabilityResponse.ok) {
+              const errorData = await availabilityResponse.json();
+              console.error('Error response:', errorData);
+              throw new Error(`Failed to update venue availability: ${errorData.message || availabilityResponse.statusText}`);
+            }
+          } catch (slotError) {
+            console.error('Error updating time slot:', slot, slotError);
+            throw slotError;
+          }
+        }
       }
 
       // Refresh reservations list
-      fetchReservations();
+      await fetchReservations();
       setSelectedReservation(null);
+      
+      // Show success message
+      alert('Reservation status updated successfully!');
     } catch (error) {
       console.error('Error updating reservation status:', error);
+      alert(`Error updating reservation status: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -134,51 +225,38 @@ export default function AdminReservationRequests() {
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold text-gray-700">{reservation.title}</h2>
                 
+                {/* Venue Information */}
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Start</span>
-                    <span>{new Date(reservation.timeSlots[0].date).toLocaleDateString()} {reservation.timeSlots[0].startTime}</span>
+                    <span className="text-gray-600">Venue Name</span>
+                    <span>{reservation.venue.name}</span>
                   </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">End</span>
-                    <span>{new Date(reservation.timeSlots[0].date).toLocaleDateString()} {reservation.timeSlots[0].endTime}</span>
+                </div>
+                
+
+                {/* Rest of the existing content */}
+                <div className="space-y-2">
+                  <span className="text-gray-600">Extra Services</span>
+                  <div className="flex gap-2">
+                    {reservation.extraServices.map((service, index) => (
+                      <span key={index} 
+                            className="px-4 py-1 bg-[#584822] text-white rounded-full text-sm">
+                        {service}
+                      </span>
+                    ))}
                   </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Time Mode</span>
-                    <span>Hourly Time</span>
-                  </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Total Duration</span>
-                    <span>{reservation.timeSlots.length}</span>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <span className="text-gray-600">Extra Services</span>
-                    <div className="flex gap-2">
-                      {reservation.extraServices.map((service, index) => (
-                        <span key={index} 
-                              className="px-4 py-1 bg-[#584822] text-white rounded-full text-sm">
-                          {service}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <span className="text-gray-600">Purpose of Reservation</span>
-                    <p className="text-sm">{reservation.purposeOfReservation}</p>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <span className="text-gray-600 mr-2">Status</span>
-                    <span className={getStatusColor(reservation.reservationState.status)}>
+                </div>
+                
+                <div className="space-y-1">
+                  <span className="text-gray-600">Purpose of Reservation</span>
+                  <p className="text-sm">{reservation.purposeOfReservation}</p>
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-gray-600 mr-2">Status</span>
+                  <span className={getStatusColor(reservation.reservationState.status)}>
                     {reservation.reservationState.status}
                   </span>
-
-                  </div>
                 </div>
               </div>
 

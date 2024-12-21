@@ -271,9 +271,10 @@ const AdminReservationStatus = () => {
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setSelectedDate(null);
         setSelectedStatus(null);
-        setPartiallyAvailableSlots([]);
+        setIsModalOpen(false);
+        setTemporarySlots([]); // Reset temporary slots
     };
 
     const handleSaveStatus = async () => {
@@ -684,7 +685,3 @@ const AdminReservationStatus = () => {
 };
 
 export default AdminReservationStatus;
-
-function setPartiallyAvailableSlots(arg0: never[]) {
-    throw new Error("Function not implemented.");
-}

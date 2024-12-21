@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import CancelReservationModal from '../re-cancelation';
 import { useRouter } from 'next/navigation';
+import Carousel from '@/components/carousel';
 
 interface ReservationCardProps {
   reservationId: string;
@@ -16,6 +17,7 @@ interface ReservationCardProps {
       email: string;
       contactNumber?: string;
     };
+    images: string[];
   };
   dateTimeSelections: {
     [key: string]: string[];
@@ -171,6 +173,30 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
                   </div>
                 ) : null}
               </div>
+            </div>
+
+            <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg">
+              {venue.images && venue.images.length > 0 ? (
+                <Carousel
+                  images={venue.images.map(image => {
+                    if (image.startsWith('http')) return image;
+                    const cleanPath = image
+                      .replace(/^\/+|\/+$/g, '')
+                      .replace('images/', '');
+                    return `https://storage.googleapis.com/foodie-96e94.appspot.com/images/${cleanPath}`;
+                  })}
+                  width="100%"
+                  height="250px"
+                  arrowBgColor="rgba(0, 0, 0, 0.7)"
+                  arrowFgColor="#fff"
+                  dotColor="#ccc"
+                  activeDotColor="#ff6347"
+                />
+              ) : (
+                <div className="w-full h-[250px] flex items-center justify-center bg-gray-100">
+                  <span className="text-gray-400">No images available</span>
+                </div>
+              )}
             </div>
           </div>
 

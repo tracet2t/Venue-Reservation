@@ -10,76 +10,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Check NextAuth session first
     const session = await getServerSession(req, res, authOptions);
+    
+    // If we have a session, return it
     if (session?.user?.email) {
       const user = await prisma.user.findUnique({
         where: { email: session.user.email },
         select: {
+          userId: true,
           firstName: true,
           email: true,
           userType: true,
           provider: true
         }
       });
-      if (user) return res.status(200).json({ user });
+      if (user) return res.status(200).json({ user, session });
     }
 
-    // Check for tokens in cookies
+    // Check database session
     const authToken = req.cookies.auth_token;
-    const magicToken = req.cookies.magic_token;
-    let decodedEmail: string | undefined;
-
-    // Try magic token first (prioritize magic link login)
-    if (magicToken) {
-      try {
-        const decoded = jwt.verify(magicToken, SECRET_KEY) as { email: string };
-        decodedEmail = decoded.email;
-        // If magic token is valid, set it as auth_token
-        const newToken = jwt.sign(
-          { email: decoded.email },
-          SECRET_KEY,
-          { expiresIn: '1h' }
-        );
-
-        res.setHeader(
-          'Set-Cookie',
-          `auth_token=${newToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60}`
-        );
-      } catch (error) {
-        console.error('Magic token verification failed:', error);
-      }
-    }
-
-    // Try auth_token if magic token failed
-    if (!decodedEmail && authToken) {
+    if (authToken) {
       try {
         const decoded = jwt.verify(authToken, SECRET_KEY) as { email: string };
-        decodedEmail = decoded.email;
+        const user = await prisma.user.findUnique({
+          where: { email: decoded.email },
+          select: {
+            userId: true,
+            firstName: true,
+            email: true,
+            userType: true,
+            provider: true
+          }
+        });
+
+        if (user) {
+          const session = {
+            user: {
+              id: user.userId,
+              email: user.email,
+              name: user.firstName,
+              userType: user.userType
+            },
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+          };
+          return res.status(200).json({ user, session });
+        }
       } catch (error) {
-        console.error('Auth token verification failed:', error);
+        console.error('Token verification failed:', error);
       }
     }
 
-    if (!decodedEmail) {
-      console.error('No valid token found, returning 401');
-      return res.status(401).json({ message: "Not authenticated" });
-    }
-
-    // Get user data if token verification succeeded
-    const user = await prisma.user.findUnique({
-      where: { email: decodedEmail },
-      select: {
-        firstName: true,
-        email: true,
-        userType: true,
-        provider: true
-      }
-    });
-
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    return res.status(200).json({ user });
+    return res.status(401).json({ message: "Not authenticated" });
 
   } catch (error) {
     console.error("Auth check error:", error);

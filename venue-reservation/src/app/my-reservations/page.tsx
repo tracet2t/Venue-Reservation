@@ -18,6 +18,7 @@ interface ReservationData {
     name: string;
     type: string;
     schedule: string;
+    images: string[];
     admin?: {
       firstName: string;
       email: string;

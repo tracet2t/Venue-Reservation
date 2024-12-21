@@ -1,7 +1,7 @@
 import React from 'react';
 import Carousel from '../carousel';
 
-interface VenueDetailCardProps {
+interface FeatureVenueCardProps {
   images: string[];
   name: string;
   address: string;
@@ -10,11 +10,9 @@ interface VenueDetailCardProps {
   size: string;
   timeSchedule: string;
   features: string[];
-  onEdit: () => void;
-  onDelete: () => void;
 }
 
-const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
+const FeatureVenueCard: React.FC<FeatureVenueCardProps> = ({
   images,
   name,
   address,
@@ -23,26 +21,30 @@ const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
   size,
   timeSchedule,
   features,
-  onEdit,
-  onDelete,
 }) => {
   return (
     <div className="container mx-auto mt-6 p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row text-[#584822] bg-white">
       {/* Image Section */}
       <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg md:w-2/5">
-        <Carousel
-          images={images.map(image => 
-            image.startsWith('http') 
-              ? image 
-              : `https://storage.googleapis.com/foodie-96e94.appspot.com/venues/${image}`
-          )}
-          width="100%"
-          height="100%"
-          arrowBgColor="rgba(0, 0, 0, 0.7)"
-          arrowFgColor="#fff"
-          dotColor="#ccc"
-          activeDotColor="#ff6347"
-        />
+        {images && images.length > 0 ? (
+          <Carousel
+            images={images.map(image => {
+              if (image.startsWith('http')) return image;
+              const cleanPath = image.replace(/^\/+|\/+$/g, '').replace('/images/', '');
+              return `https://storage.googleapis.com/foodie-96e94.appspot.com/venues/${cleanPath}`;
+            })}
+            width="100%"
+            height="100%"
+            arrowBgColor="rgba(0, 0, 0, 0.7)"
+            arrowFgColor="#fff"
+            dotColor="#ccc"
+            activeDotColor="#ff6347"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <span className="text-gray-400">No images available</span>
+          </div>
+        )}
       </div>
 
       {/* Details Section */}
@@ -72,25 +74,9 @@ const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
             ))}
           </ul>
         </div>
-
-        {/* Edit and Delete Buttons */}
-        <div className="flex justify-end items-center space-x-4 mt-4">
-          <button
-            className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold"
-            onClick={onEdit}
-          >
-            Edit
-          </button>
-          <button
-            className="bg-[#584822] text-white px-4 py-2 md:px-6 md:py-2 rounded-lg font-semibold"
-            onClick={onDelete}
-          >
-            Delete
-          </button>
-        </div>
       </div>
     </div>
   );
 };
 
-export default VenueDetailCard;
+export default FeatureVenueCard;

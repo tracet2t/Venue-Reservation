@@ -1,128 +1,260 @@
 "use client";
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input"; 
-import { Button } from "@/components/ui/button";
-import BrandingSection from "@/components/design/branding-section"; 
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import Footer from "../layouts/Footer";
+import RegisteredHeader from "../layouts/Header";
+import { useRouter } from 'next/navigation';
 
-const MagicLinkSignupPage = () => {
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+interface UserProfile {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  address: string | null;
+  contactNumber: string | null;
+  email: string;
+  userType: string;
+  provider?: string;
+  profilePicture?: string;
+}
+
+export default function UserProfilePage() {
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const handleLogin = () => {
-    router.push('/login');
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Handle file upload logic here
+    const file = e.target.files?.[0];
+    if (file) {
+      // Add your file upload logic
+      console.log('File selected:', file);
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email || !firstName) {
-      setMessage("Please enter your first name and email.");
-      return;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (userProfile) {
+      setUserProfile({
+        ...userProfile,
+        [name]: value
+      });
     }
+  };
 
-    setLoading(true);
-    setMessage("");
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch('/api/user/profile', {
+          credentials: 'include',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile');
+        }
+
+        const data = await response.json();
+        console.log('Profile data:', data);
+
+        if (data.user) {
+          setUserProfile(data.user);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        router.push('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [router]);
+
+  const handleSave = async () => {
+    if (!userProfile) return;
 
     try {
-      // First, create the user in the database
-      const signupResponse = await fetch("/api/auth/signup-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          email: email.trim(), 
-          firstName: firstName.trim() 
+      const response = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          firstName: userProfile.firstName,
+          lastName: userProfile.lastName,
+          address: userProfile.address,
+          contactNumber: userProfile.contactNumber
         }),
       });
 
-      const signupData = await signupResponse.json();
-      
-      if (!signupResponse.ok) {
-        throw new Error(signupData.message || "Something went wrong");
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
       }
 
-      // Then, send the magic link email
-      const emailResponse = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          email: email.trim()
-        }),
-      });
-
-      const emailData = await emailResponse.json();
-      
-      if (!emailResponse.ok) {
-        throw new Error(emailData.message || "Something went wrong");
-      }
-
-      setMessage("Registration successful! Please check your email.");
+      const updatedData = await response.json();
+      setUserProfile(updatedData.user);
+      setIsEditing(false);
     } catch (error) {
-      console.error('Error details:', error);
-      setMessage(error instanceof Error ? error.message : "Something went wrong");
-    } finally {
-      setLoading(false);
+      console.error('Error updating profile:', error);
     }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left Section */}
-      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6">
-        <BrandingSection />
+  if (loading || !userProfile) {
+    return (
+      <div>
+        <RegisteredHeader />
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#584822]"></div>
+        </div>
       </div>
+    );
+  }
 
-      {/* Right Section */}
-      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          <div className="p-6 bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-semibold text-center mb-4">Sign Up with Magic Link</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <Input
-                  type="text"
-                  placeholder="Enter your first name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
+  return (
+    <div>
+      <RegisteredHeader />
+      <div className="flex justify-center mt-8 max-w-2x">
+        <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
+      </div>
+      <div className="flex justify-center items-center flex-grow">
+        <div className="w-3/4 bg-white rounded-lg shadow-lg z-10 p-8 mb-4">
+          <div className="flex flex-col place-items-start">
+            <div className="relative mb-4">
+              {userProfile.profilePicture ? (
+                <img
+                  src={userProfile.profilePicture}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full object-cover"
                 />
-              </div>
-              <div className="mb-4">
-                <Input
-                  type="email"
-                  placeholder="Enter your email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              {message && (
-                <p className="text-center text-sm text-gray-600 mb-4">{message}</p>
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
+                </div>
               )}
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-olive"
-              >
-                {loading ? "Sending..." : "Send Magic Link"}
-              </Button>
-            </form>
-            <div className="mt-6 text-center text-sm text-gray-500">
+              {isEditing && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              )}
+              <h2 className="text-2xl font-bold text-[#584822] mb-2">
+                {userProfile.firstName} {userProfile.lastName}
+              </h2>
+              <p className="text-gray-600 mb-2">{userProfile.email}</p>
+              {userProfile.userType === 'Admin' && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                  Administrator
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between">
+            <div className="flex items-center">
+              <label className="mr-2 font-bold">First Name</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="firstName"
+                  value={userProfile.firstName}
+                  onChange={handleChange}
+                  className="border rounded px-2 py-1"
+                />
+              ) : (
+                <p className="m-0">{userProfile.firstName}</p>
+              )}
+            </div>
+
+            <div className="flex items-center">
+              <label className="mr-2 font-bold">Last Name</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="lastName"
+                  value={userProfile.lastName}
+                  onChange={handleChange}
+                  className="border rounded px-2 py-2"
+                />
+              ) : (
+                <p>{userProfile.lastName}</p>
+              )}
+            </div>
+
+            <div className="flex items-center">
+              <label className="mr-2 font-bold">Address</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="address"
+                  value={userProfile.address || ''}
+                  onChange={handleChange}
+                  className="border rounded px-2 py-1"
+                />
+              ) : (
+                <p>{userProfile.address || 'Not set'}</p>
+              )}
+            </div>
+
+            <div className="flex items-center">
+              <label className="mr-2 font-bold">Phone Number</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="contactNumber"
+                  value={userProfile.contactNumber || ''}
+                  onChange={handleChange}
+                  className="border rounded px-2 py-1"
+                />
+              ) : (
+                <p>{userProfile.contactNumber || 'Not set'}</p>
+              )}
+            </div>
+
+            <div>
               <p>
-                If you have an account, you can{" "}
-                <div  onClick={handleLogin} className="text-blue-600 hover:underline">
-                  login here
-                </div>.
+                <strong>My Email Address</strong> {userProfile.email}
               </p>
             </div>
           </div>
+
+          <div className="flex justify-end mt-8">
+            {isEditing ? (
+              <>
+                <button
+                  className="border border-[#584822] text-[#584822] px-8 py-2 rounded mr-8"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-[#584822] text-white px-8 py-2 rounded mr-16"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="border border-[#584822] text-[#584822] px-8 py-2 rounded mr-8">
+                  Cancel
+                </button>
+                <button
+                  className="bg-[#584822] text-white px-8 py-2 rounded mr-16"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
-};
-
-export default MagicLinkSignupPage;
+}

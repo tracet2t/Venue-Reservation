@@ -87,14 +87,17 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="flex flex-col w-1/2 h-full bg-white items-center justify-center">
-        <BrandingSection />
-      </div>
+    <div className="min-h-screen flex flex-col md:flex-row">
+    {/* Branding Section - exact 50% width */}
+    <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8 min-h-screen">
+      <BrandingSection />
+    </div>
 
-      <div className="flex flex-col w-1/2 h-full bg-white items-center justify-center">
-        <div className="w-full max-w-md">
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-4 text-center">
+
+      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 min-h-screen">
+      <div className="w-full max-w-[600px] mx-auto">
+        <div className="p-12 bg-white shadow-xl rounded-xl">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#584822] mt-8 p-8" style={{ textShadow: "2px 2px 3px rgba(0, 0, 0, 0.3)" }}>
             Reset Password
           </h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
@@ -143,6 +146,7 @@ const ResetPasswordPage = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

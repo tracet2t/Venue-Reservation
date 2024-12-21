@@ -17,22 +17,19 @@ const AuthPage = () => {
 
   const handleMagicLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) {
-      setMessage("Please enter your email.");
-      return;
-    }
     setLoading(true);
-    setMessage("");
     try {
-      const response = await fetch("/api/auth/login-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+      const result = await signIn('email', {
+        email,
+        callbackUrl: '/card_view',
+        redirect: true,
       });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+
+      if (result?.error) {
+        setMessage(result.error);
+        return;
       }
+
       setMessage("Magic link sent! Please check your email.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Something went wrong");
@@ -65,30 +62,26 @@ const AuthPage = () => {
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setMessage("Please enter both email and password.");
-      return;
-    }
     setLoading(true);
-    setMessage("");
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn('credentials', {
+        email,
+        password,
+        callbackUrl: '/card_view',
+        redirect: false,
       });
-      const data = await response.json();
-      if (response.ok) {
-        // Check if the user is an admin
-        if (data.userType === 'Admin') {
-          // Store user type in session or state
-          sessionStorage.setItem('userType', 'Admin');
-        }
-        router.push("/card_view");
-      } else {
-        setMessage(data.message || "Invalid email or password.");
+
+      if (result?.error) {
+        setMessage(result.error);
+        return;
       }
-    } catch {
+
+      if (result?.ok) {
+        await router.push('/card_view');
+        window.location.href = '/card_view'; // Force page reload
+      }
+    } catch (error) {
+      console.error('Login error:', error);
       setMessage("Something went wrong. Please try again later.");
     } finally {
       setLoading(false);
@@ -97,44 +90,48 @@ const AuthPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Branding Section */}
-      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-4">
+      {/* Branding Section - exact 50% width */}
+      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8 min-h-screen">
         <BrandingSection />
       </div>
 
-      {/* Authentication Section */}
-      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          <div className="p-6 bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-semibold text-center mb-4">
+      {/* Authentication Section - exact 50% width */}
+      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 min-h-screen">
+        <div className="w-full max-w-[600px] mx-auto">
+          <div className="p-12 bg-white shadow-xl rounded-xl">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#584822] mt-8 p-8" style={{ textShadow: "2px 2px 3px rgba(0, 0, 0, 0.3)" }}>
               {isMagicLink ? "Log In with Magic Link" : "Log In"}
             </h2>
-            <form onSubmit={isMagicLink ? handleMagicLinkSubmit : handleLoginSubmit}>
-              <div className="mb-4">
+            <form onSubmit={isMagicLink ? handleMagicLinkSubmit : handleLoginSubmit} className="space-y-8">
+              <div>
                 <Input
                   type="email"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="h-12 text-base px-4"
                 />
               </div>
               {!isMagicLink && (
-                <div className="mb-4">
+                <div>
                   <Input
                     type="password"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    className="h-12 text-base px-4"
                   />
                 </div>
               )}
-              {message && <p className="text-center text-sm text-gray-600 mb-4">{message}</p>}
+              {message && (
+                <p className="text-center text-sm text-gray-600">{message}</p>
+              )}
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-olive"
+                className="w-full bg-olive h-12 text-base font-medium"
               >
                 {loading
                   ? isMagicLink
@@ -145,20 +142,21 @@ const AuthPage = () => {
                   : "Login"}
               </Button>
             </form>
-            <div className="mt-4 text-center text-sm text-gray-500">
-              {isMagicLink ? (
-                <>
-                  <p>
-                    Want to use a password?{" "}
-                    <button
-                      onClick={() => setIsMagicLink(false)}
-                      className="text-blue-600 hover:underline"
-                    >
-                      Log in with password
-                    </button>
-                    <Button
+
+            {isMagicLink && (
+              <div className="mt-6 space-y-4">
+                 <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-gray-300"></span>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 text-gray-500 bg-white">or continue with</span>
+                  </div>
+                </div>
+
+                <Button
                   onClick={handleGoogleSignIn}
-                  className="flex items-center justify-center gap-2 w-full h-12 rounded-lg bg-white px-4 py-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 border border-gray-200"
+                  className="flex items-center justify-center gap-3 w-full h-12 rounded-lg bg-white px-4 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 border border-gray-200"
                 >
                   <svg className="h-5 w-5" viewBox="0 0 24 24">
                     <path
@@ -180,16 +178,27 @@ const AuthPage = () => {
                   </svg>
                   Continue with Google
                 </Button>
-                  </p>
-                </>
-                
+              </div>
+            )}
+
+            <div className="mt-6 text-center text-sm text-gray-500 space-y-2">
+              {isMagicLink ? (
+                <p>
+                  Want to use a password?{" "}
+                  <button
+                    onClick={() => setIsMagicLink(false)}
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Log in with password
+                  </button>
+                </p>
               ) : (
                 <>
                   <p>
                     Prefer a magic link?{" "}
                     <button
                       onClick={() => setIsMagicLink(true)}
-                      className="text-blue-600 hover:underline"
+                      className="text-blue-600 hover:underline font-medium"
                     >
                       Use magic link
                     </button>
@@ -198,25 +207,26 @@ const AuthPage = () => {
                     Forgot your password?{" "}
                     <Link
                       href="/forgot-password"
-                      className="text-blue-600 hover:underline"
+                      className="text-blue-600 hover:underline font-medium"
                     >
                       Reset it here
-                    </Link>.
+                    </Link>
                   </p>
                 </>
               )}
             </div>
+
             {!isMagicLink && (
-              <div className="mt-4 text-center text-sm text-gray-500">
-               <p>
-                Don&apos;t have an account?{" "}
-                <Link
-                  href="/signup-landing"
-                  className="text-blue-600 hover:underline"
-                >
-                  Sign up here
-                </Link>.
-              </p>
+              <div className="mt-6 text-center text-sm text-gray-500">
+                <p>
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/signup-landing"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Sign up here
+                  </Link>
+                </p>
               </div>
             )}
           </div>

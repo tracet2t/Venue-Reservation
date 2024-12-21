@@ -1,77 +1,73 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import UtilizationChart from "@/components/admin/utilization-chart";
+import VenueDetailCard from '@/components/venue_card/feature_venue_card';
 
-export default function AdminDashboard() {
-  const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
+interface Venue {
+  id: number;
+  name: string;
+  street_name: string[];
+  district: string;
+  province: string;
+  type: string;
+  capacity: number;
+  size: number;
+  schedule: string;
+  features: string[];
+  images: string[];
+}
+
+const AdminHomePage = () => {
+  const [venues, setVenues] = useState<Venue[]>([]);
+  const [mostReservedVenue, setMostReservedVenue] = useState<Venue | null>(null);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const fetchAdminVenues = async () => {
       try {
-        const response = await fetch('/api/user/profile', {
-          credentials: 'include',
-        });
+        const response = await fetch('/api/admin-venue');
+        if (!response.ok) throw new Error('Failed to fetch venues');
         const data = await response.json();
+        setVenues(data);
         
-        if (data.user?.userType !== 'Admin') {
-          router.push('/');
-          return;
+        // Assuming the API returns venues sorted by reservation count
+        // Take the first venue as the most reserved one
+        if (data.length > 0) {
+          setMostReservedVenue(data[0]);
         }
-        
-        setIsAdmin(true);
       } catch (error) {
-        console.error('Error checking admin status:', error);
-        router.push('/');
+        console.error('Error fetching venues:', error);
       }
     };
-
-    checkAdminStatus();
-  }, [router]);
-
-  if (!isAdmin) {
-    return null;
-  }
+    fetchAdminVenues();
+  }, []);
 
   return (
-    <div>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-[#584822] mb-8">Admin Dashboard</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Add your admin dashboard cards/sections here */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Manage Venues</h2>
-            <button 
-              onClick={() => router.push('/admin/venues')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              View Venues
-            </button>
-          </div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">Utilization Chart</h1>
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <UtilizationChart/>
+      </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Manage Reservations</h2>
-            <button 
-              onClick={() => router.push('/admin/reservations')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              View Reservations
-            </button>
-          </div>
+      <h2 className="text-xl font-bold mb-4">Most Reserved Venue</h2>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">User Management</h2>
-            <button 
-              onClick={() => router.push('/admin/users')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              Manage Users
-            </button>
-          </div>
-        </div>
+      <div className="space-y-6">
+        {mostReservedVenue && (
+          <VenueDetailCard
+            key={mostReservedVenue.id}
+            images={mostReservedVenue.images}
+            name={mostReservedVenue.name}
+            address={`${mostReservedVenue.street_name.join(', ')}, ${mostReservedVenue.district}, ${mostReservedVenue.province}`}
+            type={mostReservedVenue.type}
+            capacity={`${mostReservedVenue.capacity} people`}
+            size={`${mostReservedVenue.size} sq.m`}
+            timeSchedule={mostReservedVenue.schedule}
+            features={mostReservedVenue.features}
+          />
+        )}
       </div>
     </div>
   );
-} 
+};
+
+export default AdminHomePage;

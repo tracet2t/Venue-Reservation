@@ -35,7 +35,8 @@ export default function AddNewVenue() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('general');
-  const [images, setImages] = useState<File[]>([]);
+  const [imageFiles, setImageFiles] = useState<(File | null)[]>(Array(4).fill(null));
+  const [imagePreviews, setImagePreviews] = useState<string[]>(Array(4).fill(''));
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -56,6 +57,7 @@ export default function AddNewVenue() {
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState<boolean[]>(Array(4).fill(false));
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -71,85 +73,147 @@ export default function AddNewVenue() {
     return null;
   }
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setImages(Array.from(files));
-    }
-  };
-
-  const handleNext = (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    if (activeTab === 'general') {
-      if (!formData.name || !formData.location || !selectedProvince || !selectedDistrict) {
-        toast.error('Please fill all required fields');
-        return;
-      }
-      setActiveTab('setting');
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    if (!e.target.files?.[0]) return;
+    
+    const file = e.target.files[0];
+    console.log('Selected file:', file.name);
+    
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
     }
 
-    if (activeTab === 'setting') {
-      if (!formData.venueType || !formData.maximumCapacity || !formData.timeMode) {
-        toast.error('Please fill all required fields');
-        return;
-      }
-      setActiveTab('questions');
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast.error('Image size should be less than 5MB');
+      return;
     }
+    
+    // Create preview
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreviews(prev => {
+      const newPreviews = [...prev];
+      newPreviews[index] = previewUrl;
+      return newPreviews;
+    });
+    
+    // Store file for later upload
+    setImageFiles(prev => {
+      const newFiles = [...prev];
+      newFiles[index] = file;
+      return newFiles;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (activeTab !== 'questions') {
-      return;
-    }
-
+    
     try {
-      const validQuestions = questions
-        .filter((q) => q.text.trim() !== '')
-        .map((q) => ({
-          text: q.text,
-          options: q.options.filter((opt) => opt.trim() !== ''),
-        }));
+      // 1. Enhanced Initial validation
+      if (!imageFiles.some(file => file !== null)) {
+        toast.error('Please select at least one image');
+        return;
+      }
 
+      // Validate other required fields
+      if (!formData.name || !formData.location || !selectedDistrict || !selectedProvince) {
+        toast.error('Please fill in all required fields');
+        return;
+      }
+
+      // 2. Start upload process
+      setIsUploading(Array(4).fill(true));
+      
+      // 3. Upload images to Google Cloud
+      const uploadedImageUrls: string[] = [];
+      
+      // Create a loading toast that we can update
+      const loadingToast = toast.loading('Uploading images...');
+
+      for (let i = 0; i < imageFiles.length; i++) {
+        const file = imageFiles[i];
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          try {
+            console.log(`Uploading image ${i + 1}...`); // Debug log
+            const uploadResponse = await fetch('/api/google_image', {
+              method: 'POST',
+              body: formData,
+            });
+            
+            if (!uploadResponse.ok) {
+              throw new Error(`Failed to upload image ${i + 1}`);
+            }
+            
+            const { imageUrl } = await uploadResponse.json();
+            console.log('Uploaded image URL:', imageUrl); // Debug log
+            uploadedImageUrls.push(imageUrl);
+            
+            // Update loading toast with progress
+            toast.loading(`Uploaded ${uploadedImageUrls.length} of ${imageFiles.filter(f => f !== null).length} images...`, 
+              { id: loadingToast });
+            
+          } catch (uploadError) {
+            console.error('Image upload error:', uploadError);
+            toast.error(`Failed to upload image ${i + 1}`);
+            setIsUploading(Array(4).fill(false));
+            return; // Exit if any image upload fails
+          }
+        }
+      }
+
+      // Dismiss the loading toast
+      toast.dismiss(loadingToast);
+
+      toast.loading('Creating venue...');
+
+      // 4. Create venue with uploaded image URLs
       const venueData = {
         name: formData.name,
-        streetName: formData.location,
+        streetName: formData.location.split(',').map(s => s.trim()),
         district: selectedDistrict,
         province: selectedProvince,
         type: formData.venueType,
-        capacity: formData.maximumCapacity,
-        size: formData.venueSize,
+        capacity: parseInt(formData.maximumCapacity),
+        size: parseInt(formData.venueSize),
         schedule: formData.timeMode,
-        features: formData.features,
-        images: images,
-        questions: validQuestions,
+        features: formData.features.filter(f => f.trim() !== ''),
+        images: uploadedImageUrls,
+        questions: questions
+          .filter(q => q.text.trim() !== '')
+          .map(q => ({
+            text: q.text,
+            options: q.options.filter(opt => opt.trim() !== '')
+          }))
       };
 
-      const response = await fetch('/api/new-venue', {
+      // 5. Send venue data to API
+      const venueResponse = await fetch('/api/new-venue', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(venueData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (response.status === 401) {
-          router.push('/auth/signin');
-          throw new Error('Please sign in to continue');
-        }
-        throw new Error(errorData.error || 'Failed to create venue');
+      if (!venueResponse.ok) {
+        const error = await venueResponse.json();
+        throw new Error(error.message || 'Failed to create venue');
       }
 
+      // 6. Success handling
+      toast.dismiss();
       toast.success('Venue created successfully!');
       router.push('/admin/venue-details');
+
     } catch (error) {
-      console.error('Error creating venue:', error);
+      // 7. Error handling
+      toast.dismiss();
+      console.error('Error:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to create venue');
+    } finally {
+      setIsUploading(Array(4).fill(false));
     }
   };
 
@@ -213,6 +277,14 @@ export default function AddNewVenue() {
 
   const handleDistrictCheckboxChange = (district: string) => {
     setSelectedDistrict(district === selectedDistrict ? null : district);
+  };
+
+  const handleNext = () => {
+    if (activeTab === 'general') {
+      setActiveTab('setting');
+    } else if (activeTab === 'setting') {
+      setActiveTab('questions');
+    }
   };
 
   return (
@@ -339,17 +411,50 @@ export default function AddNewVenue() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Images</label>
                 <div className="flex gap-4">
-                  {[1, 2, 3, 4].map((index) => (
-                    <button
-                      key={index}
-                      type="button"
-                     // onClick={handleImageUpload}
-                      className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center hover:border-[#584822]"
-                    >
-                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    </button>
+                  {[0, 1, 2, 3].map((index) => (
+                    <div key={index} className="relative">
+                      {imagePreviews[index] ? (
+                        <div className="w-24 h-24 relative">
+                          <img
+                            src={imagePreviews[index]}
+                            alt={`Preview ${index + 1}`}
+                            className="w-24 h-24 object-cover rounded-md"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setImagePreviews(prev => {
+                                const newPreviews = [...prev];
+                                newPreviews[index] = '';
+                                return newPreviews;
+                              });
+                              setImageFiles(prev => {
+                                const newFiles = [...prev];
+                                newFiles[index] = null;
+                                return newFiles;
+                              });
+                            }}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center hover:border-[#584822] cursor-pointer">
+                          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                          </svg>
+                          <input
+                            type="file"
+                            className="hidden"
+                            accept="image/*"
+                            onChange={(e) => handleImageSelect(e, index)}
+                          />
+                        </label>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -413,10 +518,10 @@ export default function AddNewVenue() {
                   onChange={(e) => setFormData({...formData, venueType: e.target.value})}
                 >
                   <option value="">Select a category</option>
-                  <option value="hall">Hall</option>
-                  <option value="auditorium">Auditorium</option>
-                  <option value="conference">Conference Room</option>
-                  <option value="outdoor">Outdoor Venue</option>
+                  <option value="hall">Auditorium</option>
+                  <option value="auditorium">Outdoor</option>
+                  <option value="conference">Co-Working Space</option>
+                  <option value="outdoor">Conference Hall</option>
                 </select>
               </div>
 

@@ -113,8 +113,18 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     }
   }, [id]);
 
-  const handleSelectSlot = (slotInfo: SlotInfo) => {
-    handleDateClick(slotInfo.start);
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    const formattedDate = moment(start).format('YYYY-MM-DD');
+    const isBlocked = availabilityEvents.some((blockedDate: Event) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && 
+             (blockedDate.status === 'NOT_AVAILABLE' || 
+              blockedDate.status === 'FULLY_BOOKED');
+    });
+
+    if (!isBlocked) {
+      onSelectDate(start);
+    }
   };
 
   const handleSelectEvent = (event: Event) => {
@@ -165,94 +175,104 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
   };
 
   const eventStyleGetter = (event: Event) => {
-    const style = {
-      backgroundColor: '',
-      color: 'white',
-      borderRadius: '4px',
-      opacity: 0.8,
-      border: 'none',
-      display: 'block',
-      width: '100%',
-      textAlign: 'center' as const,
-      padding: '2px',
-      fontSize: '12px',
-      fontWeight: '500',
-      height: '160px',
-      marginTop: '-30px',
-    };    
-
+    let backgroundColor;
     switch (event.status) {
-      case 'PARTIALLY_BOOKED':
-        style.backgroundColor = '#22C55E'; // Green
-        event.title = 'Partially Available';
-        break;
-      case 'FULLY_BOOKED':
-        style.backgroundColor = '#F97316'; // Orange
-        event.title = 'Fully Booked';
-        break;
       case 'NOT_AVAILABLE':
-        style.backgroundColor = '#EF4444'; // Red
-        event.title = 'Not Available';
+        backgroundColor = '#ef4444'; // red
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
+      case 'FULLY_BOOKED':
+        backgroundColor = '#f97316'; // orange
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
         break;
-      case 'AVAILABLE':
-        style.backgroundColor = '#3B82F6'; // Blue
-        event.title = 'Available';
+      case 'PARTIALLY_BOOKED':
+        backgroundColor = '#22c55e'; // green
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
         break;
       default:
-        style.backgroundColor = '#6B7280'; // Gray
+        backgroundColor = '#3b82f6'; // blue
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
     }
-
-    return { style };
+    return { style: { backgroundColor } };
   };
 
   const dayPropGetter = (date: Date) => {
-    const isSelected = selectedDates.some(
-      selectedDate => moment(selectedDate).isSame(date, 'day')
-    );
-    const blocked = isDateBlocked(date);
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const isBlocked = availabilityEvents.some((blockedDate) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && 
+             (blockedDate.status === 'NOT_AVAILABLE' || 
+              blockedDate.status === 'FULLY_BOOKED');
+    });
 
-    if (isSelected) {
-      return {
-        style: {
-          backgroundColor: '#1f89b7',
-          color: 'white',
-        },
-      };
-    }
+    // Check for partially available dates
+    const isPartiallyAvailable = availabilityEvents.some((blockedDate) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && blockedDate.status === 'PARTIALLY_BOOKED';
+    });
 
-    if (blocked) {
-      return {
-        style: {
-          backgroundColor: '#EF4444',
-          color: 'white',
-          cursor: 'not-allowed',
-        },
-      };
-    }
-
-    return {};
+    return {
+      style: {
+        cursor: isBlocked ? 'not-allowed' : 'pointer',
+        backgroundColor: isBlocked ? '#fee2e2' : 'white'
+      },
+      className: isPartiallyAvailable ? 'partially-available' : ''
+    };
   };
 
   const allEvents = [...events, ...availabilityEvents];
 
   const renderDay = (day: Date) => {
-    const dayProps = dayPropGetter(day);
-    const isPast = moment(day).isBefore(moment(), 'day');
-
+    // Convert to ISO string and extract date part for consistent comparison
+    const currentDate = moment().startOf('day');
+    const dayDate = moment(day).startOf('day');
+    const isPast = dayDate.isBefore(currentDate);
+    
+    // Get day properties with normalized date
+    const dayProps = dayPropGetter(dayDate.toDate());
+    
+    const isBlocked = availabilityEvents.some(blocked => 
+      moment(blocked.start).startOf('day').isSame(dayDate) &&
+      (blocked.status === 'NOT_AVAILABLE' || blocked.status === 'FULLY_BOOKED')
+    );
+  
     return (
       <button
-        key={day.toString()}
-        onClick={() => !isPast && dayProps.style && !dayProps.style.cursor && handleSelectDate(day)}
-        disabled={isPast || (dayProps.style && dayProps.style.cursor === 'not-allowed')}
+        key={dayDate.toISOString()}
+        onClick={() => !isPast && !isBlocked && handleSelectDate(dayDate.toDate())}
+        disabled={isPast || isBlocked}
         className={`
-          w-full h-10 rounded-lg flex items-center justify-center
+          w-full h-10 rounded-lg flex items-center justify-center relative
           ${isPast ? 'text-gray-400 cursor-not-allowed' : ''}
-          ${dayProps.style?.backgroundColor ? `bg-[${dayProps.style.backgroundColor}] text-[${dayProps.style.color}]` : ''}
-          ${!isPast && !(dayProps.style?.cursor) ? 'hover:bg-gray-100' : ''}
+          ${dayProps.style?.backgroundColor ? `bg-[${dayProps.style.backgroundColor}]` : ''}
+          ${!isPast && !isBlocked ? 'hover:bg-gray-100' : ''}
         `}
       >
-        {day.getDate()}
-        {dayProps.style?.cursor === 'not-allowed' && (
+        {dayDate.date()}
+        {isBlocked && (
           <span className="absolute text-xs -bottom-4 text-red-600">
             Not Available
           </span>
@@ -276,6 +296,7 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
           color: 'white',
           padding: '16px',
           borderRadius: '8px',
+          height: '200px',
         },
       });
       return;
@@ -381,4 +402,3 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
 };
 
 export default CalendarComponent;
-

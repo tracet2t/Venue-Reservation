@@ -65,20 +65,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'Failed to fetch reservations' });
     }
   } else if (req.method === 'PUT') {
-    // Handle status updates
     try {
       const { reservationId, status, adminComments } = req.body;
-      const updatedReservation = await prisma.reservationState.update({
-        where: { reservationId },
-        data: {
+      
+      console.log('Updating reservation:', { reservationId, status, adminComments });
+
+      if (!reservationId || !status) {
+        return res.status(400).json({ 
+          error: 'Missing required fields: reservationId and status are required' 
+        });
+      }
+
+      const updatedReservation = await prisma.reservationState.upsert({
+        where: { 
+          reservationId 
+        },
+        update: {
           status,
-          adminComments
+          adminComments: adminComments || null
+        },
+        create: {
+          reservationId,
+          status,
+          adminComments: adminComments || null
         }
       });
+
+      console.log('Successfully updated reservation:', updatedReservation);
       return res.status(200).json(updatedReservation);
     } catch (error) {
       console.error('Error updating reservation:', error);
-      return res.status(500).json({ error: 'Failed to update reservation' });
+      return res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to update reservation' 
+      });
     }
   } else {
     res.setHeader('Allow', ['GET', 'PUT']);

@@ -16,7 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         venueId: venueId,
         OR: [
           { status: 'NOT_AVAILABLE' },
-          { status: 'PARTIALLY_BOOKED' }
+          { status: 'PARTIALLY_BOOKED' },
+          { status: 'FULLY_BOOKED' }
         ]
       },
       include: {
@@ -30,7 +31,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       timeSlots: block.timeSlots.map(slot => {
         const startMoment = moment(slot.startTime);
         const endMoment = moment(slot.endTime);
-        
+
+        // Ensure end time is within the same day
+        if (endMoment.isBefore(startMoment)) {
+          endMoment.add(1, 'day');
+        }
+
         // Format based on time slot type
         if (startMoment.hour() === 0 && endMoment.hour() === 23) {
           return 'Full Day (00:00 - 23:59)';
@@ -44,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           } else if (startTime === '12:00' && endTime === '20:00') {
             return 'Afternoon Session (12:00 - 20:00)';
           } else if (startTime === '20:00' && endTime === '00:00') {
-            return 'Late Evening Session (20:00 - 24:00)';
+            return 'Late Evening Session (20:00 - 00:00)';
           } else if (startTime === '00:00' && endTime === '08:00') {
             return 'Early Morning Session (00:00 - 08:00)';
           }

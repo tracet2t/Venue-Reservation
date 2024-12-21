@@ -17,11 +17,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 5.22.0
+ * Prisma Client JS version: 5.21.1
  * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
  */
 Prisma.prismaVersion = {
-  client: "5.22.0",
+  client: "5.21.1",
   engine: "605197351a3c8bdd595af2d2a9bc3025bca48ea2"
 }
 
@@ -135,9 +135,6 @@ exports.Prisma.UserScalarFieldEnum = {
   provider: 'provider',
   resetToken: 'resetToken',
   resetTokenExpiry: 'resetTokenExpiry'
-  provider: 'provider',
-  resetToken: 'resetToken',
-  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
@@ -216,6 +213,35 @@ exports.Prisma.QuestionScalarFieldEnum = {
   answer: 'answer'
 };
 
+exports.Prisma.VenueDailyReservationCountScalarFieldEnum = {
+  id: 'id',
+  venueId: 'venueId',
+  reservationCount: 'reservationCount',
+  date: 'date'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_token: 'session_token'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -274,7 +300,10 @@ exports.Prisma.ModelName = {
   Reservation: 'Reservation',
   ReservationTimeSlot: 'ReservationTimeSlot',
   ReservationState: 'ReservationState',
-  Question: 'Question'
+  Question: 'Question',
+  VenueDailyReservationCount: 'VenueDailyReservationCount',
+  Session: 'Session',
+  Account: 'Account'
 };
 
 /**
