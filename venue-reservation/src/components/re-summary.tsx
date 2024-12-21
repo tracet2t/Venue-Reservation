@@ -203,6 +203,36 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         throw new Error('Invalid response format from server');
       }
 
+      // Send email notification to admin
+      if (data.reservation) {
+        const emailData = {
+          reservationDetails: {
+            reservationId: data.reservation.reservationId,
+            venueId: Number(id),
+            title: reservationDetails?.title,
+            purpose: reservationDetails?.purpose,
+            dates: formattedDateTimeSelections,
+            selectedAmenities: reservationDetails?.selectedAmenities,
+            questions: questions.map(q => ({
+              question: q.text,
+              answer: (reservationDetails?.answers ?? {})[q.id] || ''
+            }))
+          }
+        };
+
+        const emailResponse = await fetch('/api/send-admin-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(emailData),
+        });
+
+        if (!emailResponse.ok) {
+          console.error('Failed to send admin notification email');
+        }
+      }
+
       // Clear localStorage after successful submission
       localStorage.removeItem(`venue-${id}-selections`);
       localStorage.removeItem(`venue-${id}-form-data`);

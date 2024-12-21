@@ -26,11 +26,12 @@ interface ReservationCardProps {
   extraServices: string[];
   purposeOfReservation: string;
   questions: { text: string; answer?: string }[];
-  status: 'Pending' | 'Rejected' | 'Accepted' | 'Canceled' | 'Done';
+  status: string;
   customerName: string;
   customerEmail: string;
   customerContactNumber?: string;
   additionalQuestions: { text: string; answer?: string }[];
+  adminComments?: string;
 }
 
 const MyReservationCard: React.FC<ReservationCardProps> = ({
@@ -47,6 +48,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
   customerEmail,
   customerContactNumber,
   additionalQuestions = [],
+  adminComments,
 }) => {
   const router = useRouter();
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -102,6 +104,15 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       router.refresh();
     } catch (error) {
       console.error('Error canceling reservation:', error);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Pending': return 'bg-yellow-100 text-yellow-800';
+      case 'Accepted': return 'bg-green-100 text-green-800';
+      case 'Rejected': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -175,29 +186,6 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
               </div>
             </div>
 
-            <div className="w-full h-64 md:h-auto border border-gray-300 rounded-xl shadow-lg">
-              {venue.images && venue.images.length > 0 ? (
-                <Carousel
-                  images={venue.images.map(image => {
-                    if (image.startsWith('http')) return image;
-                    const cleanPath = image
-                      .replace(/^\/+|\/+$/g, '')
-                      .replace('images/', '');
-                    return `https://storage.googleapis.com/foodie-96e94.appspot.com/images/${cleanPath}`;
-                  })}
-                  width="100%"
-                  height="250px"
-                  arrowBgColor="rgba(0, 0, 0, 0.7)"
-                  arrowFgColor="#fff"
-                  dotColor="#ccc"
-                  activeDotColor="#ff6347"
-                />
-              ) : (
-                <div className="w-full h-[250px] flex items-center justify-center bg-gray-100">
-                  <span className="text-gray-400">No images available</span>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right Column */}
@@ -251,13 +239,14 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
             )}
           </div>
         </div>
-        <div className="flex items-center justify-between mt-2">
+        <div className="mt-6 border-t pt-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Status:</span>
               <span className={`px-4 py-1.5 rounded-full text-white text-sm font-medium ${
                 status === 'Pending' ? 'bg-[#F4A261]' :
                 status === 'Accepted' ? 'bg-green-500' :
-                status === 'Canceled' ? 'bg-red-500' :
+                status === 'Rejected' ? 'bg-red-500' :
                 'bg-gray-500'
               }`}>
                 {status}
@@ -272,6 +261,15 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
               </button>
             )}
           </div>
+
+          {/* Admin Comments Display */}
+          {adminComments && (
+            <div className="mt-4 bg-gray-50 p-4 rounded-lg">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">Admin Feedback</h4>
+              <p className="text-gray-700">{adminComments}</p>
+            </div>
+          )}
+        </div>
       </div>
 
       <CancelReservationModal

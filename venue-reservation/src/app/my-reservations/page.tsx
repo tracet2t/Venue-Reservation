@@ -29,6 +29,10 @@ interface ReservationData {
   customerEmail: string;
   customerContactNumber?: string;
   status: string;
+  reservationState?: {
+    status: string;
+    adminComments?: string;
+  };
   extraServices: string[];
   questions?: Array<{
     text: string;
@@ -82,6 +86,7 @@ const MyReservationPage: React.FC = () => {
             purposeOfReservation={reservation.purposeOfReservation}
             questions={reservation.questions || []}
             status={reservation.status as 'Pending' | 'Rejected' | 'Accepted' | 'Canceled' | 'Done'}
+            adminComments={reservation.reservationState?.adminComments || ''}
             customerName={reservation.customerName}
             customerEmail={reservation.customerEmail}
             customerContactNumber={reservation.customerContactNumber}

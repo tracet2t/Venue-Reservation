@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../dbclient';
+import { Storage } from '@google-cloud/storage';
 
 interface VenueWithAdmin {
   id: number;
@@ -19,6 +20,14 @@ interface CacheItem {
 
 const cache: { [key: string]: CacheItem } = {};
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const storage = new Storage({
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+  credentials: JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS || '{}')
+});
+
+const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME!;
+const bucket = storage.bucket(bucketName);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -77,6 +86,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  res.setHeader('Allow', ['GET']);
+  if (req.method === 'PUT') {
+    try {
+      const { images, ...venueData } = req.body;
+
+      // Update venue data including images
+      const updatedVenue = await prisma.venue.update({
+        where: { id: venueId },
+        data: {
+          ...venueData,
+          images: images // Array of image URLs
+        },
+        include: {
+          admin: {
+            select: {
+              email: true,
+              firstName: true,
+              lastName: true,
+              contactNumber: true
+            }
+          }
+        }
+      });
+
+      // Clear cache for this venue
+      delete cache[venueId];
+
+      return res.status(200).json(updatedVenue);
+    } catch (error) {
+      console.error('Error updating venue:', error);
+      return res.status(500).json({ error: 'Failed to update venue' });
+    }
+  }
+
+  res.setHeader('Allow', ['GET', 'PUT']);
   return res.status(405).end(`Method ${req.method} Not Allowed`);
 } 

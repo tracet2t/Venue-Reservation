@@ -18,8 +18,34 @@ const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME!;
 const bucket = storage.bucket(bucketName);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'POST' && req.method !== 'DELETE') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (req.method === 'DELETE') {
+    const body = await new Promise((resolve) => {
+      let data = '';
+      req.on('data', chunk => {
+        data += chunk;
+      });
+      req.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+    });
+
+    try {
+      const { imageUrl } = body as { imageUrl: string };
+      if (!imageUrl) {
+        return res.status(400).json({ error: 'Image URL is required' });
+      }
+
+      const fileName = imageUrl.split(`${bucketName}/`)[1];
+      await bucket.file(fileName).delete();
+      return res.status(200).json({ message: 'Image deleted successfully' });
+    } catch (error) {
+      console.error('Delete error:', error);
+      return res.status(500).json({ error: 'Failed to delete image' });
+    }
   }
 
   try {

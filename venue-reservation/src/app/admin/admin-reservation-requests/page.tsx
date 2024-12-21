@@ -28,6 +28,7 @@ interface Reservation {
   };
   reservationState: {
     status: 'Pending' | 'Accepted' | 'Rejected' | 'Canceled' | 'Done';
+    adminComments?: string;
   };
   venue: {
     id: number;
@@ -48,6 +49,7 @@ export default function AdminReservationRequests() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState(true);
+  const [adminComments, setAdminComments] = useState<string>('');
 
   const fetchReservations = async () => {
     try {
@@ -68,7 +70,7 @@ export default function AdminReservationRequests() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Pending': return 'bg-yellow-100 text-yellow-800';
-      case 'Approved': return 'bg-green-100 text-green-800';
+      case 'Accepted': return 'bg-green-100 text-green-800';
       case 'Rejected': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -168,6 +170,32 @@ export default function AdminReservationRequests() {
         }
       }
 
+      // After successful status update, send email notification
+      const emailData = {
+        reservationId,
+        status,
+        adminComments,
+        userEmail: selectedReservation?.user.email,
+        userName: `${selectedReservation?.user.firstName} ${selectedReservation?.user.lastName}`,
+        venueName: selectedReservation?.venue.name,
+        reservationDetails: {
+          title: selectedReservation?.title,
+          timeSlots: selectedReservation?.timeSlots,
+        }
+      };
+
+      const emailResponse = await fetch('/api/send-status-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!emailResponse.ok) {
+        console.error('Failed to send status notification email');
+      }
+
       // Refresh reservations list
       await fetchReservations();
       setSelectedReservation(null);
@@ -176,7 +204,7 @@ export default function AdminReservationRequests() {
       alert('Reservation status updated successfully!');
     } catch (error) {
       console.error('Error updating reservation status:', error);
-      alert(`Error updating reservation status: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      alert(`Error updating status: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -252,11 +280,16 @@ export default function AdminReservationRequests() {
                   <p className="text-sm">{reservation.purposeOfReservation}</p>
                 </div>
                 
-                <div className="flex items-center">
-                  <span className="text-gray-600 mr-2">Status</span>
-                  <span className={getStatusColor(reservation.reservationState.status)}>
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600">Status:</span>
+                  <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(reservation.reservationState.status)}`}>
                     {reservation.reservationState.status}
                   </span>
+                  {reservation.reservationState.adminComments && (
+                    <span className="text-sm text-gray-600">
+                      - {reservation.reservationState.adminComments}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -394,16 +427,34 @@ export default function AdminReservationRequests() {
                   </div>
                 )}
 
+                {/* Admin Comments Section */}
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold mb-3">Admin Comments</h3>
+                  <textarea
+                    value={adminComments}
+                    onChange={(e) => setAdminComments(e.target.value)}
+                    placeholder="Add your feedback or comments here..."
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
+                    rows={4}
+                  />
+                </div>
+
                 {/* Action Buttons */}
                 <div className="flex gap-4 mt-6">
                   <button
-                    onClick={() => handleStatusUpdate(selectedReservation.reservationId, 'Accepted')}
+                    onClick={() => {
+                      handleStatusUpdate(selectedReservation.reservationId, 'Accepted', adminComments);
+                      setAdminComments(''); // Clear comments after submission
+                    }}
                     className="flex-1 bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors"
                   >
                     Accept Reservation
                   </button>
                   <button
-                    onClick={() => handleStatusUpdate(selectedReservation.reservationId, 'Rejected')}
+                    onClick={() => {
+                      handleStatusUpdate(selectedReservation.reservationId, 'Rejected', adminComments);
+                      setAdminComments(''); // Clear comments after submission
+                    }}
                     className="flex-1 bg-red-600 text-white py-3 rounded-md hover:bg-red-700 transition-colors"
                   >
                     Reject Reservation
