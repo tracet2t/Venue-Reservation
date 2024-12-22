@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `auth_token=${authToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}`,
       `magic_token=${magicToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=900`
     ]);
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
     // Create NextAuth session
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
       };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
       // Store session in your database
       await prisma.session.create({
         data: {

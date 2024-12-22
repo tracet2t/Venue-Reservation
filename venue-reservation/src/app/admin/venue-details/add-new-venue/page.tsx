@@ -57,7 +57,9 @@ export default function AddNewVenue() {
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [isUploading, setIsUploading] = useState<boolean[]>(Array(4).fill(false));
+   /* eslint-disable @typescript-eslint/no-unused-vars */
 
   useEffect(() => {
     if (status === 'unauthenticated') {

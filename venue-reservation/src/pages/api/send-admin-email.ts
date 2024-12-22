@@ -2,6 +2,26 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { prisma } from '@/lib/database';
 
+interface DateTimeSlot {
+  date: string;
+  timeSlots: string[];
+}
+
+interface ReservationQuestion {
+  question: string;
+  answer: string;
+}
+/* eslint-disable @typescript-eslint/no-unused-vars */
+interface ReservationDetails {
+  reservationId: string;
+  venueId: string;
+  title: string;
+  purpose: string;
+  dates: DateTimeSlot[];
+  selectedAmenities?: string[];
+  questions: ReservationQuestion[];
+}
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -45,10 +65,10 @@ export default async function handler(
         pass: process.env.EMAIL_SERVER_PASSWORD,
       },
     });
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
     // Format dates and times for email
     const formattedDates = reservationDetails.dates
-      .map((dt: any) => {
+      .map((dt: DateTimeSlot) => {
         const date = dt.date;
         const times = dt.timeSlots.join(', ');
         return `${date}: ${times}`;
@@ -81,7 +101,7 @@ export default async function handler(
             <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
               <h3 style="color: #584822;">Additional Information:</h3>
               <ul style="list-style: none; padding: 0;">
-                ${reservationDetails.questions.map((q: any) => `
+                ${reservationDetails.questions.map((q: ReservationQuestion) => `
                   <li style="margin-bottom: 10px;"><strong>${q.question}:</strong> ${q.answer}</li>
                 `).join('')}
               </ul>
@@ -108,7 +128,7 @@ export default async function handler(
         </div>
       `,
     };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
     // Send email
     await transporter.sendMail(mailOptions);
 

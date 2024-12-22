@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 import prisma from "../../../dbclient";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+
 
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 

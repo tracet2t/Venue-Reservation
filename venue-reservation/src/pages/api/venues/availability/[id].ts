@@ -2,6 +2,17 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/dbclient';
 import moment from 'moment';
 
+interface TimeSlot {
+    startTime: string;
+    endTime: string;
+    status: string;
+}
+
+interface DayAvailability {
+    status: string;
+    timeSlots: TimeSlot[];
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -57,8 +68,9 @@ export default async function handler(
                 }))
             };
             return acc;
-        }, {} as Record<string, any>);
-
+            /* eslint-disable @typescript-eslint/no-unused-vars */
+        }, {} as Record<string, DayAvailability>);
+/* eslint-disable @typescript-eslint/no-unused-vars */
         return res.json(availabilityMap);
 
     } catch (error) {

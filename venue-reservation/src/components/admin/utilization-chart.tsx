@@ -3,11 +3,31 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 
-// Register the necessary components for Chart.js
+// Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
+// Define interfaces for the data structure
+interface UtilizationData {
+  venueName: string;
+  utilization: number;
+}
+
+interface ChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor: string;
+  borderColor: string;
+  borderWidth: number;
+  borderRadius: number;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
 const UtilizationChart = () => {
-  const [chartData, setChartData] = useState<any>(null);
+  const [chartData, setChartData] = useState<ChartData | null>(null);
   const [viewMode, setViewMode] = useState<string>("weekly");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -31,7 +51,7 @@ const UtilizationChart = () => {
       }
 
       const response = await fetch(endpoint);
-      const data = await response.json();
+      const data: UtilizationData[] = await response.json();
 
       if (data.length === 0) {
         setChartData(null);
@@ -39,11 +59,11 @@ const UtilizationChart = () => {
       }
 
       setChartData({
-        labels: data.map((item: any) => item.venueName),
+        labels: data.map((item) => item.venueName),
         datasets: [
           {
             label: "Utilization (%)",
-            data: data.map((item: any) => item.utilization),
+            data: data.map((item) => item.utilization),
             backgroundColor: "rgb(209, 188, 126)",
             borderColor: "rgb(72, 55, 3)",
             borderWidth: 1,
@@ -67,9 +87,9 @@ const UtilizationChart = () => {
     scales: {
       y: {
         beginAtZero: true,
-        max: 200,
+        max: 100,
         ticks: {
-          stepSize: 20,
+          stepSize:5,
           callback: function(tickValue: number | string) {
             return tickValue.toString();
           }

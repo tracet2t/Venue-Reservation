@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
 import React from 'react';
 
 interface Question {

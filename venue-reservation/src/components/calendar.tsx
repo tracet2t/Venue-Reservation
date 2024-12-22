@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar';
+import { Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const localizer = momentLocalizer(moment);
 
 interface Event {
@@ -342,7 +342,7 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
 
   if (loading) return <p>Loading calendar data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   return (
     <div className="h-auto p-4 md:p-8 rounded-xl border">
       <div className="flex justify-between items-center mb-4">

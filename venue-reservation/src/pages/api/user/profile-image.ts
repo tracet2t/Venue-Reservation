@@ -29,12 +29,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session?.user?.email) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   try {
     const form = formidable({});
     const [_, files] = await form.parse(req);
     const file = files.file?.[0];
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
     if (!file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }

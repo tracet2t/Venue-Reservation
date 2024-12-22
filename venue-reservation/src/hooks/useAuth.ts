@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
+interface User {
+  userId?: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  userType?: string;
+  provider?: string;
+  profilePicture?: string;
+  contactNumber?: string;
+  address?: string;
+}
+
 export const useAuth = () => {
   const { data: session, status } = useSession();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,7 +30,7 @@ export const useAuth = () => {
 
       // If session exists, use it
       if (session?.user) {
-        setUser(session.user);
+        setUser(session.user as User);
         localStorage.setItem('user', JSON.stringify(session.user));
         setLoading(false);
         return;

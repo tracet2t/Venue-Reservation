@@ -2,8 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { verify, JwtPayload } from "jsonwebtoken";
 import { getToken } from "next-auth/jwt";
 
+// Define a type for the request
+type ExtendedRequest = NextRequest & {
+  cookies: {
+    get: (name: string) => { value: string } | undefined;
+  };
+};
+
 export function withAuthMiddleware() {
-  return async (req: NextRequest) => {
+  return async (req: ExtendedRequest) => {
     const publicRoutes = ["/card_view", "/reservations", "/", "/login", "/api/auth"];
     const { pathname } = req.nextUrl;
 
@@ -15,7 +22,7 @@ export function withAuthMiddleware() {
     try {
       // Check NextAuth session
       const session = await getToken({
-        req: req as any,
+        req: req as unknown as NextRequest & { cookies: { [key: string]: string } },
         secret: process.env.NEXTAUTH_SECRET
       });
 
@@ -37,20 +44,19 @@ export function withAuthMiddleware() {
 
     } catch (error: unknown) {
       const err = error as Error;
-      const errorMessage = err.name === "TokenExpiredError" 
-        ? "Session expired. Please log in again."
-        : "Authentication error. Please log in.";
-
-      // Clear all auth cookies
-      const headers = new Headers(req.headers);
-      headers.set("Set-Cookie", [
-        `auth_token=; Path=/; HttpOnly; Max-Age=0`,
-        `next-auth.session-token=; Path=/; HttpOnly; Max-Age=0`,
-        `token=; Path=/; HttpOnly; Max-Age=0`
-      ].join(", "));
-
-      return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`, {
-        headers
+      // Use the error message in the redirect
+      return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login?error=${
+        err.name === "TokenExpiredError" 
+          ? "Session expired. Please log in again."
+          : "Authentication error. Please log in."
+      }`, {
+        headers: new Headers({
+          "Set-Cookie": [
+            `auth_token=; Path=/; HttpOnly; Max-Age=0`,
+            `next-auth.session-token=; Path=/; HttpOnly; Max-Age=0`,
+            `token=; Path=/; HttpOnly; Max-Age=0`
+          ].join(", ")
+        })
       });
     }
   };

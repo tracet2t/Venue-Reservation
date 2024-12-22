@@ -52,6 +52,12 @@ interface ReservationSummaryProps {
   }) => void;
 }
 
+// Add this interface for the time slot structure
+interface TimeSlot {
+  date: string;
+  slots: string[];
+}
+
 const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   setCurrentStep,
   onSubmitSuccess,
@@ -87,7 +93,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         const savedSelectionsStr = localStorage.getItem(`venue-${id}-selections`);
         if (savedSelectionsStr) {
           const saved = JSON.parse(savedSelectionsStr);
-          const selections = saved.timeSlots.map((slot: any) => ({
+          const selections = saved.timeSlots.map((slot: TimeSlot) => ({
             date: new Date(slot.date),
             timeSlots: slot.slots
           }));

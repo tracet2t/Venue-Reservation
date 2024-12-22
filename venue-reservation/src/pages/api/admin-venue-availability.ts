@@ -2,9 +2,28 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/dbclient';
 import moment from 'moment';
 
+interface TimeSlot {
+  startTime: string;
+  endTime: string;
+  status: string;
+  availabilityId: number;
+}
+
+interface PrismaTimeSlot {
+  id: number;
+  startTime: Date;
+  endTime: Date;
+  status: string;
+  availabilityId: number;
+}
+
 interface TimeSlotInput {
   startTime: string;
   endTime: string;
+}
+
+interface PrismaError extends Error {
+  code?: string;
 }
 
 function getSlotTime(slot: TimeSlotInput | string, baseDate: Date, type: 'start' | 'end'): Date {
@@ -39,13 +58,13 @@ function getSlotTime(slot: TimeSlotInput | string, baseDate: Date, type: 'start'
 }
 
 async function checkTimeSlotOverlap(
-  prisma: any,
+  prismaClient: typeof prisma,
   venueId: number,
   date: Date,
   startTime: Date,
   endTime: Date
 ): Promise<boolean> {
-  const existingSlots = await prisma.timeSlot.findMany({
+  const existingSlots = await prismaClient.timeSlot.findMany({
     where: {
       venueAvailability: {
         venueId: venueId,
@@ -54,7 +73,7 @@ async function checkTimeSlotOverlap(
     }
   });
 
-  return existingSlots.some((slot: any) => {
+  return existingSlots.some((slot: PrismaTimeSlot) => {
     const slotStart = new Date(slot.startTime);
     const slotEnd = new Date(slot.endTime);
     return (
@@ -69,6 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Handle DELETE request
   if (req.method === 'DELETE') {
     try {
+      
       const { venueId, date } = req.query;
       
       if (!venueId || !date) {
@@ -110,7 +130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       console.error('Error deleting venue availability:', error);
       // If record doesn't exist, return success anyway
-      if ((error as any).code === 'P2025') {
+      if ((error as PrismaError).code === 'P2025') {
         return res.status(200).json({ message: 'Availability already removed' });
       }
       return res.status(500).json({ error: 'Failed to delete venue availability' });
@@ -152,16 +172,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               });
             }
           });
-          
           return res.status(200).json({ message: 'Availability removed successfully' });
+          
         } catch (error) {
-          if ((error as any).code === 'P2025') {
+          if ((error as PrismaError).code === 'P2025') {
             return res.status(200).json({ message: 'Availability already removed' });
           }
           throw error;
         }
       }
-
       // Log incoming request for debugging
       console.log('Saving availability:', { venueId, date, status, timeSlots });
 
@@ -206,7 +225,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // For PARTIALLY_BOOKED with time slots
       if (status === 'PARTIALLY_BOOKED' && timeSlots.length > 0) {
-        const formattedTimeSlots = timeSlots.map((slot: TimeSlotInput | string) => ({
+        const formattedTimeSlots = timeSlots.map((slot: TimeSlot | string) => ({
           startTime: getSlotTime(slot, baseDate, 'start'),
           endTime: getSlotTime(slot, baseDate, 'end'),
           status: 'PARTIALLY_BOOKED'

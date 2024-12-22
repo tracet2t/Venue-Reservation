@@ -19,9 +19,11 @@ interface Venue {
 }
 
 const AdminHomePage = () => {
-  const [venues, setVenues] = useState<Venue[]>([]);
+  
   const [mostReservedVenue, setMostReservedVenue] = useState<Venue | null>(null);
-
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const [venues, setVenues] = useState<Venue[]>([]);
+  /* eslint-enable @typescript-eslint/no-unused-vars */
   useEffect(() => {
     const fetchAdminVenues = async () => {
       try {

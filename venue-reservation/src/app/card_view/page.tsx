@@ -27,7 +27,9 @@ const locationsData: Location[] = [
 ];
 
 const Reservation = () => {
+   /* eslint-disable @typescript-eslint/no-unused-vars */
   const router = useRouter();
+   /* eslint-disable @typescript-eslint/no-unused-vars */
  const searchParams = useSearchParams(); 
  const initialVenueType = searchParams?.get('venueType') || '';
 

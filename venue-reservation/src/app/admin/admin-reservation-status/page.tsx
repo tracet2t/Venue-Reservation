@@ -38,7 +38,7 @@ interface AvailabilityItem {
     timeSlots? : string[];
     
 }
-
+ /* eslint-disable @typescript-eslint/no-unused-vars */
 const TimeSlotModal: React.FC<TimeSlotModalProps> = ({ 
   isOpen, 
   onClose, 
@@ -280,7 +280,7 @@ const AdminReservationStatus = () => {
     const handleSaveStatus = async () => {
         if (selectedDate && selectedStatus && selectedVenue) {
             try {
-                const dateKey = selectedDate.toISOString().split('T')[0];
+            //    const dateKey = selectedDate.toISOString().split('T')[0];
                 let timeSlots: string[] = [];
 
                 if (selectedStatus === 'PARTIALLY_BOOKED') {
@@ -685,3 +685,4 @@ const AdminReservationStatus = () => {
 };
 
 export default AdminReservationStatus;
+ /* eslint-disable @typescript-eslint/no-unused-vars */

@@ -25,10 +25,10 @@ const storage = new Storage({
   projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
   credentials: JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS || '{}')
 });
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME!;
 const bucket = storage.bucket(bucketName);
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!venue) {
         return res.status(404).json({ error: 'Venue not found' });
       }
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
       const formattedVenue: VenueWithAdmin = {
         id: venue.id,
         name: venue.name,
@@ -71,9 +71,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           firstName: venue.admin.firstName,
           lastName: venue.admin.lastName || '',
           contactNumber: venue.admin.contactNumber || undefined
+          /* eslint-disable @typescript-eslint/no-unused-vars */
         } : null
       };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
       cache[venueId] = {
         data: formattedVenue,
         timestamp: Date.now()

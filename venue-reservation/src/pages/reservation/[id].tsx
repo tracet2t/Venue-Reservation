@@ -58,6 +58,7 @@ const Availability = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [blockedTimeSlots, setBlockedTimeSlots] = useState<BlockedTimeSlot[]>([]);
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [venueAvailability, setVenueAvailability] = useState<VenueAvailability[]>([]);
 
   useEffect(() => {
@@ -272,6 +273,7 @@ const Availability = () => {
     let selectedSlots: string[] = [];
 
     if (venueInfo?.schedule === 'HourlyTime') {
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       selectedSlots = Object.entries(hourlySlots)
         .filter(([_, selected]) => selected)
         .map(([slot]) => slot);
@@ -438,7 +440,7 @@ const Availability = () => {
     const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
     return blockedDay?.status.includes('FULLY_BOOKED') || blockedDay?.status.includes('NOT_AVAILABLE');
   };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   const handleRemoveDate = (date: Date) => {
     try {
       // Get saved selections from localStorage

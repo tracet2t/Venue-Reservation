@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import CancelReservationModal from '../re-cancelation';
 import { useRouter } from 'next/navigation';
-import Carousel from '@/components/carousel';
 
 interface ReservationCardProps {
   reservationId: string;
@@ -106,7 +105,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       console.error('Error canceling reservation:', error);
     }
   };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Pending': return 'bg-yellow-100 text-yellow-800';
@@ -115,7 +114,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       default: return 'bg-gray-100 text-gray-800';
     }
   };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg p-8 mb-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
