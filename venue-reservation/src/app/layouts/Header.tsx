@@ -3,70 +3,78 @@
 import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import AuthProvider  from "@/components/providers/AuthProvider";
 
 interface User {
   firstName: string;
   email: string;
   userType: string;
   provider?: string;
+  profilePicture?: string;
+  image?: string;
 }
 
-const Header = () => {
+const HeaderContent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // First check NextAuth session
-        const session = await fetch('/api/auth/session');
-        const sessionData = await session.json();
+        const response = await fetch("/api/auth/check", {
+          credentials: "include",
+        });
 
-        if (sessionData?.user) {
-          // Then check custom auth
-          const response = await fetch("/api/auth/check", {
-            credentials: "include",
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        } else if (status === "authenticated" && session?.user) {
+          setUser({
+            firstName: session.user.name || '',
+            email: session.user.email || '',
+            userType: session.user.userType || 'User',
+            provider: session.user.provider || 'google',
+            image: session.user.image || '',
+            profilePicture: session.user.image || ''
           });
-          
-          if (response.ok) {
-            const data = await response.json();
-            setUser(data.user);
-          } else {
-            // If custom auth fails, sign out from NextAuth
-            await signOut({ redirect: false });
-            setUser(null);
-          }
         } else {
           setUser(null);
         }
       } catch (error) {
         console.error("Auth check failed:", error);
-        setUser(null);
+        if (status === "authenticated" && session?.user) {
+          setUser({
+            firstName: session.user.name || '',
+            email: session.user.email || '',
+            userType: session.user.userType || 'User',
+            provider: session.user.provider || 'google',
+            image: session.user.image || '',
+            profilePicture: session.user.image || ''
+          });
+        } else {
+          setUser(null);
+        }
       }
     };
 
     checkAuth();
-  }, []);
+  }, [session, status]);
 
   const handleLogout = async () => {
     try {
-      // First clear custom auth token
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
       
-      // Then sign out from NextAuth with redirect
       await signOut({ 
         callbackUrl: '/',  // Redirect to home page after logout
         redirect: true     // Enable redirect
       });
       
-      // The following lines are not needed anymore since we're using redirect
-      // setUser(null);
-      // router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -108,7 +116,7 @@ const Header = () => {
           >
             Home
           </button>
-          {user && (
+          {(user || session?.user) && (
             <button
               onClick={navigateToReservations}
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
@@ -116,7 +124,7 @@ const Header = () => {
               My Reservations
             </button>
           )}
-          {user && user.userType === 'Admin' && (
+          {((user && user.userType === 'Admin') || session?.user?.userType === 'Admin') && (
             <button
               onClick={() => router.push('/admin/dashboard')}
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
@@ -124,13 +132,28 @@ const Header = () => {
               Manage
             </button>
           )}
-          {user ? (
+          {(user || session?.user) ? (
             <>
               <button
                 onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out flex items-center space-x-2"
               >
-                Welcome, {user.firstName}
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                  {(user?.profilePicture || session?.user?.image) ? (
+                    <img
+                      src={user?.profilePicture || session?.user?.image || ''}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500 text-xs">
+                        {(user?.firstName?.[0] || session?.user?.name?.[0] || 'U').toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <span>Welcome, {user?.firstName || session?.user?.name || 'User'}</span>
               </button>
               <button
                 onClick={handleLogout}
@@ -210,13 +233,28 @@ const Header = () => {
         {/* Mobile Navigation Links */}
         <nav className="flex flex-col p-4 space-y-4">
           {/* User info and logout at the top */}
-          {user ? (
+          {(user || session?.user) ? (
             <>
               <button
                 onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left font-semibold"
+                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out flex items-center space-x-2"
               >
-                Welcome, {user.firstName}
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                  {(user?.profilePicture || session?.user?.image) ? (
+                    <img
+                      src={user?.profilePicture || session?.user?.image || ''}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500 text-xs">
+                        {(user?.firstName?.[0] || session?.user?.name?.[0] || 'U').toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <span>Welcome, {user?.firstName || session?.user?.name || 'User'}</span>
               </button>
               <button
                 onClick={handleLogout}
@@ -252,7 +290,7 @@ const Header = () => {
           >
             Home
           </button>
-          {user && (
+          {(user || session?.user) && (
             <button
               onClick={navigateToReservations}
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
@@ -260,7 +298,7 @@ const Header = () => {
               My Reservations
             </button>
           )}
-          {user && user.userType === 'Admin' && (
+          {((user && user.userType === 'Admin') || session?.user?.userType === 'Admin') && (
             <button
               onClick={() => router.push('/admin/dashboard')}
               className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out text-left"
@@ -274,4 +312,11 @@ const Header = () => {
   );
 };
 
-export default Header;
+// Wrap the HeaderContent with AuthProvider
+export default function Header() {
+  return (
+    <AuthProvider>
+      <HeaderContent />
+    </AuthProvider>
+  );
+}

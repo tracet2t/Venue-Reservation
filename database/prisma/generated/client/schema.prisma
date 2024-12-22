@@ -25,6 +25,7 @@ model User {
   resetTokenExpiry DateTime?
   sessions         Session[]
   accounts         Account[]
+  profilePicture   String?
 }
 
 model VerificationToken {

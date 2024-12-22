@@ -50,6 +50,9 @@ export default function AdminReservationRequests() {
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState(true);
   const [adminComments, setAdminComments] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]);
+  const [sortOption, setSortOption] = useState<'newest' | 'oldest' | 'a-z'>('newest');
 
   const fetchReservations = async () => {
     try {
@@ -66,6 +69,58 @@ export default function AdminReservationRequests() {
   useEffect(() => {
     fetchReservations();
   }, []);
+
+  const getSortedReservations = (reservations: Reservation[]) => {
+    const sorted = [...reservations];
+    
+    switch (sortOption) {
+      case 'newest':
+        return sorted.sort((a, b) => {
+          const dateA = new Date(a.timeSlots[0]?.date || a.createdAt);
+          const dateB = new Date(b.timeSlots[0]?.date || b.createdAt);
+          return dateB.getTime() - dateA.getTime();
+        });
+        
+      case 'oldest':
+        return sorted.sort((a, b) => {
+          const dateA = new Date(a.timeSlots[0]?.date || a.createdAt);
+          const dateB = new Date(b.timeSlots[0]?.date || b.createdAt);
+          return dateA.getTime() - dateB.getTime();
+        });
+        
+      case 'a-z':
+        return sorted.sort((a, b) => 
+          a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+        );
+        
+      default:
+        return sorted;
+    }
+  };
+
+  useEffect(() => {
+    const filterReservations = () => {
+      let filtered = reservations;
+      
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        filtered = reservations.filter((reservation) => 
+          reservation.title.toLowerCase().includes(searchLower) ||
+          reservation.venue.name.toLowerCase().includes(searchLower) ||
+          reservation.user.firstName.toLowerCase().includes(searchLower) ||
+          reservation.user.lastName.toLowerCase().includes(searchLower) ||
+          reservation.user.email.toLowerCase().includes(searchLower) ||
+          reservation.reservationId.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      // Apply sorting
+      const sortedAndFiltered = getSortedReservations(filtered);
+      setFilteredReservations(sortedAndFiltered);
+    };
+
+    filterReservations();
+  }, [searchTerm, reservations, sortOption]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -227,25 +282,40 @@ export default function AdminReservationRequests() {
           <div className="relative">
             <input
               type="search"
-              placeholder="Search here"
-              className="pl-10 pr-4 py-2 border rounded-lg"
+              placeholder="Search reservations..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
             />
-            <svg className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg 
+              className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+              />
             </svg>
           </div>
-          <select className="border rounded-lg px-4 py-2">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
+          <select 
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value as 'newest' | 'oldest' | 'a-z')}
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="a-z">A-Z</option>
           </select>
         </div>
       </div>
 
       {/* Reservation Cards */}
       <div className="space-y-4">
-        {reservations.map((reservation) => (
+        {filteredReservations.map((reservation) => (
           <div key={reservation.reservationId} 
                className="bg-white rounded-lg shadow-sm p-6">
             <div className="grid grid-cols-2">
@@ -331,6 +401,11 @@ export default function AdminReservationRequests() {
             </div>
           </div>
         ))}
+        {filteredReservations.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No reservations found matching your search.
+          </div>
+        )}
       </div>
 
       {/* Modal for detailed view */}

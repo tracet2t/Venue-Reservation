@@ -2073,6 +2073,7 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    profilePicture: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2088,6 +2089,7 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    profilePicture: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2103,6 +2105,7 @@ export namespace Prisma {
     provider: number
     resetToken: number
     resetTokenExpiry: number
+    profilePicture: number
     _all: number
   }
 
@@ -2120,6 +2123,7 @@ export namespace Prisma {
     provider?: true
     resetToken?: true
     resetTokenExpiry?: true
+    profilePicture?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2135,6 +2139,7 @@ export namespace Prisma {
     provider?: true
     resetToken?: true
     resetTokenExpiry?: true
+    profilePicture?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2150,6 +2155,7 @@ export namespace Prisma {
     provider?: true
     resetToken?: true
     resetTokenExpiry?: true
+    profilePicture?: true
     _all?: true
   }
 
@@ -2238,6 +2244,7 @@ export namespace Prisma {
     provider: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    profilePicture: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2270,6 +2277,7 @@ export namespace Prisma {
     provider?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
+    profilePicture?: boolean
     reservations?: boolean | User$reservationsArgs<ExtArgs>
     venues?: boolean | User$venuesArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -2290,6 +2298,7 @@ export namespace Prisma {
     provider?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
+    profilePicture?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2305,6 +2314,7 @@ export namespace Prisma {
     provider?: boolean
     resetToken?: boolean
     resetTokenExpiry?: boolean
+    profilePicture?: boolean
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2337,6 +2347,7 @@ export namespace Prisma {
       provider: string | null
       resetToken: string | null
       resetTokenExpiry: Date | null
+      profilePicture: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2746,6 +2757,7 @@ export namespace Prisma {
     readonly provider: FieldRef<"User", 'String'>
     readonly resetToken: FieldRef<"User", 'String'>
     readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
+    readonly profilePicture: FieldRef<"User", 'String'>
   }
     
 
@@ -14088,7 +14100,8 @@ export namespace Prisma {
     userType: 'userType',
     provider: 'provider',
     resetToken: 'resetToken',
-    resetTokenExpiry: 'resetTokenExpiry'
+    resetTokenExpiry: 'resetTokenExpiry',
+    profilePicture: 'profilePicture'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -14413,6 +14426,7 @@ export namespace Prisma {
     provider?: StringNullableFilter<"User"> | string | null
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
     venues?: VenueListRelationFilter
     sessions?: SessionListRelationFilter
@@ -14432,6 +14446,7 @@ export namespace Prisma {
     provider?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
+    profilePicture?: SortOrderInput | SortOrder
     reservations?: ReservationOrderByRelationAggregateInput
     venues?: VenueOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
@@ -14454,6 +14469,7 @@ export namespace Prisma {
     provider?: StringNullableFilter<"User"> | string | null
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    profilePicture?: StringNullableFilter<"User"> | string | null
     reservations?: ReservationListRelationFilter
     venues?: VenueListRelationFilter
     sessions?: SessionListRelationFilter
@@ -14473,6 +14489,7 @@ export namespace Prisma {
     provider?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiry?: SortOrderInput | SortOrder
+    profilePicture?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -14494,6 +14511,7 @@ export namespace Prisma {
     provider?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    profilePicture?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -15244,6 +15262,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
     venues?: VenueCreateNestedManyWithoutAdminInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -15263,6 +15282,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
     venues?: VenueUncheckedCreateNestedManyWithoutAdminInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -15282,6 +15302,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
     venues?: VenueUpdateManyWithoutAdminNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -15301,6 +15322,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
     venues?: VenueUncheckedUpdateManyWithoutAdminNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -15320,6 +15342,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -15335,6 +15358,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -15350,6 +15374,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -16206,6 +16231,7 @@ export namespace Prisma {
     provider?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
+    profilePicture?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -16221,6 +16247,7 @@ export namespace Prisma {
     provider?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
+    profilePicture?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -16236,6 +16263,7 @@ export namespace Prisma {
     provider?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiry?: SortOrder
+    profilePicture?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -18345,6 +18373,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -18363,6 +18392,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -18488,6 +18518,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -18506,6 +18537,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -18786,6 +18818,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     venues?: VenueCreateNestedManyWithoutAdminInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -18804,6 +18837,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     venues?: VenueUncheckedCreateNestedManyWithoutAdminInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -18942,6 +18976,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     venues?: VenueUpdateManyWithoutAdminNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -18960,6 +18995,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     venues?: VenueUncheckedUpdateManyWithoutAdminNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -19455,6 +19491,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
     venues?: VenueCreateNestedManyWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -19473,6 +19510,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
     venues?: VenueUncheckedCreateNestedManyWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -19507,6 +19545,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
     venues?: VenueUpdateManyWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -19525,6 +19564,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
     venues?: VenueUncheckedUpdateManyWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -19543,6 +19583,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationCreateNestedManyWithoutUserInput
     venues?: VenueCreateNestedManyWithoutAdminInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -19561,6 +19602,7 @@ export namespace Prisma {
     provider?: string | null
     resetToken?: string | null
     resetTokenExpiry?: Date | string | null
+    profilePicture?: string | null
     reservations?: ReservationUncheckedCreateNestedManyWithoutUserInput
     venues?: VenueUncheckedCreateNestedManyWithoutAdminInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -19595,6 +19637,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUpdateManyWithoutUserNestedInput
     venues?: VenueUpdateManyWithoutAdminNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -19613,6 +19656,7 @@ export namespace Prisma {
     provider?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     reservations?: ReservationUncheckedUpdateManyWithoutUserNestedInput
     venues?: VenueUncheckedUpdateManyWithoutAdminNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput

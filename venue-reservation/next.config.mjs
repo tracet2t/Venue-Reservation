@@ -6,6 +6,13 @@ const nextConfig = {
       'googleusercontent.com',      // Alternative Google domain
       'storage.googleapis.com', // For Google Cloud Storage
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        pathname: '/**',
+      },
+    ],
   },
 }
 

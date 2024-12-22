@@ -27,6 +27,7 @@ CREATE TABLE "User" (
     "provider" TEXT DEFAULT 'credentials',
     "resetToken" TEXT,
     "resetTokenExpiry" TIMESTAMP(3),
+    "profilePicture" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
 );

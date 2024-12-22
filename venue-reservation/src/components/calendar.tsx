@@ -114,6 +114,17 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
   }, [id]);
 
   const handleSelectSlot = ({ start }: { start: Date }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    const selectedDate = new Date(start);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    // Check if selected date is in the past
+    if (selectedDate < today) {
+      return; // Do nothing for past dates
+    }
+
     const formattedDate = moment(start).format('YYYY-MM-DD');
     const isBlocked = availabilityEvents.some((blockedDate: Event) => {
       const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
@@ -220,6 +231,12 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
   };
 
   const dayPropGetter = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const currentDate = new Date(date);
+    currentDate.setHours(0, 0, 0, 0);
+    const isPastDate = currentDate < today;
+
     const formattedDate = moment(date).format('YYYY-MM-DD');
     const isBlocked = availabilityEvents.some((blockedDate) => {
       const blocked = moment(blockedDate.start).format('YYYY-MM-DD');

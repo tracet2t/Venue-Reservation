@@ -71,12 +71,18 @@ const AdditionalSection = () => {
 
 // Types of venues
 const VenueType = () => {
+  const router = useRouter();
+
+  const handleVenueTypeClick = (type: string) => {
+    router.push(`/card_view?venueType=${type}`);
+  };
+
   const venueTypes = [
     { name: "Auditorium", image: "/images/image1.jpg", description: "A large room for public gatherings." },
     { name: "Conference Hall", image: "/images/image2.jpg", description: "Ideal for corporate events." },
-    { name: "Outdoor Garden", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
+    { name: "Outdoor", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
     { name: "Banquet Hall", image: "/images/image2.jpg", description: "Spacious venue for dining events." },
-    { name: "Rooftop", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
+    { name: "Co-Working Space", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
   ];
 
   return (
@@ -87,7 +93,8 @@ const VenueType = () => {
           {venueTypes.map((venue, index) => (
             <div 
               key={index}
-              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+              onClick={() => handleVenueTypeClick(venue.name)}
             >
               <img
                 src={venue.image}

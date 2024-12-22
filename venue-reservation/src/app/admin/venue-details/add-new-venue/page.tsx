@@ -518,10 +518,10 @@ export default function AddNewVenue() {
                   onChange={(e) => setFormData({...formData, venueType: e.target.value})}
                 >
                   <option value="">Select a category</option>
-                  <option value="hall">Auditorium</option>
-                  <option value="auditorium">Outdoor</option>
-                  <option value="conference">Co-Working Space</option>
-                  <option value="outdoor">Conference Hall</option>
+                  <option value="Auditorium">Auditorium</option>
+                  <option value="Outdoor">Outdoor</option>
+                  <option value="Co-Working Space">Co-Working Space</option>
+                  <option value="Conference Hall">Conference Hall</option>
                 </select>
               </div>
 

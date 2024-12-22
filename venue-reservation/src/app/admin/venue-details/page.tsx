@@ -6,6 +6,7 @@ import VenueDetailCard from '@/components/venue_card/admin_venue_card';
 import { useRouter } from 'next/navigation';
 
 interface Venue {
+  createdAt: string | number | Date;
   id: number;
   name: string;
   street_name: string[];
@@ -24,11 +25,49 @@ export default function VenueDetails() {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOption, setSortOption] = useState<'newest' | 'oldest' | 'a-z'>('newest');
+  const [filteredVenues, setFilteredVenues] = useState<Venue[]>([]);
   const router = useRouter();
 
   useEffect(() => {
     fetchVenues();
   }, []);
+
+  useEffect(() => {
+    const filterAndSortVenues = () => {
+      let filtered = venues;
+      
+      // Apply search filter
+      if (searchTerm.trim()) {
+        const searchLower = searchTerm.toLowerCase();
+        filtered = venues.filter((venue) => 
+          venue.name.toLowerCase().includes(searchLower) ||
+          venue.type.toLowerCase().includes(searchLower) ||
+          venue.district.toLowerCase().includes(searchLower) ||
+          venue.province.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      // Apply sorting
+      const sorted = [...filtered].sort((a, b) => {
+        switch (sortOption) {
+          case 'newest':
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          case 'oldest':
+            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          case 'a-z':
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+          default:
+            return 0;
+        }
+      });
+      
+      setFilteredVenues(sorted);
+    };
+
+    filterAndSortVenues();
+  }, [venues, searchTerm, sortOption]);
 
   const fetchVenues = async () => {
     try {
@@ -138,7 +177,7 @@ export default function VenueDetails() {
               Add New Venue
             </Link>
 
-            {/* Status Filter */}
+            {/* Sort Dropdown */}
             <select 
               className="
                 px-3 py-2 sm:px-4 sm:py-2.5
@@ -146,12 +185,12 @@ export default function VenueDetails() {
                 focus:outline-none focus:ring-1 focus:ring-[#584822]
                 text-sm sm:text-base bg-white
               "
-              defaultValue="status"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value as 'newest' | 'oldest' | 'a-z')}
             >
-              <option value="status" disabled>Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="all">All</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="a-z">A-Z</option>
             </select>
 
             {/* Search Input */}
@@ -159,6 +198,8 @@ export default function VenueDetails() {
               <input
                 type="text"
                 placeholder="Search venues..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="
                   w-full
                   pl-9 pr-3 py-2 sm:py-2.5
@@ -194,7 +235,7 @@ export default function VenueDetails() {
             <div className="flex justify-center items-center h-64">
               <p className="text-red-500">{error}</p>
             </div>
-          ) : venues.length === 0 ? (
+          ) : filteredVenues.length === 0 ? (
             <div className="flex flex-col justify-center items-center h-64 gap-4">
               <p className="text-gray-500">No venues found</p>
               <Link
@@ -206,7 +247,7 @@ export default function VenueDetails() {
             </div>
           ) : (
             <div className="grid gap-4 sm:gap-6">
-              {venues.map((venue) => (
+              {filteredVenues.map((venue) => (
                 <VenueDetailCard
                   key={venue.id}
                   images={venue.images}

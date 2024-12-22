@@ -11,27 +11,50 @@ const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState  ("");
   const [isMagicLink, setIsMagicLink] = useState(true); // Toggle between Magic Link and Login
   const router = useRouter();
 
   const handleMagicLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!email) {
+      setMessage("Please enter your email.");
+      return;
+    }
+
     setLoading(true);
+    setMessage("");
+
     try {
-      const result = await signIn('email', {
-        email,
-        callbackUrl: '/card_view',
-        redirect: true,
+      const response = await fetch("/api/auth/login-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
       });
 
-      if (result?.error) {
-        setMessage(result.error);
-        return;
+      const data = await response.json();
+      console.log('Response:', data); // Add this for debugging
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
       }
 
       setMessage("Magic link sent! Please check your email.");
+
+      // New: Call the check API after sending the magic link
+      const checkResponse = await fetch('/api/auth/check', {
+        credentials: 'include',
+      });
+
+      if (checkResponse.ok) {
+        const userData = await checkResponse.json();
+        // Handle user data as needed, e.g., set user state
+        console.log('User data:', userData);
+      }
+
     } catch (error) {
+      console.error('Error details:', error);
       setMessage(error instanceof Error ? error.message : "Something went wrong");
     } finally {
       setLoading(false);

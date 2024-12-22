@@ -54,24 +54,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ]);
 
     // Create NextAuth session
-    const session = {
-      user: {
-        id: user.userId,
-        email: user.email,
-        name: user.firstName,
-        userType: user.userType
-      },
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-    };
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+      // Create a new session
+      const newSession = {
+        user: {
+          id: user.userId,
+          name: user.firstName,
+          email: user.email,
+          userType: user.userType,
+          provider: "magic-link"
+        },
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+      };
 
-    // Store session in database
-    await prisma.session.create({
-      data: {
-        sessionToken: authToken,
-        userId: user.userId,
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      }
-    });
+      // Store session in your database
+      await prisma.session.create({
+        data: {
+          sessionToken: authToken,
+          userId: user.userId,
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        }
+      });
+
+      // Set the session cookie
+      const existingCookies = res.getHeader('Set-Cookie') || [];
+      res.setHeader('Set-Cookie', [
+        ...(Array.isArray(existingCookies) ? existingCookies : [existingCookies.toString()]),
+        `next-auth.session-token=${authToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}`
+      ]);
+    }
 
     // Send email using the send-email endpoint
     const emailResponse = await fetch(`${process.env.NEXTAUTH_URL}/api/send-email`, {

@@ -1,10 +1,11 @@
 // Reservation.tsx
 'use client'
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useEffect } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
 import useDebounce from '@/hooks/useDebounce';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Location {
   id: number;
@@ -26,12 +27,23 @@ const locationsData: Location[] = [
 ];
 
 const Reservation = () => {
+  const router = useRouter();
+ const searchParams = useSearchParams(); 
+ const initialVenueType = searchParams?.get('venueType') || '';
+
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const [selectedVenueType, setSelectedVenueType] = useState("");
+  const [selectedVenueType, setSelectedVenueType] = useState(initialVenueType);
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
   const [isSearchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    const venueType = searchParams?.get('venueType');
+    if (venueType) {
+      setSelectedVenueType(venueType);
+    }
+  }, [searchParams]);
 
   // Use useMemo inside the component
   const locations = useMemo(() => locationsData, []);
@@ -155,42 +167,17 @@ const Reservation = () => {
             {isVenueDropdownOpen && (
               <div className="absolute mt-2 w-72 bg-white border rounded-lg shadow-lg p-2">
                 <div className="ml-4">
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Auditorium"
-                      onChange={() => handleVenueTypeChange("Auditorium")}
-                      checked={selectedVenueType === "Auditorium"}
-                    />
-                    <span className="ml-2">Auditorium</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Outdoor"
-                      onChange={() => handleVenueTypeChange("Outdoor")}
-                      checked={selectedVenueType === "Outdoor"}
-                    />
-                    <span className="ml-2">Outdoor</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Co-Working Space"
-                      onChange={() => handleVenueTypeChange("Co-Working Space")}
-                      checked={selectedVenueType === "Co-Working Space"}
-                    />
-                    <span className="ml-2">Co-Working Space</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Conference Hall"
-                      onChange={() => handleVenueTypeChange("Conference Hall")}
-                      checked={selectedVenueType === "Conference Hall"}
-                    />
-                    <span className="ml-2">Conference Hall</span>
-                  </label>
+                  {["Auditorium", "Conference Hall", "Outdoor", "Banquet Hall", "Co-Working Space"].map((type) => (
+                    <label key={type} className="block mb-2 font-light">
+                      <input
+                        type="checkbox"
+                        value={type}
+                        onChange={() => handleVenueTypeChange(type)}
+                        checked={selectedVenueType === type}
+                      />
+                      <span className="ml-2">{type}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             )}
