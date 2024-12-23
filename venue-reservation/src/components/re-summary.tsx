@@ -81,9 +81,13 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         if (!response.ok) throw new Error('Failed to fetch venue details');
         const data = await response.json();
         setVenueDetails(data);
-      } catch (err) {
+      } catch (err: unknown) {
         setError('Error fetching venue details');
-        console.error(err);
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error('An unexpected error occurred');
+        }
       }
     };
 

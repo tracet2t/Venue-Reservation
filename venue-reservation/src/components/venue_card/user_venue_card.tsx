@@ -39,22 +39,18 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         });
         const response = await fetch(`/api/venues?${queryParams.toString()}`);
         const data = await response.json();
- /* eslint-disable @typescript-eslint/no-unused-vars */
-        if (Array.isArray(data)) {
-          data.forEach((venue, index) => {
-          });
-        }
 
         if (Array.isArray(data)) {
           setVenues(data);
         } else {
           setVenues([]);
         }
-      } catch (error) {
+      } catch (err) {
+        console.error('Failed to fetch venues:', err);
         setVenues([]);
       }
     };
- /* eslint-disable @typescript-eslint/no-unused-vars */
+
     fetchVenues();
   }, [provinces, districts, venueType, searchTerm]);
 

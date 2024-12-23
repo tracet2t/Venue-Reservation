@@ -415,32 +415,15 @@ const Availability = () => {
     const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
     return !!(blockedDay?.status.includes('NOT_AVAILABLE') || blockedDay?.status.includes('FULLY_BOOKED'));
   };
-/*
-  const fetchVenueAvailability = async () => {
-    try {
-      const response = await fetch(`/api/venues/availability/${id}`);
-      if (response.ok) {
-        const data: VenueAvailability[] = await response.json();
-        // Transform the data to include all status types
-        const formattedAvailability = data.map((item) => ({
-          date: moment(item.date).format('YYYY-MM-DD'),
-          status: item.status,
-          timeSlots: item.timeSlots || []
-        }));
-        setVenueAvailability(formattedAvailability);
-      }
-    } catch (error) {
-      console.error('Error fetching venue availability:', error);
-    }
-  };
-*/
+
   // Add this function to check if the selected date is fully booked
   const isDateFullyBooked = (date: Date) => {
     const dateStr = moment(date).format('YYYY-MM-DD');
     const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
     return blockedDay?.status.includes('FULLY_BOOKED') || blockedDay?.status.includes('NOT_AVAILABLE');
   };
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const handleRemoveDate = (date: Date) => {
     try {
       // Get saved selections from localStorage
@@ -625,7 +608,7 @@ const Availability = () => {
                 {/* Hourly Time Slots */}
                 {venueInfo?.schedule === 'HourlyTime' && !isDateFullyBooked(selectedDate) && (
                   <div className="mb-4 max-h-60 overflow-y-auto">
-                    {[...Array(24)].map((_, i) => {
+                    {Array.from({ length: 24 }, (__, i) => {
                       const hour = i.toString().padStart(2, '0');
                       const nextHour = ((i + 1) % 24).toString().padStart(2, '0');
                       const timeSlot = `${hour}:00-${nextHour}:00`;

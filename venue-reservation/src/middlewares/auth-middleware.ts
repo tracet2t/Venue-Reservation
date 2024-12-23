@@ -44,7 +44,6 @@ export function withAuthMiddleware() {
 
     } catch (error: unknown) {
       const err = error as Error;
-      // Use the error message in the redirect
       return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login?error=${
         err.name === "TokenExpiredError" 
           ? "Session expired. Please log in again."

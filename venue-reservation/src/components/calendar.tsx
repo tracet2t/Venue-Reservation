@@ -262,42 +262,6 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
 
   const allEvents = [...events, ...availabilityEvents];
 
-  const renderDay = (day: Date) => {
-    // Convert to ISO string and extract date part for consistent comparison
-    const currentDate = moment().startOf('day');
-    const dayDate = moment(day).startOf('day');
-    const isPast = dayDate.isBefore(currentDate);
-    
-    // Get day properties with normalized date
-    const dayProps = dayPropGetter(dayDate.toDate());
-    
-    const isBlocked = availabilityEvents.some(blocked => 
-      moment(blocked.start).startOf('day').isSame(dayDate) &&
-      (blocked.status === 'NOT_AVAILABLE' || blocked.status === 'FULLY_BOOKED')
-    );
-  
-    return (
-      <button
-        key={dayDate.toISOString()}
-        onClick={() => !isPast && !isBlocked && handleSelectDate(dayDate.toDate())}
-        disabled={isPast || isBlocked}
-        className={`
-          w-full h-10 rounded-lg flex items-center justify-center relative
-          ${isPast ? 'text-gray-400 cursor-not-allowed' : ''}
-          ${dayProps.style?.backgroundColor ? `bg-[${dayProps.style.backgroundColor}]` : ''}
-          ${!isPast && !isBlocked ? 'hover:bg-gray-100' : ''}
-        `}
-      >
-        {dayDate.date()}
-        {isBlocked && (
-          <span className="absolute text-xs -bottom-4 text-red-600">
-            Not Available
-          </span>
-        )}
-      </button>
-    );
-  };
-
   const handleSelectDate = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0];
     const eventForDate = allEvents.find(event => 
@@ -334,10 +298,6 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     }
 
     onSelectDate(date);
-  };
-
-  const isBlockedDate = (value: boolean | 'reserved' | 'partial' | 'blocked'): boolean => {
-    return value === true || value === 'reserved' || value === 'blocked';
   };
 
   if (loading) return <p>Loading calendar data...</p>;

@@ -73,8 +73,12 @@ export default async function handler(
 /* eslint-disable @typescript-eslint/no-unused-vars */
         return res.json(availabilityMap);
 
-    } catch (error) {
-        console.error('Error fetching venue availability:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+    } catch (error: unknown) {
+        const err = error as Error;
+        console.error('Error fetching venue availability:', err.message);
+        return res.status(500).json({ 
+            error: 'Internal Server Error',
+            details: err.message 
+        });
     }
 } 
