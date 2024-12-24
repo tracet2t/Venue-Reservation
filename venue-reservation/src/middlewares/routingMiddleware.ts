@@ -2,8 +2,8 @@ import { NextMiddleware, NextRequest, NextResponse } from "next/server";
 import { isUrlAllowed } from "@/lib/extras";
 import { getSession } from "@/server-actions/getSession";
 
-const mentorBlacklist = ["/admin"];
-const studentBlacklist = [...mentorBlacklist, "/restricted"];
+const adminBlacklist = ["/admin"];
+const userBlacklist = [...adminBlacklist, "/restricted"];
 
 export function withRoleBasedRoutingMiddleware(
   next: NextMiddleware
@@ -14,7 +14,7 @@ export function withRoleBasedRoutingMiddleware(
     const { pathname } = req.nextUrl;
 
     const blacklist =
-      role === "regular" ? studentBlacklist : mentorBlacklist;
+      role === "regular" ? userBlacklist : adminBlacklist;
 
     if (!isUrlAllowed(pathname, blacklist)) {
       return NextResponse.redirect(`${process.env.BASE_URL}/unauthorized`);

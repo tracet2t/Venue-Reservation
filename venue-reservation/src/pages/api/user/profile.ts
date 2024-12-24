@@ -117,7 +117,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         contactNumber: true,
         address: true,
         userType: true,
-        provider: true
+        provider: true,
+        profilePicture: true
       }
     });
 

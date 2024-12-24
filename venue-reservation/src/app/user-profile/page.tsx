@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Footer from "../layouts/Footer";
 import RegisteredHeader from "../layouts/Header";
 import { useRouter } from 'next/navigation';
+import { useSession } from "next-auth/react";
 
 interface UserProfile {
   userId: string;
@@ -17,6 +18,7 @@ interface UserProfile {
 }
 
 export default function UserProfilePage() {
+  const { data: session } = useSession();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -73,6 +75,8 @@ export default function UserProfilePage() {
           const updatedData = await updateResponse.json();
           setUserProfile(updatedData.user);
           setOriginalUserData(updatedData.user);
+          // Force a page refresh to update the header
+          window.location.reload();
           alert('Profile picture updated successfully!');
         }
       }
@@ -254,30 +258,24 @@ export default function UserProfilePage() {
           <div className="flex flex-col place-items-start">
             <div className="relative mb-4">
               <div className="relative w-24 h-24 group">
-                {userProfile.profilePicture ? (
-                  <img
-                    src={userProfile.profilePicture}
-                    alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">No Image</span>
-                  </div>
-                )}
-                {isEditing && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                      <span className="text-white text-sm">Change Photo</span>
-                    </label>
-                  </div>
-                )}
+                <img
+                  src={userProfile.profilePicture || session?.user?.image || '/default-avatar.png'}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <span className="text-white text-sm">
+                      {isEditing ? 'Change Photo' : 'View Photo'}
+                    </span>
+                  </label>
+                </div>
               </div>
               <h2 className="text-2xl font-bold text-[#584822] mb-2">
                 {userProfile.firstName} {userProfile.lastName}

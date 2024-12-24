@@ -1,17 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
-import prisma from "../../../dbclient";
+import prisma from "@/dbclient";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-
-const SECRET_KEY = process.env.JWT_SECRET!;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Check NextAuth session first
     const session = await getServerSession(req, res, authOptions);
     
-    // If we have a session, return it
     if (session?.user?.email) {
       const user = await prisma.user.findUnique({
         where: { email: session.user.email },
@@ -23,14 +20,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           provider: true
         }
       });
-      if (user) return res.status(200).json({ user, session });
-    } 
+      
+      if (user) {
+        return res.status(200).json({
+          isAuthenticated: true,
+          user,
+          session
+        });
+      }
+    }
 
-    // Check database session
+    // Check JWT token if no NextAuth session
     const authToken = req.cookies.auth_token;
     if (authToken) {
       try {
-        const decoded = jwt.verify(authToken, SECRET_KEY) as { email: string };
+        const decoded = jwt.verify(authToken, process.env.JWT_SECRET!) as { email: string };
         const user = await prisma.user.findUnique({
           where: { email: decoded.email },
           select: {
@@ -43,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (user) {
-          const session = {
+          const customSession = {
             user: {
               id: user.userId,
               email: user.email,
@@ -52,17 +56,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
           };
-          return res.status(200).json({ user, session });
+          
+          return res.status(200).json({
+            isAuthenticated: true,
+            user,
+            session: customSession
+          });
         }
       } catch (error) {
         console.error('Token verification failed:', error);
       }
     }
 
-    return res.status(401).json({ message: "Not authenticated" });
+    return res.status(401).json({
+      isAuthenticated: false,
+      message: "Not authenticated"
+    });
 
   } catch (error) {
     console.error("Auth check error:", error);
-    return res.status(401).json({ message: "Authentication failed" });
+    return res.status(401).json({
+      isAuthenticated: false,
+      message: "Authentication failed"
+    });
   }
 } 

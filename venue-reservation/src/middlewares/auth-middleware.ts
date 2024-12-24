@@ -2,27 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { verify, JwtPayload } from "jsonwebtoken";
 import { getToken } from "next-auth/jwt";
 
-// Define a type for the request
-type ExtendedRequest = NextRequest & {
-  cookies: {
-    get: (name: string) => { value: string } | undefined;
-  };
-};
-
 export function withAuthMiddleware() {
-  return async (req: ExtendedRequest) => {
-    const publicRoutes = ["/card_view", "/reservations", "/", "/login", "/api/auth"];
-    const { pathname } = req.nextUrl;
+  return async (req: NextRequest) => {
+    // Public routes that don't require authentication
+    const publicRoutes = [
+      "/login",
+      "/signup",
+      "/api/auth",
+      "/card_view",
+      "/",
+      "/_next",
+      "/images",
+      "/favicon.ico"
+    ];
 
-    // Allow access to public routes
-    if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    if (publicRoutes.some(route => req.nextUrl.pathname.startsWith(route))) {
       return NextResponse.next();
     }
 
     try {
       // Check NextAuth session
       const session = await getToken({
-        req: req as unknown as NextRequest & { cookies: { [key: string]: string } },
+        req,
         secret: process.env.NEXTAUTH_SECRET
       });
 
@@ -31,32 +32,26 @@ export function withAuthMiddleware() {
       }
 
       // Check JWT token
-      const token = req.cookies.get("auth_token");
-      if (token) {
-        const payload = verify(token.value, process.env.JWT_SECRET!) as JwtPayload;
-        if (payload) {
-          return NextResponse.next();
+      const authToken = req.cookies.get("auth_token");
+      if (authToken) {
+        try {
+          const verified = verify(authToken.value, process.env.JWT_SECRET!) as JwtPayload;
+          if (verified) {
+            return NextResponse.next();
+          }
+        } catch (error) {
+          console.error('JWT verification failed:', error);
         }
       }
 
       // No valid authentication found
-      throw new Error("Not authenticated");
+      const url = new URL('/login', req.url);
+      url.searchParams.set('from', req.nextUrl.pathname);
+      return NextResponse.redirect(url);
 
-    } catch (error: unknown) {
-      const err = error as Error;
-      return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login?error=${
-        err.name === "TokenExpiredError" 
-          ? "Session expired. Please log in again."
-          : "Authentication error. Please log in."
-      }`, {
-        headers: new Headers({
-          "Set-Cookie": [
-            `auth_token=; Path=/; HttpOnly; Max-Age=0`,
-            `next-auth.session-token=; Path=/; HttpOnly; Max-Age=0`,
-            `token=; Path=/; HttpOnly; Max-Age=0`
-          ].join(", ")
-        })
-      });
+    } catch (error) {
+      console.error('Auth middleware error:', error);
+      return NextResponse.redirect(new URL('/login', req.url));
     }
   };
 }

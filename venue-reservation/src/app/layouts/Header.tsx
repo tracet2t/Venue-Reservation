@@ -6,6 +6,14 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import AuthProvider  from "@/components/providers/AuthProvider";
 
+declare module "next-auth" {
+  interface User {
+    profilePicture?: string;
+    userType: string;
+    provider?: string;
+  }
+}
+
 interface User {
   firstName: string;
   email: string;
@@ -24,39 +32,36 @@ const HeaderContent = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/auth/check", {
+        const response = await fetch("/api/user/profile", {
           credentials: "include",
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
         });
 
         if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
+          const { user: userData } = await response.json();
+          setUser({
+            firstName: userData.firstName,
+            email: userData.email,
+            userType: userData.userType,
+            provider: userData.provider,
+            profilePicture: userData.profilePicture || session?.user?.image || '/default-avatar.png'
+          });
         } else if (status === "authenticated" && session?.user) {
           setUser({
             firstName: session.user.name || '',
             email: session.user.email || '',
             userType: session.user.userType || 'User',
             provider: session.user.provider || 'google',
-            image: session.user.image || '',
-            profilePicture: session.user.image || ''
+            profilePicture: session.user.image || '/default-avatar.png'
           });
         } else {
           setUser(null);
         }
       } catch (error) {
         console.error("Auth check failed:", error);
-        if (status === "authenticated" && session?.user) {
-          setUser({
-            firstName: session.user.name || '',
-            email: session.user.email || '',
-            userType: session.user.userType || 'User',
-            provider: session.user.provider || 'google',
-            image: session.user.image || '',
-            profilePicture: session.user.image || ''
-          });
-        } else {
-          setUser(null);
-        }
+        setUser(null);
       }
     };
 
@@ -141,7 +146,7 @@ const HeaderContent = () => {
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                   {(user?.profilePicture || session?.user?.image) ? (
                     <img
-                      src={user?.profilePicture || session?.user?.image || ''}
+                      src={user?.profilePicture || session?.user?.image || '/default-avatar.png'}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
@@ -242,7 +247,7 @@ const HeaderContent = () => {
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                   {(user?.profilePicture || session?.user?.image) ? (
                     <img
-                      src={user?.profilePicture || session?.user?.image || ''}
+                      src={user?.profilePicture || session?.user?.image || '/default-avatar.png'}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />

@@ -12,7 +12,9 @@ const AdditionalSection = () => {
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
-    '/images/image3.jpg'
+    '/images/image3.jpg',
+    '/images/image4.jpg',
+    '/images/image5.jpg',
   ];
 
   return (
@@ -80,8 +82,8 @@ const VenueType = () => {
   const venueTypes = [
     { name: "Auditorium", image: "/images/image1.jpg", description: "A large room for public gatherings." },
     { name: "Conference Hall", image: "/images/image2.jpg", description: "Ideal for corporate events." },
-    { name: "Outdoor", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
-    { name: "Banquet Hall", image: "/images/image2.jpg", description: "Spacious venue for dining events." },
+    { name: "Outdoor", image: "/images/image4.jpg", description: "Perfect for outdoor celebrations." },
+    { name: "Banquet Hall", image: "/images/image5.jpg", description: "Spacious venue for dining events." },
     { name: "Co-Working Space", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
   ];
 
