@@ -55,9 +55,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
   }, [provinces, districts, venueType, searchTerm]);
 
   const handleCardClick = (venueId: number) => {
-    if (router) {
-      router.push(`/reservation/${venueId}`);
-    }
+    router.push(`/reservation/${venueId}`);
   };
 
   return (
@@ -66,6 +64,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         <div
           key={venue.id}
           className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4 cursor-pointer"
+          onClick={() => handleCardClick(venue.id)}
         >
           {/* Image Section */}
           <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">

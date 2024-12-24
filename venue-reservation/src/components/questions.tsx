@@ -198,6 +198,28 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
     'Extended Hours'
   ];
 
+  // Add new function to check if date has time slots selected
+  const hasTimeSlots = (date: Date) => {
+    const selection = dateTimeSelections.find(
+      sel => sel.date.toDateString() === date.toDateString()
+    );
+    return selection && selection.timeSlots.length > 0;
+  };
+
+  // Add function to get date status class
+  const getDateStatusClass = (date: Date) => {
+    const isSelected = selectedDates.some(
+      selDate => selDate.toDateString() === date.toDateString()
+    );
+    
+    if (isSelected) {
+      return hasTimeSlots(date) 
+        ? 'bg-blue-100 border-blue-500' 
+        : 'bg-white border-gray-300';
+    }
+    return 'bg-white border-gray-300';
+  };
+
   return (
     <div className="space-y-6 text-olive">
       <div className="bg-white-100 p-4 rounded-lg">
@@ -275,9 +297,14 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
             <div className="items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full bg-white">
               <h3 className="font-medium text-gray-700 mb-2">Selected Dates and Times:</h3>
               {dateTimeSelections.map((selection, index) => (
-                <div key={index} className="mb-4 border-b pb-2">
-                  <div className="flex justify-between items-center">
-                    <p className="text-gray-600 font-semibold">
+                <div 
+                  key={index} 
+                  className={`mb-4 border-b pb-2 rounded-lg ${getDateStatusClass(selection.date)}`}
+                >
+                  <div className="flex justify-between items-center p-3">
+                    <p className={`font-semibold ${
+                      hasTimeSlots(selection.date) ? 'text-blue-700' : 'text-gray-600'
+                    }`}>
                       {selection.date.toLocaleDateString()}
                     </p>
                     <button
@@ -287,14 +314,19 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
                       ✕
                     </button>
                   </div>
-                  <div className="mt-1 ml-4">
-                    <ul className="list-disc list-inside mt-1">
-                      {Array.isArray(selection.timeSlots) && selection.timeSlots.map((slot) => (
-                        <li key={`${selection.date}-${slot}`} className="text-gray-600">
-                          {slot}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-1 ml-4 pb-2">
+                    {Array.isArray(selection.timeSlots) && selection.timeSlots.length > 0 ? (
+                      <ul className="list-disc list-inside mt-1">
+                        {selection.timeSlots.map((slot) => (
+                          <li key={`${selection.date}-${slot}`} 
+                              className="text-blue-600">
+                            {slot}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-gray-500 italic ml-2">No time slots selected</p>
+                    )}
                   </div>
                 </div>
               ))}

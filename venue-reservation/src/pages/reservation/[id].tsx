@@ -273,7 +273,6 @@ const Availability = () => {
     let selectedSlots: string[] = [];
 
     if (venueInfo?.schedule === 'HourlyTime') {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
       selectedSlots = Object.entries(hourlySlots)
         .filter(([_, selected]) => selected)
         .map(([slot]) => slot);
@@ -312,7 +311,7 @@ const Availability = () => {
           !moment(new Date(d)).isSame(selectedDate, 'day')
         );
         const updatedTimeSlots = { ...saved.timeSlots };
-        delete updatedTimeSlots[selectedDate.toISOString()];
+        delete updatedTimeSlots[moment(selectedDate).format('YYYY-MM-DD')];
         
         localStorage.setItem(`venue-${id}-selections`, JSON.stringify({
           dates: updatedDates,
@@ -346,9 +345,12 @@ const Availability = () => {
 
     // Save to localStorage
     const formattedSelections = {
-      dates: selectedDates.map(d => d.toISOString()),
+      dates: selectedDates
+        .filter(d => moment(d).isSame(selectedDate, 'day') || 
+                     dateTimeSelections.some(s => moment(s.date).isSame(d, 'day')))
+        .map(d => d.toISOString()),
       timeSlots: {
-        [selectedDate.toISOString()]: selectedSlots
+        [moment(selectedDate).format('YYYY-MM-DD')]: selectedSlots
       }
     };
 

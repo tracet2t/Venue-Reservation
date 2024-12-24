@@ -223,7 +223,8 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
           style: { 
             backgroundColor,
             width: '100%',
-            height: '100px'
+            height: '100px',
+            borderRadius: '100px'
           }
         };
     }
@@ -238,6 +239,12 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     const isPastDate = currentDate < today;
 
     const formattedDate = moment(date).format('YYYY-MM-DD');
+    
+    // Check if date is selected
+    const isSelected = selectedDates.some(selectedDate => 
+      moment(selectedDate).format('YYYY-MM-DD') === formattedDate
+    );
+
     const isBlocked = availabilityEvents.some((blockedDate) => {
       const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
       return blocked === formattedDate && 
@@ -245,7 +252,6 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
               blockedDate.status === 'FULLY_BOOKED');
     });
 
-    // Check for partially available dates
     const isPartiallyAvailable = availabilityEvents.some((blockedDate) => {
       const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
       return blocked === formattedDate && blockedDate.status === 'PARTIALLY_BOOKED';
@@ -254,7 +260,8 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     return {
       style: {
         cursor: isBlocked ? 'not-allowed' : 'pointer',
-        backgroundColor: isBlocked ? '#fee2e2' : 'white'
+        backgroundColor: isSelected ? '#3b82f6' : isBlocked ? '#fee2e2' : 'white',
+        color: isSelected ? 'white' : 'inherit'
       },
       className: isPartiallyAvailable ? 'partially-available' : ''
     };
