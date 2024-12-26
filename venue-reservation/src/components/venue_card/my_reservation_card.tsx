@@ -16,6 +16,7 @@ interface ReservationCardProps {
       email: string;
       contactNumber?: string;
     };
+    images: string[];
   };
   dateTimeSelections: {
     [key: string]: string[];
@@ -24,11 +25,12 @@ interface ReservationCardProps {
   extraServices: string[];
   purposeOfReservation: string;
   questions: { text: string; answer?: string }[];
-  status: 'Pending' | 'Rejected' | 'Accepted' | 'Canceled' | 'Done';
+  status: string;
   customerName: string;
   customerEmail: string;
   customerContactNumber?: string;
   additionalQuestions: { text: string; answer?: string }[];
+  adminComments?: string;
 }
 
 const MyReservationCard: React.FC<ReservationCardProps> = ({
@@ -45,6 +47,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
   customerEmail,
   customerContactNumber,
   additionalQuestions = [],
+  adminComments,
 }) => {
   const router = useRouter();
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -102,7 +105,16 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       console.error('Error canceling reservation:', error);
     }
   };
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Pending': return 'bg-yellow-100 text-yellow-800';
+      case 'Accepted': return 'bg-green-100 text-green-800';
+      case 'Rejected': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+/* eslint-disable @typescript-eslint/no-unused-vars */
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg p-8 mb-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
@@ -172,6 +184,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
                 ) : null}
               </div>
             </div>
+
           </div>
 
           {/* Right Column */}
@@ -225,13 +238,14 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
             )}
           </div>
         </div>
-        <div className="flex items-center justify-between mt-2">
+        <div className="mt-6 border-t pt-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Status:</span>
               <span className={`px-4 py-1.5 rounded-full text-white text-sm font-medium ${
                 status === 'Pending' ? 'bg-[#F4A261]' :
                 status === 'Accepted' ? 'bg-green-500' :
-                status === 'Canceled' ? 'bg-red-500' :
+                status === 'Rejected' ? 'bg-red-500' :
                 'bg-gray-500'
               }`}>
                 {status}
@@ -246,6 +260,15 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
               </button>
             )}
           </div>
+
+          {/* Admin Comments Display */}
+          {adminComments && (
+            <div className="mt-4 bg-gray-50 p-4 rounded-lg">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">Admin Feedback</h4>
+              <p className="text-gray-700">{adminComments}</p>
+            </div>
+          )}
+        </div>
       </div>
 
       <CancelReservationModal

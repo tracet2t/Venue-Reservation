@@ -52,6 +52,12 @@ interface ReservationSummaryProps {
   }) => void;
 }
 
+// Add this interface for the time slot structure
+interface TimeSlot {
+  date: string;
+  slots: string[];
+}
+
 const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   setCurrentStep,
   onSubmitSuccess,
@@ -64,6 +70,8 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Array<{ id: string; text: string }>>([]);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -75,9 +83,13 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         if (!response.ok) throw new Error('Failed to fetch venue details');
         const data = await response.json();
         setVenueDetails(data);
-      } catch (err) {
+      } catch (err: unknown) {
         setError('Error fetching venue details');
-        console.error(err);
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error('An unexpected error occurred');
+        }
       }
     };
 
@@ -87,7 +99,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         const savedSelectionsStr = localStorage.getItem(`venue-${id}-selections`);
         if (savedSelectionsStr) {
           const saved = JSON.parse(savedSelectionsStr);
-          const selections = saved.timeSlots.map((slot: any) => ({
+          const selections = saved.timeSlots.map((slot: TimeSlot) => ({
             date: new Date(slot.date),
             timeSlots: slot.slots
           }));
@@ -130,6 +142,13 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   }, [id]);
 
   const handleSubmit = async () => {
+    // Check if terms are accepted
+    if (!isTermsAccepted) {
+      setTermsError('Please accept the Terms and Privacy Policy to continue');
+      return;
+    }
+    setTermsError('');
+
     try {
       const mappedExtraServices = reservationDetails?.selectedAmenities?.map((amenity: string) => {
         switch(amenity) {
@@ -201,6 +220,36 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         });
       } else {
         throw new Error('Invalid response format from server');
+      }
+
+      // Send email notification to admin
+      if (data.reservation) {
+        const emailData = {
+          reservationDetails: {
+            reservationId: data.reservation.reservationId,
+            venueId: Number(id),
+            title: reservationDetails?.title,
+            purpose: reservationDetails?.purpose,
+            dates: formattedDateTimeSelections,
+            selectedAmenities: reservationDetails?.selectedAmenities,
+            questions: questions.map(q => ({
+              question: q.text,
+              answer: (reservationDetails?.answers ?? {})[q.id] || ''
+            }))
+          }
+        };
+
+        const emailResponse = await fetch('/api/send-admin-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(emailData),
+        });
+
+        if (!emailResponse.ok) {
+          console.error('Failed to send admin notification email');
+        }
       }
 
       // Clear localStorage after successful submission
@@ -368,7 +417,15 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                   {/* Terms and Privacy Policy */}
                   <div className="mt-6">
                     <label className="flex items-center space-x-2">
-                      <input type="checkbox" className="form-checkbox text-[#584822]" />
+                      <input 
+                        type="checkbox" 
+                        className="form-checkbox text-[#584822]"
+                        checked={isTermsAccepted}
+                        onChange={(e) => {
+                          setIsTermsAccepted(e.target.checked);
+                          if (e.target.checked) setTermsError('');
+                        }}
+                      />
                       <span className="text-sm text-gray-600">
                         By clicking &quot;Reserve Now&quot; you agree to the{' '}
                         <a href="#" className="text-[#584822]">Terms of Use</a>
@@ -376,6 +433,9 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                         <a href="#" className="text-[#584822]">Privacy Policy</a>.
                       </span>
                     </label>
+                    {termsError && (
+                      <p className="text-red-500 text-sm mt-2">{termsError}</p>
+                    )}
                   </div>
 
                   {/* Reserve Now Button */}

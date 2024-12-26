@@ -27,10 +27,7 @@ CREATE TABLE "User" (
     "provider" TEXT DEFAULT 'credentials',
     "resetToken" TEXT,
     "resetTokenExpiry" TIMESTAMP(3),
-<<<<<<<< HEAD:database/prisma/migrations/20241218085154_init/migration.sql
-========
     "profilePicture" TEXT,
->>>>>>>> 739c441c905b9b3c14f9ef177195714e15c5ff2a:database/prisma/migrations/20241222202127_init/migration.sql
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
 );
@@ -135,8 +132,6 @@ CREATE TABLE "Question" (
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
 
-<<<<<<<< HEAD:database/prisma/migrations/20241218085154_init/migration.sql
-========
 -- CreateTable
 CREATE TABLE "VenueDailyReservationCount" (
     "id" SERIAL NOT NULL,
@@ -175,7 +170,6 @@ CREATE TABLE "Account" (
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
->>>>>>>> 739c441c905b9b3c14f9ef177195714e15c5ff2a:database/prisma/migrations/20241222202127_init/migration.sql
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -204,9 +198,6 @@ CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provi
 ALTER TABLE "Venue" ADD CONSTRAINT "Venue_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User"("userId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Venue" ADD CONSTRAINT "Venue_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User"("userId") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "VenueAvailability" ADD CONSTRAINT "VenueAvailability_venueId_fkey" FOREIGN KEY ("venueId") REFERENCES "Venue"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -229,8 +220,6 @@ ALTER TABLE "Question" ADD CONSTRAINT "Question_venueId_fkey" FOREIGN KEY ("venu
 
 -- AddForeignKey
 ALTER TABLE "Question" ADD CONSTRAINT "Question_reservationId_fkey" FOREIGN KEY ("reservationId") REFERENCES "Reservation"("reservationId") ON DELETE SET NULL ON UPDATE CASCADE;
-<<<<<<<< HEAD:database/prisma/migrations/20241218085154_init/migration.sql
-========
 
 -- AddForeignKey
 ALTER TABLE "VenueDailyReservationCount" ADD CONSTRAINT "VenueDailyReservationCount_venueId_fkey" FOREIGN KEY ("venueId") REFERENCES "Venue"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -240,4 +229,3 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
->>>>>>>> 739c441c905b9b3c14f9ef177195714e15c5ff2a:database/prisma/migrations/20241222202127_init/migration.sql

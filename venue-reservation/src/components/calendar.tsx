@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar';
+import { Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const localizer = momentLocalizer(moment);
 
 interface Event {
@@ -113,8 +113,29 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     }
   }, [id]);
 
-  const handleSelectSlot = (slotInfo: SlotInfo) => {
-    handleDateClick(slotInfo.start);
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    const selectedDate = new Date(start);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    // Check if selected date is in the past
+    if (selectedDate < today) {
+      return; // Do nothing for past dates
+    }
+
+    const formattedDate = moment(start).format('YYYY-MM-DD');
+    const isBlocked = availabilityEvents.some((blockedDate: Event) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && 
+             (blockedDate.status === 'NOT_AVAILABLE' || 
+              blockedDate.status === 'FULLY_BOOKED');
+    });
+
+    if (!isBlocked) {
+      onSelectDate(start);
+    }
   };
 
   const handleSelectEvent = (event: Event) => {
@@ -182,84 +203,86 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     };    
 
     switch (event.status) {
-      case 'PARTIALLY_BOOKED':
-        style.backgroundColor = '#22C55E'; // Green
-        event.title = 'Partially Available';
-        break;
-      case 'FULLY_BOOKED':
-        style.backgroundColor = '#F97316'; // Orange
-        event.title = 'Fully Booked';
-        break;
       case 'NOT_AVAILABLE':
-        style.backgroundColor = '#EF4444'; // Red
-        event.title = 'Not Available';
+        backgroundColor = '#ef4444'; // red
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
+      case 'FULLY_BOOKED':
+        backgroundColor = '#f97316'; // orange
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
         break;
-      case 'AVAILABLE':
-        style.backgroundColor = '#3B82F6'; // Blue
-        event.title = 'Available';
+      case 'PARTIALLY_BOOKED':
+        backgroundColor = '#22c55e'; // green
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px'
+          }
+        };
         break;
       default:
-        style.backgroundColor = '#6B7280'; // Gray
+        backgroundColor = '#3b82f6'; // blue
+        return {
+          style: { 
+            backgroundColor,
+            width: '100%',
+            height: '100px',
+            borderRadius: '100px'
+          }
+        };
     }
-
-    return { style };
+    return { style: { backgroundColor } };
   };
 
   const dayPropGetter = (date: Date) => {
-    const isSelected = selectedDates.some(
-      selectedDate => moment(selectedDate).isSame(date, 'day')
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const currentDate = new Date(date);
+    currentDate.setHours(0, 0, 0, 0);
+    const isPastDate = currentDate < today;
+
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    
+    // Check if date is selected
+    const isSelected = selectedDates.some(selectedDate => 
+      moment(selectedDate).format('YYYY-MM-DD') === formattedDate
     );
-    const blocked = isDateBlocked(date);
 
-    if (isSelected) {
-      return {
-        style: {
-          backgroundColor: '#1f89b7',
-          color: 'white',
-        },
-      };
-    }
+    const isBlocked = availabilityEvents.some((blockedDate) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && 
+             (blockedDate.status === 'NOT_AVAILABLE' || 
+              blockedDate.status === 'FULLY_BOOKED');
+    });
 
-    if (blocked) {
-      return {
-        style: {
-          backgroundColor: '#EF4444',
-          color: 'white',
-          cursor: 'not-allowed',
-        },
-      };
-    }
+    const isPartiallyAvailable = availabilityEvents.some((blockedDate) => {
+      const blocked = moment(blockedDate.start).format('YYYY-MM-DD');
+      return blocked === formattedDate && blockedDate.status === 'PARTIALLY_BOOKED';
+    });
 
-    return {};
+    return {
+      style: {
+        cursor: isBlocked ? 'not-allowed' : 'pointer',
+        backgroundColor: isSelected ? '#3b82f6' : isBlocked ? '#fee2e2' : 'white',
+        color: isSelected ? 'white' : 'inherit'
+      },
+      className: isPartiallyAvailable ? 'partially-available' : ''
+    };
   };
 
   const allEvents = [...events, ...availabilityEvents];
-
-  const renderDay = (day: Date) => {
-    const dayProps = dayPropGetter(day);
-    const isPast = moment(day).isBefore(moment(), 'day');
-
-    return (
-      <button
-        key={day.toString()}
-        onClick={() => !isPast && dayProps.style && !dayProps.style.cursor && handleSelectDate(day)}
-        disabled={isPast || (dayProps.style && dayProps.style.cursor === 'not-allowed')}
-        className={`
-          w-full h-10 rounded-lg flex items-center justify-center
-          ${isPast ? 'text-gray-400 cursor-not-allowed' : ''}
-          ${dayProps.style?.backgroundColor ? `bg-[${dayProps.style.backgroundColor}] text-[${dayProps.style.color}]` : ''}
-          ${!isPast && !(dayProps.style?.cursor) ? 'hover:bg-gray-100' : ''}
-        `}
-      >
-        {day.getDate()}
-        {dayProps.style?.cursor === 'not-allowed' && (
-          <span className="absolute text-xs -bottom-4 text-red-600">
-            Not Available
-          </span>
-        )}
-      </button>
-    );
-  };
 
   const handleSelectDate = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0];
@@ -276,6 +299,7 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
           color: 'white',
           padding: '16px',
           borderRadius: '8px',
+          height: '200px',
         },
       });
       return;
@@ -298,13 +322,9 @@ const CalendarComponent: React.FC<CalendarProps> = ({ onSelectDate, id, selected
     onSelectDate(date);
   };
 
-  const isBlockedDate = (value: boolean | 'reserved' | 'partial' | 'blocked'): boolean => {
-    return value === true || value === 'reserved' || value === 'blocked';
-  };
-
   if (loading) return <p>Loading calendar data...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
   return (
     <div className="h-auto p-4 md:p-8 rounded-xl border">
       <div className="flex justify-between items-center mb-4">

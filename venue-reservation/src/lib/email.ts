@@ -20,7 +20,7 @@ export async function sendEmail({ to, subject, html }: EmailParams) {
       await transporter.sendMail({
         from: process.env.EMAIL_FROM,
         to: to,
-        subject: "Your Forgot Password Link",
-        html: html, // Use the HTML content here
+        subject: subject,
+        html: html,
       });
 }

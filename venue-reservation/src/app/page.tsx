@@ -2,7 +2,6 @@
 import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
-import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
 import { useRouter } from 'next/navigation';
 
@@ -12,7 +11,9 @@ const AdditionalSection = () => {
   const images = [
     '/images/image1.jpg',
     '/images/image2.jpg',
-    '/images/image3.jpg'
+    '/images/image3.jpg',
+    '/images/image4.jpg',
+    '/images/image5.jpg',
   ];
 
   return (
@@ -71,12 +72,18 @@ const AdditionalSection = () => {
 
 // Types of venues
 const VenueType = () => {
+  const router = useRouter();
+
+  const handleVenueTypeClick = (type: string) => {
+    router.push(`/card_view?venueType=${type}`);
+  };
+
   const venueTypes = [
     { name: "Auditorium", image: "/images/image1.jpg", description: "A large room for public gatherings." },
     { name: "Conference Hall", image: "/images/image2.jpg", description: "Ideal for corporate events." },
-    { name: "Outdoor Garden", image: "/images/image3.jpg", description: "Perfect for outdoor celebrations." },
-    { name: "Banquet Hall", image: "/images/image2.jpg", description: "Spacious venue for dining events." },
-    { name: "Rooftop", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
+    { name: "Outdoor", image: "/images/image4.jpg", description: "Perfect for outdoor celebrations." },
+    { name: "Banquet Hall", image: "/images/image5.jpg", description: "Spacious venue for dining events." },
+    { name: "Co-Working Space", image: "/images/image3.jpg", description: "A scenic view for exclusive events." },
   ];
 
   return (
@@ -87,7 +94,8 @@ const VenueType = () => {
           {venueTypes.map((venue, index) => (
             <div 
               key={index}
-              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg"
+              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+              onClick={() => handleVenueTypeClick(venue.name)}
             >
               <img
                 src={venue.image}
@@ -117,9 +125,6 @@ const FontsPage = (): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
-      <div>
-        <Header />
-      </div>
       <main className="container mx-auto px-4 py-8 text-left">
 
         {/* Call-to-Action Section */}

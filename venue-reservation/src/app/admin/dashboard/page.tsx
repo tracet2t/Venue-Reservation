@@ -1,77 +1,103 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import UtilizationChart from "@/components/admin/utilization-chart";
+import VenueDetailCard from '@/components/venue_card/feature_venue_card';
 
-export default function AdminDashboard() {
-  const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
+interface Venue {
+  id: number;
+  name: string;
+  street_name: string[];
+  district: string;
+  province: string;
+  type: string;
+  capacity: number;
+  size: number;
+  schedule: string;
+  features: string[];
+  images: string[];
+  reservationCount?: number;
+}
+
+const AdminHomePage = () => {
+  const [mostReservedVenue, setMostReservedVenue] = useState<Venue | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const fetchMostReservedVenue = async () => {
       try {
-        const response = await fetch('/api/user/profile', {
-          credentials: 'include',
-        });
-        const data = await response.json();
-        
-        if (data.user?.userType !== 'Admin') {
-          router.push('/');
-          return;
+        setLoading(true);
+        const response = await fetch('/api/admin-most-reserved');
+        if (!response.ok) {
+          throw new Error('Failed to fetch most reserved venue');
         }
-        
-        setIsAdmin(true);
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        router.push('/');
+        const data = await response.json();
+        setMostReservedVenue(data);
+      } catch (err) {
+        console.error('Error fetching most reserved venue:', err);
+        setError('Failed to load most reserved venue data');
+      } finally {
+        setLoading(false);
       }
     };
 
-    checkAdminStatus();
-  }, [router]);
-
-  if (!isAdmin) {
-    return null;
-  }
+    fetchMostReservedVenue();
+  }, []);
 
   return (
-    <div>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-[#584822] mb-8">Admin Dashboard</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Add your admin dashboard cards/sections here */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Manage Venues</h2>
-            <button 
-              onClick={() => router.push('/admin/venues')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              View Venues
-            </button>
-          </div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">Utilization Chart</h1>
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <UtilizationChart/>
+      </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Manage Reservations</h2>
-            <button 
-              onClick={() => router.push('/admin/reservations')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              View Reservations
-            </button>
-          </div>
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-4">
+          Most Reserved Venue
+          {mostReservedVenue?.reservationCount && (
+            <span className="text-sm font-normal ml-2 text-gray-600">
+              ({mostReservedVenue.reservationCount} accepted reservations)
+            </span>
+          )}
+        </h2>
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">User Management</h2>
-            <button 
-              onClick={() => router.push('/admin/users')}
-              className="bg-[#584822] text-white px-4 py-2 rounded hover:bg-[#6A5B3A]"
-            >
-              Manage Users
-            </button>
+        {loading && (
+          <div className="text-center py-4">
+            <p>Loading most reserved venue...</p>
           </div>
-        </div>
+        )}
+
+        {error && (
+          <div className="text-center py-4 text-red-500">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && mostReservedVenue && (
+          <div className="space-y-6">
+            <VenueDetailCard
+              key={mostReservedVenue.id}
+              images={mostReservedVenue.images}
+              name={mostReservedVenue.name}
+              address={`${mostReservedVenue.street_name.join(', ')}, ${mostReservedVenue.district}, ${mostReservedVenue.province}`}
+              type={mostReservedVenue.type}
+              capacity={`${mostReservedVenue.capacity} people`}
+              size={`${mostReservedVenue.size} sq.m`}
+              timeSchedule={mostReservedVenue.schedule}
+              features={mostReservedVenue.features}
+            />
+          </div>
+        )}
+
+        {!loading && !error && !mostReservedVenue && (
+          <div className="text-center py-4 text-gray-500">
+            <p>No venue reservations found.</p>
+          </div>
+        )}
       </div>
     </div>
   );
-} 
+};
+
+export default AdminHomePage;

@@ -6,12 +6,12 @@ async function seed() {
   // Create users
   const user1 = await prisma.user.create({
     data: {
-      firstName: "shan",
-      lastName: "Jude",
+      firstName: "Lakshan",
+      lastName: "Siva",
       contactNumber: "94763751121",
       address: "123 Main St, Cityville",
-      email: "shanjude1121Sgmail.com",
-      password: "password123",
+      email: "admin-lakshan@gmail.com",
+      password: "$2a$10$e6I40aKcqc5EKW.kC7bn7uqJfbB76iZXY1DJfJDMpD8pbGOPgY/uy",
       userType: "Admin",
       emailVerified: false, 
       provider: null,
@@ -36,7 +36,7 @@ async function seed() {
     },
   });
   
-
+/*
   // Create venues
   const venue1 = await prisma.venue.create({
     data: {
@@ -548,9 +548,9 @@ async function seed() {
         },
       },
     });
-
+*/
   
-
+/*
   // Create standard questions for each venue type
   const auditoriumQuestions = [
     {
@@ -566,7 +566,8 @@ async function seed() {
       venueId: venue1.id
     }
   ];
-
+*/
+/*
   const conferenceHallQuestions = [
     {
       text: "Do you anticipate any media coverage or external guests?",
@@ -625,7 +626,7 @@ async function seed() {
       }
     },
   });
-
+*//*
   // Create reservation states
   await prisma.reservationState.create({
     data: {
@@ -645,7 +646,8 @@ async function seed() {
 
   console.log("Seed data created!");
 }
-
+*/
+}
 seed()
   .catch((error) => {
     console.error(error);

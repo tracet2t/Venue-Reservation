@@ -4,6 +4,7 @@ import prisma from "../../../dbclient";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
+
 const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -58,14 +59,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: { provider: "credentials" },
       });
 
+      // Create session after successful login
+      const session = {
+        user: {
+          id: user.userId,
+          email: user.email,
+          name: user.firstName,
+          userType: user.userType
+        },
+        expires: new Date(Date.now() + 3600 * 1000).toISOString()
+      };
+
+      // Store session
+      await prisma.session.create({
+        data: {
+          sessionToken: token,
+          userId: user.userId,
+          expires: new Date(Date.now() + 3600 * 1000)
+        }
+      });
+
       return res.status(200).json({
         success: true,
         message: "Login successful!",
-        user: {
-          firstName: user.firstName,
-          email: user.email,
-          userType: user.userType,
-        },
+        session
       });
     } else {
       // Magic link login

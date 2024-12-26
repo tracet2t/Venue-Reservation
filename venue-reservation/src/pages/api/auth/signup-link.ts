@@ -43,9 +43,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         provider: 'magic-link',
       },
     });
-
-    console.log('User created:', user);
-
     // Create verification token
     const token = uuidv4();
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours

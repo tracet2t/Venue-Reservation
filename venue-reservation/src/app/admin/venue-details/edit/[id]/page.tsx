@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
 import React from 'react';
 
 interface Question {
@@ -125,6 +124,52 @@ export default function EditVenue({ params }: { params: { id: string } }) {
 
   const handleDistrictCheckboxChange = (district: string) => {
     setSelectedDistrict(district === selectedDistrict ? null : district);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/google_image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+      
+      const { imageUrl } = await response.json();
+      setImages(prev => [...prev, imageUrl]);
+      toast.success('Image uploaded successfully');
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload image');
+    }
+  };
+
+  const handleDeleteImage = async (imageUrl: string) => {
+    try {
+      const response = await fetch('/api/google_image', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageUrl }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete image');
+      }
+
+      setImages(prev => prev.filter(img => img !== imageUrl));
+      toast.success('Image deleted successfully');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete image');
+    }
   };
 
   useEffect(() => {
@@ -336,19 +381,38 @@ export default function EditVenue({ params }: { params: { id: string } }) {
               {/* Images */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Images</label>
-                <div className="flex gap-4">
-                  {[1, 2, 3, 4].map((index) => (
-                    <button
-                      key={index}
-                      type="button"
-                     // onClick={handleImageUpload}
-                      className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center hover:border-[#584822]"
-                    >
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {images.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img 
+                        src={image} 
+                        alt={`Venue ${index + 1}`} 
+                        className="w-24 h-24 object-cover rounded-md"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteImage(image)}
+                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                  {images.length < 4 && (
+                    <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center hover:border-[#584822] cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
                       <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
-                    </button>
-                  ))}
+                    </label>
+                  )}
                 </div>
               </div>
 

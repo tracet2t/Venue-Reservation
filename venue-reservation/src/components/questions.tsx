@@ -198,6 +198,28 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
     'Extended Hours'
   ];
 
+  // Add new function to check if date has time slots selected
+  const hasTimeSlots = (date: Date) => {
+    const selection = dateTimeSelections.find(
+      sel => sel.date.toDateString() === date.toDateString()
+    );
+    return selection && selection.timeSlots.length > 0;
+  };
+
+  // Add function to get date status class
+  const getDateStatusClass = (date: Date) => {
+    const isSelected = selectedDates.some(
+      selDate => selDate.toDateString() === date.toDateString()
+    );
+    
+    if (isSelected) {
+      return hasTimeSlots(date) 
+        ? 'bg-blue-100 border-blue-500' 
+        : 'bg-white border-gray-300';
+    }
+    return 'bg-white border-gray-300';
+  };
+
   return (
     <div className="space-y-6 text-olive">
       <div className="bg-white-100 p-4 rounded-lg">
@@ -240,7 +262,7 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
           {/* Amenities Dropdown */}
           <div className="relative w-full">
             <label htmlFor="purpose" className="block text-sm font-medium text-gray-700 mt-4">
-              Amentities
+              Amenities
             </label>
             <button
               onClick={(e) => toggleDropdown('amenities', e)}
@@ -251,7 +273,7 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
             {isAmenitiesDropdownOpen && (
               <div className="absolute z-20 w-full bg-white border rounded-lg shadow-lg p-2 mt-0">
                 {availableAmenities.map((amenity) => (
-                  <label key={amenity} className="block mb-1  font-light">
+                  <label key={amenity} className="block mb-1 font-light">
                     <input
                       type="checkbox"
                       value={amenity}
@@ -268,6 +290,33 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
                 ))}
               </div>
             )}
+            
+            {/* Display Selected Amenities */}
+            {selectedAmenities.length > 0 && (
+              <div className="mt-2 p-2 border rounded-lg">
+                <div className="flex flex-wrap gap-2">
+                  {selectedAmenities.map((amenity) => (
+                    <span 
+                      key={amenity}
+                      className="inline-flex items-center bg-[#584822] text-white px-3 py-1 rounded-full text-sm"
+                    >
+                      {amenity}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedAmenities(current => 
+                            current.filter(item => item !== amenity)
+                          );
+                        }}
+                        className="ml-2 hover:text-red-200"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Time Schedule Display */}
@@ -275,9 +324,14 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
             <div className="items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full bg-white">
               <h3 className="font-medium text-gray-700 mb-2">Selected Dates and Times:</h3>
               {dateTimeSelections.map((selection, index) => (
-                <div key={index} className="mb-4 border-b pb-2">
-                  <div className="flex justify-between items-center">
-                    <p className="text-gray-600 font-semibold">
+                <div 
+                  key={index} 
+                  className={`mb-4 border-b pb-2 rounded-lg ${getDateStatusClass(selection.date)}`}
+                >
+                  <div className="flex justify-between items-center p-3">
+                    <p className={`font-semibold ${
+                      hasTimeSlots(selection.date) ? 'text-blue-700' : 'text-gray-600'
+                    }`}>
                       {selection.date.toLocaleDateString()}
                     </p>
                     <button
@@ -287,14 +341,19 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
                       ✕
                     </button>
                   </div>
-                  <div className="mt-1 ml-4">
-                    <ul className="list-disc list-inside mt-1">
-                      {Array.isArray(selection.timeSlots) && selection.timeSlots.map((slot) => (
-                        <li key={`${selection.date}-${slot}`} className="text-gray-600">
-                          {slot}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-1 ml-4 pb-2">
+                    {Array.isArray(selection.timeSlots) && selection.timeSlots.length > 0 ? (
+                      <ul className="list-disc list-inside mt-1">
+                        {selection.timeSlots.map((slot) => (
+                          <li key={`${selection.date}-${slot}`} 
+                              className="text-blue-600">
+                            {slot}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-gray-500 italic ml-2">No time slots selected</p>
+                    )}
                   </div>
                 </div>
               ))}

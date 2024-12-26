@@ -41,16 +41,12 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         const data = await response.json();
 
         if (Array.isArray(data)) {
-          data.forEach((venue, index) => {
-          });
-        }
-
-        if (Array.isArray(data)) {
           setVenues(data);
         } else {
           setVenues([]);
         }
-      } catch (error) {
+      } catch (err) {
+        console.error('Failed to fetch venues:', err);
         setVenues([]);
       }
     };
@@ -59,9 +55,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
   }, [provinces, districts, venueType, searchTerm]);
 
   const handleCardClick = (venueId: number) => {
-    if (router) {
-      router.push(`/reservation/${venueId}`);
-    }
+    router.push(`/reservation/${venueId}`);
   };
 
   return (
@@ -74,19 +68,31 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         >
           {/* Image Section */}
           <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
-            <Carousel
-              images={venue.images}
-              width="100%"
-              height="340px"
-              arrowBgColor="rgba(0, 0, 0, 0.7)"
-              arrowFgColor="#fff"
-              dotColor="#ccc"
-              activeDotColor="#ff6347"
-            />
+            {venue.images && venue.images.length > 0 ? (
+              <Carousel
+                images={venue.images.map(image => 
+                  image.startsWith('http') 
+                    ? image 
+                    : `https://storage.googleapis.com/foodie-96e94.appspot.com/venues${image}`
+                    //foodie-96e94.appspot.com/venues
+                )}
+                width="100%"
+                height="340px"
+                arrowBgColor="rgba(0, 0, 0, 0.7)"
+                arrowFgColor="#fff"
+                dotColor="#ccc"
+                activeDotColor="#ff6347"
+              />
+            ) : (
+              <div className="w-full h-[340px] flex items-center justify-center bg-gray-100">
+                <span className="text-gray-400">No images available</span>
+              </div>
+            )}
           </div>
 
           {/* Details Section */}
-          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between text-olive">
+          <div className="w-full md:w-3/5 p-4 flex flex-col justify-between text-olive"
+          onClick={() => handleCardClick(venue.id)}>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">{venue.name}</h1>
               <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>

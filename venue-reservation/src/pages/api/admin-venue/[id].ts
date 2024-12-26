@@ -3,6 +3,12 @@ import prisma from '@/dbclient';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
+interface Question {
+  text: string;
+  options: string[];
+  venueId: number;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -71,7 +77,7 @@ export default async function handler(
       });
 
       await prisma.question.createMany({
-        data: venueData.questions.map((q: any) => ({
+        data: venueData.questions.map((q: Question) => ({
           text: q.text,
           answerOptions: q.options,
           venueId: parseInt(id as string)
@@ -79,9 +85,13 @@ export default async function handler(
       });
 
       return res.status(200).json(updatedVenue);
-    } catch (error) {
-      console.error('Error updating venue:', error);
-      return res.status(500).json({ error: 'Failed to update venue' });
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error('Error updating venue:', err.message);
+      return res.status(500).json({ 
+        error: 'Failed to update venue',
+        details: err.message 
+      });
     }
   }
 

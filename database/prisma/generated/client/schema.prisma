@@ -23,6 +23,9 @@ model User {
   provider         String?       @default("credentials")
   resetToken       String?
   resetTokenExpiry DateTime?
+  sessions         Session[]
+  accounts         Account[]
+  profilePicture   String?
 }
 
 model VerificationToken {
@@ -36,24 +39,25 @@ model VerificationToken {
 }
 
 model Venue {
-  id           Int                 @id @default(autoincrement())
-  name         String
-  street_name  String[] // If multiple street names are needed, else make it String
-  district     String
-  province     String
-  type         String
-  capacity     Int
-  size         Int
-  schedule     Schedule
-  features     String[]
-  images       String[]
-  availability VenueAvailability[]
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
-  reservations Reservation[]       @relation("VenueReservations")
-  questions    Question[]          @relation("VenueQuestions")
-  adminId      String? // Make it optional first
-  admin        User?               @relation("AdminVenues", fields: [adminId], references: [userId])
+  id                     Int                          @id @default(autoincrement())
+  name                   String
+  street_name            String[] // If multiple street names are needed, else make it String
+  district               String
+  province               String
+  type                   String
+  capacity               Int
+  size                   Int
+  schedule               Schedule
+  features               String[]
+  images                 String[]
+  availability           VenueAvailability[]
+  createdAt              DateTime                     @default(now())
+  updatedAt              DateTime                     @updatedAt
+  reservations           Reservation[]                @relation("VenueReservations")
+  questions              Question[]                   @relation("VenueQuestions")
+  adminId                String? // Make it optional first
+  admin                  User?                        @relation("AdminVenues", fields: [adminId], references: [userId])
+  dailyReservationCounts VenueDailyReservationCount[]
 }
 
 model VenueAvailability {
@@ -155,4 +159,42 @@ model Question {
   answerOptions String[]
   answer        String? // Add this field
   reservation   Reservation? @relation(fields: [reservationId], references: [reservationId])
+}
+
+model VenueDailyReservationCount {
+  id               Int      @id @default(autoincrement())
+  venueId          Int
+  reservationCount Int // Number of reservations for the venue on this day
+  date             DateTime // Date of the reservation
+
+  venue Venue @relation(fields: [venueId], references: [id])
+
+  @@unique([venueId, date]) // Ensure no duplicate entries for a venue on the same day
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_token     String? @db.Text
+
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }

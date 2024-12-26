@@ -51,9 +51,9 @@ const Carousel: React.FC<CarouselProps> = ({
           <Image
             src={image}
             alt={`Carousel image ${index}`}
-            layout="fill"
-            objectFit="cover"
-            className="w-full h-full"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={index === 0} // Load the first image faster
           />
         </div>

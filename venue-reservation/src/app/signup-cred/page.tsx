@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import BrandingSection from "@/components/design/branding-section";
-
+import Card from "@/components/ui/card";
 const SignupPage = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -122,135 +122,138 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Left Side */}
-      <div className="flex flex-col w-1/2 h-full bg-white items-center justify-center">
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Branding Section */}
+      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-4 md:p-8">
         <BrandingSection />
       </div>
 
-      {/* Right Side */}
-      <div className="flex flex-col w-1/2 h-full bg-white items-center justify-center">
-        <div className="w-full max-w-md">
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-4 text-center">
-            New User Account
-          </h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* First Name */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="Enter your first name"
-                required
-              />
-            </div>
+      {/* Form Section */}
+      <div className="w-full h-screen md:w-1/2 flex items-center justify-center p-4 md:p-8">
+        <Card>
+          <div className="w-full max-w-md flex flex-col items-center px-2 sm:px-4 pb-6 min-h-[800px] py-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-[#584822] mb-6 py-2" 
+                style={{ textShadow: "2px 2px 3px rgba(0, 0, 0, 0.3)" }}>
+              New User Account
+            </h2>
+            <form className="space-y-4 w-full" onSubmit={handleSubmit}>
+              {/* First Name */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="Enter your first name"
+                  required
+                />
+              </div>
 
-            {/* Last Name */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="Enter your last name"
-                required
-              />
-            </div>
+              {/* Last Name */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="Enter your last name"
+                  required
+                />
+              </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="Enter your email"
-                required
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
-            </div>
+              {/* Email */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="Enter your email"
+                  required
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
 
-            {/* Phone Number */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="+94 XXX XXX XXX"
-                required
-              />
-              {errors.phoneNumber && (
-                <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
-              )}
-            </div>
+              {/* Phone Number */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="+94 XXX XXX XXX"
+                  required
+                />
+                {errors.phoneNumber && (
+                  <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+                )}
+              </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="Enter your password"
-                required
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-              )}
-            </div>
+              {/* Password */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="Enter your password"
+                  required
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
+              </div>
 
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-sm md:text-base font-semibold">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-[#584822] rounded w-full"
-                placeholder="Re-Enter password"
-                required
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
-              )}
-            </div>
+              {/* Confirm Password */}
+              <div>
+                <label className="block text-sm md:text-base font-semibold">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="mt-1 p-2 border border-[#584822] rounded w-full"
+                  placeholder="Re-Enter password"
+                  required
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              className="w-full mt-6 py-2 px-4 bg-[#584822] text-white font-semibold rounded-lg"
-            >
-              Sign Up
-            </button>
-          </form>
-        </div>
+              <button
+                type="submit"
+                className="w-full py-2 px-4 bg-[#584822] text-white font-semibold rounded-lg"
+              >
+                Sign Up
+              </button>
+            </form>
+          </div>
+        </Card>
       </div>
     </div>
   );

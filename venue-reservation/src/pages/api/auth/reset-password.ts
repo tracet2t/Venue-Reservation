@@ -1,7 +1,5 @@
-
 //venue-reservation\src\pages\api\auth\reset-password.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { NextResponse } from "next/server";
 import prisma from "@/dbclient";
 import bcrypt from "bcryptjs";
 
@@ -49,4 +47,3 @@ export default async function handler(
     return res.status(500).json({ error: "Failed to reset password" });
   }
 }
-

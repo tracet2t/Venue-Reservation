@@ -70,16 +70,16 @@ const MagicLinkSignupPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left Section */}
-      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6">
+      {/* Branding Section - exact 50% width */}
+      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8 min-h-screen">
         <BrandingSection />
       </div>
 
-      {/* Right Section */}
-      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          <div className="p-6 bg-white shadow-lg rounded-lg">
-            <h2 className="text-2xl font-semibold text-center mb-4">Sign Up with Magic Link</h2>
+      {/* Authentication Section - exact 50% width */}
+      <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 min-h-screen">
+        <div className="w-full max-w-[600px] mx-auto">
+          <div className="p-12 bg-white shadow-xl rounded-xl">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center text-[#584822] mt-8 p-8" style={{ textShadow: "2px 2px 3px rgba(0, 0, 0, 0.3)" }}>Sign Up with Magic Link</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <Input
@@ -113,7 +113,7 @@ const MagicLinkSignupPage = () => {
             <div className="mt-6 text-center text-sm text-gray-500">
               <p>
                 If you have an account, you can{" "}
-                <div  onClick={handleLogin} className="text-blue-600 hover:underline">
+                <Link href="/login" className="text-blue-600 hover:underline">
                   login here
                 </div>.
               </p>

@@ -7,6 +7,71 @@ import { verify } from 'jsonwebtoken';
 const SECRET_KEY = process.env.JWT_SECRET!;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'PUT') {
+    try {
+      let userEmail: string | undefined;
+      const session = await getServerSession(req, res, authOptions);
+      
+      // Check all authentication methods
+      if (session?.user?.email) {
+        userEmail = session.user.email;
+      } 
+      
+      // Check magic link token
+      else if (req.cookies.token) {
+        try {
+          const decoded = verify(req.cookies.token, SECRET_KEY) as { email: string };
+          userEmail = decoded.email;
+        } catch (error) {
+          console.error('Magic link token verification failed:', error);
+        }
+      }
+      
+      // Check regular auth token
+      else if (req.cookies.auth_token) {
+        try {
+          const decoded = verify(req.cookies.auth_token, SECRET_KEY) as { email: string };
+          userEmail = decoded.email;
+        } catch (error) {
+          console.error('Auth token verification failed:', error);
+        }
+      }
+
+      if (!userEmail) {
+        return res.status(401).json({ error: "Not authenticated" });
+      }
+
+      const { firstName, lastName, address, contactNumber, profilePicture } = req.body;
+
+      const updatedUser = await prisma.user.update({
+        where: { email: userEmail },
+        data: {
+          firstName,
+          lastName,
+          address,
+          contactNumber,
+          profilePicture: profilePicture || undefined,
+        },
+        select: {
+          userId: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          contactNumber: true,
+          address: true,
+          userType: true,
+          provider: true,
+          profilePicture: true,
+        }
+      });
+
+      return res.status(200).json({ user: updatedUser });
+    } catch (error) {
+      console.error("Profile update error:", error);
+      return res.status(500).json({ error: "Failed to update profile" });
+    }
+  }
+
   try {
     let userEmail: string | undefined;
 
@@ -52,7 +117,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         contactNumber: true,
         address: true,
         userType: true,
-        provider: true
+        provider: true,
+        profilePicture: true
       }
     });
 

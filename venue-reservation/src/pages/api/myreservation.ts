@@ -30,6 +30,10 @@ interface FormattedReservation {
   customerName: string;
   customerEmail: string;
   customerContactNumber?: string;
+  reservationState: {
+    status: string;
+    adminComments: string;
+  };
 }
 
 type ApiResponse = {
@@ -105,7 +109,12 @@ export default async function handler(
             admin: true
           }
         },
-        reservationState: true,
+        reservationState: {
+          select: {
+            status: true,
+            adminComments: true
+          }
+        },
         user: true,
         questions: true,
       },
@@ -159,6 +168,10 @@ export default async function handler(
         customerName: `${reservation.user.firstName} ${reservation.user.lastName || ''}`.trim(),
         customerEmail: reservation.user.email,
         customerContactNumber: reservation.user.contactNumber || undefined,
+        reservationState: {
+          status: reservation.reservationState?.status || 'Pending',
+          adminComments: reservation.reservationState?.adminComments || ''
+        },
       };
     });
 

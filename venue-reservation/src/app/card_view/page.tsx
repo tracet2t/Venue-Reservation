@@ -1,9 +1,10 @@
 // Reservation.tsx
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useMemo, memo, useEffect } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
-import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
+import useDebounce from '@/hooks/useDebounce';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Location {
   id: number;
@@ -11,8 +12,8 @@ interface Location {
   districts: string[];
 }
 
-//data for provinces and districts
-const locations: Location[] = [
+// Define locations data outside the component
+const locationsData: Location[] = [
   { id: 1, province: "Western Province", districts: ["Colombo", "Gampaha", "Kalutara"] },
   { id: 2, province: "Central Province", districts: ["Kandy", "Matale", "Nuwara Eliya"] },
   { id: 3, province: "Southern Province", districts: ["Galle", "Matara", "Hambantota"] },
@@ -24,14 +25,29 @@ const locations: Location[] = [
   { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
-
 const Reservation = () => {
+   /* eslint-disable @typescript-eslint/no-unused-vars */
+  const router = useRouter();
+   /* eslint-disable @typescript-eslint/no-unused-vars */
+ const searchParams = useSearchParams(); 
+ const initialVenueType = searchParams?.get('venueType') || '';
+
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const [selectedVenueType, setSelectedVenueType] = useState("");
+  const [selectedVenueType, setSelectedVenueType] = useState(initialVenueType);
   const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
   const [isSearchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    const venueType = searchParams?.get('venueType');
+    if (venueType) {
+      setSelectedVenueType(venueType);
+    }
+  }, [searchParams]);
+
+  // Use useMemo inside the component
+  const locations = useMemo(() => locationsData, []);
 
   const toggleLocationDropdown = () => {
     setIsLocationDropdownOpen(!isLocationDropdownOpen);
@@ -70,13 +86,13 @@ const Reservation = () => {
     setSearchTerm(e.target.value);
   };
   
+  const debouncedSearchTerm = useDebounce(isSearchTerm, 300);
+
+  const MemoizedVenueCard = memo(VenueCard);
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Header */}
-      <div className='z-50'>
-      <Header />
-      </div>
-
       {/*- Hero Section --*/}
 
       {/* Main Content */}
@@ -148,42 +164,17 @@ const Reservation = () => {
             {isVenueDropdownOpen && (
               <div className="absolute mt-2 w-72 bg-white border rounded-lg shadow-lg p-2">
                 <div className="ml-4">
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Auditorium"
-                      onChange={() => handleVenueTypeChange("Auditorium")}
-                      checked={selectedVenueType === "Auditorium"}
-                    />
-                    <span className="ml-2">Auditorium</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Outdoor"
-                      onChange={() => handleVenueTypeChange("Outdoor")}
-                      checked={selectedVenueType === "Outdoor"}
-                    />
-                    <span className="ml-2">Outdoor</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Co-Working Space"
-                      onChange={() => handleVenueTypeChange("Co-Working Space")}
-                      checked={selectedVenueType === "Co-Working Space"}
-                    />
-                    <span className="ml-2">Co-Working Space</span>
-                  </label>
-                  <label className="block mb-2 font-light">
-                    <input
-                      type="checkbox"
-                      value="Conference Hall"
-                      onChange={() => handleVenueTypeChange("Conference Hall")}
-                      checked={selectedVenueType === "Conference Hall"}
-                    />
-                    <span className="ml-2">Conference Hall</span>
-                  </label>
+                  {["Auditorium", "Conference Hall", "Outdoor", "Banquet Hall", "Co-Working Space"].map((type) => (
+                    <label key={type} className="block mb-2 font-light">
+                      <input
+                        type="checkbox"
+                        value={type}
+                        onChange={() => handleVenueTypeChange(type)}
+                        checked={selectedVenueType === type}
+                      />
+                      <span className="ml-2">{type}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             )}
@@ -211,11 +202,11 @@ const Reservation = () => {
 
         {/* Venue Card */}
         <div className="max-h-[1000px] z-0 overflow-y-auto">
-          <VenueCard
+          <MemoizedVenueCard
             provinces={selectedProvince ? [selectedProvince] : []}
             districts={selectedDistricts}
             venueType={selectedVenueType}
-            searchTerm={isSearchTerm}
+            searchTerm={debouncedSearchTerm}
           />
         </div>
 
