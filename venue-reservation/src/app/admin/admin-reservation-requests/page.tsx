@@ -274,9 +274,9 @@ export default function AdminReservationRequests() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 r-64">
       {/* Header with search */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-5">
         <h1 className="text-2xl font-bold text-[#584822]">Reservation Approvals</h1>
         <div className="flex items-center gap-4">
           <div className="relative">

@@ -1,6 +1,5 @@
 'use client';
-
-import AdminHeader from '@/components/admin/admin-header';
+import { useState } from 'react';
 import Sidebar from '@/components/admin/side-bar';
 
 interface AdminLayoutProps {
@@ -8,26 +7,34 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Default to open on desktop
+
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar - Dark background */}
-      <div className="w-64 bg-white shadow-lg">        
-        {/* Navigation */}
-        <Sidebar />
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar - Fixed position */}
+      <div 
+        className={`fixed left-0 top-0 h-full transform transition-transform duration-300 ease-in-out z-30 
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+          lg:translate-x-0 lg:static`}
+      >
+       <Sidebar isOpen={isSidebarOpen} />
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <AdminHeader />
-        
-        {/* Main Content with padding */}
-        <main className="flex-1 p-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+      <div className="flex-1 flex flex-col min-h-screen lg:ml-64 w-full">
+        {/* Main Content */}
+        <div className="flex-1 p-2 px-6 md:px-6 lg:px-8 overflow-auto">
+          {children}
+        </div>
       </div>
+
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 }

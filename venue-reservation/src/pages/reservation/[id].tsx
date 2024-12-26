@@ -149,6 +149,19 @@ const Availability = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    // Clear form data when component mounts
+    localStorage.removeItem(`venue-${id}-form-data`);
+    
+    // Clear selections data
+    localStorage.removeItem(`venue-${id}-selections`);
+    
+    // Reset states
+    setSelectedDates([]);
+    setDateTimeSelections([]);
+    setCurrentStep(1);
+  }, [id]); // Only run when id changes or component mounts
+
   const handleSelectDate = (date: Date) => {
     if (!isLoggedIn) {
       alert("Please log in to select a date.");

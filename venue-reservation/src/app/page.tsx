@@ -2,7 +2,6 @@
 import Carousel from '@/components/carousel';
 import React from 'react';
 import LandingVenueCard from '@/components/venue_card/landing_venue_card';
-import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
 import { useRouter } from 'next/navigation';
 
@@ -126,7 +125,6 @@ const FontsPage = (): JSX.Element => {
   return (
     <div style={{ fontFamily: 'Poppins, sans-serif' }}>
       {/* Main Content */}
-      < Header />
       <main className="container mx-auto px-4 py-8 text-left">
 
         {/* Call-to-Action Section */}

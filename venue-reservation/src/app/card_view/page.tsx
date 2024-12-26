@@ -2,7 +2,6 @@
 'use client'
 import React, { useState, useMemo, memo, useEffect } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
-import Header from '@/app/layouts/Header';
 import Footer from '@/app/layouts/Footer';
 import useDebounce from '@/hooks/useDebounce';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -94,10 +93,6 @@ const Reservation = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
       {/* Header */}
-      <div className='z-50'>
-      <Header />
-      </div>
-
       {/*- Hero Section --*/}
 
       {/* Main Content */}

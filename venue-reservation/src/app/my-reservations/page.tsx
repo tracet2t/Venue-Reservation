@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import MyReservationCard from '@/components/venue_card/my_reservation_card';
 import Footer from "@/app/layouts/Footer";
-import Header from '@/app/layouts/Header';
 
 interface ReservationData {
   reservationId: string;
@@ -68,7 +67,6 @@ const MyReservationPage: React.FC = () => {
 
   return (
     <div className="space-y-8 p-4">
-      <Header/>
       <h1 className="text-3xl font-bold text-center mb-6">My Reservations</h1>
       
       {reservations.length === 0 ? (

@@ -70,6 +70,8 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Array<{ id: string; text: string }>>([]);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -140,6 +142,13 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
   }, [id]);
 
   const handleSubmit = async () => {
+    // Check if terms are accepted
+    if (!isTermsAccepted) {
+      setTermsError('Please accept the Terms and Privacy Policy to continue');
+      return;
+    }
+    setTermsError('');
+
     try {
       const mappedExtraServices = reservationDetails?.selectedAmenities?.map((amenity: string) => {
         switch(amenity) {
@@ -408,7 +417,15 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                   {/* Terms and Privacy Policy */}
                   <div className="mt-6">
                     <label className="flex items-center space-x-2">
-                      <input type="checkbox" className="form-checkbox text-[#584822]" />
+                      <input 
+                        type="checkbox" 
+                        className="form-checkbox text-[#584822]"
+                        checked={isTermsAccepted}
+                        onChange={(e) => {
+                          setIsTermsAccepted(e.target.checked);
+                          if (e.target.checked) setTermsError('');
+                        }}
+                      />
                       <span className="text-sm text-gray-600">
                         By clicking &quot;Reserve Now&quot; you agree to the{' '}
                         <a href="#" className="text-[#584822]">Terms of Use</a>
@@ -416,6 +433,9 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                         <a href="#" className="text-[#584822]">Privacy Policy</a>.
                       </span>
                     </label>
+                    {termsError && (
+                      <p className="text-red-500 text-sm mt-2">{termsError}</p>
+                    )}
                   </div>
 
                   {/* Reserve Now Button */}

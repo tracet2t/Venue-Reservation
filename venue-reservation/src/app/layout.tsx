@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ErrorBoundary from '@/components/ErrorBoundary';
 import AuthProvider from '@/components/providers/AuthProvider'
+import Header from '@/app/layouts/Header'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <ErrorBoundary>
           <AuthProvider>
             <Providers session={session}>
+              {!children?.toString().includes('/admin') && <Header />}
               {children}
             </Providers>
           </AuthProvider>

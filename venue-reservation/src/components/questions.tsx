@@ -262,7 +262,7 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
           {/* Amenities Dropdown */}
           <div className="relative w-full">
             <label htmlFor="purpose" className="block text-sm font-medium text-gray-700 mt-4">
-              Amentities
+              Amenities
             </label>
             <button
               onClick={(e) => toggleDropdown('amenities', e)}
@@ -273,7 +273,7 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
             {isAmenitiesDropdownOpen && (
               <div className="absolute z-20 w-full bg-white border rounded-lg shadow-lg p-2 mt-0">
                 {availableAmenities.map((amenity) => (
-                  <label key={amenity} className="block mb-1  font-light">
+                  <label key={amenity} className="block mb-1 font-light">
                     <input
                       type="checkbox"
                       value={amenity}
@@ -288,6 +288,33 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
                     <span className="ml-2">{amenity}</span>
                   </label>
                 ))}
+              </div>
+            )}
+            
+            {/* Display Selected Amenities */}
+            {selectedAmenities.length > 0 && (
+              <div className="mt-2 p-2 border rounded-lg">
+                <div className="flex flex-wrap gap-2">
+                  {selectedAmenities.map((amenity) => (
+                    <span 
+                      key={amenity}
+                      className="inline-flex items-center bg-[#584822] text-white px-3 py-1 rounded-full text-sm"
+                    >
+                      {amenity}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedAmenities(current => 
+                            current.filter(item => item !== amenity)
+                          );
+                        }}
+                        className="ml-2 hover:text-red-200"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>

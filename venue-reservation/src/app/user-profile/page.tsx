@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Footer from "../layouts/Footer";
-import RegisteredHeader from "../layouts/Header";
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 
@@ -239,7 +238,6 @@ export default function UserProfilePage() {
   if (loading || !userProfile) {
     return (
       <div>
-        <RegisteredHeader />
         <div className="flex justify-center items-center min-h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#584822]"></div>
         </div>
@@ -249,7 +247,6 @@ export default function UserProfilePage() {
 
   return (
     <div>
-      <RegisteredHeader />
       <div className="flex justify-center mt-8 max-w-2x">
         <p className="text-4xl font-bold text-[#584822] mb-4">User Profile</p>
       </div>

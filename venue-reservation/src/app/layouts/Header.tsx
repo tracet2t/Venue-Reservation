@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import AuthProvider  from "@/components/providers/AuthProvider";
 
@@ -28,6 +28,7 @@ const HeaderContent = () => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const { data: session, status } = useSession();
+  const currentPath = usePathname();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -105,36 +106,66 @@ const HeaderContent = () => {
     router.push("/my-reservations");
   };
 
+  const isPathActive = (path: string) => {
+    if (path === '/card_view') {
+      return currentPath === '/card_view';
+    } else if (path === '/my-reservations') {
+      return currentPath?.startsWith('/my-reservations');
+    } else if (path === '/admin') {
+      return currentPath?.startsWith('/admin');
+    }
+    return false;
+  };
+
   return (
     <header className="bg-white shadow-lg z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div>
-          <Logo />
+        <div className="p-2">
+          <div className="text-2xl font-bold text-[#584822]">RMS<span className="text-blue-500">.</span></div>
+          <div className="text-sm text-gray-500">Reservation Management System</div>
         </div>
 
+
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-4">
+        <nav className="hidden lg:flex items-center space-x-8">
           <button
             onClick={navigateToHome}
-            className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+            className={`text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out relative
+              ${isPathActive('/card_view') ? 'font-semibold' : ''}
+            `}
           >
             Home
+            {isPathActive('/card_view') && (
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#584822] -mb-1"></div>
+            )}
           </button>
+          
           {(user || session?.user) && (
             <button
               onClick={navigateToReservations}
-              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+              className={`text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out relative
+                ${isPathActive('/my-reservations') ? 'font-semibold' : ''}
+              `}
             >
               My Reservations
+              {isPathActive('/my-reservations') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#584822] -mb-1"></div>
+              )}
             </button>
           )}
+          
           {((user && user.userType === 'Admin') || session?.user?.userType === 'Admin') && (
             <button
               onClick={() => router.push('/admin/dashboard')}
-              className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out"
+              className={`text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out relative mr-8
+                ${isPathActive('/admin') ? 'font-semibold' : ''}
+              `}
             >
               Manage
+              {isPathActive('/admin') && (
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#584822] -mb-1"></div>
+              )}
             </button>
           )}
           {(user || session?.user) ? (
