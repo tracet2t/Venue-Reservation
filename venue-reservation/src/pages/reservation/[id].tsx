@@ -568,13 +568,15 @@ const Availability = () => {
 
       {/* Availability Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Select Availability</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border-2 border-[#584822]/20">
+            <h2 className="text-xl font-semibold mb-4 text-[#584822]">SELECT AVAILABILITY</h2>
             
             {selectedDate && (
               <>
-                <p>Select availability for {selectedDate?.toLocaleDateString()}</p>
+                <p className="text-[#584822]/80 mb-4">
+                  Select availability for {selectedDate?.toLocaleDateString()}
+                </p>
 
                 {/* Show blocked status messages */}
                 {(() => {
@@ -582,10 +584,10 @@ const Availability = () => {
                   const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
                   
                   if (blockedDay?.status.includes('NOT_AVAILABLE')) {
-                    return <p className="text-red-500 mb-4">This date is not available</p>;
+                    return <p className="text-red-500 mb-4 font-medium">This date is not available</p>;
                   }
                   if (blockedDay?.status.includes('FULLY_BOOKED')) {
-                    return <p className="text-orange-500 mb-4">This date is fully booked</p>;
+                    return <p className="text-orange-500 mb-4 font-medium">This date is fully booked</p>;
                   }
                   return null;
                 })()}
@@ -622,33 +624,35 @@ const Availability = () => {
 
                 {/* Hourly Time Slots */}
                 {venueInfo?.schedule === 'HourlyTime' && !isDateFullyBooked(selectedDate) && (
-                  <div className="mb-4 max-h-60 overflow-y-auto">
-                    {Array.from({ length: 24 }, (__, i) => {
-                      const hour = i.toString().padStart(2, '0');
-                      const nextHour = ((i + 1) % 24).toString().padStart(2, '0');
-                      const timeSlot = `${hour}:00-${nextHour}:00`;
-                      
-                      const dateStr = moment(selectedDate).format('YYYY-MM-DD');
-                      const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
-                      const isSlotBlocked = blockedDay?.timeSlots?.includes(timeSlot);
+                  <div className="mb-4">
+                    <div className="max-h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-[#584822]/20 scrollbar-track-gray-100 hover:scrollbar-thumb-[#584822]/30">
+                      {Array.from({ length: 24 }, (__, i) => {
+                        const hour = i.toString().padStart(2, '0');
+                        const nextHour = ((i + 1) % 24).toString().padStart(2, '0');
+                        const timeSlot = `${hour}:00-${nextHour}:00`;
+                        
+                        const dateStr = moment(selectedDate).format('YYYY-MM-DD');
+                        const blockedDay = blockedTimeSlots.find(b => b.date === dateStr);
+                        const isSlotBlocked = blockedDay?.timeSlots?.includes(timeSlot);
 
-                      return (
-                        <label key={timeSlot} className={`flex items-center mb-2 ${isSlotBlocked ? 'opacity-50' : ''}`}>
-                          <input
-                            type="checkbox"
-                            checked={hourlySlots[timeSlot] || false}
-                            disabled={isSlotBlocked}
-                            className={`form-checkbox mr-2 ${isSlotBlocked ? 'cursor-not-allowed' : ''}`}
-                            onChange={() => !isSlotBlocked && setHourlySlots(prev => ({
-                              ...prev,
-                              [timeSlot]: !prev[timeSlot]
-                            }))}
-                          />
-                          {`${hour}:00 - ${nextHour}:00`}
-                          {isSlotBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
-                        </label>
-                      );
-                    })}
+                        return (
+                          <label key={timeSlot} className={`flex items-center mb-2 ${isSlotBlocked ? 'opacity-50' : ''}`}>
+                            <input
+                              type="checkbox"
+                              checked={hourlySlots[timeSlot] || false}
+                              disabled={isSlotBlocked}
+                              className={`form-checkbox mr-2 ${isSlotBlocked ? 'cursor-not-allowed' : ''}`}
+                              onChange={() => !isSlotBlocked && setHourlySlots(prev => ({
+                                ...prev,
+                                [timeSlot]: !prev[timeSlot]
+                              }))}
+                            />
+                            {`${hour}:00 - ${nextHour}:00`}
+                            {isSlotBlocked && <span className="ml-2 text-red-500 text-sm">(Not Available)</span>}
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
 
@@ -677,8 +681,10 @@ const Availability = () => {
                     onClick={handleSave}
                     disabled={isDateFullyBooked(selectedDate)}
                     className={`${
-                      isDateFullyBooked(selectedDate) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
-                    } text-white py-2 px-4 rounded-lg`}
+                      isDateFullyBooked(selectedDate) 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-[#584822] hover:bg-[#584822]/90'
+                    } text-white py-2 px-6 rounded-lg transition-colors duration-200`}
                   >
                     Save
                   </button>
