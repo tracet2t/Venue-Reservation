@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google"
 import prisma from "@/dbclient"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { compare } from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -44,6 +45,42 @@ export const authOptions: NextAuthOptions = {
         };
       }
     }),
+    {
+      id: "magic-link",
+      name: "Magic Link",
+      type: "credentials",
+      credentials: {
+        token: { label: "Token", type: "text" }
+      },
+      async authorize(credentials) {
+        try {
+          if (!credentials?.token) return null;
+
+          // Verify the JWT token
+          const decoded = jwt.verify(credentials.token, process.env.JWT_SECRET!) as {
+            userId: string;
+            email: string;
+            userType: string;
+          };
+
+          const user = await prisma.user.findUnique({
+            where: { userId: decoded.userId }
+          });
+
+          if (!user) return null;
+
+          return {
+            id: user.userId,
+            email: user.email,
+            name: `${user.firstName} ${user.lastName}`,
+            userType: user.userType
+          };
+        } catch (error) {
+          console.error("Magic link auth error:", error);
+          return null;
+        }
+      }
+    }
   ],
   callbacks: {
     async signIn({ user }) {
@@ -66,10 +103,15 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    async session({ session }) {
-      if (session.user?.email) {
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.provider = token.provider as string;
+        session.user.userType = token.userType as string;
+        session.user.id = token.userId as string;
+
+        // Fetch additional user data if needed
         const dbUser = await prisma.user.findUnique({
-          where: { email: session.user.email },
+          where: { userId: token.userId as string },
           select: {
             firstName: true,
             lastName: true,
@@ -77,16 +119,34 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        session.user = {
-          ...session.user,
-          ...dbUser,
-        };
+        if (dbUser) {
+          session.user = {
+            ...session.user,
+            firstName: dbUser.firstName ?? undefined,
+            lastName: dbUser.lastName ?? undefined,
+            userType: dbUser.userType
+          };
+        }
       }
       return session;
+    },
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.provider = account?.provider || "magic-link";
+        token.userType = (user as any).userType;
+        token.userId = user.id;
+      }
+      return token;
     },
   },
   pages: {
     signIn: '/signup-landing',
+    error: '/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   },
 }
 

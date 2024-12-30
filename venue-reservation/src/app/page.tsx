@@ -20,8 +20,10 @@ const AdditionalSection = () => {
     <div
       className="container mx-auto mt-12 p-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2"
       style={{
-        marginLeft: '2mm',
-        marginRight: '2mm',
+        marginLeft: '0',
+        marginRight: '0',
+        maxWidth: '100%',
+        padding: '0 2rem',
       }}
     >
       {/* Left Column */}
@@ -87,14 +89,14 @@ const VenueType = () => {
   ];
 
   return (
-    <div className="mt-12">
-      <h2 className="text-4xl font-bold text-[#6A5B3A] mb-4 text-centre">Browse By Type</h2>
-      <div className="overflow-x-auto">
-        <div className="flex space-x-4 p-4">
+    <div className="mt-12 w-full px-4">
+      <h2 className="text-4xl font-bold text-[#6A5B3A] mb-4 text-center">Browse By Type</h2>
+      <div className="overflow-x-auto w-full">
+        <div className="flex space-x-4 p-4 justify-center">
           {venueTypes.map((venue, index) => (
             <div 
               key={index}
-              className="w-[300px] h-[450px] border border-gray-300 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+              className="w-[320px] h-[450px] border border-gray-300 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
               onClick={() => handleVenueTypeClick(venue.name)}
             >
               <img
@@ -128,8 +130,12 @@ const FontsPage = (): JSX.Element => {
       <main className="container mx-auto px-4 py-8 text-left">
 
         {/* Call-to-Action Section */}
-        <div className="flex justify-center">
-          <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 w-full max-w-full md:max-w-[calc(100%+4rem)] mx-[-2rem] min-h-[300px] md:min-h-[500px] text-center" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
+        <div className="flex justify-center w-full">
+          <div className="bg-white shadow-lg rounded-lg p-8 md:p-16 w-full max-w-full min-h-[300px] md:min-h-[500px] text-center" 
+            style={{ 
+              margin: '0',
+              width: '100%'
+            }}>
             <h2 className="text-2xl md:text-4xl font-bold" style={{ color: '#584822' }}>
               Tailored Spaces, <br /> Reserved for You
             </h2>
@@ -152,8 +158,8 @@ const FontsPage = (): JSX.Element => {
         <LandingVenueCard />
 
         {/* Additional Section */}
-<div className="max-w-full p-4 mx-auto p-6 md:p-120" style={{ marginLeft: '2mm', marginRight: '2mm' }}>
-  <div className="flex flex-col md:flex-row flex-wrap justify-between rounded-lg shadow-lg p-8 items-center max-w-full">
+<div className="w-full p-4 mx-auto md:p-12" style={{ margin: '0' }}>
+  <div className="flex flex-col md:flex-row flex-wrap justify-between rounded-lg shadow-lg p-8 items-center w-full">
     <h1 className="text-[30px] md:text-[50px] font-bold text-center mb-8 text-[#6A5B3A] w-full">
       Are you looking for a venue?
     </h1>

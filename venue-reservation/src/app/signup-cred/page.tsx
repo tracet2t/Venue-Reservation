@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import BrandingSection from "@/components/design/branding-section";
 import Card from "@/components/ui/card";
 const SignupPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -59,15 +61,8 @@ const SignupPage = () => {
   
       if (response.ok) {
         alert("Signup successful");
-        // Clear form or redirect
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
-        });
+        // Navigate to login page after successful signup
+        router.push("/login");
       } else {
         alert(result.error || "Signup failed");
       }
