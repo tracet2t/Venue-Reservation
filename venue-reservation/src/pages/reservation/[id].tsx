@@ -570,7 +570,7 @@ const Availability = () => {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md border-2 border-[#584822]/20">
-            <h2 className="text-xl font-semibold mb-4 text-[#584822]">Select Availability</h2>
+            <h2 className="text-xl font-semibold mb-4 text-[#584822]">SELECT AVAILABILITY</h2>
             
             {selectedDate && (
               <>
