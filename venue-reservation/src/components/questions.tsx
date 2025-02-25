@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 
 interface DateTimeSelection {
@@ -44,6 +44,21 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
     timeSlots: '',
     questions: {} as {[key: string]: string}
   });
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsAmenitiesDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -260,7 +275,7 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
           </div>
 
           {/* Amenities Dropdown */}
-          <div className="relative w-full">
+          <div className="relative w-full" ref={dropdownRef}>
             <label htmlFor="purpose" className="block text-sm font-medium text-gray-700 mt-4">
               Amenities
             </label>
