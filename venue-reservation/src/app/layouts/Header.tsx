@@ -5,12 +5,15 @@ import Logo from "./Logo";
 import { useRouter, usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import AuthProvider  from "@/components/providers/AuthProvider";
+import { SESSION_TIMEOUT_EVENT } from '@/components/SessionProvider';
+import { toast } from "react-hot-toast";
 
 declare module "next-auth" {
   interface User {
     profilePicture?: string;
     userType: string;
     provider?: string;
+    image?: string;
   }
 }
 
@@ -29,6 +32,7 @@ const HeaderContent = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const currentPath = usePathname();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -47,7 +51,7 @@ const HeaderContent = () => {
             email: userData.email,
             userType: userData.userType,
             provider: userData.provider,
-            profilePicture: userData.profilePicture || session?.user?.image || '/default-avatar.png'
+            profilePicture: userData.profilePicture || '/default-avatar.png'
           });
         } else if (status === "authenticated" && session?.user) {
           setUser({
@@ -55,7 +59,6 @@ const HeaderContent = () => {
             email: session.user.email || '',
             userType: session.user.userType || 'User',
             provider: session.user.provider || 'google',
-            profilePicture: session.user.image || '/default-avatar.png'
           });
         } else {
           setUser(null);
@@ -69,20 +72,58 @@ const HeaderContent = () => {
     checkAuth();
   }, [session, status]);
 
+  useEffect(() => {
+    const closeDropdown = (e: MouseEvent) => {
+      if (isProfileOpen && !(e.target as Element).closest('.profile-dropdown')) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener('click', closeDropdown);
+    return () => document.removeEventListener('click', closeDropdown);
+  }, [isProfileOpen]);
+
+  useEffect(() => {
+    const handleSessionTimeout = () => {
+      setUser(null);
+      setIsProfileOpen(false);
+      router.refresh();
+    };
+
+    // Add event listener for session timeout
+    window.addEventListener(SESSION_TIMEOUT_EVENT, handleSessionTimeout);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener(SESSION_TIMEOUT_EVENT, handleSessionTimeout);
+    };
+  }, [router]);
+
   const handleLogout = async () => {
     try {
+      // First, clear any local session data
+      setUser(null);
+      setIsProfileOpen(false);
+
+      // Call your logout API
       await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
       
+      // Sign out without forcing a reload
       await signOut({ 
-        callbackUrl: '/',  // Redirect to home page after logout
-        redirect: true     // Enable redirect
+        redirect: false
       });
+
+      // Add a small delay before reloading
+      setTimeout(() => {
+        window.location.href = '/'; // This will cause a full page reload and redirect to home
+      }, 100);
       
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Logout failed. Please try again.");
     }
   };
 
@@ -117,9 +158,11 @@ const HeaderContent = () => {
     return false;
   };
 
+  const showAuthButtons = !user && !session?.user;
+
   return (
     <header className="bg-white shadow-lg z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-1 flex items-center justify-between">
         {/* Logo */}
         <div className="p-2">
           <div className="text-2xl font-bold text-[#584822]">RMS<span className="text-blue-500">.</span></div>
@@ -168,37 +211,7 @@ const HeaderContent = () => {
               )}
             </button>
           )}
-          {(user || session?.user) ? (
-            <>
-              <button
-                onClick={navigateToProfile}
-                className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out flex items-center space-x-2"
-              >
-                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                  {(user?.profilePicture || session?.user?.image) ? (
-                    <img
-                      src={user?.profilePicture || session?.user?.image || '/default-avatar.png'}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-500 text-xs">
-                        {(user?.firstName?.[0] || session?.user?.name?.[0] || 'U').toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <span>Welcome, {user?.firstName || session?.user?.name || 'User'}</span>
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-200 ease-in-out"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+          {showAuthButtons ? (
             <>
               <button
                 onClick={navigateToLogin}
@@ -214,6 +227,59 @@ const HeaderContent = () => {
                 Signup
               </button>
             </>
+          ) : (
+            <div className="relative profile-dropdown">
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 hover:ring-2 hover:ring-[#584822] transition duration-200"
+              >
+                {(user?.profilePicture) ? (
+                  <img
+                    src={user?.profilePicture || '/default-avatar.png'}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500 text-sm">
+                      {(user?.firstName?.[0] || session?.user?.name?.[0] || 'U').toUpperCase()}
+                    </span>
+                  </div>
+                )}
+              </button>
+
+              {/* Profile Dropdown Menu */}
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <div className="px-4 py-3 border-b border-gray-200">
+                    <div className="flex justify-center mb-3">
+                      <div className="w-16 h-16 rounded-full overflow-hidden">
+                        <img
+                          src={user?.profilePicture || '/default-avatar.png'}
+                          alt="Profile"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="text-center font-medium">
+                      {user?.firstName || session?.user?.name || 'User'}
+                    </div>
+                  </div>
+                  <button
+                    onClick={navigateToProfile}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition duration-200"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition duration-200 text-red-600"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </nav>
 
@@ -276,9 +342,9 @@ const HeaderContent = () => {
                 className="text-gray-700 hover:text-[#584822] transition duration-200 ease-in-out flex items-center space-x-2"
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                  {(user?.profilePicture || session?.user?.image) ? (
+                  {(user?.profilePicture ) ? (
                     <img
-                      src={user?.profilePicture || session?.user?.image || '/default-avatar.png'}
+                      src={user?.profilePicture || '/default-avatar.png'}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
