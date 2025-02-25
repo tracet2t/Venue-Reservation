@@ -133,7 +133,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.provider = account?.provider || "magic-link";
-        token.userType = (user as any).userType;
+        token.userType = (user as { userType: string }).userType;
         token.userId = user.id;
       }
       return token;
