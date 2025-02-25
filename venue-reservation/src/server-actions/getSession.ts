@@ -3,6 +3,7 @@ import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { Role } from "@/type";
 import { getToken } from "next-auth/jwt";
 import { NextApiRequest } from "next";
+import { jwtVerify } from 'jose';
 
 // Define the interface for JWT payload
 interface JwtPayload {
@@ -48,6 +49,7 @@ export async function getSession(reqCookies: RequestCookies | null = null): Prom
         });
     }
 
+    // Check NextAuth session first
     const session = await getToken({ 
         req: {
             cookies: cookieObj,
@@ -58,6 +60,23 @@ export async function getSession(reqCookies: RequestCookies | null = null): Prom
         secret: process.env.NEXTAUTH_SECRET 
     });
 
+    // Check magic link token if NextAuth session doesn't exist
+    if (!session && cookieObj['auth_token']) {
+        try {
+            const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+            const verified = await jwtVerify(cookieObj['auth_token'], secret);
+            
+            const payload: JwtPayload = {
+                email: verified.payload.email as string,
+                role: (verified.payload.role as Role) || 'regular',
+                id: verified.payload.sub as string
+            };
+            return new JwtPayloadSession(payload);
+        } catch (error) {
+            console.error('Magic link verification failed:', error);
+        }
+    }
+
     if (session) {
         const payload: JwtPayload = {
             email: session.email as string,
@@ -66,5 +85,6 @@ export async function getSession(reqCookies: RequestCookies | null = null): Prom
         };
         return new JwtPayloadSession(payload);
     }
+    
     return new JwtPayloadSession(null);
 }
