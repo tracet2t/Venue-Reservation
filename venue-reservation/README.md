@@ -64,7 +64,7 @@ For a better understanding of Prisma, refer to this course: [Prisma Course](http
 Navigate to the `venue-reservation` directory and run the following commands:
 
 ```sh
-cd Venue-Reservation
+cd venue-Reservation
 ```
 
 1. Install dependencies:
