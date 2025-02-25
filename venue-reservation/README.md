@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Venue Reservation System
 
-## Getting Started
+## Setup Instructions
 
-First, run the development server:
+Follow the steps below to set up and run the Venue Reservation system on your local machine.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+### Database Setup
+
+Navigate to the `database` directory and run the following commands:
+
+```sh
+cd Venue-Reservation/database
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Start the database using Docker:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```sh
+   docker compose up --build
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install Prisma:
 
-## Learn More
+   ```sh
+   npm install prisma --save-dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. Install TypeScript Node:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```sh
+   npm install ts-node --save-dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Generate Prisma client:
 
-## Deploy on Vercel
+   ```sh
+   npx prisma generate
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Run database migrations:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```sh
+   npx prisma migrate dev --name <migration-name>
+   ```
+
+6. Seed the database:
+
+   ```sh
+   # For Windows
+   npx prisma db seed
+   
+   # For Linux
+   npx --no-install prisma db seed
+   ```
+
+#### Prisma Course Reference:
+For a better understanding of Prisma, refer to this course: [Prisma Course](https://youtu.be/RebA5J-rlwg?si=ux-b0e6nJlb7pVgl)
+
+---
+
+### Application Setup
+
+Navigate to the `venue-reservation` directory and run the following commands:
+
+```sh
+cd Venue-Reservation
+```
+
+1. Install dependencies:
+
+   ```sh
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```sh
+   npm run dev
+   ```
+
+---
+
+### Environment Variables
+
+Create a `.env` file in the root directory and configure the necessary environment variables:
+
+```ini
+DATABASE_URL=<your-database-url>
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=<your-random-secret>
+EMAIL_SERVER_HOST=smtp.gmail.com
+EMAIL_SERVER_PORT=587
+EMAIL_SERVER_USER=<your-email>
+EMAIL_SERVER_PASSWORD=<your-email-password>
+EMAIL_FROM=<your-email>
+AUTH_SECRET=<your-random-secret>
+BASE_URL=http://localhost:3000
+JWT_SECRET=<your-random-jwt-secret>
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+GOOGLE_CLOUD_PROJECT_ID=<your-google-cloud-project-id>
+GOOGLE_CLOUD_BUCKET_NAME=<your-google-cloud-bucket>
+GOOGLE_CLIENT_EMAIL=<your-google-service-account-email>
+GOOGLE_CLOUD_CREDENTIALS=<your-google-cloud-credentials>
+```
+
+> **Note:** Never share your `.env` file publicly or commit it to version control. Always use `.env.example` for sharing environment variable structures.
+
+---
+
+### Additional Notes
+- Ensure Docker is installed and running before starting the database.
+- Use environment variables to secure sensitive credentials.
+- If you encounter issues, verify that your `.env` file is correctly configured.
+
+---
+
+### License
+This project is licensed under the MIT License.
+
+---
+
+### Contributors
+Feel free to contribute to the project by submitting pull requests or reporting issues.
+
+Happy Coding! 🚀
+
