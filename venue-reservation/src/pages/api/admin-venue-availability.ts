@@ -28,33 +28,56 @@ interface PrismaError extends Error {
 
 function getSlotTime(slot: TimeSlotInput | string, baseDate: Date, type: 'start' | 'end'): Date {
   if (typeof slot === 'string') {
-    if (slot.includes('Full Day')) {
+    // Handle session times
+    if (slot.includes('Early Morning Session')) {
+      // Early Morning Session (00:00 - 08:00)
+      return type === 'start' ? 
+        moment(baseDate).startOf('day').toDate() : 
+        moment(baseDate).set({ hours: 8, minutes: 0 }).toDate();
+    } else if (slot.includes('Morning Session')) {
+      // Morning Session (08:00 - 12:00)
+      return type === 'start' ? 
+        moment(baseDate).set({ hours: 8, minutes: 0 }).toDate() : 
+        moment(baseDate).set({ hours: 12, minutes: 0 }).toDate();
+    } else if (slot.includes('Afternoon Session')) {
+      // Afternoon Session (12:00 - 20:00)
+      return type === 'start' ? 
+        moment(baseDate).set({ hours: 12, minutes: 0 }).toDate() : 
+        moment(baseDate).set({ hours: 20, minutes: 0 }).toDate();
+    } else if (slot.includes('Late Evening Session')) {
+      // Late Evening Session (20:00 - 00:00)
+      return type === 'start' ? 
+        moment(baseDate).set({ hours: 20, minutes: 0 }).toDate() : 
+        moment(baseDate).add(1, 'day').startOf('day').toDate();
+    } else if (slot.includes('Full Day')) {
+      // Entire Day (00:00 - 23:59)
       return type === 'start' ? 
         moment(baseDate).startOf('day').toDate() : 
         moment(baseDate).endOf('day').toDate();
+    } else if (slot.match(/^\d{2}:00-\d{2}:00$/)) {
+      // Hourly slots (HH:00-HH:00)
+      const [startHour, endHour] = slot.split('-').map(time => parseInt(time.split(':')[0]));
+      if (type === 'start') {
+        return moment(baseDate).set({ hours: startHour, minutes: 0 }).toDate();
+      } else {
+        // Handle cases where end time is 00:00 (midnight)
+        if (endHour === 0) {
+          return moment(baseDate).add(1, 'day').startOf('day').toDate();
+        }
+        return moment(baseDate).set({ hours: endHour, minutes: 0 }).toDate();
+      }
     }
-    
-    let hours = 0;
-    if (slot.includes('Morning Session')) {
-      hours = type === 'start' ? 8 : 12;
-    } else if (slot.includes('Afternoon Session')) {
-      hours = type === 'start' ? 12 : 20;
-    } else if (slot.includes('Late Evening Session')) {
-      hours = type === 'start' ? 20 : 0;
-    } else if (slot.includes('Early Morning Session')) {
-      hours = type === 'start' ? 0 : 8;
-    } else {
-      const [start, end] = slot.split('-');
-      const time = type === 'start' ? start : end;
-      hours = parseInt(time);
-    }
-    
-    return moment(baseDate).set({ hours, minutes: 0 }).toDate();
   }
   
-  const time = type === 'start' ? slot.startTime : slot.endTime;
-  const [hours, minutes] = time.split(':');
-  return moment(baseDate).set({ hours: parseInt(hours), minutes: parseInt(minutes) }).toDate();
+  // Handle TimeSlotInput type
+  if (typeof slot !== 'string') {
+    const time = type === 'start' ? slot.startTime : slot.endTime;
+    const [hours, minutes] = time.split(':');
+    return moment(baseDate).set({ hours: parseInt(hours), minutes: parseInt(minutes) }).toDate();
+  }
+  
+  // Default return for unexpected cases
+  return baseDate;
 }
 
 async function checkTimeSlotOverlap(
