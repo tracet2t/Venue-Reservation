@@ -1,6 +1,6 @@
 // Reservation.tsx
 'use client'
-import React, { useState, useMemo, memo, useEffect } from 'react';
+import React, { useState, useMemo, memo, useEffect, useRef, useCallback } from 'react';
 import VenueCard from '@/components/venue_card/user_venue_card';
 import Footer from '@/app/layouts/Footer';
 import useDebounce from '@/hooks/useDebounce';
@@ -25,70 +25,118 @@ const locationsData: Location[] = [
   { id: 9, province: "Northern Province", districts: ["Jaffna", "Kilinochchi","Mullaitivu","Vavuniya","Mannar"] },
 ];
 
-const Reservation = () => {
-   /* eslint-disable @typescript-eslint/no-unused-vars */
+function ReservationPage() {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const router = useRouter();
    /* eslint-disable @typescript-eslint/no-unused-vars */
  const searchParams = useSearchParams(); 
  const initialVenueType = searchParams?.get('venueType') || '';
 
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
-  const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const [selectedVenueType, setSelectedVenueType] = useState(initialVenueType);
-  const [isVenueDropdownOpen, setIsVenueDropdownOpen] = useState(false);
-  const [isSearchTerm, setSearchTerm] = useState<string>("");
+  // Combine related state into a single object
+  const [filters, setFilters] = useState({
+    province: null as string | null,
+    districts: [] as string[],
+    venueType: searchParams?.get('venueType') || '',
+    searchTerm: ''
+  });
+
+  // Dropdown states
+  const [dropdownStates, setDropdownStates] = useState({
+    location: false,
+    venue: false
+  });
+
+  // Loading states
+  const [loading, setLoading] = useState({
+    filter: false,
+    search: false
+  });
+
+  const refs = {
+    location: useRef<HTMLDivElement>(null),
+    venue: useRef<HTMLDivElement>(null)
+  };
+
+  // Single effect for handling outside clicks
+  useEffect(() => {
+    if (!dropdownStates.location && !dropdownStates.venue) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      
+      if (dropdownStates.location && refs.location.current && !refs.location.current.contains(target)) {
+        setDropdownStates(prev => ({ ...prev, location: false }));
+      }
+      
+      if (dropdownStates.venue && refs.venue.current && !refs.venue.current.contains(target)) {
+        setDropdownStates(prev => ({ ...prev, venue: false }));
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownStates.location, dropdownStates.venue]);
+
+  // Memoize handlers
+  const toggleDropdown = useCallback((type: 'location' | 'venue') => {
+    setDropdownStates(prev => ({
+      ...prev,
+      [type]: !prev[type]
+    }));
+  }, []);
 
   useEffect(() => {
     const venueType = searchParams?.get('venueType');
     if (venueType) {
-      setSelectedVenueType(venueType);
+      setFilters(prev => ({ ...prev, venueType }));
     }
   }, [searchParams]);
 
   // Use useMemo inside the component
   const locations = useMemo(() => locationsData, []);
 
-  const toggleLocationDropdown = () => {
-    setIsLocationDropdownOpen(!isLocationDropdownOpen);
-  };
-
-
-  const toggleVenueDropdown = () => {
-    setIsVenueDropdownOpen(!isVenueDropdownOpen);
-  };
-
   const handleDistrictCheckboxChange = (district: string) => {
-    setSelectedDistricts((prev) => {
-      if (prev.includes(district)) {
-        return prev.filter((item) => item !== district);
-      } else {
-        return [...prev, district];
-      }
-    });
+    setLoading(prev => ({ ...prev, filter: true }));
+    setFilters(prev => ({
+      ...prev,
+      districts: prev.districts.includes(district) 
+        ? prev.districts.filter((item) => item !== district)
+        : [...prev.districts, district]
+    }));
+    setTimeout(() => setLoading(prev => ({ ...prev, filter: false })), 500);
   };
 
   const handleProvinceCheckboxChange = (provinces: string) => {
-    if (selectedProvince === provinces) {
-      setSelectedProvince(null);
-      setSelectedDistricts([]);
+    setLoading(prev => ({ ...prev, filter: true }));
+    if (filters.province === provinces) {
+      setFilters(prev => ({ ...prev, province: null, districts: [] }));
     } else {
-      setSelectedProvince(provinces);
-      setSelectedDistricts([]);
+      setFilters(prev => ({ ...prev, province: provinces, districts: [] }));
     }
+    setTimeout(() => setLoading(prev => ({ ...prev, filter: false })), 500);
   };
   
   const handleVenueTypeChange = (type: string) => {
-    setSelectedVenueType((prev) => (prev === type ? "" : type));
+    setFilters(prev => ({ ...prev, venueType: prev.venueType === type ? '' : type }));
   };
   
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setFilters(prev => ({ ...prev, searchTerm: e.target.value }));
   };
   
-  const debouncedSearchTerm = useDebounce(isSearchTerm, 300);
+  const debouncedSearchTerm = useDebounce(filters.searchTerm, 300);
 
   const MemoizedVenueCard = memo(VenueCard);
+
+  useEffect(() => {
+    if (debouncedSearchTerm !== undefined) {
+      setLoading(prev => ({ ...prev, search: true }));
+      // Simulate search delay
+      setTimeout(() => {
+        setLoading(prev => ({ ...prev, search: false }));
+      }, 500); // Adjust timing as needed
+    }
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
@@ -96,8 +144,8 @@ const Reservation = () => {
       {/*- Hero Section --*/}
 
       {/* Main Content */}
-      <main className="flex-grow p-8 mt-16">
-        <div className="text-center mt-12">
+      <main className="flex-grow p-8">
+        <div className="text-center">
           <h1 className="text-4xl gab-4 p-4 font-bold text-olive text-5xl">Tailored Spaces, <br/>Reserved For You</h1>
           <p className="mt-4 text-2xl text-olive">Instantly discover the best venues for events, meetings, and celebrations.<br/>Start planning your perfect event today</p>
         </div>
@@ -105,8 +153,8 @@ const Reservation = () => {
         <div className="flex flex-wrap py-2 items-center justify-center mt-5  gap-2 p-4 bg-olive border rounded-lg shadow-lg max-w-[1470px] mx-auto space-y-0 space-x-0 md:space-x-8">
         
           {/* Location Filter */}
-          <div className="relative w-full z-30 sm:w-auto md:w-auto ml-0 md:ml-12">
-            <button onClick={toggleLocationDropdown} 
+          <div className="relative w-full z-30 sm:w-auto md:w-auto ml-0 md:ml-12" ref={refs.location}>
+            <button onClick={() => toggleDropdown('location')} 
                 className="flex items-center justify-between gap-6 px-7 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/marker--v1.png" 
                 alt="Location Icon" 
@@ -116,7 +164,7 @@ const Reservation = () => {
                 alt="Dropdown Icon" 
                 className="w-4 h-4" />
             </button>
-            {isLocationDropdownOpen && (
+            {dropdownStates.location && (
               <div className="absolute mt-2 w-72 bg-white border rounded-lg shadow-lg p-4">
                 <div className="ml-4">
                   {locations.map((location) => (
@@ -125,18 +173,18 @@ const Reservation = () => {
                         <input
                           type="checkbox"
                           onChange={() => handleProvinceCheckboxChange(location.province)}
-                          checked={selectedProvince === location.province}
+                          checked={filters.province === location.province}
                         />
                         <span className="ml-2">{location.province}</span>
                       </label>
-                      {selectedProvince === location.province && (
+                      {filters.province === location.province && (
                         <div className="ml-6 mt-2">
                           {location.districts.map((district) => (
                             <label key={district} className="block font-light mb-1">
                               <input
                                 type="checkbox"
                                 onChange={() => handleDistrictCheckboxChange(district)}
-                                checked={selectedDistricts.includes(district)}
+                                checked={filters.districts.includes(district)}
                               />
                               <span className="ml-2">{district}</span>
                             </label>
@@ -151,8 +199,8 @@ const Reservation = () => {
           </div>
 
           {/* Venue Type Filter */}
-          <div className="relative w-full z-20 sm:w-full md:w-auto ml-0 md:ml-12">
-            <button onClick={toggleVenueDropdown} className="flex items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
+          <div className="relative w-full z-20 sm:w-full md:w-auto ml-0 md:ml-12" ref={refs.venue}>
+            <button onClick={() => toggleDropdown('venue')} className="flex items-center justify-between gap-0 px-4 py-4 border rounded-lg w-full sm:w-full md:w-72 bg-white focus:outline-none focus:ring-2 focus:ring-[#584822]">
               <img src="https://img.icons8.com/ios/50/performance.png" 
                 alt="Venue Icon" 
                 className="w-6 h-6" />
@@ -161,7 +209,7 @@ const Reservation = () => {
                 alt="Dropdown Icon" 
                 className="w-4 h-4" />
             </button>
-            {isVenueDropdownOpen && (
+            {dropdownStates.venue && (
               <div className="absolute mt-2 w-72 bg-white border rounded-lg shadow-lg p-2">
                 <div className="ml-4">
                   {["Auditorium", "Conference Hall", "Outdoor", "Banquet Hall", "Co-Working Space"].map((type) => (
@@ -170,7 +218,7 @@ const Reservation = () => {
                         type="checkbox"
                         value={type}
                         onChange={() => handleVenueTypeChange(type)}
-                        checked={selectedVenueType === type}
+                        checked={filters.venueType === type}
                       />
                       <span className="ml-2">{type}</span>
                     </label>
@@ -190,7 +238,7 @@ const Reservation = () => {
             </svg>
             <input type="text" className="pl-10 gap-1 pr-4 py-4 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#584822]" 
              placeholder="Enter Venue Name"
-             value={isSearchTerm}
+             value={filters.searchTerm}
              onChange={handleSearchTermChange} 
                />
           </div>
@@ -201,13 +249,21 @@ const Reservation = () => {
         </div>
 
         {/* Venue Card */}
-        <div className="max-h-[1000px] z-0 overflow-y-auto">
-          <MemoizedVenueCard
-            provinces={selectedProvince ? [selectedProvince] : []}
-            districts={selectedDistricts}
-            venueType={selectedVenueType}
-            searchTerm={debouncedSearchTerm}
-          />
+        <div className="h-[800px] mt-8 overflow-y-auto scrollbar-thin scrollbar-thumb-olive scrollbar-track-gray-200">
+          {(loading.search || loading.filter) ? (
+            <div className="flex justify-center items-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#584822]"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 max-w-[1470px] mx-auto">
+              <MemoizedVenueCard
+                provinces={filters.province ? [filters.province] : []}
+                districts={filters.districts}
+                venueType={filters.venueType}
+                searchTerm={debouncedSearchTerm}
+              />
+            </div>
+          )}
         </div>
 
       </main>
@@ -218,5 +274,6 @@ const Reservation = () => {
 
     </div>
   );
-};
-export default Reservation;
+}
+
+export default memo(ReservationPage);
