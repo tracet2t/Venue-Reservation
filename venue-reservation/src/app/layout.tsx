@@ -7,6 +7,7 @@ import "./globals.css";
 import ErrorBoundary from '@/components/ErrorBoundary';
 import AuthProvider from '@/components/providers/AuthProvider'
 import Header from '@/app/layouts/Header'
+import SessionTimeout from '@/components/SessionProvider'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <ErrorBoundary>
           <AuthProvider>
             <Providers session={session}>
+              <SessionTimeout />
               {!children?.toString().includes('/admin') && <Header />}
               {children}
             </Providers>
