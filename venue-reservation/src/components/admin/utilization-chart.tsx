@@ -30,6 +30,17 @@ const UtilizationChart = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [viewMode, setViewMode] = useState<string>("weekly");
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedMonth, setSelectedMonth] = useState<string>(new Date().getMonth().toString());
+  const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
+
+  // Generate arrays for month and year options
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => (currentYear - 2 + i).toString());
 
   const fetchUtilizationData = async () => {
     setLoading(true);
@@ -42,12 +53,9 @@ const UtilizationChart = () => {
         lastWeek.setDate(lastWeek.getDate() - 7);
         endpoint += `?startDate=${lastWeek.toISOString().split('T')[0]}&endDate=${today.toISOString().split('T')[0]}`;
       } else if (viewMode === "monthly") {
-        const month = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-        endpoint += `?month=${month}`;
+        endpoint += `?month=${selectedYear}-${String(parseInt(selectedMonth) + 1).padStart(2, '0')}`;
       } else if (viewMode === "yearly") {
-        const startOfYear = new Date(today.getFullYear(), 0, 1);
-        const endOfYear = new Date(today.getFullYear(), 11, 31);
-        endpoint += `?startDate=${startOfYear.toISOString().split('T')[0]}&endDate=${endOfYear.toISOString().split('T')[0]}`;
+        endpoint += `?viewMode=yearly&year=${selectedYear}`;
       }
 
       const response = await fetch(endpoint);
@@ -62,7 +70,7 @@ const UtilizationChart = () => {
         labels: data.map((item) => item.venueName),
         datasets: [
           {
-            label: "Utilization (%)",
+            label: "Accepted Reservations (%)",
             data: data.map((item) => item.utilization),
             backgroundColor: "rgb(209, 188, 126)",
             borderColor: "rgb(72, 55, 3)",
@@ -80,30 +88,33 @@ const UtilizationChart = () => {
 
   useEffect(() => {
     fetchUtilizationData();
-  }, [viewMode]);
+  }, [viewMode, selectedMonth, selectedYear]);
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
         max: 100,
         ticks: {
-          stepSize:5,
-          callback: function(tickValue: number | string) {
-            return tickValue.toString();
+          stepSize: 10,
+          font: {
+            size: 12
           }
         },
         title: {
           display: true,
           text: "Utilization (%)",
           font: {
-            size: 14,
-            weight: 'bold' as const
-          }
+            size: 16,
+            weight: 'bold'
+          },
+          padding: 10
         },
         grid: {
-          display: false
+          display: true,
+          color: 'rgba(0, 0, 0, 0.1)'
         }
       },
       x: {
@@ -112,8 +123,18 @@ const UtilizationChart = () => {
           text: "Venue",
           font: {
             size: 14,
-            weight: 'bold' as const
-          }
+            weight: 'bold'
+          },
+          padding: 8
+        },
+        ticks: {
+          font: {
+            size: 10,
+          },
+          maxRotation: 0,
+          minRotation: 0,
+          autoSkip: false,
+          padding: 8
         },
         grid: {
           display: false
@@ -122,19 +143,23 @@ const UtilizationChart = () => {
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'top' as const,
+        labels: {
+          font: {
+            size: 14
+          }
+        }
       },
     }
   } as const;
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg max-w-4xl mx-auto">
+    <div className="p-6 bg-white rounded-lg shadow-lg w-full mx-auto">
       <div className="flex justify-center mb-6 space-x-4">
         <button
           className={`px-6 py-2 rounded-full text-white transition-colors ${
-            viewMode === "weekly" 
-              ? "bg-[#584822]" 
-              : "bg-[#8B7355] hover:bg-[#584822]"
+            viewMode === "weekly" ? "bg-[#584822]" : "bg-[#8B7355] hover:bg-[#584822]"
           }`}
           onClick={() => setViewMode("weekly")}
         >
@@ -142,9 +167,7 @@ const UtilizationChart = () => {
         </button>
         <button
           className={`px-6 py-2 rounded-full text-white transition-colors ${
-            viewMode === "monthly" 
-              ? "bg-[#584822]" 
-              : "bg-[#8B7355] hover:bg-[#584822]"
+            viewMode === "monthly" ? "bg-[#584822]" : "bg-[#8B7355] hover:bg-[#584822]"
           }`}
           onClick={() => setViewMode("monthly")}
         >
@@ -152,23 +175,52 @@ const UtilizationChart = () => {
         </button>
         <button
           className={`px-6 py-2 rounded-full text-white transition-colors ${
-            viewMode === "yearly" 
-              ? "bg-[#584822]" 
-              : "bg-[#8B7355] hover:bg-[#584822]"
+            viewMode === "yearly" ? "bg-[#584822]" : "bg-[#8B7355] hover:bg-[#584822]"
           }`}
           onClick={() => setViewMode("yearly")}
         >
           Year
         </button>
       </div>
-      
-      {loading ? (
-        <p className="text-center text-[#584822]">Loading chart...</p>
-      ) : chartData ? (
-        <Bar data={chartData} options={options} />
-      ) : (
-        <p className="text-center text-[#584822]">No data available</p>
+
+      {(viewMode === "monthly" || viewMode === "yearly") && (
+        <div className="flex justify-center mb-6 space-x-4">
+          {viewMode === "monthly" && (
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="px-4 py-2 border rounded-md bg-white text-[#584822] border-[#8B7355]"
+            >
+              {months.map((month, index) => (
+                <option key={index} value={index}>
+                  {month}
+                </option>
+              ))}
+            </select>
+          )}
+          <select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+            className="px-4 py-2 border rounded-md bg-white text-[#584822] border-[#8B7355]"
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
+      
+      <div className="h-[500px] w-full">
+        {loading ? (
+          <p className="text-center text-[#584822]">Loading chart...</p>
+        ) : chartData ? (
+          <Bar data={chartData} options={options} />
+        ) : (
+          <p className="text-center text-[#584822]">No data available</p>
+        )}
+      </div>
     </div>
   );
 };
