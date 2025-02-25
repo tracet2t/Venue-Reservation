@@ -276,16 +276,16 @@ export default function AdminReservationRequests() {
   return (
     <div className="p-4 r-64">
       {/* Header with search */}
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-bold text-[#584822]">Reservation Approvals</h1>
-        <div className="flex items-center gap-4">
-          <div className="relative">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
+        <h1 className="text-xl sm:text-2xl font-bold text-[#584822]">Reservation Approvals</h1>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+          <div className="relative flex-grow sm:flex-grow-0">
             <input
               type="search"
               placeholder="Search reservations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
             />
             <svg 
               className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
@@ -302,7 +302,7 @@ export default function AdminReservationRequests() {
             </svg>
           </div>
           <select 
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
+            className="w-full sm:w-auto border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#584822] focus:border-transparent"
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value as 'newest' | 'oldest' | 'a-z')}
           >
@@ -317,84 +317,81 @@ export default function AdminReservationRequests() {
       <div className="space-y-4">
         {filteredReservations.map((reservation) => (
           <div key={reservation.reservationId} 
-               className="bg-white rounded-lg shadow-sm p-6">
-            <div className="grid grid-cols-2">
+               className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-700">{reservation.title}</h2>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-700 break-words">{reservation.title}</h2>
                 
                 {/* Venue Information */}
                 <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Venue Name</span>
-                    <span>{reservation.venue.name}</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                    <span className="text-gray-600 text-sm sm:text-base">Venue Name</span>
+                    <span className="text-sm sm:text-base">{reservation.venue.name}</span>
                   </div>
                 </div>
                 
 
-                {/* Rest of the existing content */}
+                {/* Extra Services */}
                 <div className="space-y-2">
-                  <span className="text-gray-600">Extra Services</span>
-                  <div className="flex gap-2">
+                  <span className="text-gray-600 text-sm sm:text-base">Extra Services</span>
+                  <div className="flex flex-wrap gap-2">
                     {reservation.extraServices.map((service, index) => (
                       <span key={index} 
-                            className="px-4 py-1 bg-[#584822] text-white rounded-full text-sm">
+                            className="px-3 py-1 bg-[#584822] text-white rounded-full text-xs sm:text-sm">
                         {service}
                       </span>
                     ))}
                   </div>
                 </div>
                 
+                {/* Purpose */}
                 <div className="space-y-1">
-                  <span className="text-gray-600">Purpose of Reservation</span>
-                  <p className="text-sm">{reservation.purposeOfReservation}</p>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600">Status:</span>
-                  <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(reservation.reservationState.status)}`}>
-                    {reservation.reservationState.status}
-                  </span>
-                  {reservation.reservationState.adminComments && (
-                    <span className="text-sm text-gray-600">
-                      - {reservation.reservationState.adminComments}
-                    </span>
-                  )}
+                  <span className="text-gray-600 text-sm sm:text-base">Purpose</span>
+                  <p className="text-xs sm:text-sm break-words">{reservation.purposeOfReservation}</p>
                 </div>
               </div>
 
               {/* Right Column */}
-              <div className="pl-6">
-                <h2 className="text-xl font-semibold text-gray-700 mb-4">{reservation.venue.name}</h2>
+              <div className="mt-4 md:mt-0 md:pl-6 border-t md:border-t-0 md:border-l pt-4 md:pt-0">
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">Customer Details</h3>
                 
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Customer Name</span>
+                <div className="space-y-3 text-sm sm:text-base">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Name</span>
                     <span>{reservation.user.firstName} {reservation.user.lastName}</span>
                   </div>
                   
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Customer Email</span>
-                    <span>{reservation.user.email}</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Email</span>
+                    <span className="break-all">{reservation.user.email}</span>
                   </div>
                   
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Customer Contact Number</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Contact</span>
                     <span>{reservation.user.contactNumber}</span>
                   </div>
                   
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Reservation Id</span>
-                    <span>{reservation.reservationId}</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">ID</span>
+                    <span className="break-all">{reservation.reservationId}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 flex justify-end">
+            {/* Status and Action Button */}
+            <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600 text-sm">Status:</span>
+                <span className={`px-3 py-1 rounded-full text-xs sm:text-sm ${getStatusColor(reservation.reservationState.status)}`}>
+                  {reservation.reservationState.status}
+                </span>
+              </div>
+              
               <button
                 onClick={() => setSelectedReservation(reservation)}
-                className="px-6 py-2 bg-[#584822] text-white rounded-md hover:bg-[#483c1c]"
+                className="w-full sm:w-auto px-4 py-2 bg-[#584822] text-white rounded-md hover:bg-[#483c1c] text-sm"
               >
                 See more
               </button>

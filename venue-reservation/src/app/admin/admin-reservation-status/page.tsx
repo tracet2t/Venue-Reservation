@@ -280,7 +280,6 @@ const AdminReservationStatus = () => {
     const handleSaveStatus = async () => {
         if (selectedDate && selectedStatus && selectedVenue) {
             try {
-            //    const dateKey = selectedDate.toISOString().split('T')[0];
                 let timeSlots: string[] = [];
 
                 if (selectedStatus === 'PARTIALLY_BOOKED') {
@@ -304,11 +303,41 @@ const AdminReservationStatus = () => {
                     throw new Error('Failed to save availability');
                 }
 
+                // Update local state instead of reloading
+                setEvents(prevEvents => {
+                    // Remove any existing event for this date and venue
+                    const filteredEvents = prevEvents.filter(event => 
+                        !(event.start.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0] 
+                        && event.venueId === selectedVenue.id)
+                    );
+
+                    // Add the new event
+                    const newEvent = {
+                        venueId: selectedVenue.id,
+                        start: selectedDate,
+                        end: selectedDate,
+                        title: selectedStatus,
+                        status: selectedStatus as AvailabilityStatus,
+                        className: `status-${selectedStatus.toLowerCase()}`
+                    };
+
+                    return [...filteredEvents, newEvent];
+                });
+
+                // Update dateAvailability state if needed
+                if (selectedStatus === 'PARTIALLY_BOOKED') {
+                    const dateKey = selectedDate.toISOString().split('T')[0];
+                    setDateAvailability(prev => ({
+                        ...prev,
+                        [dateKey]: {
+                            status: selectedStatus as AvailabilityStatus,
+                            timeSlots: timeSlots
+                        }
+                    }));
+                }
+
                 toast.success('Status updated successfully');
                 handleCloseModal();
-                
-                // Reload the entire page
-                window.location.reload();
 
             } catch (error) {
                 console.error('Error saving status:', error);
@@ -561,11 +590,24 @@ const AdminReservationStatus = () => {
                     throw new Error('Failed to remove status');
                 }
 
+                // Update local state instead of reloading
+                setEvents(prevEvents => 
+                    prevEvents.filter(event => 
+                        !(event.start.toISOString().split('T')[0] === selectedDate.toISOString().split('T')[0] 
+                        && event.venueId === selectedVenue.id)
+                    )
+                );
+
+                // Remove from dateAvailability if exists
+                const dateKey = selectedDate.toISOString().split('T')[0];
+                setDateAvailability(prev => {
+                    const newState = { ...prev };
+                    delete newState[dateKey];
+                    return newState;
+                });
+
                 toast.success('Status removed successfully');
                 handleCloseModal();
-                
-                // Reload the entire page
-                window.location.reload();
 
             } catch (error) {
                 console.error('Error removing status:', error);
