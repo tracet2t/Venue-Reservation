@@ -117,7 +117,7 @@ GOOGLE_CLOUD_CREDENTIALS=<your-google-cloud-credentials>
 ---
 
 ### License
-This project is licensed under the MIT License.
+
 
 ---
 
