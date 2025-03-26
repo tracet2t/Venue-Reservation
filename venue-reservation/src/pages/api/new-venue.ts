@@ -50,6 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       size,
       schedule,
       features,
+      amenments,
       images,
       questions
     } = req.body;
@@ -97,6 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         size: parseInt(size.toString()),
         schedule,
         features: features.filter((feature: string) => feature.trim() !== ''),
+        amenments: amenments.filter((amenments: string) => amenments.trim() !== ''),
         images: images || [],
         adminId: user.userId,
         questions: {

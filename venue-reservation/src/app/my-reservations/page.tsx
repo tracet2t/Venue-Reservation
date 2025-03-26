@@ -13,6 +13,7 @@ interface ReservationData {
   };
   selectedDates: string[];
   venue: {
+    amenments: string[];
     id: number;
     name: string;
     type: string;
@@ -50,6 +51,13 @@ const MyReservationPage: React.FC = () => {
         const response = await fetch('/api/myreservation');
         if (!response.ok) throw new Error('Failed to fetch reservations');
         const { data } = await response.json();
+
+        // Map reservations to add venue amenities as extra services
+      const updatedReservations = data.map((reservation: ReservationData) => ({
+        ...reservation,
+        extraServices: [...(reservation.extraServices || []), ...(reservation.venue.amenments || [])]
+      }));
+      
         setReservations(data);
       } catch (err) {
         console.error('Error fetching reservations:', err);
@@ -80,7 +88,7 @@ const MyReservationPage: React.FC = () => {
             venue={reservation.venue}
             dateTimeSelections={reservation.dateTimeSelections}
             timeMode={reservation.venue.schedule}
-            extraServices={reservation.extraServices}
+            extraServices={reservation.extraServices} 
             purposeOfReservation={reservation.purposeOfReservation}
             questions={reservation.questions || []}
             status={reservation.status as 'Pending' | 'Rejected' | 'Accepted' | 'Canceled' | 'Done'}

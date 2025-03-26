@@ -90,6 +90,22 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
     fetchQuestions();
   }, []);
 
+  // fetch amenities
+  useEffect(() => {
+    const fetchAmenities = async () => {
+      try { 
+        const response = await fetch(`/api/venue/${id}/amenities`);
+        const data = await response.json();
+        setAvailableAmenities(data); // Set the fetched amenities
+      } catch (error) {
+        console.error('Error fetching amenities:', error);
+        setAvailableAmenities([]);
+      }
+    };
+  
+    fetchAmenities();
+  }, [id]);
+  
   const toggleDropdown = (dropdown: string, event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault(); // Prevent form submission
 
@@ -204,14 +220,16 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
     localStorage.setItem(`venue-${id}-form-data`, JSON.stringify(formData));
     onNext();
   };
+  //constant aminities 
+  // const availableAmenities = [
+  //   'Food & Beverages',
+  //   'Sound System',
+  //   'Private Parking',
+  //   'Projector',
+  //   'Extended Hours'
+  // ];
+  const [availableAmenities, setAvailableAmenities] = useState<string[]>([]); // retrieve aminities 
 
-  const availableAmenities = [
-    'Food & Beverages',
-    'Sound System',
-    'Private Parking',
-    'Projector',
-    'Extended Hours'
-  ];
 
   // Add new function to check if date has time slots selected
   const hasTimeSlots = (date: Date) => {
@@ -287,25 +305,24 @@ const Question: React.FC<ReservationFormProps> = ({ selectedDates, dateTimeSelec
             </button>
             {isAmenitiesDropdownOpen && (
               <div className="absolute z-20 w-full bg-white border rounded-lg shadow-lg p-2 mt-0">
-                {availableAmenities.map((amenity) => (
-                  <label key={amenity} className="block mb-1 font-light">
+                {availableAmenities.map((amenments) => (
+                  <label key={amenments} className="block mb-1 font-light">
                     <input
                       type="checkbox"
-                      value={amenity}
+                      value={amenments}
                       onChange={(e) => {  
                         const selected = e.target.checked
-                          ? [...selectedAmenities, amenity]
-                          : selectedAmenities.filter((item) => item !== amenity);
+                          ? [...selectedAmenities, amenments]
+                          : selectedAmenities.filter((item) => item !== amenments);
                         setSelectedAmenities(selected);
                       }}
-                      checked={selectedAmenities.includes(amenity)}
+                      checked={selectedAmenities.includes(amenments)}
                     />
-                    <span className="ml-2">{amenity}</span>
+                    <span className="ml-2">{amenments}</span>
                   </label>
                 ))}
               </div>
             )}
-            
             {/* Display Selected Amenities */}
             {selectedAmenities.length > 0 && (
               <div className="mt-2 p-2 border rounded-lg">

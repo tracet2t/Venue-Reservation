@@ -17,6 +17,7 @@ interface Venue {
   size: number;
   schedule: string;
   features: string[];
+  amenments:string[];
   images: string[];
 }
 
@@ -257,7 +258,7 @@ export default function VenueDetails() {
                   capacity={`${venue.capacity} people`}
                   size={`${venue.size} sq.m`}
                   timeSchedule={venue.schedule}
-                  features={venue.features}
+                  features={venue.features} 
                   onEdit={() => handleEdit(venue.id)}
                   onDelete={() => handleDelete(venue.id)}
                 />

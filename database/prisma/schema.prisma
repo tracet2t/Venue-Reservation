@@ -49,7 +49,8 @@ model Venue {
   capacity      Int
   size          Int
   schedule      Schedule
-  features      String[] 
+  features      String[]
+  amenments     String[]
   images        String[] 
   availability    VenueAvailability[]
   createdAt     DateTime       @default(now())
@@ -101,7 +102,7 @@ model Reservation {
   title                 String
   purposeOfReservation  String
   timeDuration          Int
-  extraServices         ExtraService[]
+  extraServices         String[]
   questions             Question[]
   timeSlots             ReservationTimeSlot[]
   createdAt             DateTime         @default(now())

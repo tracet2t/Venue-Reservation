@@ -106,17 +106,6 @@ export const AvailabilityStatus: {
 export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
-export const ExtraService: {
-  food: 'food',
-  sound_system: 'sound_system',
-  private_parking: 'private_parking',
-  projectors: 'projectors',
-  extend_hours: 'extend_hours'
-};
-
-export type ExtraService = (typeof ExtraService)[keyof typeof ExtraService]
-
-
 export const Status: {
   Pending: 'Pending',
   Rejected: 'Rejected',
@@ -140,10 +129,6 @@ export const Schedule: typeof $Enums.Schedule
 export type AvailabilityStatus = $Enums.AvailabilityStatus
 
 export const AvailabilityStatus: typeof $Enums.AvailabilityStatus
-
-export type ExtraService = $Enums.ExtraService
-
-export const ExtraService: typeof $Enums.ExtraService
 
 export type Status = $Enums.Status
 
@@ -451,7 +436,7 @@ export namespace Prisma {
 
   /**
    * Prisma Client JS version: 5.21.1
-   * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
+   * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
    */
   export type PrismaVersion = {
     client: string
@@ -3015,6 +3000,7 @@ export namespace Prisma {
      * Filter which Users to update
      */
     where?: UserWhereInput
+    limit?: number
   }
 
   /**
@@ -3069,6 +3055,7 @@ export namespace Prisma {
      * Filter which Users to delete
      */
     where?: UserWhereInput
+    limit?: number
   }
 
   /**
@@ -3985,6 +3972,7 @@ export namespace Prisma {
      * Filter which VerificationTokens to update
      */
     where?: VerificationTokenWhereInput
+    limit?: number
   }
 
   /**
@@ -4031,6 +4019,7 @@ export namespace Prisma {
      * Filter which VerificationTokens to delete
      */
     where?: VerificationTokenWhereInput
+    limit?: number
   }
 
   /**
@@ -4107,6 +4096,7 @@ export namespace Prisma {
     size: number
     schedule: number
     features: number
+    amenments: number
     images: number
     createdAt: number
     updatedAt: number
@@ -4166,6 +4156,7 @@ export namespace Prisma {
     size?: true
     schedule?: true
     features?: true
+    amenments?: true
     images?: true
     createdAt?: true
     updatedAt?: true
@@ -4270,6 +4261,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features: string[]
+    amenments: string[]
     images: string[]
     createdAt: Date
     updatedAt: Date
@@ -4306,6 +4298,7 @@ export namespace Prisma {
     size?: boolean
     schedule?: boolean
     features?: boolean
+    amenments?: boolean
     images?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4329,6 +4322,7 @@ export namespace Prisma {
     size?: boolean
     schedule?: boolean
     features?: boolean
+    amenments?: boolean
     images?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4347,6 +4341,7 @@ export namespace Prisma {
     size?: boolean
     schedule?: boolean
     features?: boolean
+    amenments?: boolean
     images?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4385,6 +4380,7 @@ export namespace Prisma {
       size: number
       schedule: $Enums.Schedule
       features: string[]
+      amenments: string[]
       images: string[]
       createdAt: Date
       updatedAt: Date
@@ -4797,6 +4793,7 @@ export namespace Prisma {
     readonly size: FieldRef<"Venue", 'Int'>
     readonly schedule: FieldRef<"Venue", 'Schedule'>
     readonly features: FieldRef<"Venue", 'String[]'>
+    readonly amenments: FieldRef<"Venue", 'String[]'>
     readonly images: FieldRef<"Venue", 'String[]'>
     readonly createdAt: FieldRef<"Venue", 'DateTime'>
     readonly updatedAt: FieldRef<"Venue", 'DateTime'>
@@ -5062,6 +5059,7 @@ export namespace Prisma {
      * Filter which Venues to update
      */
     where?: VenueWhereInput
+    limit?: number
   }
 
   /**
@@ -5116,6 +5114,7 @@ export namespace Prisma {
      * Filter which Venues to delete
      */
     where?: VenueWhereInput
+    limit?: number
   }
 
   /**
@@ -6122,6 +6121,7 @@ export namespace Prisma {
      * Filter which VenueAvailabilities to update
      */
     where?: VenueAvailabilityWhereInput
+    limit?: number
   }
 
   /**
@@ -6176,6 +6176,7 @@ export namespace Prisma {
      * Filter which VenueAvailabilities to delete
      */
     where?: VenueAvailabilityWhereInput
+    limit?: number
   }
 
   /**
@@ -7113,6 +7114,7 @@ export namespace Prisma {
      * Filter which TimeSlots to update
      */
     where?: TimeSlotWhereInput
+    limit?: number
   }
 
   /**
@@ -7167,6 +7169,7 @@ export namespace Prisma {
      * Filter which TimeSlots to delete
      */
     where?: TimeSlotWhereInput
+    limit?: number
   }
 
   /**
@@ -7380,7 +7383,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices: $Enums.ExtraService[]
+    extraServices: string[]
     createdAt: Date
     updatedAt: Date
     _count: ReservationCountAggregateOutputType | null
@@ -7477,7 +7480,7 @@ export namespace Prisma {
       title: string
       purposeOfReservation: string
       timeDuration: number
-      extraServices: $Enums.ExtraService[]
+      extraServices: string[]
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["reservation"]>
@@ -7884,7 +7887,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Reservation", 'String'>
     readonly purposeOfReservation: FieldRef<"Reservation", 'String'>
     readonly timeDuration: FieldRef<"Reservation", 'Int'>
-    readonly extraServices: FieldRef<"Reservation", 'ExtraService[]'>
+    readonly extraServices: FieldRef<"Reservation", 'String[]'>
     readonly createdAt: FieldRef<"Reservation", 'DateTime'>
     readonly updatedAt: FieldRef<"Reservation", 'DateTime'>
   }
@@ -8148,6 +8151,7 @@ export namespace Prisma {
      * Filter which Reservations to update
      */
     where?: ReservationWhereInput
+    limit?: number
   }
 
   /**
@@ -8202,6 +8206,7 @@ export namespace Prisma {
      * Filter which Reservations to delete
      */
     where?: ReservationWhereInput
+    limit?: number
   }
 
   /**
@@ -9136,6 +9141,7 @@ export namespace Prisma {
      * Filter which ReservationTimeSlots to update
      */
     where?: ReservationTimeSlotWhereInput
+    limit?: number
   }
 
   /**
@@ -9190,6 +9196,7 @@ export namespace Prisma {
      * Filter which ReservationTimeSlots to delete
      */
     where?: ReservationTimeSlotWhereInput
+    limit?: number
   }
 
   /**
@@ -10057,6 +10064,7 @@ export namespace Prisma {
      * Filter which ReservationStates to update
      */
     where?: ReservationStateWhereInput
+    limit?: number
   }
 
   /**
@@ -10111,6 +10119,7 @@ export namespace Prisma {
      * Filter which ReservationStates to delete
      */
     where?: ReservationStateWhereInput
+    limit?: number
   }
 
   /**
@@ -11038,6 +11047,7 @@ export namespace Prisma {
      * Filter which Questions to update
      */
     where?: QuestionWhereInput
+    limit?: number
   }
 
   /**
@@ -11092,6 +11102,7 @@ export namespace Prisma {
      * Filter which Questions to delete
      */
     where?: QuestionWhereInput
+    limit?: number
   }
 
   /**
@@ -12031,6 +12042,7 @@ export namespace Prisma {
      * Filter which VenueDailyReservationCounts to update
      */
     where?: VenueDailyReservationCountWhereInput
+    limit?: number
   }
 
   /**
@@ -12085,6 +12097,7 @@ export namespace Prisma {
      * Filter which VenueDailyReservationCounts to delete
      */
     where?: VenueDailyReservationCountWhereInput
+    limit?: number
   }
 
   /**
@@ -12952,6 +12965,7 @@ export namespace Prisma {
      * Filter which Sessions to update
      */
     where?: SessionWhereInput
+    limit?: number
   }
 
   /**
@@ -13006,6 +13020,7 @@ export namespace Prisma {
      * Filter which Sessions to delete
      */
     where?: SessionWhereInput
+    limit?: number
   }
 
   /**
@@ -14003,6 +14018,7 @@ export namespace Prisma {
      * Filter which Accounts to update
      */
     where?: AccountWhereInput
+    limit?: number
   }
 
   /**
@@ -14057,6 +14073,7 @@ export namespace Prisma {
      * Filter which Accounts to delete
      */
     where?: AccountWhereInput
+    limit?: number
   }
 
   /**
@@ -14129,6 +14146,7 @@ export namespace Prisma {
     size: 'size',
     schedule: 'schedule',
     features: 'features',
+    amenments: 'amenments',
     images: 'images',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -14366,20 +14384,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'ExtraService[]'
-   */
-  export type ListEnumExtraServiceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtraService[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'ExtraService'
-   */
-  export type EnumExtraServiceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtraService'>
-    
-
-
-  /**
    * Reference to a field of type 'Status'
    */
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
@@ -14581,6 +14585,7 @@ export namespace Prisma {
     size?: IntFilter<"Venue"> | number
     schedule?: EnumScheduleFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
+    amenments?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeFilter<"Venue"> | Date | string
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
@@ -14588,7 +14593,7 @@ export namespace Prisma {
     availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
     questions?: QuestionListRelationFilter
-    admin?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     dailyReservationCounts?: VenueDailyReservationCountListRelationFilter
   }
 
@@ -14603,6 +14608,7 @@ export namespace Prisma {
     size?: SortOrder
     schedule?: SortOrder
     features?: SortOrder
+    amenments?: SortOrder
     images?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14628,6 +14634,7 @@ export namespace Prisma {
     size?: IntFilter<"Venue"> | number
     schedule?: EnumScheduleFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
+    amenments?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeFilter<"Venue"> | Date | string
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
@@ -14635,7 +14642,7 @@ export namespace Prisma {
     availability?: VenueAvailabilityListRelationFilter
     reservations?: ReservationListRelationFilter
     questions?: QuestionListRelationFilter
-    admin?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    admin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     dailyReservationCounts?: VenueDailyReservationCountListRelationFilter
   }, "id">
 
@@ -14650,6 +14657,7 @@ export namespace Prisma {
     size?: SortOrder
     schedule?: SortOrder
     features?: SortOrder
+    amenments?: SortOrder
     images?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14675,6 +14683,7 @@ export namespace Prisma {
     size?: IntWithAggregatesFilter<"Venue"> | number
     schedule?: EnumScheduleWithAggregatesFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
+    amenments?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
@@ -14690,7 +14699,7 @@ export namespace Prisma {
     date?: DateTimeFilter<"VenueAvailability"> | Date | string
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }
 
   export type VenueAvailabilityOrderByWithRelationInput = {
@@ -14712,7 +14721,7 @@ export namespace Prisma {
     date?: DateTimeFilter<"VenueAvailability"> | Date | string
     status?: EnumAvailabilityStatusFilter<"VenueAvailability"> | $Enums.AvailabilityStatus
     timeSlots?: TimeSlotListRelationFilter
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }, "id" | "venueId_date">
 
   export type VenueAvailabilityOrderByWithAggregationInput = {
@@ -14746,7 +14755,7 @@ export namespace Prisma {
     startTime?: DateTimeFilter<"TimeSlot"> | Date | string
     endTime?: DateTimeFilter<"TimeSlot"> | Date | string
     status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
-    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+    venueAvailability?: XOR<VenueAvailabilityScalarRelationFilter, VenueAvailabilityWhereInput>
   }
 
   export type TimeSlotOrderByWithRelationInput = {
@@ -14767,7 +14776,7 @@ export namespace Prisma {
     startTime?: DateTimeFilter<"TimeSlot"> | Date | string
     endTime?: DateTimeFilter<"TimeSlot"> | Date | string
     status?: EnumAvailabilityStatusFilter<"TimeSlot"> | $Enums.AvailabilityStatus
-    venueAvailability?: XOR<VenueAvailabilityRelationFilter, VenueAvailabilityWhereInput>
+    venueAvailability?: XOR<VenueAvailabilityScalarRelationFilter, VenueAvailabilityWhereInput>
   }, "id">
 
   export type TimeSlotOrderByWithAggregationInput = {
@@ -14804,14 +14813,14 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
-    extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    extraServices?: StringNullableListFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
     questions?: QuestionListRelationFilter
     timeSlots?: ReservationTimeSlotListRelationFilter
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
-    reservationState?: XOR<ReservationStateNullableRelationFilter, ReservationStateWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
+    reservationState?: XOR<ReservationStateNullableScalarRelationFilter, ReservationStateWhereInput> | null
   }
 
   export type ReservationOrderByWithRelationInput = {
@@ -14841,14 +14850,14 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
-    extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    extraServices?: StringNullableListFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
     questions?: QuestionListRelationFilter
     timeSlots?: ReservationTimeSlotListRelationFilter
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
-    reservationState?: XOR<ReservationStateNullableRelationFilter, ReservationStateWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
+    reservationState?: XOR<ReservationStateNullableScalarRelationFilter, ReservationStateWhereInput> | null
   }, "reservationId">
 
   export type ReservationOrderByWithAggregationInput = {
@@ -14878,7 +14887,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Reservation"> | string
     purposeOfReservation?: StringWithAggregatesFilter<"Reservation"> | string
     timeDuration?: IntWithAggregatesFilter<"Reservation"> | number
-    extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    extraServices?: StringNullableListFilter<"Reservation">
     createdAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Reservation"> | Date | string
   }
@@ -14892,7 +14901,7 @@ export namespace Prisma {
     startTime?: StringFilter<"ReservationTimeSlot"> | string
     endTime?: StringFilter<"ReservationTimeSlot"> | string
     reservationId?: StringFilter<"ReservationTimeSlot"> | string
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }
 
   export type ReservationTimeSlotOrderByWithRelationInput = {
@@ -14913,7 +14922,7 @@ export namespace Prisma {
     startTime?: StringFilter<"ReservationTimeSlot"> | string
     endTime?: StringFilter<"ReservationTimeSlot"> | string
     reservationId?: StringFilter<"ReservationTimeSlot"> | string
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }, "id">
 
   export type ReservationTimeSlotOrderByWithAggregationInput = {
@@ -14946,7 +14955,7 @@ export namespace Prisma {
     reservationId?: StringFilter<"ReservationState"> | string
     status?: EnumStatusFilter<"ReservationState"> | $Enums.Status
     adminComments?: StringNullableFilter<"ReservationState"> | string | null
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }
 
   export type ReservationStateOrderByWithRelationInput = {
@@ -14965,7 +14974,7 @@ export namespace Prisma {
     NOT?: ReservationStateWhereInput | ReservationStateWhereInput[]
     status?: EnumStatusFilter<"ReservationState"> | $Enums.Status
     adminComments?: StringNullableFilter<"ReservationState"> | string | null
-    reservation?: XOR<ReservationRelationFilter, ReservationWhereInput>
+    reservation?: XOR<ReservationScalarRelationFilter, ReservationWhereInput>
   }, "reservationStateId" | "reservationId">
 
   export type ReservationStateOrderByWithAggregationInput = {
@@ -14998,8 +15007,8 @@ export namespace Prisma {
     reservationId?: StringNullableFilter<"Question"> | string | null
     answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableFilter<"Question"> | string | null
-    venue?: XOR<VenueNullableRelationFilter, VenueWhereInput> | null
-    reservation?: XOR<ReservationNullableRelationFilter, ReservationWhereInput> | null
+    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
+    reservation?: XOR<ReservationNullableScalarRelationFilter, ReservationWhereInput> | null
   }
 
   export type QuestionOrderByWithRelationInput = {
@@ -15023,8 +15032,8 @@ export namespace Prisma {
     reservationId?: StringNullableFilter<"Question"> | string | null
     answerOptions?: StringNullableListFilter<"Question">
     answer?: StringNullableFilter<"Question"> | string | null
-    venue?: XOR<VenueNullableRelationFilter, VenueWhereInput> | null
-    reservation?: XOR<ReservationNullableRelationFilter, ReservationWhereInput> | null
+    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
+    reservation?: XOR<ReservationNullableScalarRelationFilter, ReservationWhereInput> | null
   }, "id">
 
   export type QuestionOrderByWithAggregationInput = {
@@ -15061,7 +15070,7 @@ export namespace Prisma {
     venueId?: IntFilter<"VenueDailyReservationCount"> | number
     reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
     date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }
 
   export type VenueDailyReservationCountOrderByWithRelationInput = {
@@ -15081,7 +15090,7 @@ export namespace Prisma {
     venueId?: IntFilter<"VenueDailyReservationCount"> | number
     reservationCount?: IntFilter<"VenueDailyReservationCount"> | number
     date?: DateTimeFilter<"VenueDailyReservationCount"> | Date | string
-    venue?: XOR<VenueRelationFilter, VenueWhereInput>
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
   }, "id" | "venueId_date">
 
   export type VenueDailyReservationCountOrderByWithAggregationInput = {
@@ -15114,7 +15123,7 @@ export namespace Prisma {
     sessionToken?: StringFilter<"Session"> | string
     userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
@@ -15133,7 +15142,7 @@ export namespace Prisma {
     NOT?: SessionWhereInput | SessionWhereInput[]
     userId?: StringFilter<"Session"> | string
     expires?: DateTimeFilter<"Session"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "sessionToken">
 
   export type SessionOrderByWithAggregationInput = {
@@ -15172,7 +15181,7 @@ export namespace Prisma {
     scope?: StringNullableFilter<"Account"> | string | null
     id_token?: StringNullableFilter<"Account"> | string | null
     session_token?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type AccountOrderByWithRelationInput = {
@@ -15208,7 +15217,7 @@ export namespace Prisma {
     scope?: StringNullableFilter<"Account"> | string | null
     id_token?: StringNullableFilter<"Account"> | string | null
     session_token?: StringNullableFilter<"Account"> | string | null
-    user?: XOR<UserRelationFilter, UserWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "provider_providerAccountId">
 
   export type AccountOrderByWithAggregationInput = {
@@ -15443,6 +15452,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15464,6 +15474,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15484,6 +15495,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15505,6 +15517,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15526,6 +15539,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15542,6 +15556,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15558,6 +15573,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15670,7 +15686,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionCreateNestedManyWithoutReservationInput
@@ -15687,7 +15703,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionUncheckedCreateNestedManyWithoutReservationInput
@@ -15700,7 +15716,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUpdateManyWithoutReservationNestedInput
@@ -15717,7 +15733,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUncheckedUpdateManyWithoutReservationNestedInput
@@ -15732,7 +15748,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15742,7 +15758,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15754,7 +15770,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16426,7 +16442,7 @@ export namespace Prisma {
     none?: QuestionWhereInput
   }
 
-  export type UserNullableRelationFilter = {
+  export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
   }
@@ -16460,6 +16476,7 @@ export namespace Prisma {
     size?: SortOrder
     schedule?: SortOrder
     features?: SortOrder
+    amenments?: SortOrder
     images?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16545,7 +16562,7 @@ export namespace Prisma {
     none?: TimeSlotWhereInput
   }
 
-  export type VenueRelationFilter = {
+  export type VenueScalarRelationFilter = {
     is?: VenueWhereInput
     isNot?: VenueWhereInput
   }
@@ -16600,7 +16617,7 @@ export namespace Prisma {
     _max?: NestedEnumAvailabilityStatusFilter<$PrismaModel>
   }
 
-  export type VenueAvailabilityRelationFilter = {
+  export type VenueAvailabilityScalarRelationFilter = {
     is?: VenueAvailabilityWhereInput
     isNot?: VenueAvailabilityWhereInput
   }
@@ -16639,26 +16656,18 @@ export namespace Prisma {
     availabilityId?: SortOrder
   }
 
-  export type EnumExtraServiceNullableListFilter<$PrismaModel = never> = {
-    equals?: $Enums.ExtraService[] | ListEnumExtraServiceFieldRefInput<$PrismaModel> | null
-    has?: $Enums.ExtraService | EnumExtraServiceFieldRefInput<$PrismaModel> | null
-    hasEvery?: $Enums.ExtraService[] | ListEnumExtraServiceFieldRefInput<$PrismaModel>
-    hasSome?: $Enums.ExtraService[] | ListEnumExtraServiceFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type ReservationTimeSlotListRelationFilter = {
     every?: ReservationTimeSlotWhereInput
     some?: ReservationTimeSlotWhereInput
     none?: ReservationTimeSlotWhereInput
   }
 
-  export type UserRelationFilter = {
+  export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
 
-  export type ReservationStateNullableRelationFilter = {
+  export type ReservationStateNullableScalarRelationFilter = {
     is?: ReservationStateWhereInput | null
     isNot?: ReservationStateWhereInput | null
   }
@@ -16711,7 +16720,7 @@ export namespace Prisma {
     timeDuration?: SortOrder
   }
 
-  export type ReservationRelationFilter = {
+  export type ReservationScalarRelationFilter = {
     is?: ReservationWhereInput
     isNot?: ReservationWhereInput
   }
@@ -16789,12 +16798,12 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type VenueNullableRelationFilter = {
+  export type VenueNullableScalarRelationFilter = {
     is?: VenueWhereInput | null
     isNot?: VenueWhereInput | null
   }
 
-  export type ReservationNullableRelationFilter = {
+  export type ReservationNullableScalarRelationFilter = {
     is?: ReservationWhereInput | null
     isNot?: ReservationWhereInput | null
   }
@@ -17165,6 +17174,10 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type VenueCreateamenmentsInput = {
+    set: string[]
+  }
+
   export type VenueCreateimagesInput = {
     set: string[]
   }
@@ -17249,6 +17262,11 @@ export namespace Prisma {
   }
 
   export type VenueUpdatefeaturesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type VenueUpdateamenmentsInput = {
     set?: string[]
     push?: string | string[]
   }
@@ -17455,7 +17473,7 @@ export namespace Prisma {
   }
 
   export type ReservationCreateextraServicesInput = {
-    set: $Enums.ExtraService[]
+    set: string[]
   }
 
   export type QuestionCreateNestedManyWithoutReservationInput = {
@@ -17511,8 +17529,8 @@ export namespace Prisma {
   }
 
   export type ReservationUpdateextraServicesInput = {
-    set?: $Enums.ExtraService[]
-    push?: $Enums.ExtraService | $Enums.ExtraService[]
+    set?: string[]
+    push?: string | string[]
   }
 
   export type QuestionUpdateManyWithoutReservationNestedInput = {
@@ -18004,7 +18022,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionCreateNestedManyWithoutReservationInput
@@ -18019,7 +18037,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionUncheckedCreateNestedManyWithoutReservationInput
@@ -18047,6 +18065,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18067,6 +18086,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18172,7 +18192,7 @@ export namespace Prisma {
     title?: StringFilter<"Reservation"> | string
     purposeOfReservation?: StringFilter<"Reservation"> | string
     timeDuration?: IntFilter<"Reservation"> | number
-    extraServices?: EnumExtraServiceNullableListFilter<"Reservation">
+    extraServices?: StringNullableListFilter<"Reservation">
     createdAt?: DateTimeFilter<"Reservation"> | Date | string
     updatedAt?: DateTimeFilter<"Reservation"> | Date | string
   }
@@ -18207,6 +18227,7 @@ export namespace Prisma {
     size?: IntFilter<"Venue"> | number
     schedule?: EnumScheduleFilter<"Venue"> | $Enums.Schedule
     features?: StringNullableListFilter<"Venue">
+    amenments?: StringNullableListFilter<"Venue">
     images?: StringNullableListFilter<"Venue">
     createdAt?: DateTimeFilter<"Venue"> | Date | string
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
@@ -18301,7 +18322,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionCreateNestedManyWithoutReservationInput
@@ -18316,7 +18337,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionUncheckedCreateNestedManyWithoutReservationInput
@@ -18602,6 +18623,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18622,6 +18644,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18684,6 +18707,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18704,6 +18728,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18858,6 +18883,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18878,6 +18904,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19022,6 +19049,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19042,6 +19070,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19079,7 +19108,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionCreateNestedManyWithoutReservationInput
@@ -19095,7 +19124,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionUncheckedCreateNestedManyWithoutReservationInput
@@ -19123,7 +19152,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUpdateManyWithoutReservationNestedInput
@@ -19139,7 +19168,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUncheckedUpdateManyWithoutReservationNestedInput
@@ -19151,7 +19180,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionCreateNestedManyWithoutReservationInput
@@ -19167,7 +19196,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     questions?: QuestionUncheckedCreateNestedManyWithoutReservationInput
@@ -19195,7 +19224,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUpdateManyWithoutReservationNestedInput
@@ -19211,7 +19240,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUncheckedUpdateManyWithoutReservationNestedInput
@@ -19228,6 +19257,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19248,6 +19278,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19267,7 +19298,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     timeSlots?: ReservationTimeSlotCreateNestedManyWithoutReservationInput
@@ -19283,7 +19314,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     timeSlots?: ReservationTimeSlotUncheckedCreateNestedManyWithoutReservationInput
@@ -19316,6 +19347,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19336,6 +19368,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19361,7 +19394,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     timeSlots?: ReservationTimeSlotUpdateManyWithoutReservationNestedInput
@@ -19377,7 +19410,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     timeSlots?: ReservationTimeSlotUncheckedUpdateManyWithoutReservationNestedInput
@@ -19394,6 +19427,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19414,6 +19448,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19449,6 +19484,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19469,6 +19505,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19668,7 +19705,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19684,6 +19721,7 @@ export namespace Prisma {
     size: number
     schedule: $Enums.Schedule
     features?: VenueCreatefeaturesInput | string[]
+    amenments?: VenueCreateamenmentsInput | string[]
     images?: VenueCreateimagesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19714,7 +19752,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUpdateManyWithoutReservationNestedInput
@@ -19729,7 +19767,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUncheckedUpdateManyWithoutReservationNestedInput
@@ -19743,7 +19781,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19758,6 +19796,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19778,6 +19817,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19798,6 +19838,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     schedule?: EnumScheduleFieldUpdateOperationsInput | $Enums.Schedule
     features?: VenueUpdatefeaturesInput | string[]
+    amenments?: VenueUpdateamenmentsInput | string[]
     images?: VenueUpdateimagesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19875,7 +19916,7 @@ export namespace Prisma {
     title: string
     purposeOfReservation: string
     timeDuration: number
-    extraServices?: ReservationCreateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationCreateextraServicesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19918,7 +19959,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUpdateManyWithoutReservationNestedInput
@@ -19933,7 +19974,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     questions?: QuestionUncheckedUpdateManyWithoutReservationNestedInput
@@ -19947,7 +19988,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     purposeOfReservation?: StringFieldUpdateOperationsInput | string
     timeDuration?: IntFieldUpdateOperationsInput | number
-    extraServices?: ReservationUpdateextraServicesInput | $Enums.ExtraService[]
+    extraServices?: ReservationUpdateextraServicesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

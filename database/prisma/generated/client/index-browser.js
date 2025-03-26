@@ -18,11 +18,11 @@ exports.$Enums = {}
 
 /**
  * Prisma Client JS version: 5.21.1
- * Query Engine version: 605197351a3c8bdd595af2d2a9bc3025bca48ea2
+ * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
  */
 Prisma.prismaVersion = {
   client: "5.21.1",
-  engine: "605197351a3c8bdd595af2d2a9bc3025bca48ea2"
+  engine: "173f8d54f8d52e692c7e27e72a88314ec7aeff60"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -157,6 +157,7 @@ exports.Prisma.VenueScalarFieldEnum = {
   size: 'size',
   schedule: 'schedule',
   features: 'features',
+  amenments: 'amenments',
   images: 'images',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -274,14 +275,6 @@ exports.AvailabilityStatus = exports.$Enums.AvailabilityStatus = {
   PARTIALLY_BOOKED: 'PARTIALLY_BOOKED',
   NOT_AVAILABLE: 'NOT_AVAILABLE',
   AVAILABLE: 'AVAILABLE'
-};
-
-exports.ExtraService = exports.$Enums.ExtraService = {
-  food: 'food',
-  sound_system: 'sound_system',
-  private_parking: 'private_parking',
-  projectors: 'projectors',
-  extend_hours: 'extend_hours'
 };
 
 exports.Status = exports.$Enums.Status = {

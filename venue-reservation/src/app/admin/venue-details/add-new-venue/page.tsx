@@ -46,6 +46,7 @@ export default function AddNewVenue() {
     maximumCapacity: '',
     timeMode: '',
     features: ['', '', '', ''],
+    amenments:['','','',''],
   });
   const [questions, setQuestions] = useState<Question[]>([
     {
@@ -183,6 +184,7 @@ export default function AddNewVenue() {
         size: parseInt(formData.venueSize),
         schedule: formData.timeMode,
         features: formData.features.filter(f => f.trim() !== ''),
+        amenments: formData.amenments.filter(h => h.trim() !== ''), // Include amendments in the request
         images: uploadedImageUrls,
         questions: questions
           .filter(q => q.text.trim() !== '')
@@ -557,6 +559,38 @@ export default function AddNewVenue() {
                   <option value="SessionTime">Session Time</option>
                   <option value="HourlyTime">Hourly Time</option>
                 </select>
+              </div>
+
+              {/* add Venue amenities */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Add Amenities
+                </label>
+                <div className="space-y-3">
+                  {[
+                    'Amenity 01',
+                    'Amenity 02',
+                    'Amenity 03',
+                    'Amenity 04'
+                  ].map((placeholder, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      placeholder={placeholder}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#584822]"
+                      value={formData.amenments[index] || ''}
+                      onChange={(e) => {
+                        const newamenments = [...formData.amenments];
+                        newamenments[index] = e.target.value;
+                        setFormData(prev => ({
+                          ...prev,
+                          amenments: newamenments
+                        }));
+                      }}
+                      required={index === 0}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           )}

@@ -36,7 +36,7 @@ async function seed() {
     },
   });
   
-/*
+
   // Create venues
   const venue1 = await prisma.venue.create({
     data: {
@@ -54,6 +54,11 @@ async function seed() {
         'Ergonomic seating for maximum comfort',
         'Advanced lighting system',
         'High-definition projector and screen',
+      ],
+      amenments: [
+        'Food & Beverages',
+        'Sound System',
+        'Private Parking', 
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
@@ -107,6 +112,11 @@ async function seed() {
         'Advanced lighting system',
         'High-definition projector and screen',
       ],
+      amenments: [
+        'Food & Beverages',
+        'Sound System',
+        'Private Parking', 
+      ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
         create: [
@@ -159,6 +169,10 @@ async function seed() {
         'Stage with modern lighting',
         'VIP seating area',
       ],
+      amenments: [ 
+        'Sound System',
+        'Private Parking', 
+      ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
         create: [
@@ -209,6 +223,11 @@ async function seed() {
           'Dedicated catering area',
           'LED display walls',
           'Private dining section',
+        ],
+        amenments: [
+          'Food & Beverages',
+          'Sound System',
+          'Private Parking', 
         ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
         availability: {
@@ -261,6 +280,11 @@ async function seed() {
           'Event management assistance',
           'Exclusive breakout rooms',
         ],
+        amenments: [
+          'Food & Beverages',
+          'Sound System',
+          'Private Parking', 
+        ],
         availability: {
           create: [
             {
@@ -310,6 +334,11 @@ async function seed() {
         'Lush garden ambiance',
         'Outdoor lighting',
         'Seating arrangements for weddings',
+      ],
+      amenments: [
+        'Food & Beverages',
+        'Sound System',
+        'Private Parking', 
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
@@ -362,6 +391,11 @@ async function seed() {
         'Adjacent cocktail area',
         'In-house catering services',
       ],
+      amenments: [
+        'Food & Beverages',
+        'Sound System',
+        'Private Parking', 
+      ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
         create: [
@@ -412,6 +446,11 @@ async function seed() {
         'Outdoor fireplace',
         'Mood lighting for evening events',
         'Bar setup with cocktail service',
+      ],
+      amenments: [
+        'Food & Beverages',
+        'Sound System',
+        'Private Parking', 
       ],
       images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
       availability: {
@@ -464,6 +503,11 @@ async function seed() {
           'In-house catering options',
           'Eco-friendly event space',
         ],
+        amenments: [
+          'Food & Beverages',
+          'Sound System',
+          'Private Parking', 
+        ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
         availability: {
           create: [
@@ -515,6 +559,11 @@ async function seed() {
           'Fire pit for night events',
           'Tented seating available',
         ],
+        amenments: [
+          'Food & Beverages',
+          'Sound System',
+          'Private Parking', 
+        ],
         images: ['/images/image1.jpg', '/images/image2.jpg', '/images/image3.jpg'],
         availability: {
           create: [
@@ -548,9 +597,9 @@ async function seed() {
         },
       },
     });
-*/
+
   
-/*
+
   // Create standard questions for each venue type
   const auditoriumQuestions = [
     {
@@ -566,8 +615,8 @@ async function seed() {
       venueId: venue1.id
     }
   ];
-*/
-/*
+
+
   const conferenceHallQuestions = [
     {
       text: "Do you anticipate any media coverage or external guests?",
@@ -606,7 +655,7 @@ async function seed() {
           { date: new Date("2024-11-15"), startTime: "00:00", endTime: "11:59" },
           { date: new Date("2024-11-16"), startTime: "00:00", endTime: "11:59" }
         ]
-      }
+      }, 
     },
   });
 
@@ -623,10 +672,10 @@ async function seed() {
           { date: new Date("2024-12-10"), startTime: "12:00", endTime: "01:00" },
           { date: new Date("2024-12-11"), startTime: "12:00", endTime: "01:00" }
         ]
-      }
+      }, 
     },
   });
-*//*
+
   // Create reservation states
   await prisma.reservationState.create({
     data: {
@@ -646,8 +695,8 @@ async function seed() {
 
   console.log("Seed data created!");
 }
-*/
-}
+
+
 seed()
   .catch((error) => {
     console.error(error);

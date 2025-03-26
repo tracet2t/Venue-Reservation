@@ -150,18 +150,20 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
     setTermsError('');
 
     try {
-      const mappedExtraServices = reservationDetails?.selectedAmenities?.map((amenity: string) => {
-        switch(amenity) {
-          case 'Food & Beverages': return 'food' as const;
-          case 'Sound System': return 'sound_system' as const;
-          case 'Private Parking': return 'private_parking' as const;
-          case 'Projector': return 'projectors' as const;
-          case 'Extended Hours': return 'extend_hours' as const;
-          default: return null;
-        }
-      }).filter((service): service is 'food' | 'sound_system' | 'private_parking' | 'projectors' | 'extend_hours' => 
-        service !== null
-      );
+      const mappedExtraServices = reservationDetails?.selectedAmenities || []; // Store all selected amenities as they are
+
+      // const mappedExtraServices = reservationDetails?.selectedAmenities?.map((amenity: string) => {
+      //   switch(amenity) {
+      //     case 'Food & Beverages': return 'food' as const;
+      //     case 'Sound System': return 'sound_system' as const;
+      //     case 'Private Parking': return 'private_parking' as const;
+      //     case 'Projector': return 'projectors' as const;
+      //     case 'Extended Hours': return 'extend_hours' as const;
+      //     default: return null;
+      //   }
+      // }).filter((service): service is 'food' | 'sound_system' | 'private_parking' | 'projectors' | 'extend_hours' => 
+      //   service !== null
+      // );
 
       // Format all date-time selections
       const formatDate = (date: Date) => {
@@ -181,7 +183,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
         venueId: Number(id),
         title: reservationDetails?.title || '',
         purposeOfReservation: reservationDetails?.purpose || '',
-        extraServices: mappedExtraServices || [],
+        extraServices: reservationDetails?.selectedAmenities || [], // Save all selected amenities dynamically
         dateTimeSelections: formattedDateTimeSelections,
         timeDuration: dateTimeSelections.reduce((total, selection) => 
           total + selection.timeSlots.length, 0),
