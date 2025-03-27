@@ -1,0 +1,80 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { Checkbox } from "@mui/material";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export default function ReservationSummary() {
+  const [isChecked, setIsChecked] = useState(false);
+  const [termsError, setTermsError] = useState("");
+  const router = useRouter();
+
+  const handleAccept = () => {
+    if (isChecked) {
+      router.push("/next-page"); // Replace with actual next page route
+    } else {
+      setTermsError("Please accept the terms and conditions.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <Card className="w-full max-w-2xl">
+        <CardContent className="p-6">
+          <h2 className="text-xl font-bold text-center text-gray-800 mb-4">
+            Reservation Summary
+          </h2>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            TERMS OF USE & AGREEMENT TO TERMS
+          </h3>
+          <p className="text-gray-600 mb-4">
+            These Terms of Use are a binding agreement between you and Space Inc. for accessing 
+            space.com and related services. By using the Platform, you agree to comply. If you do 
+            not accept these terms, you are prohibited from using the Platform and must stop immediately.
+          </p>
+          <h4 className="text-md font-semibold text-gray-700">USER RESPONSIBILITIES</h4>
+          <ul className="list-decimal pl-5 text-gray-600 mb-4">
+            <li>Provide truthful, precise, up-to-date, and complete information.</li>
+            <li>Ensure correctness of information and update it as needed.</li>
+            <li>Possess the legal authority to abide by these Terms of Use.</li>
+            <li>Be of legal age in your place of residence.</li>
+            <li>No engagement with automated systems like bots or scripts.</li>
+          </ul>
+          {/* Terms and Privacy Policy */}
+          <div className="mt-6">
+            <label className="flex items-center space-x-2">
+              <Checkbox 
+                checked={isChecked} 
+                onChange={(e) => {
+                  setIsChecked(e.target.checked);
+                  if (e.target.checked) setTermsError('');
+                }} 
+                className="text-[#584822]"
+              />
+              <span className="text-sm text-gray-600">
+                By clicking "Accept" you agree to the{' '}
+                <a href="#" className="text-[#584822]">Terms of Use</a>
+                {' '}and{' '}
+                <a href="#" className="text-[#584822]">Privacy Policy</a>.
+              </span>
+            </label>
+            {termsError && (
+              <p className="text-red-500 text-sm mt-2">{termsError}</p>
+            )}
+          </div>
+          <div className="flex justify-between mt-4">
+            <Button className="bg-gray-500" onClick={() => router.back()}>Cancel</Button>
+            <Button className="bg-green-600" onClick={handleAccept}>Accept</Button>
+          </div>
+        </CardContent>
+      </Card>
+      <footer className="mt-6 text-center text-gray-600 text-sm">
+        <p>Created By <span className="text-blue-600 font-semibold">TeamReserv</span> | © 2024 All Rights Reserved.</p>
+        <div className="flex justify-center space-x-4 mt-2">
+          <a href="#" className="hover:underline">Privacy Policy</a>
+          <a href="#" className="hover:underline">Terms of Services</a>
+        </div>
+      </footer>
+    </div>
+  );
+}
