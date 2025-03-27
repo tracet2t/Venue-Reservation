@@ -165,10 +165,11 @@ const FontsPage = (): JSX.Element => {
     </h1>
 
     <div className="w-full md:w-1/2 space-y-6 text-left">
-      <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="flex items-start"> 
+      <img src="/images/Group 7.png" />
+        {/* <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
+        </svg> */}
         <div className="ml-2 md:ml-4">
           <strong className="block text-sm md:text-base">01. Discover Your Ideal Venue</strong>
           <span className="text-xs md:text-sm">Temukan destinasi selanjutnya yang akan kamu kunjungi dengan Destinize.</span>
@@ -176,9 +177,10 @@ const FontsPage = (): JSX.Element => {
       </div>
 
       <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <img src="/images/Group 11.png" />
+        {/* <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
+        </svg> */}
         <div className="ml-2 md:ml-4">
           <strong className="block text-sm md:text-base">02. Plan Your Event</strong>
           <span className="text-xs md:text-sm">Discover and select the perfect venue based on your specific needs.</span>
@@ -186,9 +188,10 @@ const FontsPage = (): JSX.Element => {
       </div>
 
       <div className="flex items-start">
-        <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <img src="/images/Group 12.png" />
+        {/* <svg className="w-8 md:w-10 h-8 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 16h4m-2-2v4m8-6a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
+        </svg> */}
         <div className="ml-2 md:ml-4">
           <strong className="block text-sm md:text-base">03. Make A Reservation</strong>
           <span className="text-xs md:text-sm">Easily reserve your chosen venue online and get instant confirmation.</span>

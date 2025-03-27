@@ -100,6 +100,10 @@ const HeaderContent = () => {
   }, [router]);
 
   const handleLogout = async () => {
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    
+    if (!confirmed) return; // If user cancels, do nothing
+    
     try {
       // First, clear any local session data
       setUser(null);

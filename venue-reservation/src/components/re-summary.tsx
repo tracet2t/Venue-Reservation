@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Carousel from './carousel';
 import moment from 'moment';
+import termsPopup from '@/components/termsPop'; 
+import TermsPopup from '@/components/termsPop';
 
 interface VenueDetails {
   id: number;
@@ -51,7 +53,6 @@ interface ReservationSummaryProps {
     }
   }) => void;
 }
-
 // Add this interface for the time slot structure
 interface TimeSlot {
   date: string;
@@ -430,16 +431,14 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                       />
                       <span className="text-sm text-gray-600">
                         By clicking &quot;Reserve Now&quot; you agree to the{' '}
-                        <a href="#" className="text-[#584822]">Terms of Use</a>
-                        {' '}and{' '}
-                        <a href="#" className="text-[#584822]">Privacy Policy</a>.
+                        <a href="#" 
+                        className="text-[#584822]"><TermsPopup /></a> 
                       </span>
                     </label>
                     {termsError && (
                       <p className="text-red-500 text-sm mt-2">{termsError}</p>
                     )}
-                  </div>
-
+                  </div> 
                   {/* Reserve Now Button */}
                   <button
                     onClick={handleSubmit}
