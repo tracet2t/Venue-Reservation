@@ -89,12 +89,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/venues" className="text-[#8B7355] hover:text-[#6A5B3A] transition-colors text-sm">
+                <a href="/card-view" className="text-[#8B7355] hover:text-[#6A5B3A] transition-colors text-sm">
                   Venues
                 </a>
               </li>
               <li>
-                <a href="/my-reservations" className="text-[#8B7355] hover:text-[#6A5B3A] transition-colors text-sm">
+                <a href="/my-reservation" className="text-[#8B7355] hover:text-[#6A5B3A] transition-colors text-sm">
                   My Bookings
                 </a>
               </li>
@@ -157,7 +157,7 @@ const Footer = () => {
               <span className="font-semibold text-[#C49D40]">TeamReserv</span> © 2024 All Rights Reserved.
             </p>
             <div className="flex space-x-4">
-              <a><TermsPopup/></a>
+            <div><TermsPopup /> </div>
             </div>
           </div>
         </div>
