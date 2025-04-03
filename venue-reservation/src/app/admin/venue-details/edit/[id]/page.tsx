@@ -51,7 +51,8 @@ export default function EditVenue({ params }: { params: { id: string } }) {
     venueType: '',
     maximumCapacity: '',
     timeMode: '',
-    features: ['', '', '', '']
+    features: ['', '', '', ''],
+    amenments:['','','',''],
   });
   const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
@@ -188,7 +189,8 @@ export default function EditVenue({ params }: { params: { id: string } }) {
           venueType: venueData.type,
           maximumCapacity: venueData.capacity.toString(),
           timeMode: venueData.schedule,
-          features: venueData.features.length ? venueData.features : ['', '', '', '']
+          features: venueData.features.length ? venueData.features : ['', '', '', ''],
+          amenments: venueData. amenments.length ? venueData. amenments : ['', '', '', '']
         });
 
         setImages(venueData.images);
@@ -236,6 +238,7 @@ export default function EditVenue({ params }: { params: { id: string } }) {
         size: parseInt(formData.venueSize),
         schedule: formData.timeMode,
         features: formData.features.filter(f => f.trim() !== ''),
+        amenments: formData.amenments.filter(f => f.trim() !== ''),
         images: images,
         questions: validQuestions
       };
@@ -447,7 +450,38 @@ export default function EditVenue({ params }: { params: { id: string } }) {
                   ))}
                 </div>
               </div>
+              <div>
 
+                {/* Add Amenity */}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Amenments
+                </label>
+                <div className="space-y-3">
+                  {[
+                    'Amenity 01',
+                    'Amenity 02',
+                    'Amenity 03',
+                    'Amenity 04'
+                  ].map((placeholder, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      placeholder={placeholder}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#584822]"
+                      value={formData.amenments[index] || ''}
+                      onChange={(e) => {
+                        const newamenments = [...formData.amenments];
+                        newamenments[index] = e.target.value;
+                        setFormData(prev => ({
+                          ...prev,
+                          amenments: newamenments
+                        }));
+                      }}
+                      required={index === 0}
+                    />
+                  ))}
+                </div>
+              </div>
               {/* Venue Size */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Venue Size (Square Feet)</label>
@@ -515,6 +549,7 @@ export default function EditVenue({ params }: { params: { id: string } }) {
               </div>
             </div>
           )}
+          
 
           {activeTab === 'questions' && (
             <div className="space-y-8">

@@ -114,10 +114,10 @@ export default function AddNewVenue() {
     
     try {
       // 1. Enhanced Initial validation
-      // if (!imageFiles.some(file => file !== null)) {
-      //   toast.error('Please select at least one image');
-      //   return;
-      // }
+      if (!imageFiles.some(file => file !== null)) {
+        toast.error('Please select at least one image');
+        return;
+      }
 
       // Validate other required fields
       if (!formData.name || !formData.location || !selectedDistrict || !selectedProvince) {
@@ -141,19 +141,19 @@ export default function AddNewVenue() {
           formData.append('file', file);
           
           try {
-            // console.log(`Uploading image ${i + 1}...`); // Debug log
-            // const uploadResponse = await fetch('/api/google_image', {
-            //   method: 'POST',
-            //   body: formData,
-            // });
+            console.log(`Uploading image ${i + 1}...`); // Debug log
+            const uploadResponse = await fetch('/api/google_image', {
+              method: 'POST',
+              body: formData,
+            });
             
-            // if (!uploadResponse.ok) {
-            //   throw new Error(`Failed to upload image ${i + 1}`);
-            // }
+            if (!uploadResponse.ok) {
+              throw new Error(`Failed to upload image ${i + 1}`);
+            }
             
-            // const { imageUrl } = await uploadResponse.json();
-            // console.log('Uploaded image URL:', imageUrl); // Debug log
-            // uploadedImageUrls.push(imageUrl);
+            const { imageUrl } = await uploadResponse.json();
+            console.log('Uploaded image URL:', imageUrl); // Debug log
+            uploadedImageUrls.push(imageUrl);
             
             // Update loading toast with progress
             toast.loading(`Uploaded ${uploadedImageUrls.length} of ${imageFiles.filter(f => f !== null).length} images...`, 

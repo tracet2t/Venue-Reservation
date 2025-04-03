@@ -9,7 +9,7 @@ interface VenueDetailCardProps {
   capacity: string;
   size: string;
   timeSchedule: string;
-  features: string[];
+  features: string[]; 
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -22,7 +22,7 @@ const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
   capacity,
   size,
   timeSchedule,
-  features,
+  features, 
   onEdit,
   onDelete,
 }) => {

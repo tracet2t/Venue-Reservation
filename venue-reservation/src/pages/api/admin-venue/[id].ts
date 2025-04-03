@@ -65,6 +65,7 @@ export default async function handler(
           size: venueData.size,
           schedule: venueData.schedule,
           features: venueData.features,
+          amenments:venueData.amenments,
           images: venueData.images,
         }
       });
