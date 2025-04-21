@@ -5,9 +5,10 @@ import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   isOpen: boolean;
+  blurred?: boolean;
 }
 
-export default function Sidebar({ isOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, blurred = false }: SidebarProps) {
   const pathname = usePathname();
 
   const menuItems = [
@@ -60,9 +61,10 @@ export default function Sidebar({ isOpen }: SidebarProps) {
 
   return (
     <div className={`
-      fixed left-0 top-0 h-screen w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out 
+      tw-blur-sidebar tw-admin-sidebar fixed left-0 top-0 h-screen w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out 
       flex flex-col overflow-hidden
       ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+       ${blurred ? 'blur-sm pointer-events-none' : ''}
     `}>
       {/* Navigation Links */}
       <nav className="flex-1 overflow-y-auto py-1">

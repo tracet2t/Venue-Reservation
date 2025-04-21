@@ -11,9 +11,8 @@ const TermsPopup = () => {
           e.preventDefault();
           setIsOpen(true);
         }}
-        className="text-[#584822]"
       >
-        Terms and Conditions & Privacy Policies
+      <p className="text-[#584822]">  Terms and Conditions & Privacy Policies </p>
       </a>
 
       {isOpen && (

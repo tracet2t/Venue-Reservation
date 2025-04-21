@@ -429,7 +429,7 @@ const ReservationSummary: React.FC<ReservationSummaryProps> = ({
                           if (e.target.checked) setTermsError('');
                         }}
                       />
-                       <div>  By clicking Reserve Now you agree to the <TermsPopup /> </div>
+                       <div><p className="text-gray-900">By clicking Reserve Now you agree to the</p> <TermsPopup />   </div>
                     </label>
                     {termsError && (
                       <p className="text-red-500 text-sm mt-2">{termsError}</p>

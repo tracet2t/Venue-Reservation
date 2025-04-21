@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import CancelReservationModal from '../re-cancelation';
 import { useRouter } from 'next/navigation';
+import { Calendar, MapPin, Clock, Info, User } from "lucide-react";
 
 interface ReservationCardProps {
   reservationId: string;
@@ -46,7 +47,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
   customerName,
   customerEmail,
   customerContactNumber,
-  additionalQuestions = [],
+  additionalQuestions = [], 
   adminComments,
 }) => {
   const router = useRouter();
@@ -57,12 +58,12 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
   useEffect(() => {
     const fetchAdminDetails = async () => {
       if (!venue.id || adminDetails) return;
-      
+
       setLoading(true);
       try {
         const response = await fetch(`/api/venue-admin/${venue.id}`);
         const data = await response.json();
-        
+
         if (response.ok && data.admin) {
           setAdminDetails(data.admin);
         }
@@ -98,14 +99,14 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       });
 
       if (!response.ok) throw new Error('Failed to cancel reservation');
-      
+
       setShowCancelModal(false);
       router.refresh();
     } catch (error) {
       console.error('Error canceling reservation:', error);
     }
   };
-/* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Pending': return 'bg-yellow-100 text-yellow-800';
@@ -114,103 +115,122 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
       default: return 'bg-gray-100 text-gray-800';
     }
   };
-/* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   return (
     <>
-      <div className="bg-white rounded-lg shadow-lg p-8 mb-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-        {/* Header Section */}
-        <div className="border-b pb-4 mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">{eventName}</h2>
-          
-        </div>
+      <div className="flex flex-col md:flex-row bg-white rounded-[32px] shadow-xl overflow-hidden max-w-5xl mx-auto">
+        {/* Left column Side  */}
+        <div className="md:w-1/2 p-6 md:p-10 text-[#5C3A00]">
+          {/* Main Topic */}
+          <h2 className="text-2xl md:text-3xl font-bold mb-1"> {eventName}</h2>
 
-        <div className="grid grid-cols-2 gap-8">
-          {/* Left Column */}
-          <div className="space-y-6">
-            {/* Extra Services */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Extra Services</h3>
-              <div className="flex flex-wrap gap-2">
-                {extraServices.map((service, index) => (
-                  <span key={index} className="px-3 py-1.5 bg-[#584822] text-white rounded-md text-sm">
-                    {service}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Selected Dates & Times */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Selected Dates & Times</h3>
-              <div className="space-y-3">
-                {Object.entries(dateTimeSelections || {}).map(([date, slots], index) => (
-                  <div key={index} className="bg-white p-3 rounded-md shadow-sm">
-                    <p className="font-medium text-[#584822]">{formatDate(date)}</p>
-                    <div className="ml-4 mt-2 space-y-1">
-                      {slots.map((slot, timeIndex) => (
-                        <p key={timeIndex} className="text-gray-600 flex items-center gap-2">
-                          <span className="w-2 h-2 bg-[#584822] rounded-full"></span>
-                          {slot}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Venue Details */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Venue Details</h3>
-              <div className="space-y-2">
-                <p className="text-gray-700"><span className="font-medium">Name:</span> {venue.name}</p>
-                <p className="text-gray-700"><span className="font-medium">Type:</span> {venue.type}</p>
-                <p className="text-gray-700"><span className="font-medium">Schedule:</span> {timeMode}</p>
-                
-                {/* Admin Details */}
-                {loading ? (
-                  <div className="mt-4 bg-white p-3 rounded-md shadow-sm">
-                    <p>Loading admin details...</p>
-                  </div>
-                ) : adminDetails ? (
-                  <div className="mt-4 bg-white p-3 rounded-md shadow-sm">
-                    <h4 className="text-md font-semibold text-[#584822] mb-2">Admin Contact</h4>
-                    <p className="text-gray-600">Name: {adminDetails.firstName}</p>
-                    <p className="text-gray-600">Email: {adminDetails.email}</p>
-                    {adminDetails.contactNumber && (
-                      <p className="text-gray-600">Contact: {adminDetails.contactNumber}</p>
-                    )}
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
+          {/* Purpose of reservation */}
+          <div className="mb-4">
+            <span className="font-medium text-gray-900 mb-4">Purpose of reservation : </span> {purposeOfReservation}
           </div>
 
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Purpose of Reservation */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Purpose of Reservation</h3>
-              <p className="text-gray-700">{purposeOfReservation}</p>
-            </div>
+          {/* Venue Details section */}
+          <div className="mb-4"> 
+          <div> <span className="font-medium text-gray-900 mb-4">Name : </span> {venue.name}</div>
+          <div> <span className="font-medium text-gray-900 mb-4">Type : </span> {venue.type} </div>
+          <div> <span className="font-medium text-gray-900 mb-4">Time : </span>{timeMode} </div>
+          </div>
 
-            {/* Customer Details */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Customer Details</h3>
-              <div className="bg-white p-4 rounded-md shadow-sm">
-                <p className="text-gray-700"><span className="font-medium">Name:</span> {customerName}</p>
-                <p className="text-gray-700"><span className="font-medium">Email:</span> {customerEmail}</p>
-                {customerContactNumber && (
-                  <p className="text-gray-700"><span className="font-medium">Contact:</span> {customerContactNumber}</p>
-                )}
+          {/* extra services section */}
+          <div className="mb-4">
+            <h2 className="font-medium text-gray-900 mb-4">Extra Services 
+            <div className="flex flex-wrap gap-2">
+              {extraServices.map((service, index) => (
+              <span key={index} className=" px-3 py-1.5 bg-[#584822] text-white rounded-md text-sm">
+                {service}
+              </span>
+            ))} </div></h2>
+          </div>
+           
+
+          {/* Time and Date section */}
+          <h2 className="font-medium text-gray-900">Selected Date & Time
+            {Object.entries(dateTimeSelections || {}).map(([date, slots], index) => (
+              <div key={index}>
+                <p className="font-medium text-[#584822]">{formatDate(date)}</p>
+                <div className="ml-4 mt-2 space-y-1">
+                  {slots.map((slot, timeIndex) => (
+                    <p key={timeIndex} className="text-[#584822] flex items-center gap-2">
+                      <span className="w-2 h-2 bg-[#584822] rounded-full"></span>
+                      {slot}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
+            ))}
+          </h2>
+          <br></br>
 
-            {/* Questions Section */}
-            {questions?.length > 0 && (
+          {/* Admin feedback section */}
+          {adminComments && (
+            <div className="mb-4">
+              <h4 className="font-medium text-gray-900">Admin Feedback</h4>
+              <p className="text-[#584822]">{adminComments}</p>
+            </div>
+          )}
+
+          {/* reservation status section*/}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Status:</span>
+              <span className={`px-4 py-1.5 rounded-full text-white text-sm font-medium ${status === 'Pending' ? 'bg-[#F4A261]' :
+                status === 'Accepted' ? 'bg-green-500' :
+                  status === 'Rejected' ? 'bg-red-500' :
+                    'bg-gray-500'
+                }`}>
+                {status}
+              </span>
+            </div>
+            {status === 'Pending' && (
+              <button
+                onClick={handleCancelClick}
+                className="px-4 py-2 bg-[#584822] text-white rounded-md hover:bg-[#6B5A2B] transition-colors duration-300 text-sm font-medium flex items-center gap-2"
+              >
+                <span>Cancel Reservation</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column side*/}
+        <div className="md:w-1/2 p-6 md:p-10 text-[#5C3A00]">
+
+          {/* Admin details section */}
+          {loading ? (
+            <div className="mt-4 bg-white p-3 rounded-md shadow-sm">
+              <p>Loading admin details...</p>
+            </div>
+          ) : adminDetails ? (
+            <div className=" mb-4">
+              <h4 className="text-md font-semibold text-[#584822] ">Admin Details</h4>
+              <p className="text-gray-700"><span className="font-medium">Name:</span> {adminDetails.firstName}</p>
+              <p className="text-gray-700"><span className="font-medium">Email:</span>  {adminDetails.email}</p>
+              {adminDetails.contactNumber && (
+                <p className="text-gray-700"><span className="font-medium">Contact:</span> {adminDetails.contactNumber}</p>
+              )}
+            </div>
+          ) : null}
+
+          {/* Customer details section */}
+          <div className=" mb-4">
+            <h3 className="text-md font-semibold text-[#584822]">Customer Details</h3>
+            <p className="text-gray-700"><span className="font-medium">Name:</span> {customerName}</p>
+            <p className="text-gray-700"><span className="font-medium">Email:</span> {customerEmail}</p>
+            {customerContactNumber && (
+              <p className="text-gray-700"><span className="font-medium">Contact:</span> {customerContactNumber}</p>
+            )}
+          </div>
+
+
+           {/* Questions Section */}
+           {questions?.length > 0 && (
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Additional Information</h3>
+                <h3 className="text-md font-semibold text-[#584822]">Additional Information</h3>
                 <div className="space-y-3">
                   {questions.map((question) => (
                     <div key={question.text} className="bg-white p-3 rounded-md shadow-sm">
@@ -225,7 +245,7 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
             {/* Additional Questions Section */}
             {additionalQuestions?.length > 0 && (
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Venue Specific Questions</h3>
+                <h3 className="text-md font-semibold text-[#584822]">Venue Specific Questions</h3>
                 <div className="space-y-3">
                   {additionalQuestions.map((question) => (
                     <div key={question.text} className="bg-white p-3 rounded-md shadow-sm">
@@ -238,39 +258,6 @@ const MyReservationCard: React.FC<ReservationCardProps> = ({
             )}
           </div>
         </div>
-        <div className="mt-6 border-t pt-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">Status:</span>
-              <span className={`px-4 py-1.5 rounded-full text-white text-sm font-medium ${
-                status === 'Pending' ? 'bg-[#F4A261]' :
-                status === 'Accepted' ? 'bg-green-500' :
-                status === 'Rejected' ? 'bg-red-500' :
-                'bg-gray-500'
-              }`}>
-                {status}
-              </span>
-            </div>
-            {status === 'Pending' && (
-              <button 
-                onClick={handleCancelClick}
-                className="px-4 py-2 bg-[#584822] text-white rounded-md hover:bg-[#6B5A2B] transition-colors duration-300 text-sm font-medium flex items-center gap-2"
-              >
-                <span>Cancel Reservation</span>
-              </button>
-            )}
-          </div>
-
-          {/* Admin Comments Display */}
-          {adminComments && (
-            <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-              <h4 className="text-lg font-semibold text-gray-800 mb-2">Admin Feedback</h4>
-              <p className="text-gray-700">{adminComments}</p>
-            </div>
-          )}
-        </div>
-      </div>
-
       <CancelReservationModal
         showModal={showCancelModal}
         onCancel={() => setShowCancelModal(false)}
