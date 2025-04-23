@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import UtilizationChart from "@/components/admin/utilization-chart";
 import VenueDetailCard from '@/components/venue_card/feature_venue_card';
+import Header from "@/app/layouts/Header";
 
 interface Venue {
   id: number;

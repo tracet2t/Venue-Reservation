@@ -17,7 +17,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
           lg:translate-x-0 lg:static`}
       >
-       <Sidebar isOpen={isSidebarOpen} />
+         <Sidebar isOpen={isSidebarOpen} />
       </div>
 
       {/* Main Content Area */}

@@ -64,9 +64,9 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
         <div
           key={venue.id}
           className="p-4 border border-gray-300 rounded-xl shadow-lg flex flex-col md:flex-row mb-4 cursor-pointer"
-          onClick={() => handleCardClick(venue.id)}
+          //onClick={() => handleCardClick(venue.id)}
         >
-          {/* Image Section */}
+          {/* Image Section */} 
           <div className="w-full h-full border border-gray-300 rounded-xl shadow-lg md:w-2/5">
             {venue.images && venue.images.length > 0 ? (
               <Carousel
@@ -87,16 +87,17 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
               <div className="w-full h-[340px] flex items-center justify-center bg-gray-100">
                 <span className="text-gray-400">No images available</span>
               </div>
-            )}
-          </div>
+            )} 
+          </div> 
 
-          {/* Details Section */}
+
+       {/* Details Section */}
           <div className="w-full md:w-3/5 p-4 flex flex-col justify-between text-olive"
           onClick={() => handleCardClick(venue.id)}>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">{venue.name}</h1>
               <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>
-              <p><strong>Type: {venue.type} </strong></p>
+              <p> <strong>Type: {venue.type} </strong></p>
               <p><strong>Capacity: {venue.capacity} seated</strong></p>
               <p><strong>Size: {venue.size} sqft</strong></p>
               <p><strong>Time Schedule: {venue.schedule}</strong></p>

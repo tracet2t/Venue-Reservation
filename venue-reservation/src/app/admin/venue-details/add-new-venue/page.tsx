@@ -563,7 +563,7 @@ export default function AddNewVenue() {
 
               {/* add Venue amenities */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">
                   Add Amenities
                 </label>
                 <div className="space-y-3">
