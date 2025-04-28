@@ -50,18 +50,21 @@ const VenueDetailCard: React.FC<VenueDetailCardProps> = ({
         <div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">{name}</h1>
           <p className="text-sm md:text-base">{address}</p>
-          <p className="text-sm md:text-base">
-            <strong>Type:</strong> {type}
-          </p>
-          <p className="text-sm md:text-base">
-            <strong>Capacity:</strong> {capacity}
-          </p>
-          <p className="text-sm md:text-base">
-            <strong>Size:</strong> {size}
-          </p>
-          <p className="text-sm md:text-base">
-            <strong>Time Schedule:</strong> {timeSchedule}
-          </p>
+
+          <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-sm md:text-base">
+          <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/type vector.png" className="w-5 h-5"></img> {type}
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/capacity vector.png" className="w-5 h-5"></img> {capacity}
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/size vector.png" className="w-5 h-5"></img> {size}
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/time vector.png" className="w-5 h-5"></img> {timeSchedule}
+            </p>
+            </div>
         </div>
 
         <div className="mt-4">

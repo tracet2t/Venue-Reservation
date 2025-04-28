@@ -1,6 +1,5 @@
 'use client';
 
-import Sidebar from '@/components/admin/side-bar';
 import { useState, useEffect } from 'react';
 
 interface ReservationTimeSlot {
@@ -275,7 +274,7 @@ export default function AdminReservationRequests() {
   }
 
   return (
-    <div className="p-4 r-64"> 
+    <div className="p-4 r-64">
       {/* Header with search */}
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-2xl font-bold text-[#584822]">Reservation Approvals</h1>
@@ -383,10 +382,8 @@ export default function AdminReservationRequests() {
                     <span className="text-gray-600">Customer Contact Number</span>
                     <span>{reservation.user.contactNumber}</span>
                   </div>
-                  <hr></hr>
-                  {/* venue contact person's contact number */}
-                  <div className="flex justify-between"></div>
-                   <div className="flex justify-between">
+                  
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Reservation Id</span>
                     <span>{reservation.reservationId}</span>
                   </div>
@@ -394,11 +391,11 @@ export default function AdminReservationRequests() {
               </div>
             </div>
 
-            <div className="mt-4 flex justify-end"> 
-
+            <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setSelectedReservation(reservation)}
-                className="px-6 py-2 bg-[#584822] text-white rounded-md hover:bg-[#483c1c]">
+                className="px-6 py-2 bg-[#584822] text-white rounded-md hover:bg-[#483c1c]"
+              >
                 See more
               </button>
             </div>
@@ -413,7 +410,7 @@ export default function AdminReservationRequests() {
 
       {/* Modal for detailed view */}
       {selectedReservation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">

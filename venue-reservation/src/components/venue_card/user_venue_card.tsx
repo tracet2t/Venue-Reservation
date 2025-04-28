@@ -97,19 +97,31 @@ const VenueCard: React.FC<VenueCardProps> = ({ provinces, districts, venueType, 
             <div>
               <h1 className="text-3xl md:text-4xl font-bold">{venue.name}</h1>
               <p>{venue.street_name.join(', ')}, {venue.district}, {venue.province}</p>
-              <p> <strong>Type: {venue.type} </strong></p>
-              <p><strong>Capacity: {venue.capacity} seated</strong></p>
-              <p><strong>Size: {venue.size} sqft</strong></p>
-              <p><strong>Time Schedule: {venue.schedule}</strong></p>
+              
+              <div className="flex flex-wrap gap-x-6 gap-y-20 mt-2 text-sm md:text-base">
+                <p className="text-sm md:text-base flex items-center gap-x-2">
+                  <img src="/images/type vector.png" className="w-5 h-5"></img> {venue.type}
+                </p>
+                <p className="text-sm md:text-base flex items-center gap-x-2">
+                  <img src="/images/capacity vector.png" className="w-5 h-5"></img> {venue.capacity} seated
+                </p>
+                <p className="text-sm md:text-base flex items-center gap-x-2">
+                  <img src="/images/size vector.png" className="w-5 h-5"></img> {venue.size} sqft
+                </p>
+                <p className="text-sm md:text-base flex items-center gap-x-2">
+                  <img src="/images/time vector.png" className="w-5 h-5"></img> {venue.schedule}
+                </p>
+               
             </div>
-
-            <div>
+<br></br>
+            <div className='gap-y-20'>
               <h2 className="text-lg font-bold">Features:</h2>
               <ul className="list-disc list-inside">
                 {venue.features.map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
+            </div>
             </div>
           </div>
 

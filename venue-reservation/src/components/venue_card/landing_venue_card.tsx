@@ -75,10 +75,20 @@ const LandingVenueCard = () => {
           <p className="text-sm md:text-base">
             {venue.street_name}, {venue.district}, {venue.province}
           </p>
-          <p className="text-sm md:text-base"><strong>Type:</strong> {venue.type}</p>
-          <p className="text-sm md:text-base"><strong>Capacity:</strong> {venue.capacity}</p>
-          <p className="text-sm md:text-base"><strong>Size:</strong> {venue.size}</p>
-          <p className="text-sm md:text-base"><strong>Time Schedule:</strong> {venue.schedule}</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-sm md:text-base">
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/type vector.png" className="w-5 h-5"></img> {venue.type}
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/capacity vector.png" className="w-5 h-5"></img> {venue.capacity} seated
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/size vector.png" className="w-5 h-5"></img> {venue.size} sqft
+            </p>
+            <p className="text-sm md:text-base flex items-center gap-x-2">
+              <img src="/images/time vector.png" className="w-5 h-5"></img> {venue.schedule}
+            </p>
+          </div>
         </div>
 
         <div className="mt-4">
